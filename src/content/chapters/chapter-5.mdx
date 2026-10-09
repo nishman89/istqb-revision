@@ -12,6 +12,11 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Exercise from '../../components/Exercise.astro';
+import Compare from '../../components/diagrams/Compare.astro';
+import Flow from '../../components/diagrams/Flow.astro';
+import ThreePoint from '../../components/diagrams/ThreePoint.astro';
+import Tiles from '../../components/diagrams/Tiles.astro';
 import DefectLifecycle from '../../components/diagrams/DefectLifecycle.astro';
 import Quadrants from '../../components/diagrams/Quadrants.astro';
 import RiskMatrix from '../../components/diagrams/RiskMatrix.astro';
@@ -24,7 +29,6 @@ import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 
 <TestProcess />
 
-
 - **Test Planning** Set out test objectives and approach
 - **Test Analysis** - Identify WHAT to test
 - **Test Design** - Decide in detail HOW to test
@@ -34,7 +38,6 @@ import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 - **Test Monitoring & Control** Monitor progress against the plan and take action
 
 ## 5.1 Test Planning
-
 
 ### Purpose of a Test Plan
 
@@ -89,6 +92,10 @@ Iteration planning looks ahead to the end of a single iteration and is concerned
 
 <SyllabusRef ref="5.1.3" />
 
+<Flow caption="Entry criteria are the preconditions to start an activity; exit criteria say when it is done (CTFL 5.1.3)" steps={[
+  { title: 'Entry criteria', sub: 'resources, testware, initial quality' }, { title: 'Test activity', sub: 'e.g. a test level' }, { title: 'Exit criteria', sub: 'coverage, defects, tests run' },
+]} />
+
 - **Entry criteria** - Preconditions for starting an activity · If not met, the activity is likely to be harder, slower, costlier and riskier
 - **Exit criteria** - What must be achieved to call it complete · Declare an activity completed
 - **Define both for each test level** - they will differ depending on the test objectives.
@@ -132,7 +139,7 @@ Typical exit criteria include measures of thoroughness (e.g., achieved level of 
 
 - **Out of time or budget?** - That can be a valid exit criterion - if stakeholders have reviewed and accepted the risk of going live without further testing.
 
-#### In Agile
+#### In agile
 
 - **Definition of Ready** - Entry criteria a user story must meet before development and/or testing starts
 - **Definition of Done** - Exit criteria - the team's objective metrics for a releasable item
@@ -148,6 +155,11 @@ In Agile software development, exit criteria are often called Definition of Done
 ### Estimation Techniques
 
 <SyllabusRef ref="5.1.4" />
+
+<Compare caption="Four estimation techniques (CTFL 5.1.4)" columns={[
+  { title: 'Metrics-based', sub: 'uses data', points: ['Ratios from similar past projects', 'Extrapolation from early measurements'] },
+  { title: 'Expert-based', sub: 'uses judgement', points: ['Wideband Delphi and Planning Poker', 'Three-point estimation'] },
+]} />
 
 - **Estimates rest on assumptions** and always carry error. Small tasks estimate better - so break big tasks down.
 - **Metrics-based** - Estimation based on ratios · Extrapolation
@@ -165,7 +177,7 @@ Test effort estimation involves predicting the amount of test-related work neede
 
 - **Use historical data** - "Standard" ratios from the organisation's own similar projects are the best source
 
-#### Worked Example
+#### Worked example
 
 - **Dev : test = 3 : 2** - from the previous project
 - **Dev effort = 600** - person-days, this project
@@ -217,12 +229,24 @@ In this iterative, expert-based technique, experts make experience-based estimat
 
 <SyllabusRef ref="5.1.4" />
 
-- Most optimistic
-- Most likely
-- Most pessimistic
+<ThreePoint />
+
 - **ESTIMATE** - E = (a + 4m + b) / 6
 - **MEASUREMENT ERROR** - SD = (b - a) / 6
-- **Try it:** a = 6, m = 9, b = 18 person-hours. What are E and SD?
+<Exercise title="Three-point estimate">
+
+The experts' estimates are: optimistic **a = 6**, most likely **m = 9**, pessimistic **b = 18** person-hours.
+What are the estimate **E** and the measurement error **SD**?
+
+<div slot="answer">
+
+- **E** = (6 + 4 × 9 + 18) / 6 = 60 / 6 = **10 person-hours**
+- **SD** = (18 − 6) / 6 = **2**
+
+So the estimate is **10 ± 2 person-hours** (between 8 and 12). You need to remember this formula for the exam.
+
+</div>
+</Exercise>
 
 <SyllabusText>
 
@@ -269,12 +293,6 @@ Ideally, test cases would be ordered to run based on their priority levels, usin
 
 <TestPyramid />
 
-
-- Acceptance
-- System integration
-- System
-- Component integration
-- Component (unit)
 - **Top layers** - Complex, end-to-end, slower - just a few needed
 - **Bottom layers** - Small, isolated, fast - many needed
 - **Guides automation** - and how test effort is allocated
@@ -319,26 +337,10 @@ The testing quadrants, defined by Brian Marick (Marick 2003, Crispin 2008), grou
 
 <Quadrants />
 
-
 - Functional tests, examples, user story tests, BDD, ATDD, UX prototypes, simulations
-- Automated & manual
 - Exploratory, usability, UAT, alpha / beta
-- Manual
 - Unit, component, integration and API tests
-- Automated
 - Performance, load, stress, security, portability, maintainability - "ility" testing
-
-#### Business Facing
-
-
-#### Technology Facing
-
-
-#### Support The Team
-
-
-#### Critique The Product
-
 
 ### The Four Quadrants
 
@@ -373,25 +375,17 @@ Quadrant Q4 (technology facing, critique the product) contains smoke tests and n
 - Automated
 - Performance, load, stress, security, portability, maintainability - "ility" testing
 
-#### Business Facing
-
-
-#### Technology Facing
-
-
-#### Support The Team
-
-
-#### Critique The Product
-
 - Left: mostly verification  ·  Right: mostly validation  ·  Top: mostly black-box  ·  Bottom: mostly white-box
 
 ## 5.2 Risk Management
 
-
 ### Risk Management
 
 <SyllabusRef ref="5.2" />
+
+<Flow loop="KEEP MONITORING - NEW RISKS EMERGE" caption="Risk management: analysis then control (CTFL 5.2)" steps={[
+  { title: 'Identify', sub: 'brainstorm, interview, workshops' }, { title: 'Assess', sub: 'likelihood × impact' }, { title: 'Mitigate', sub: 'e.g. by testing' }, { title: 'Monitor', sub: 'is it working?' },
+]} />
 
 - **Risk management** increases the likelihood of achieving objectives, improves product quality and builds stakeholder confidence.
 - Risk analysis
@@ -418,19 +412,10 @@ The test approach, in which test activities are selected, prioritized, and manag
 
 <RiskMatrix />
 
-
 - A potential event, hazard, threat or situation whose occurrence causes an adverse effect.
 - **Likelihood** - Probability of occurrence - between 0 and 1
 - **Impact (harm)** - The consequences if it occurs
 - **Likelihood + impact = risk level.** - The higher the level, the more important to treat.
-- Low risk
-- High risk
-
-#### Impact →
-
-
-#### Likelihood →
-
 
 <SyllabusText>
 
@@ -495,7 +480,7 @@ Product risks are related to the product quality characteristics (e.g., describe
 - **Risk identification** - generate a comprehensive list of risks
 - **Risk assessment** - categorise, rate likelihood, impact and level; prioritise; propose responses
 
-#### Identification Techniques
+#### Identification techniques
 
 - Brainstorming
 - Workshops
@@ -531,10 +516,14 @@ Product risk analysis may influence the thoroughness and scope of testing. Its r
 
 <SyllabusRef ref="5.2.4" />
 
+<Tiles cols={4} caption="Responses to a product risk (CTFL 5.2.4)" tiles={[
+  { title: 'Mitigate', sub: 'test it' }, { title: 'Accept', sub: 'live with it' }, { title: 'Transfer', sub: 'e.g. insurance' }, { title: 'Contingency', sub: 'plan B' },
+]} />
+
 - **Risk mitigation** - Implement the actions proposed in risk assessment · Reduce the risk level
 - **Risk monitoring** - Check mitigation actions are working · Improve risk assessment · Spot emerging risks
 
-#### Response Options
+#### Response options
 
 - Mitigation by testing
 - Acceptance
@@ -562,10 +551,13 @@ With respect to product risk control, once a risk has been analyzed, several res
 
 ## 5.3 Test Monitoring, Control and Completion
 
-
 ### Monitor, Control, Complete
 
 <SyllabusRef ref="5.3" />
+
+<Flow caption="Monitoring gathers information, control acts on it, completion wraps up (CTFL 5.3)" steps={[
+  { title: 'Monitor', sub: 'metrics and progress' }, { title: 'Control', sub: 'directives and corrective action' }, { title: 'Complete', sub: 'report, archive, lessons learned' },
+]} />
 
 - **Monitoring** - Gather information · Assess test progress · Check exit criteria are being met - e.g. coverage of risks, requirements, acceptance criteria
 - **Control** - Act on it · Use monitoring information · Issue control directives - guidance and corrective actions
@@ -696,10 +688,13 @@ One or more of these options can be used. More formal communication may be more 
 
 ## 5.4 Configuration Management
 
-
 ### Configuration Management
 
 <SyllabusRef ref="5.4" />
+
+<Flow caption="Configuration management keeps every item identified, versioned and traceable (CTFL 5.4)" steps={[
+  { title: 'Identify items', sub: 'code, testware, environments' }, { title: 'Version control', sub: 'track every change' }, { title: 'Baseline', sub: 'approved, change-controlled' }, { title: 'Reproduce', sub: 'revert to any baseline' },
+]} />
 
 - **CM identifies, controls and tracks** work products - plans, conditions, cases, scripts, results, logs, reports - as configuration items.
 - **Configuration item** - components, relationships and versions recorded
@@ -730,10 +725,13 @@ Continuous integration, continuous delivery, continuous deployment and the assoc
 
 ## 5.5 Defect Management
 
-
 ### Defect Management
 
 <SyllabusRef ref="5.5" />
+
+<Flow caption="The defect management process (CTFL 5.5)" steps={[
+  { title: 'Log', sub: 'the anomaly' }, { title: 'Analyse & classify', sub: 'real defect? severity?' }, { title: 'Decide', sub: 'fix, defer or reject' }, { title: 'Close', sub: 'after confirmation' },
+]} />
 
 - **Finding defects is a major test objective** - so an established defect management process is essential.
 - the reported anomaly
@@ -790,34 +788,11 @@ ISTQB glossary - Priority: the level of (business) importance assigned to an ite
 - **Low priority · Low severity** - Cosmetic errors, spelling mistakes
 - **Low priority · High severity** - Big impact on minor or unreleased areas - users can still work
 
-#### Severity →
-
-
-#### Priority →
-
-
 ### Defect Lifecycle
 
 <SyllabusRef beyond />
 
 <DefectLifecycle />
-
-
-- Assigned
-- Verified
-- Closed
-- Reopened
-- still fails
-
-#### Resolutions From Open
-
-- Rejected
-- Deferred
-- Duplicate
-- Can't reproduce
-- Tracked
-- Outcome
-- Resolution
 
 ### Why Write Defect Reports?
 

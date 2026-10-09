@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHead from '../../components/PageHead.astro';
+import WatchOut from '../../components/WatchOut.astro';
 import { getChapters, getQuestions } from '../../lib/data';
 import { url, MAIN_SET, PRACTICE_SETS, QUESTIONS_PER_CHAPTER } from '../../lib/site';
 
@@ -16,8 +17,19 @@ export async function getStaticPaths() {
 const { entry, prev, next } = Astro.props;
 const { data } = entry;
 const { Content, headings } = await render(entry);
-const sections = headings.filter((h) => h.depth === 2);
+// Group topics (h3) under their section (h2) for the collapsible contents menu.
+type Group = { text: string; slug: string; topics: { text: string; slug: string }[] };
+const groups = headings.reduce<Group[]>((acc, h) => {
+  if (h.depth === 2) acc.push({ text: h.text, slug: h.slug, topics: [] });
+  else if (h.depth === 3) {
+    if (!acc.length) acc.push({ text: 'Introduction', slug: h.slug, topics: [] });
+    acc[acc.length - 1].topics.push({ text: h.text, slug: h.slug });
+  }
+  return acc;
+}, []);
 const practice = await Promise.all(PRACTICE_SETS.map(async (s) => ({ set: s, count: (await getQuestions(s, data.number)).length })));
+const mainCount = (await getQuestions(MAIN_SET, data.number)).length;
+const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.find((p) => p.set === set)?.count ?? 0);
 ---
 <BaseLayout title={`Chapter ${data.number}: ${data.title}`} description={data.summary}>
   <PageHead eyebrow={`Chapter ${data.number} · ${QUESTIONS_PER_CHAPTER[data.number]} questions in the exam`} title={data.title}>
@@ -26,11 +38,20 @@ const practice = await Promise.all(PRACTICE_SETS.map(async (s) => ({ set: s, cou
 
   <div class="container layout">
     <aside class="toc no-print" aria-label="In this chapter">
-      <div class="card">
-        <span class="eyebrow">In this chapter</span>
-        <ol>{sections.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+      <details class="card toc__panel" open data-toc>
+        <summary class="eyebrow">In this chapter</summary>
+        <ul class="toc__groups">
+          {groups.map((g) => (
+            <li>
+              <details>
+                <summary>{g.text}</summary>
+                <ul>{g.topics.map((t) => <li><a href={`#${t.slug}`}>{t.text}</a></li>)}</ul>
+              </details>
+            </li>
+          ))}
+        </ul>
         <a class="btn quiz-btn" href={url(`quiz/${data.number}/${MAIN_SET.toLowerCase()}`)}>Chapter quiz →</a>
-      </div>
+      </details>
     </aside>
 
     <article class="notes">
@@ -39,20 +60,31 @@ const practice = await Promise.all(PRACTICE_SETS.map(async (s) => ({ set: s, cou
         <ul>{data.objectives.map((o) => <li>{o}</li>)}</ul>
       </section>
 
+      <div class="section-controls no-print">
+        <button type="button" class="link" data-expand="open">Expand all sections</button>
+        <button type="button" class="link" data-expand="close">Collapse all</button>
+      </div>
       <div class="prose"><Content /></div>
 
+      <WatchOut chapter={data.number} />
+
       <section class="card card--dark finish no-print">
-        <h2>Finished the notes?</h2>
-        <p>Test yourself with the {QUESTIONS_PER_CHAPTER[data.number]} Chapter {data.number} questions from ISTQB Sample Exam C.</p>
+        <h2>Finished the notes? Test yourself.</h2>
+        <p>The <strong>chapter quiz</strong> uses the questions from <strong>ISTQB Sample Paper {MAIN_SET}</strong> that cover
+          Chapter {data.number}: {practiceCount(MAIN_SET)} question{practiceCount(MAIN_SET) === 1 ? '' : 's'}, the same number
+          the real exam asks on this chapter. Every answer is explained when you submit.</p>
         <div class="finish__actions">
           <button class="btn btn--ghost btn--light" type="button" data-mark-read={data.number}>Mark notes as read</button>
           <a class="btn" href={url(`quiz/${data.number}/${MAIN_SET.toLowerCase()}`)}>Take the chapter quiz</a>
         </div>
-        <p class="practice">More practice:
-          {practice.map(({ set, count }) => (
-            <a href={url(`quiz/${data.number}/${set.toLowerCase()}`)}>Sample Exam {set} ({count})</a>
-          ))}
-        </p>
+        <div class="practice">
+          <p>Want more practice? You can also answer the Chapter {data.number} questions from the other ISTQB sample papers:</p>
+          <ul>
+            {practice.map(({ set, count }) => (
+              <li><a href={url(`quiz/${data.number}/${set.toLowerCase()}`)}>Sample Paper {set} <span>{count} questions</span></a></li>
+            ))}
+          </ul>
+        </div>
       </section>
 
       <nav class="pager no-print" aria-label="Chapters">
@@ -65,6 +97,39 @@ const practice = await Promise.all(PRACTICE_SETS.map(async (s) => ({ set: s, cou
 
 <script>
   import { isChapterRead, markChapterRead } from '../../lib/progress';
+
+  // The contents panel starts open on desktop (sticky sidebar) and closed on phones (it sits above the notes).
+  const toc = document.querySelector<HTMLDetailsElement>('[data-toc]');
+  const narrow = window.matchMedia('(max-width: 56rem)');
+  const syncToc = () => { if (toc) toc.open = !narrow.matches; };
+  syncToc();
+  narrow.addEventListener('change', syncToc);
+
+  // Open the collapsed section that holds a linked topic, then jump to it.
+  function reveal(id: string) {
+    const target = document.getElementById(decodeURIComponent(id));
+    if (!target) return;
+    const section = target.closest<HTMLDetailsElement>('details.chapter-section');
+    if (section) section.open = true;
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  document.addEventListener('click', (e) => {
+    const link = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#"]');
+    if (!link) return;
+    e.preventDefault();
+    const id = link.hash.slice(1);
+    history.pushState(null, '', `#${id}`);
+    reveal(id);
+  });
+  if (location.hash) reveal(location.hash.slice(1));
+  window.addEventListener('hashchange', () => reveal(location.hash.slice(1)));
+
+  document.querySelectorAll<HTMLButtonElement>('[data-expand]').forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const open = btn.dataset.expand === 'open';
+      document.querySelectorAll<HTMLDetailsElement>('details.chapter-section').forEach((d) => (d.open = open));
+    }),
+  );
 
   const button = document.querySelector<HTMLButtonElement>('[data-mark-read]');
   if (button) {
@@ -79,32 +144,78 @@ const practice = await Promise.all(PRACTICE_SETS.map(async (s) => ({ set: s, cou
   .summary { max-width: 46rem; font-size: 1.1rem; color: var(--grey); margin: 1rem 0 0; }
   .layout { display: grid; grid-template-columns: 17rem 1fr; gap: 2rem; align-items: start; }
   .toc { position: sticky; top: 5.5rem; }
-  .toc ol { padding-left: 1.25rem; margin: 0.5rem 0 1rem; display: grid; gap: 0.4rem; font-size: 0.95rem; }
-  .toc a { color: var(--charcoal); text-decoration: none; }
-  .toc a:hover { color: var(--pink-dark); }
+  .toc__panel { max-height: calc(100vh - 7rem); overflow-y: auto; }
+  .toc__panel > summary.eyebrow { list-style: none; cursor: default; pointer-events: none; margin-bottom: 0.25rem; }
+  .toc__panel > summary::-webkit-details-marker { display: none; }
+  .toc__groups { list-style: none; padding: 0; margin: 0.5rem 0 1rem; display: grid; gap: 0.25rem; }
+  .toc__groups summary { cursor: pointer; font-weight: 700; font-size: 0.95rem; padding: 0.35rem 0.25rem; border-radius: 6px; list-style: none; display: flex; gap: 0.4rem; }
+  .toc__groups summary::-webkit-details-marker { display: none; }
+  .toc__groups summary::before { content: '▸'; color: var(--pink); transition: transform 0.15s; }
+  .toc__groups details[open] > summary::before { transform: rotate(90deg); }
+  .toc__groups summary:hover { background: var(--pink-tint); }
+  .toc details ul { list-style: none; margin: 0 0 0.5rem; padding: 0 0 0 1.1rem; border-left: 2px solid var(--pink-tint); display: grid; gap: 0.2rem; font-size: 0.875rem; }
+  .toc details a { color: var(--grey); text-decoration: none; display: block; padding: 0.15rem 0.4rem; border-radius: 6px; }
+  .toc details a:hover { color: var(--pink-dark); background: var(--bg); }
   .quiz-btn { width: 100%; }
-  .notes { display: grid; gap: 1.5rem; min-width: 0; }
+  .notes { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; min-width: 0; }
   .objectives { border-left: 8px solid var(--pink); }
   .objectives ul { margin: 0; padding-left: 1.25rem; }
 
   /* Notes generated from the slides */
-  .prose :global(h2) { margin: 2.5rem 0 1rem; padding: 0.75rem 1.25rem; background: var(--charcoal); color: #fff; border-radius: 12px; border-left: 8px solid var(--pink); }
+  .section-controls { display: flex; gap: 1rem; justify-content: flex-end; font-size: 0.9rem; }
+  .link { background: none; border: 0; color: var(--pink-dark); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0; }
+  .prose :global(details.chapter-section) { margin: 0 0 1rem; }
+  .prose :global(details.chapter-section > summary) { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.25rem; background: var(--charcoal); color: #fff; border-radius: 12px; border-left: 8px solid var(--pink); }
+  .prose :global(details.chapter-section > summary::-webkit-details-marker) { display: none; }
+  .prose :global(details.chapter-section > summary::after) { content: '+'; margin-left: auto; font: 700 1.6rem/1 var(--font-head); color: var(--pink-soft); }
+  .prose :global(details.chapter-section[open] > summary::after) { content: '−'; }
+  .prose :global(details.chapter-section > summary h2) { margin: 0; font-size: 1.4rem; color: #fff; }
+  .prose :global(details.chapter-section > summary:hover) { background: #3a3637; }
+  .prose :global(.chapter-section__body) { padding: 0.5rem 0.25rem 1rem; }
   .prose :global(h3) { margin: 2rem 0 0.5rem; }
   .prose :global(h4) { font: 700 0.8rem var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink); margin: 1rem 0 0.25rem; }
   .prose :global(ul) { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1rem 1.25rem 1rem 2.25rem; margin: 0.5rem 0; }
   .prose :global(li) { margin: 0.3rem 0; }
+
+  /* Key-point lists rendered as cards (see rehype-topic-cards.mjs) */
+  .prose :global(ul.cards) {
+    list-style: none; background: none; box-shadow: none; padding: 0; margin: 0.75rem 0;
+    display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  }
+  .prose :global(.card-item) {
+    margin: 0; display: flex; flex-direction: column; gap: 0.35rem;
+    background: var(--surface); border-radius: 12px; box-shadow: var(--shadow);
+    padding: 0.9rem 1rem 1rem; border-top: 4px solid var(--pink);
+  }
+  .prose :global(.card-item:nth-child(even)) { border-top-color: var(--charcoal); }
+  .prose :global(.card-item__title) { font: 700 1.05rem/1.3 var(--font-head); color: var(--charcoal); }
+  .prose :global(.card-item__body) { font-size: 0.95rem; color: var(--grey); line-height: 1.5; }
   .prose :global(li)::marker { color: var(--pink); }
-  .prose :global(table) { background: var(--surface); }
+  .prose :global(table) { background: var(--surface); display: block; overflow-x: auto; }
 
   .finish p { color: #ddd; }
   .finish__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
   .btn--light { color: #fff; border-color: #fff; }
   .btn--light:hover { background: #fff; color: var(--charcoal); }
-  .practice { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.95rem; }
-  .practice a { color: var(--pink-soft); font-weight: 700; }
+  .practice { border-top: 1px solid #555; padding-top: 1rem; }
+  .practice p { margin: 0 0 0.5rem; }
+  .practice ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .practice a { display: inline-flex; gap: 0.5rem; align-items: center; padding: 0.45rem 0.9rem; border: 2px solid #666; border-radius: 999px; color: #fff; font-weight: 700; text-decoration: none; }
+  .practice a:hover { border-color: var(--pink); background: var(--pink); }
+  .practice a span { font-weight: 600; color: var(--pink-soft); font-size: 0.85rem; }
+  .practice a:hover span { color: #fff; }
   .pager { display: flex; justify-content: space-between; gap: 1rem; font-weight: 700; }
   @media (max-width: 56rem) {
-    .layout { grid-template-columns: 1fr; }
+    .layout { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
     .toc { position: static; }
+    .toc__panel { max-height: none; }
+    .toc__panel > summary.eyebrow { pointer-events: auto; cursor: pointer; display: flex; justify-content: space-between; font-size: 0.9rem; }
+    .toc__panel > summary.eyebrow::after { content: '+'; font: 700 1.3rem/1 var(--font-head); }
+    .toc__panel[open] > summary.eyebrow::after { content: '−'; }
+    .section-controls { justify-content: flex-start; }
+    .prose :global(details.chapter-section > summary) { padding: 0.75rem 1rem; }
+    .prose :global(details.chapter-section > summary h2) { font-size: 1.15rem; }
+    .prose :global(.table-wrap), .prose :global(table) { display: block; overflow-x: auto; }
+    .pager { flex-direction: column; }
   }
 </style>

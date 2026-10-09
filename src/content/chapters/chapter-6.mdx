@@ -9,10 +9,11 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Compare from '../../components/diagrams/Compare.astro';
+import Tiles from '../../components/diagrams/Tiles.astro';
 import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 
 ## 6.1 Tool Support for Testing
-
 
 ### Recap - The Test Pyramid
 
@@ -20,12 +21,6 @@ import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 
 <TestPyramid />
 
-
-- Acceptance
-- System integration
-- System
-- Component integration
-- Component (unit)
 - **Higher levels** - Automated, manual - or both
 - **Lower levels** - Component and component integration tests are usually automated
 
@@ -44,6 +39,11 @@ import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 
 <SyllabusRef ref="6.1" />
 
+<Tiles cols={4} caption="Categories of test tools (CTFL 6.1)" tiles={[
+  { title: 'Management', sub: 'tests, defects, requirements' }, { title: 'Static testing', sub: 'reviews, static analysis' }, { title: 'Test design', sub: 'cases, data, procedures' }, { title: 'Execution & coverage', sub: 'run tests, measure coverage' },
+  { title: 'Non-functional', sub: 'performance, security' }, { title: 'DevOps', sub: 'pipelines, CI/CD' }, { title: 'Collaboration', sub: 'communication' }, { title: 'Scalability', sub: 'VMs, containers' },
+]} />
+
 - **Management tools** - Manage the SDLC, requirements, tests, defects and configuration - for efficiency
 - **Static testing tools** - Support reviews and static analysis
 - **Test design & implementation** - Generate test cases, test data and test procedures
@@ -60,7 +60,6 @@ import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 - **Anything else that helps** - e.g. a spreadsheet is a test tool in the context of testing
 
 ## 6.2 Benefits and Risks of Test Automation
-
 
 ### A Tool is Not a Guarantee
 
@@ -80,6 +79,11 @@ Simply acquiring a tool does not guarantee success. Each new tool will require e
 ### Benefits of Test Automation
 
 <SyllabusRef ref="6.2" />
+
+<Compare middle="vs" caption="Test automation: weigh the benefits against the risks (CTFL 6.2)" columns={[
+  { title: 'Benefits', points: ['Less repetitive manual work', 'Consistency - fewer human errors', 'Objective measures such as coverage', 'Faster feedback and execution'] },
+  { title: 'Risks', points: ['Unrealistic expectations', 'Under-estimated effort', 'Over-reliance on the tool', 'Vendor or open-source dependency'] },
+]} />
 
 - **Less repetitive work** - Regression tests, re-entering data, comparing results, checking coding standards
 - **Fewer human errors** - Consistent, repeatable - tests derived, data created and runs ordered the same way every time

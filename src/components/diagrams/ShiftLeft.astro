@@ -1,0 +1,19 @@
+---
+/** Shift-left: moving testing earlier in the lifecycle. */
+import Figure from '../Figure.astro';
+const ph = ['Requirements', 'Design', 'Code', 'Integrate', 'System test', 'Release'];
+---
+<Figure caption="Shift-left - start testing earlier, without neglecting testing later on (CTFL 2.1.5)">
+  <svg viewBox="0 0 820 200" role="img" aria-label="Testing moves earlier in the lifecycle">
+    <defs><marker id="sl-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e33661"/></marker></defs>
+    {ph.map((p, i) => (
+      <g>
+        <rect class={i < 3 ? 'b-pink' : 'b-light'} x={10 + i * 135} y="90" width="125" height="46" rx="10"/>
+        <text class={i < 3 ? 't' : 't-dark'} x={72 + i * 135} y="113">{p}</text>
+      </g>
+    ))}
+    <line class="ln-pink" x1="740" y1="50" x2="90" y2="50" marker-end="url(#sl-a)" stroke-width="4"/>
+    <text class="t-lbl" x="415" y="34" style="font-size:14px">TRADITIONAL TESTING → SHIFT-LEFT TESTING</text>
+    <text class="t-sm" x="410" y="172">Reviews, static analysis, test-first and early non-functional checks catch defects when they are cheapest to fix</text>
+  </svg>
+</Figure>

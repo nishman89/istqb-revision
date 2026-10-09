@@ -1,0 +1,24 @@
+---
+/** Real-world consequences of software failure (photos from the Sparta course slides). */
+import { url } from '../../lib/site';
+---
+<figure class="diagram photos">
+  <div class="photos__grid">
+    <figure>
+      <img src={url('images/post-office-horizon.jpg')} alt="Sub-postmasters campaigning for justice in the Post Office Horizon scandal" loading="lazy" />
+      <figcaption><strong>Post Office Horizon</strong> - accounting software faults led to hundreds of sub-postmasters being wrongly accused of theft.</figcaption>
+    </figure>
+    <figure>
+      <img src={url('images/boeing-737-max.jpg')} alt="A Boeing 737 MAX aircraft in flight" loading="lazy" />
+      <figcaption><strong>Boeing 737 MAX</strong> - a failure in the MCAS flight-control software contributed to two fatal crashes.</figcaption>
+    </figure>
+  </div>
+  <figcaption>When software fails, the cost can be money, reputation - and lives (CTFL 1.1)</figcaption>
+</figure>
+
+<style>
+  .photos__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
+  .photos__grid figure { margin: 0; }
+  .photos__grid img { width: 100%; height: 14rem; object-fit: cover; border-radius: 10px; display: block; }
+  .photos__grid figcaption { font-size: 0.9rem; margin-top: 0.5rem; color: var(--charcoal); text-align: left; }
+</style>

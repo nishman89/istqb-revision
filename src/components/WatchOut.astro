@@ -1,0 +1,33 @@
+---
+import { TRAPS } from '../data/traps';
+
+/** "Watch out for" box: the common exam traps for one chapter. */
+interface Props { chapter: number; }
+const traps = TRAPS[Astro.props.chapter] ?? [];
+---
+{traps.length > 0 && (
+  <section class="watch card" aria-labelledby={`watch-${Astro.props.chapter}`}>
+    <span class="eyebrow">Exam tips</span>
+    <h2 id={`watch-${Astro.props.chapter}`}>Watch out for…</h2>
+    <p class="muted">The confusions the ISTQB sample papers deliberately test in this chapter.</p>
+    <ul>
+      {traps.map((t) => (
+        <li>
+          <p class="watch__trap"><span aria-hidden="true">✗</span> {t.trap}</p>
+          <p class="watch__truth"><span aria-hidden="true">✓</span> {t.truth}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .watch { border-left: 8px solid var(--pink); }
+  .watch h2 { margin: 0.25rem 0; }
+  .watch ul { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.75rem; }
+  .watch li { display: grid; gap: 0.25rem; padding: 0.75rem 1rem; background: var(--bg); border-radius: 10px; }
+  .watch p { margin: 0; }
+  .watch__trap { font-weight: 700; color: var(--pink-dark); text-decoration: line-through; text-decoration-color: rgb(227 54 97 / 0.5); }
+  .watch__trap span, .watch__truth span { display: inline-block; width: 1.25rem; text-decoration: none; }
+  .watch__truth span { color: var(--success); font-weight: 700; }
+</style>

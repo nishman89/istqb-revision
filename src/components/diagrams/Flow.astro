@@ -1,0 +1,39 @@
+---
+/** A left-to-right process of steps, optionally with a loop back to the start. */
+import Figure from '../Figure.astro';
+import { wrap, fills } from '../../lib/svg';
+
+interface Step { title: string; sub?: string; }
+interface Props { steps: Step[]; caption: string; loop?: string; }
+const { steps, caption, loop } = Astro.props;
+const n = steps.length, gap = 28, w = (800 - gap * (n - 1)) / n, h = 120, top = 20;
+const id = `fl-${caption.length}-${n}`;
+const size = w < 130 ? 13 : 15;            // smaller text when there are many steps
+const perChar = size * 0.62;
+---
+<Figure caption={caption}>
+  <svg viewBox={`0 0 820 ${loop ? 210 : 160}`} role="img" aria-label={steps.map((s) => s.title).join(', then ')}>
+    <defs><marker id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6b6b6b"/></marker></defs>
+    {steps.map((s, i) => {
+      const x = 10 + i * (w + gap), cx = x + w / 2;
+      const title = wrap(s.title, Math.floor((w - 12) / perChar));
+      const sub = s.sub ? wrap(s.sub, Math.floor((w - 12) / (perChar * 0.85))) : [];
+      const lines = title.length + sub.length;
+      const y0 = top + h / 2 - ((lines - 1) * 18) / 2;
+      return (
+        <g>
+          <rect class={fills[i % 2]} x={x} y={top} width={w} height={h} rx="12"/>
+          {title.map((t, j) => <text class="t" x={cx} y={y0 + j * 18} style={`font-size:${size}px`}>{t}</text>)}
+          {sub.map((t, j) => <text class="t-sm-w" x={cx} y={y0 + (title.length + j) * 18 + 2} style={`font-size:${size - 2}px`}>{t}</text>)}
+          {i < n - 1 && <line class="ln" x1={x + w + 3} y1={top + h / 2} x2={x + w + gap - 3} y2={top + h / 2} marker-end={`url(#${id})`}/>}
+        </g>
+      );
+    })}
+    {loop && (
+      <g>
+        <path class="ln-dash" d={`M${10 + (n - 1) * (w + gap) + w / 2} ${top + h + 4} V${top + h + 40} H${10 + w / 2} V${top + h + 10}`} marker-end={`url(#${id})`}/>
+        <text class="t-lbl" x="410" y={top + h + 62}>{loop}</text>
+      </g>
+    )}
+  </svg>
+</Figure>

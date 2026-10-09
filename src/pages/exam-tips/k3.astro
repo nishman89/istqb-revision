@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHead from '../../components/PageHead.astro';
+import Quiz from '../../components/Quiz.astro';
+import { url } from '../../lib/site';
+import { K3_TOPICS } from '../../lib/k3';
+
+// All K3 questions from the four papers, grouped by skill (learning objective), then by paper.
+const exams = await getCollection('exams');
+const order = K3_TOPICS.map((t) => t.lo);
+const questions = exams
+  .flatMap((e) => e.data.questions)
+  .filter((q) => q.k === 'K3')
+  .sort((a, b) => order.indexOf(a.lo) - order.indexOf(b.lo) || a.exam.localeCompare(b.exam));
+---
+<BaseLayout title="Practise the 8 calculations" description="All K3 questions from the ISTQB CTFL v4.0 sample papers, grouped by skill.">
+  <PageHead eyebrow="Exam tips" title="Practise the 8 calculations">
+    <p class="back no-print"><a href={url('exam-tips')}>← Back to exam tips</a></p>
+  </PageHead>
+  <div class="container">
+    <p class="card card--tint explain">
+      All {questions.length} K3 ("apply") questions from ISTQB Sample Papers A-D, grouped by skill:
+      {K3_TOPICS.map((t) => t.title).join(', ')}. Each skill appears once in every paper, so there are four questions on each.
+    </p>
+    <Quiz questions={questions} quizId="k3-practice" />
+  </div>
+</BaseLayout>
+
+<style>
+  .back { margin: 1rem 0 0; font-weight: 700; }
+  .explain { margin: 0 0 1.25rem; }
+</style>

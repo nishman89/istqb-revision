@@ -1,0 +1,72 @@
+---
+/**
+ * A practice question inside the notes: clearly marked as a question, with the answer
+ * hidden in a collapsible panel. Put the answer in a child element with slot="answer".
+ *
+ *   <Exercise title="UV index" options={['1, 2, 5', '3, 6, 7']}>
+ *     Question text (Markdown works here)
+ *     <div slot="answer">Answer text</div>
+ *   </Exercise>
+ */
+interface Props {
+  title: string;
+  /** "exercise" has a right answer; "discuss" is an open question with a suggested answer. */
+  kind?: 'exercise' | 'discuss';
+  /** Optional multiple-choice options, shown as a), b), c)… */
+  options?: string[];
+}
+const { title, kind = 'exercise', options } = Astro.props;
+const label = kind === 'discuss' ? 'Discuss' : 'Exercise';
+const reveal = kind === 'discuss' ? 'Show suggested answer' : 'Show answer';
+---
+<aside class:list={['exercise', `exercise--${kind}`]} aria-label={`${label}: ${title}`}>
+  <header class="exercise__head">
+    <span class="exercise__badge">{kind === 'discuss' ? '💬' : '?'} {label}</span>
+    <span class="exercise__title">{title}</span>
+  </header>
+  <div class="exercise__body">
+    <slot />
+    {options && (
+      <ol class="exercise__options">
+        {options.map((o, i) => <li><span class="exercise__key">{String.fromCharCode(97 + i)}</span><span>{o}</span></li>)}
+      </ol>
+    )}
+  </div>
+  {Astro.slots.has('answer') && (
+    <details class="exercise__answer">
+      <summary>{reveal}</summary>
+      <div class="exercise__answer-body"><slot name="answer" /></div>
+    </details>
+  )}
+</aside>
+
+<style>
+  .exercise { margin: 1rem 0 1.25rem; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); border: 2px solid var(--pink); overflow: hidden; }
+  .exercise--discuss { border-color: var(--charcoal); }
+  .exercise__head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem; background: var(--pink-tint); }
+  .exercise--discuss .exercise__head { background: var(--bg); }
+  .exercise__badge { background: var(--pink); color: #fff; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.7rem; border-radius: 999px; }
+  .exercise--discuss .exercise__badge { background: var(--charcoal); }
+  .exercise__title { font: 700 1.1rem var(--font-head); }
+  .exercise__body { padding: 1rem 1.25rem 0.5rem; }
+  .exercise__body :global(p) { margin: 0 0 0.75rem; }
+  /* Lists inside an exercise are plain - not the card style used elsewhere in the notes */
+  .exercise :global(ul), .exercise :global(ul.cards) { display: block; background: none; box-shadow: none; padding: 0 0 0 1.25rem; margin: 0 0 0.75rem; }
+  .exercise :global(.card-item) { display: list-item; background: none; box-shadow: none; border: 0; padding: 0; margin: 0.25rem 0; }
+  .exercise :global(.card-item__title) { font: 700 1rem var(--font-body); }
+  .exercise :global(.card-item__title)::after { content: ' - '; font-weight: 400; }
+  .exercise :global(.card-item__body) { display: inline; font-size: 1rem; color: inherit; }
+  .exercise__options { list-style: none; padding: 0; margin: 0.25rem 0 0.75rem; display: grid; gap: 0.5rem; }
+  .exercise__options li { display: flex; gap: 0.75rem; align-items: center; padding: 0.55rem 0.85rem; border: 2px solid var(--line); border-radius: 10px; }
+  .exercise__key { display: grid; place-items: center; flex: none; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--charcoal); color: #fff; font-weight: 700; }
+  .exercise__answer { border-top: 1px solid var(--line); }
+  .exercise__answer > summary { cursor: pointer; list-style: none; padding: 0.8rem 1.25rem; font-weight: 700; color: var(--pink-dark); display: flex; gap: 0.5rem; align-items: center; }
+  .exercise__answer > summary::-webkit-details-marker { display: none; }
+  .exercise__answer > summary::before { content: '▸'; transition: transform 0.15s; }
+  .exercise__answer[open] > summary::before { transform: rotate(90deg); }
+  .exercise__answer > summary:hover { background: var(--pink-tint); }
+  .exercise__answer-body { padding: 0.25rem 1.25rem 1rem; border-left: 4px solid var(--success); margin: 0 1.25rem 1.25rem; background: var(--success-tint); border-radius: 0 10px 10px 0; padding-top: 0.75rem; }
+  .exercise__answer-body :global(p) { margin: 0 0 0.6rem; }
+  .exercise__answer-body :global(.diagram) { box-shadow: none; }
+  .exercise__answer-body :global(table) { background: var(--surface); }
+</style>

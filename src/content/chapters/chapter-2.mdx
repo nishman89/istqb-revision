@@ -12,6 +12,11 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Flow from '../../components/diagrams/Flow.astro';
+import Ripple from '../../components/diagrams/Ripple.astro';
+import SdlcModels from '../../components/diagrams/SdlcModels.astro';
+import ShiftLeft from '../../components/diagrams/ShiftLeft.astro';
+import Tiles from '../../components/diagrams/Tiles.astro';
 import DevOpsPipeline from '../../components/diagrams/DevOpsPipeline.astro';
 import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 import VModel from '../../components/diagrams/VModel.astro';
@@ -19,10 +24,11 @@ import Waterfall from '../../components/diagrams/Waterfall.astro';
 
 ## 2.1 Testing in the Context of an SDLC
 
-
 ### SDLC Models
 
 <SyllabusRef ref="2.1" />
+
+<SdlcModels />
 
 - **An SDLC model** is an abstract, high-level representation of the software development process - how its phases and activities relate, logically and chronologically.
 - **Sequential** - e.g. Waterfall, V-model
@@ -64,16 +70,8 @@ Some activities within software development processes can also be described by m
 
 <Waterfall />
 
-
-- System requirements
-- Software requirements
-- Analysis
-- Program design
-- Coding
-- Testing
-- Operations
-- **Enforces discipline at each stage** - Defined start and end · Progress is easy to identify · Requirements before code - less wasted time, better quality
-- **Everything is delivered at the end - maybe years later** - Customers don't always know what they want until they see it · Requirements change with business & technology · Time and cost are hard to estimate · What is requested can't always be built as wanted
+- **Pros** - Enforces discipline at each stage · Defined start and end · Progress is easy to identify · Requirements before code - less wasted time, better quality
+- **Cons** - Everything is delivered at the end - maybe years later · Customers don't always know what they want until they see it · Requirements change with business & technology · Time and cost are hard to estimate · What is requested can't always be built as wanted
 
 ### The V-Model
 
@@ -81,25 +79,8 @@ Some activities within software development processes can also be described by m
 
 <VModel />
 
-
-- Requirement specification
-- Acceptance testing
-- test planning
-- Functional specification
-- System testing
-- Technical specification
-- Integration testing
-- Program specification
-- Unit testing
-- Coding
-
-#### Verification
-
-
-#### Validation
-
-- **Test plans developed earlier - higher chance of success** - Defects found earlier · Works well on smaller projects
-- **Quite rigid in execution** - No early prototype · Test documents must be updated along the way
+- **Pros** - Test plans developed earlier, so a higher chance of success · Defects found earlier · Works well on smaller projects
+- **Cons** - Quite rigid in execution · No early prototype · Test documents must be updated along the way
 
 ### Unified Process
 
@@ -208,6 +189,12 @@ TDD, ATDD and BDD are similar development approaches, where tests are defined as
 
 <SyllabusRef ref="2.1.3" />
 
+<Tiles cols={3} caption="Three test-first approaches - tests are written before the code they test (CTFL 2.1.3)" tiles={[
+  { label: 'TDD', title: 'Test-Driven Development', sub: 'red → green → refactor' },
+  { label: 'ATDD', title: 'Acceptance Test-Driven Dev.', sub: 'tests from acceptance criteria' },
+  { label: 'BDD', title: 'Behaviour-Driven Development', sub: 'Given / When / Then' },
+]} />
+
 - **Test-Driven Development** - Directs coding through test cases (instead of extensive design) · Write a test → write code to pass it → refactor
 - **Acceptance Test-Driven Dev.** - Derives tests from acceptance criteria as part of system design · Tests written before that part of the application is built
 - **Behaviour-Driven Development** - Expresses desired behaviour as test cases · Usually in Gherkin: Given / When / Then
@@ -222,7 +209,7 @@ TDD, ATDD and BDD are similar development approaches, where tests are defined as
 - Common goals, equal value - a cultural shift
 - Build, test and release high-quality code faster through a delivery pipeline
 
-#### Devops Promotes
+#### DevOps promotes
 
 - Team autonomy
 - Fast feedback
@@ -241,17 +228,9 @@ DevOps is an organizational approach aiming to create synergy by getting develop
 
 <DevOpsPipeline />
 
-
-- Code repository
-- CI/CD server
-- monitors changes
-- Write code and automated tests
 - **Development** - CI server deploys and runs tests
 - **Pre-production** - Mirrors production as closely as possible
 - **Production** - Live - no tests
-- Continuous integration
-- Continuous delivery
-- Continuous deployment
 - Continuous delivery is automated up to production; continuous deployment releases to production automatically too.
 
 ### DevOps Benefits for Testing
@@ -290,12 +269,8 @@ DevOps is not without its risks and challenges, which include: the DevOps delive
 
 <SyllabusRef ref="2.1.5" />
 
-- Requirements
-- Design
-- Integrate
-- System
-- Release
-- Testing starts earlier
+<ShiftLeft />
+
 - **Early testing** - Don't wait for code to be written or components to be integrated
 - **Later testing still matters** - Shift-left doesn't mean neglecting testing later on
 - **Invest now, save later** - More training, effort or cost early - less later
@@ -324,6 +299,10 @@ For the shift-left approach it is important that stakeholders are convinced and 
 ### Retrospectives
 
 <SyllabusRef ref="2.1.6" />
+
+<Flow loop="REPEAT EVERY ITERATION" caption="A retrospective turns each iteration's lessons into improvements (CTFL 2.1.6)" steps={[
+  { title: 'What went well?', sub: 'keep doing it' }, { title: "What didn't?", sub: 'what to improve' }, { title: 'Agree actions', sub: 'record them' }, { title: 'Follow up', sub: 'next iteration' },
+]} />
 
 - The whole team asks:
 - **What was successful?** - …and should be retained
@@ -361,7 +340,6 @@ Typical benefits for testing include: increased test effectiveness / efficiency 
 
 ## 2.2 Test Levels and Test Types
 
-
 ### Test Levels vs Test Types
 
 <SyllabusRef ref="2.2" />
@@ -383,19 +361,11 @@ Test types are groups of test activities related to specific quality characteris
 
 <TestPyramid />
 
-
-- Acceptance
-- Does it satisfy user needs?
-- System integration
 - Does it integrate with the third-party payment system?
-- System
-- Does the entire store work?
-- Component integration
 - Do the basket, catalogue and checkout modules work together?
-- Component (unit)
 - Do the methods calculating totals and shipping work?
 
-#### E-Commerce Example
+#### E-commerce example
 
 - Fewer, bigger, slower tests at the top - many small, fast tests at the base
 
@@ -413,12 +383,6 @@ Test types are groups of test activities related to specific quality characteris
 - Program specification
 - Unit testing
 - Coding
-
-#### Verification
-
-
-#### Validation
-
 
 ### Component Testing
 
@@ -491,6 +455,11 @@ Test levels are distinguished by the following non-exhaustive list of attributes
 
 <SyllabusRef ref="2.2.2" />
 
+<Tiles cols={2} caption="The four test types - all can be used at every test level (CTFL 2.2.2)" tiles={[
+  { title: 'Functional', sub: 'WHAT the system does' }, { title: 'Non-functional', sub: 'HOW WELL it behaves' },
+  { title: 'White-box', sub: 'based on internal structure' }, { title: 'Black-box', sub: 'based on the specification' },
+]} />
+
 - **Functional** - WHAT the system does
 - **Non-functional** - HOW WELL it behaves
 - **Black-box** - Based on the specification
@@ -552,7 +521,7 @@ It is sometimes appropriate for non-functional testing to start early in the lif
 
 - **Confirmation testing** confirms that an original defect has been successfully fixed.
 
-#### Depending On Risk, You Might…
+#### Depending on risk, you might…
 
 - **Re-run failed tests** - Execute all test cases that previously failed due to the defect
 - **Add new tests** - Cover any changes that were needed to fix the defect
@@ -570,8 +539,8 @@ Confirmation testing confirms that an original defect has been successfully fixe
 
 <SyllabusRef ref="2.2.3" />
 
-- Connected systems
-- Environment
+<Ripple />
+
 - **Other components** - Changed component
 - **Regression testing** confirms a change - even a confirmed fix - hasn't caused adverse consequences.
 - **Start with impact analysis** - It shows which parts of the software could be affected - so you can optimise the extent of regression testing. Effects can spread to the same component, other components, connected systems and the environment.
@@ -600,7 +569,6 @@ Confirmation testing and/or regression testing for the test object are needed on
 </SyllabusText>
 
 ## 2.3 Maintenance Testing
-
 
 ### Maintenance Testing
 
@@ -633,6 +601,11 @@ Testing the changes to a system in production includes both evaluating the succe
 ### Triggers for Maintenance
 
 <SyllabusRef ref="2.3" />
+
+<Tiles cols={3} caption="What triggers maintenance testing (CTFL 2.3)" tiles={[
+  { title: 'Modifications', sub: 'enhancements, fixes, hot fixes' }, { title: 'Upgrades & migrations', sub: 'new platforms, data conversion' },
+  { title: 'Retirement', sub: 'archiving, restore and retrieval' },
+]} />
 
 - **Modifications** - Planned enhancements (release-based) · Corrective changes · Hot fixes
 - **Upgrades & migrations** - e.g. moving from one platform to another · Test the new environment and the changed software · Test data conversion when data is migrated in

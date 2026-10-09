@@ -1,0 +1,19 @@
+---
+/** Traceability links across the test process. */
+import Figure from '../Figure.astro';
+import Icon from '../Icon.astro';
+const items = [['Test basis', 'fileLines', 'b-dark'], ['Test conditions & cases', 'listCheck', 'b-pink'], ['Test results', 'clipboardCheck', 'b-pink'], ['Defects', 'bug', 'b-dark']] as const;
+---
+<Figure caption="Traceability links each test basis item to its testware, results and defects - so you can measure coverage and see the impact of change (CTFL 1.4.4)">
+  <svg viewBox="0 0 820 170" role="img" aria-label="Traceability chain">
+    <defs><marker id="tr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6b6b6b"/></marker></defs>
+    {items.map(([t, ic, b], i) => (
+      <g>
+        <rect class={b} x={10 + i * 205} y="20" width="180" height="120" rx="14"/>
+        <Icon name={ic} size={38} x={81 + i * 205} y={36} fill="#fff"/>
+        <text class="t" x={100 + i * 205} y="106" style="font-size:14.5px">{t}</text>
+        {i < 3 && <line class="ln" x1={194 + i * 205} y1="80" x2={211 + i * 205} y2="80" marker-start="url(#tr-a)" marker-end="url(#tr-a)"/>}
+      </g>
+    ))}
+  </svg>
+</Figure>

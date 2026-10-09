@@ -9,6 +9,12 @@ const chapters = [
   [5, 'Managing the Test Activities'],
   [6, 'Test Tools'],
 ] as const;
+const links = [
+  ['', 'Home'],
+  ['introduction', 'Introduction'],
+  ['past-papers', 'Past papers'],
+  ['exam-tips', 'Exam tips'],
+] as const;
 const path = Astro.url.pathname;
 const isActive = (href: string) => (href === url() ? path === href : path.startsWith(href));
 ---
@@ -18,25 +24,50 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
       <img src={url('sparta-logo.png')} alt="Sparta Global" width="120" height="47" />
       <span class="brand__label">ISTQB CTFL</span>
     </a>
-    <nav aria-label="Main">
+
+    <!-- Desktop navigation -->
+    <nav class="nav-desktop" aria-label="Main">
       <ul>
-        <li><a href={url()} aria-current={isActive(url()) ? 'page' : undefined}>Home</a></li>
-        <li><a href={url('introduction')} aria-current={isActive(url('introduction')) ? 'page' : undefined}>Introduction</a></li>
-        <li><a href={url('past-papers')} aria-current={isActive(url('past-papers')) ? 'page' : undefined}>Past papers</a></li>
+        {links.map(([href, label]) => (
+          <li><a href={url(href)} aria-current={isActive(url(href)) ? 'page' : undefined}>{label}</a></li>
+        ))}
         <li class="has-menu">
           <details>
             <summary>Chapters</summary>
             <ul class="menu">
-              {chapters.map(([n, title]) => (
-                <li><a href={url(`chapters/${n}`)}><span>{n}</span>{title}</a></li>
-              ))}
+              {chapters.map(([n, title]) => <li><a href={url(`chapters/${n}`)}><span>{n}</span>{title}</a></li>)}
             </ul>
           </details>
         </li>
       </ul>
     </nav>
+
+    <!-- Mobile navigation: one "Menu" button that opens a full-width panel -->
+    <details class="nav-mobile">
+      <summary aria-label="Open menu"><span class="burger" aria-hidden="true"></span>Menu</summary>
+      <nav aria-label="Main (mobile)">
+        <ul>
+          {links.map(([href, label]) => (
+            <li><a href={url(href)} aria-current={isActive(url(href)) ? 'page' : undefined}>{label}</a></li>
+          ))}
+        </ul>
+        <span class="eyebrow">Chapters</span>
+        <ul class="chapters">
+          {chapters.map(([n, title]) => <li><a href={url(`chapters/${n}`)}><span>{n}</span>{title}</a></li>)}
+        </ul>
+      </nav>
+    </details>
   </div>
 </header>
+
+<script>
+  // Close any open menu when clicking elsewhere, or when a link inside it is followed.
+  document.addEventListener('click', (e) => {
+    for (const menu of document.querySelectorAll<HTMLDetailsElement>('.site-header details[open]')) {
+      if (!menu.contains(e.target as Node) || (e.target as Element).closest('a')) menu.open = false;
+    }
+  });
+</script>
 
 <style>
   .site-header { background: var(--surface); border-bottom: 4px solid var(--pink); position: sticky; top: 0; z-index: 10; }
@@ -44,19 +75,42 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
   .brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
   .brand img { width: 110px; height: auto; display: block; }
   .brand__label { font: 700 0.85rem var(--font-body); letter-spacing: 0.08em; color: var(--charcoal); border-left: 2px solid var(--line); padding-left: 0.75rem; }
-  nav > ul { display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0; align-items: center; }
+
+  nav ul { list-style: none; margin: 0; padding: 0; }
   nav a, summary { display: block; padding: 0.5rem 0.85rem; border-radius: 999px; color: var(--charcoal); font-weight: 700; text-decoration: none; cursor: pointer; }
   nav a:hover, summary:hover { background: var(--pink-tint); color: var(--pink-dark); }
   nav a[aria-current='page'] { background: var(--charcoal); color: #fff; }
   summary { list-style: none; }
   summary::-webkit-details-marker { display: none; }
-  summary::after { content: ' ▾'; color: var(--pink); }
+
+  .nav-desktop > ul { display: flex; gap: 0.25rem; align-items: center; }
+  .nav-desktop summary::after { content: ' ▾'; color: var(--pink); }
   .has-menu { position: relative; }
-  .menu { position: absolute; right: 0; top: calc(100% + 0.5rem); background: var(--surface); list-style: none; margin: 0; padding: 0.5rem; border-radius: 12px; box-shadow: var(--shadow); min-width: 19rem; }
-  .menu a { display: flex; gap: 0.75rem; border-radius: 8px; font-weight: 600; }
-  .menu span { color: var(--pink); font-weight: 700; }
-  @media (max-width: 40rem) {
+  .menu { position: absolute; right: 0; top: calc(100% + 0.5rem); background: var(--surface); padding: 0.5rem; border-radius: 12px; box-shadow: var(--shadow); min-width: 19rem; }
+  .menu a, .chapters a { display: flex; gap: 0.75rem; border-radius: 8px; font-weight: 600; }
+  .menu span, .chapters span { color: var(--pink); font-weight: 700; }
+
+  .nav-mobile { display: none; }
+  .nav-mobile summary { display: flex; align-items: center; gap: 0.5rem; border: 2px solid var(--charcoal); padding: 0.4rem 0.9rem; }
+  .burger, .burger::before, .burger::after { display: block; width: 18px; height: 2px; background: var(--charcoal); position: relative; }
+  .burger::before, .burger::after { content: ''; position: absolute; }
+  .burger::before { top: -6px; }
+  .burger::after { top: 6px; }
+  .nav-mobile[open] summary { background: var(--charcoal); color: #fff; }
+  .nav-mobile[open] .burger, .nav-mobile[open] .burger::before, .nav-mobile[open] .burger::after { background: #fff; }
+  .nav-mobile nav {
+    position: absolute; left: 0; right: 0; top: 100%; background: var(--surface);
+    border-bottom: 4px solid var(--pink); box-shadow: 0 12px 24px rgb(0 0 0 / 0.12);
+    padding: 0.75rem 1rem 1rem; max-height: calc(100vh - 5rem); overflow-y: auto;
+  }
+  .nav-mobile nav > ul { display: grid; gap: 0.25rem; margin-bottom: 0.75rem; }
+  .nav-mobile nav a { border-radius: 10px; padding: 0.7rem 0.85rem; }
+  .nav-mobile .eyebrow { padding: 0 0.85rem; }
+  .nav-mobile .chapters { display: grid; gap: 0.1rem; margin-top: 0.25rem; }
+
+  @media (max-width: 60rem) {
+    .nav-desktop { display: none; }
+    .nav-mobile { display: block; }
     .brand__label { display: none; }
-    nav a, summary { padding: 0.4rem 0.6rem; }
   }
 </style>

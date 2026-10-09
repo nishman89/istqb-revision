@@ -1,0 +1,159 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHead from '../../components/PageHead.astro';
+import { url } from '../../lib/site';
+import { K3_TOPICS } from '../../lib/k3';
+
+// Everything below is calculated from the four ISTQB sample papers at build time.
+const exams = await getCollection('exams');
+const qs = exams.flatMap((e) => e.data.questions);
+const total = qs.length;
+const pct = (n: number) => Math.round((n / total) * 100);
+const stemText = (q: (typeof qs)[number]) => q.blocks.map((b) => ('text' in b ? b.text : '')).join(' ');
+
+const kCount = (k: string) => qs.filter((q) => q.k === k).length;
+const keywords = ['BEST', 'MOST', 'NOT', 'CORRECT', 'LEAST'].map((w) => ({
+  word: w,
+  n: qs.filter((q) => new RegExp(`\\b${w}\\b`).test(stemText(q))).length,
+}));
+const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b${word}\\b`).test(stemText(q)))).length;
+const single = qs.filter((q) => q.select === 1);
+const longestRight = single.filter((q) => q.answer.includes([...q.options].sort((a, b) => b.text.length - a.text.length)[0].key)).length;
+const letters = ['a', 'b', 'c', 'd'].map((l) => ({ l, n: single.filter((q) => q.answer[0] === l).length }));
+const absolute = /\b(always|never|all|only|guarantees?|every|fully)\b/i;
+const opts = qs.flatMap((q) => q.options.map((o) => ({ right: q.answer.includes(o.key), abs: absolute.test(o.text) })));
+const absRight = Math.round((opts.filter((o) => o.right && o.abs).length / opts.filter((o) => o.right).length) * 100);
+const absWrong = Math.round((opts.filter((o) => !o.right && o.abs).length / opts.filter((o) => !o.right).length) * 100);
+const perPaper = (n: number) => Math.round((n / exams.length) * 10) / 10;
+const selectTwo = qs.filter((q) => q.select === 2).length;
+const matching = qs.filter((q) => /^\d[A-D],/.test(q.options[0].text.replace(/\s/g, ''))).length;
+const roman = qs.filter((q) => /^[ivx]+(,|$)/.test(q.options[0].text.replace(/\s/g, ''))).length;
+const visual = qs.filter((q) => q.blocks.some((b) => ['table', 'img', 'box'].includes(b.t))).length;
+---
+<BaseLayout title="Exam tips" description="Exam technique for ISTQB CTFL v4.0, based on an analysis of the four official sample papers.">
+  <PageHead eyebrow="Exam technique" title="Exam tips">
+    <p class="lead">What {total} questions from ISTQB Sample Papers A-D tell us about the real exam - and how to pick up the marks that are easiest to gain.</p>
+  </PageHead>
+
+  <div class="container tips">
+    <section>
+      <h2 class="dot">1. Eight topics are worth 20% of the exam</h2>
+      <div class="card card--dark highlight">
+        <p class="big">{kCount('K3')} of {total}</p>
+        <p>K3 ("apply it") questions in the sample papers all come from the <strong>same 8 learning objectives</strong> -
+          and every paper has <strong>exactly one</strong> question on each. Master these 8 skills and you have 8 of the 40 marks.</p>
+        <a class="btn" href={url('exam-tips/k3')}>Practise all {kCount('K3')} K3 questions</a>
+      </div>
+      <div class="grid k3">
+        {K3_TOPICS.map((t, i) => (
+          <article class="card k3__card">
+            <span class="k3__num">{i + 1}</span>
+            <span class="pill">{t.lo}</span>
+            <h3>{t.title}</h3>
+            <ol>{t.method.map((m) => <li>{m}</li>)}</ol>
+            <a href={url(t.notes)}>Revise in the notes →</a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="dot">2. Understanding beats memorising</h2>
+      <div class="kmix card">
+        {[['K1', 'Remember', 'b-dark'], ['K2', 'Understand', 'b-pink'], ['K3', 'Apply', 'b-dark']].map(([k, label, c]) => (
+          <div class:list={['kmix__bar', c]} style={`flex:${kCount(k)}`}>
+            <strong>{k} {pct(kCount(k))}%</strong><span>{label}</span>
+          </div>
+        ))}
+      </div>
+      <p>Most questions are <strong>K2</strong>: they ask you to explain, compare or pick the best description - not just recall a
+        definition. Learn <em>why</em>, and be able to tell similar terms apart (the "Watch out for…" box at the end of each chapter lists the usual mix-ups).</p>
+    </section>
+
+    <section>
+      <h2 class="dot">3. Read the key word twice</h2>
+      <p>{pct(withKeyword)}% of questions turn on a qualifier. Underline it in your head before you look at the options.</p>
+      <ul class="words">
+        {keywords.map(({ word, n }) => <li><span class="word">{word}</span><span class="muted">{n} questions</span></li>)}
+      </ul>
+      <p class="muted">NOT and LEAST flip the question: you're looking for the one option that is wrong or weakest.</p>
+    </section>
+
+    <section>
+      <h2 class="dot">4. Guessing tricks don't work on these papers</h2>
+      <div class="grid myths">
+        <div class="card">
+          <span class="eyebrow">Myth</span>
+          <h3>"Pick the longest answer"</h3>
+          <p>The longest option was right in only <strong>{Math.round((longestRight / single.length) * 100)}%</strong> of single-answer questions - about the same as guessing.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow">Myth</span>
+          <h3>"Words like always and only mean it's wrong"</h3>
+          <p>They appear in <strong>{absWrong}%</strong> of wrong options and <strong>{absRight}%</strong> of right ones - no real difference.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow">Myth</span>
+          <h3>"It's usually C"</h3>
+          <p>Correct answers are spread evenly: {letters.map(({ l, n }) => `${l}) ${n}`).join(' · ')}.</p>
+        </div>
+      </div>
+      <p><strong>What does work:</strong> eliminate options that are clearly wrong, and answer every question - a blank scores zero, a guess might score one.</p>
+    </section>
+
+    <section>
+      <h2 class="dot">5. Know the question formats</h2>
+      <p>Per paper, expect roughly:</p>
+      <div class="grid formats">
+        <div class="card"><p class="big-sm">{perPaper(matching)}</p><h3>Matching</h3><p>Pair 1-4 with A-D. Find the pairings you're sure of, then rule out options that contradict them.</p></div>
+        <div class="card"><p class="big-sm">{perPaper(selectTwo)}</p><h3>Select TWO</h3><p>Out of five options. You need both right to score the point.</p></div>
+        <div class="card"><p class="big-sm">{perPaper(roman)}</p><h3>i, ii, iii combinations</h3><p>Decide each statement true or false first, then find the option that matches.</p></div>
+        <div class="card"><p class="big-sm">{perPaper(visual)}</p><h3>Tables, logs and diagrams</h3><p>Decision tables, state models, traceability matrices, test logs. Work through them on the scratch paper.</p></div>
+      </div>
+    </section>
+
+    <section class="card card--tint">
+      <h2>6. On the day</h2>
+      <ul class="day">
+        <li><strong>60 minutes for 40 questions</strong> (75 if the exam isn't in your native language) - about 1½ minutes each.</li>
+        <li><strong>Do a first pass</strong> answering everything you're sure of; flag the slow calculations and come back to them.</li>
+        <li><strong>Allow ~1 minute for K1, 1-2 for K2 and 3 for K3</strong> - the 8 calculation questions deserve the extra time.</li>
+        <li><strong>26 / 40 (65%) passes.</strong> You can drop 14 marks and still pass - don't panic over one hard question.</li>
+      </ul>
+      <p class="muted">Statistics calculated from ISTQB® CTFL v4.0 Sample Exams A (v1.7), B (v1.7), C (v1.6) and D (v1.5). Timing guidance from ISTQB® Exam Structures and Rules v1.2.</p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .lead { max-width: 46rem; font-size: 1.1rem; color: var(--grey); margin: 1rem 0 0; }
+  .tips { display: grid; gap: 3rem; }
+  .tips h2 { margin-bottom: 1rem; }
+  .highlight { display: grid; gap: 0.5rem; border-left: 8px solid var(--pink); margin-bottom: 1.25rem; }
+  .highlight p { margin: 0; color: #ddd; max-width: 50rem; }
+  .highlight .btn { justify-self: start; margin-top: 0.5rem; }
+  .big { font: 700 2.75rem/1 var(--font-head) !important; color: var(--pink-soft) !important; }
+  .k3__card { position: relative; display: flex; flex-direction: column; gap: 0.4rem; border-top: 5px solid var(--pink); }
+  .k3__card:nth-child(even) { border-top-color: var(--charcoal); }
+  .k3__num { position: absolute; right: 1rem; top: 0.5rem; font: 700 2.5rem var(--font-head); color: var(--pink-tint); }
+  .k3__card .pill { align-self: flex-start; }
+  .k3__card h3 { margin: 0.25rem 0 0; }
+  .k3__card ol { padding-left: 1.2rem; margin: 0.25rem 0 0.5rem; font-size: 0.95rem; display: grid; gap: 0.35rem; }
+  .k3__card a { margin-top: auto; font-weight: 700; }
+  .kmix { display: flex; gap: 4px; padding: 0.5rem; margin-bottom: 1rem; }
+  .kmix__bar { display: flex; flex-direction: column; justify-content: center; padding: 0.75rem 1rem; border-radius: 8px; color: #fff; min-width: 6rem; }
+  .kmix__bar.b-dark { background: var(--charcoal); }
+  .kmix__bar.b-pink { background: var(--pink); }
+  .kmix__bar strong { font: 700 1.3rem var(--font-head); }
+  .words { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .words li { display: flex; flex-direction: column; align-items: center; background: var(--surface); box-shadow: var(--shadow); border-radius: 12px; padding: 0.75rem 1.25rem; }
+  .word { font: 700 1.4rem var(--font-head); color: var(--pink-dark); }
+  .myths .card { border-top: 5px solid var(--charcoal); }
+  .myths h3 { margin: 0.25rem 0; }
+  .formats h3 { margin: 0.25rem 0; }
+  .big-sm { font: 700 2.2rem/1 var(--font-head); color: var(--pink); margin: 0; }
+  .day { display: grid; gap: 0.5rem; padding-left: 1.25rem; }
+  .day li::marker { color: var(--pink); }
+  @media (max-width: 40rem) { .kmix { flex-direction: column; } .kmix__bar { flex: none !important; } }
+</style>

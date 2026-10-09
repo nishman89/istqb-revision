@@ -9,13 +9,16 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Exercise from '../../components/Exercise.astro';
+import Compare from '../../components/diagrams/Compare.astro';
+import CoverageNest from '../../components/diagrams/CoverageNest.astro';
+import Flow from '../../components/diagrams/Flow.astro';
 import BoilerPartitions from '../../components/diagrams/BoilerPartitions.astro';
 import BvaValues from '../../components/diagrams/BvaValues.astro';
 import ControlFlow from '../../components/diagrams/ControlFlow.astro';
 import DoorStates from '../../components/diagrams/DoorStates.astro';
 
 ## 4.1 Test Techniques Overview
-
 
 ### What Do Test Techniques Do?
 
@@ -25,7 +28,7 @@ import DoorStates from '../../components/diagrams/DoorStates.astro';
 - **A small but sufficient set** - of test cases, built systematically
 - **Define the building blocks** - Test conditions, coverage items and test data
 
-#### Three Families In This Syllabus
+#### Three families in this syllabus
 
 - Black-box
 - White-box
@@ -45,12 +48,17 @@ In this syllabus, test techniques are classified as black-box, white-box, and ex
 
 <SyllabusRef ref="4.1" />
 
+<Compare caption="Three families of test technique (CTFL 4.1)" columns={[
+  { title: 'Black-box', sub: 'specification-based', points: ['Equivalence partitioning', 'Boundary value analysis', 'Decision tables', 'State transitions'] },
+  { title: 'White-box', sub: 'structure-based', points: ['Statement testing', 'Branch testing'] },
+  { title: 'Experience-based', sub: 'knowledge and skill', points: ['Error guessing', 'Exploratory testing', 'Checklist-based testing'] },
+]} />
+
 - **Black-box** - Specification-based · Based on the specified behaviour, without reference to internal structure · Test cases are independent of the implementation · Still useful if the code changes but the behaviour stays the same
 - **White-box** - Structure-based · Based on the test object's internal structure and processing · Can only be created after design or implementation
 - **Experience-based** - Knowledge and skill · Uses testers' knowledge and experience · Effectiveness depends heavily on the tester · Finds defects the others may miss - complementary
 
 ## 4.2 Black-box Test Techniques
-
 
 ### Equivalence Partitioning
 
@@ -84,20 +92,36 @@ Equivalence partitions can be identified for any data element related to the tes
 
 </SyllabusText>
 
-### Exercise - UV Index
+### Exercise: UV Index
 
 <SyllabusRef ref="4.2.1" />
 
-- The Met Office categorises UV exposure like this:
-- Moderate
-- **Very high** - UV 8-10
-- Extreme
-- How many equivalence partitions are there?
-- Q2  Which set of input data exercises all 5 partitions?
-- 1, 2, 5, 9, 11
-- 1, 3, 4, 5, 8
-- 1, 5, 7, 9, 11
-- 3, 6, 7, 8, 11
+<Exercise title="UV index partitions" options={['1, 2, 5, 9, 11', '1, 3, 4, 5, 8', '1, 5, 7, 9, 11', '3, 6, 7, 8, 11']}>
+
+The Met Office categorises UV exposure like this:
+
+| Category | Low | Moderate | High | Very high | Extreme |
+|---|---|---|---|---|---|
+| UV index | 1-2 | 3-5 | 6-7 | 8-10 | 11 |
+
+1. How many equivalence partitions are there?
+2. Which set of input data exercises **all** the partitions?
+
+<div slot="answer">
+
+**1. Five partitions** - each category is its own partition.
+
+**2. The answer is c) 1, 5, 7, 9, 11** - one value in each of Low, Moderate, High, Very high and Extreme.
+
+| Option | Partitions covered | EP coverage |
+|---|---|---|
+| a) 1, 2, 5, 9, 11 | misses High | 80% |
+| b) 1, 3, 4, 5, 8 | misses High and Extreme | 60% |
+| c) 1, 5, 7, 9, 11 | all five | **100%** |
+| d) 3, 6, 7, 8, 11 | misses Low | 80% |
+
+</div>
+</Exercise>
 
 ### Valid and Invalid Partitions
 
@@ -127,29 +151,29 @@ In EP, the coverage items are the equivalence partitions. To achieve 100% covera
 
 </SyllabusText>
 
-### Exercise - Boiler Timer
+### Exercise: Boiler Timer
 
 <SyllabusRef ref="4.2.1" />
 
-- **A boiler can operate between 00:00 and 23:59.** - The timer turns it on at 06:00 and off at 08:00. · It also comes on at 18:00 and turns off at 19:00. · Sketch a diagram of the equivalence partitions first.
-- Which is a correct set of equivalence values?
-- 05:59, 06:00, 08:00, 18:30
-- 00:01, 06:00, 12:00, 18:30, 23:59
-- 00:01, 05:59, 18:30, 19:01, 23:59
-- 05:59, 12:00, 18:30, 23:59
+<Exercise title="Boiler timer partitions" options={['05:59, 06:00, 08:00, 18:30', '00:01, 06:00, 12:00, 18:30, 23:59', '00:01, 05:59, 18:30, 19:01, 23:59', '05:59, 12:00, 18:30, 23:59']}>
 
-### Boiler Timer - Solution
+A boiler can operate between 00:00 and 23:59. The timer turns it **on at 06:00** and **off at 08:00**.
+It also comes **on at 18:00** and turns **off at 19:00**.
 
-<SyllabusRef ref="4.2.1" />
+Which is a correct set of equivalence partition values? *Tip: sketch the partitions first.*
+
+<div slot="answer">
+
+**The answer is b) 00:01, 06:00, 12:00, 18:30, 23:59.** There are **five** partitions - it's easy to miss that two of them are overnight (00:00-05:59 and 19:00-23:59).
 
 <BoilerPartitions />
 
+- a) 05:59, 06:00, 08:00, 18:30 - only 4 of the 5 partitions
+- c) 00:01, 05:59, 18:30, 19:01, 23:59 - misses 06:00-07:59 and 08:00-17:59
+- d) 05:59, 12:00, 18:30, 23:59 - misses 06:00-07:59
 
-- 5 partitions - two of them overnight (00:00-05:59 and 19:00-23:59)
-- **05:59, 06:00, 08:00, 18:30** - 4 of 5 partitions
-- **00:01, 06:00, 12:00, 18:30, 23:59** - All 5 partitions
-- **00:01, 05:59, 18:30, 19:01, 23:59** - Misses both 06:00-07:59 and 08:00-17:59
-- **05:59, 12:00, 18:30, 23:59** - Misses 06:00-07:59
+</div>
+</Exercise>
 
 ### Multiple Sets of Partitions
 
@@ -165,41 +189,39 @@ Many test objects include multiple sets of partitions (e.g., test objects with m
 
 </SyllabusText>
 
-### Exercise - Multiple Partitions
+### Exercise: Multiple Partitions
 
 <SyllabusRef ref="4.2.1" />
 
-- The parachuting school cannot run classes when it is too hot or cold, or when visibility is poor.
-- **Cancelled if…** - Temperature is below 5 or 30+ degrees, or visibility is POOR or VERY POOR
-- **Goes ahead if…** - Visibility is MODERATE, GOOD, VERY GOOD or EXCELLENT (and the temperature is OK)
-- What are the two sets of equivalence partitions?
-- What is the minimum number of test cases to exercise every partition?
+<Exercise title="Temperature and visibility">
 
-### Multiple Partitions - Solution
+An outdoor activity centre cannot run classes when it is too hot or too cold, or when visibility is poor.
 
-<SyllabusRef ref="4.2.1" />
+- **Cancelled if** the temperature is below 5 degrees or 30 degrees and over, **or** visibility is POOR or VERY POOR
+- **Goes ahead if** visibility is MODERATE, GOOD, VERY GOOD or EXCELLENT (and the temperature is OK)
 
+1. What are the two sets of equivalence partitions?
+2. What is the minimum number of test cases to exercise every partition (Each Choice coverage)?
 
-#### Temperature
+<div slot="answer">
 
-- Too cold (4 or less)
-- Just right (5 to 29)
-- Too hot (30 and above)
+**1. Two sets of partitions:**
 
-#### Visibility
+- **Temperature:** too cold (4 or less) · just right (5 to 29) · too hot (30 and above)
+- **Visibility:** POOR / VERY POOR · MODERATE / GOOD / VERY GOOD / EXCELLENT
 
+**2. Three test cases** - each one can cover a partition from both sets at once:
 
-#### Poor, Very Poor
+| Test | Temperature | Visibility | Result |
+|---|---|---|---|
+| 1 | 20° | GOOD | Go ahead |
+| 2 | 4° | POOR | Cancel |
+| 3 | 35° | GOOD | Cancel |
 
+Strictly, invalid partitions are best tested one at a time, but that goes beyond the syllabus.
 
-#### Moderate, Good, Very Good, Excellent
-
-
-#### Minimum: 3 Test Cases
-
-- **20° and GOOD** - Go ahead
-- **4° and POOR** - Cancel
-- **35° and GOOD** - Cancel
+</div>
+</Exercise>
 
 ### Boundary Value Analysis
 
@@ -226,14 +248,9 @@ BVA focuses on the boundary values of the partitions because developers are more
 
 <BvaValues />
 
-
 - **2-value BVA** - Coverage items for the boundary at 8: · The boundary value + its closest neighbour in the adjacent partition
-- Partition A (…7)
-- Partition B (8…)
 - Boundary values exercised ÷ total boundary values × 100%
 - **3-value BVA** - Coverage items for the boundary at 8: · The boundary value + both of its neighbours
-- Partition A (…7)
-- Partition B (8…)
 - Boundaries and neighbours exercised ÷ total boundaries and neighbours × 100%
 
 <SyllabusText>
@@ -246,62 +263,54 @@ In 3-value BVA (Koomen 2006, O'Regan 2019), for each boundary value there are th
 
 </SyllabusText>
 
-### 2-Value BVA - Boiler Example
+### Exercise: 2-Value BVA on the Boiler
 
 <SyllabusRef ref="4.2.2" />
 
-- **Identify the equivalence partitions** - (done earlier)
-- Identify the boundaries of each partition
-- Divide boundaries exercised by boundaries identified
-- **Question: Test data:  **00:00, 06:00, 07:59, 18:00, 23:59**** - What is the 2-value BVA coverage, ignoring invalid partitions?
+<Exercise title="2-value boundary value coverage">
 
-### 2-Value BVA - Finding Boundaries
+Using the boiler timer from the earlier exercise (on 06:00-08:00 and 18:00-19:00), your tests use these times:
 
-<SyllabusRef ref="4.2.2" />
+**00:00, 06:00, 07:59, 18:00, 23:59**
 
-- Take the Off partition between 08:00 and 18:00:
+What 2-value BVA coverage do they achieve, ignoring invalid partitions?
 
-#### Lower Boundary
+*Method: identify the partitions → identify each partition's boundaries → divide the boundaries exercised by the boundaries identified.*
 
+<div slot="answer">
 
-#### Upper Boundary
+**50%** - the tests exercise 5 of the 10 boundary values (or 5 / 12 = 42% if you count the invalid values -00:01 and 24:00).
 
-- **Boundary value** - The min or max of the partition (dark)
-- **Closest neighbour** - The nearest value in the adjacent partition (pink)
-- **Shared values** - Neighbours are the next partition's boundaries - each value is tested once
-
-### 2-Value BVA - Answer
-
-<SyllabusRef ref="4.2.2" />
+Each partition has a lowest and highest value. In 2-value BVA you test each **boundary value** and its **closest neighbour** in the next partition. Neighbours are the next partition's boundaries, so each value only needs testing once. The tested values are in bold:
 
 | Partition | Lower out | Lower in | Upper in | Upper out |
 |---|---|---|---|---|
-| Off 1 | (invalid) | 00:00 | 05:59 | 06:00 |
-| On 1 | 05:59 | 06:00 | 07:59 | 08:00 |
-| Off 2 | 07:59 | 08:00 | 17:59 | 18:00 |
-| On 2 | 17:59 | 18:00 | 18:59 | 19:00 |
-| Off 3 | 18:59 | 19:00 | 23:59 | (24:00) |
+| Off 1 | (invalid) | **00:00** | 05:59 | **06:00** |
+| On 1 | 05:59 | **06:00** | **07:59** | 08:00 |
+| Off 2 | **07:59** | 08:00 | 17:59 | **18:00** |
+| On 2 | 17:59 | **18:00** | 18:59 | 19:00 |
+| Off 3 | 18:59 | 19:00 | **23:59** | (24:00) |
 
-- **10 boundary values** - (valid partitions) · = 50% coverage · Counting the invalid values too: 5 / 12 = 42%
+</div>
+</Exercise>
 
-### 3-Value BVA - Boiler Example
-
-<SyllabusRef ref="4.2.2" />
-
-- **WE ALREADY HAVE TESTS FOR EVERY 2-VALUE BVA VALUE** - 00:00, 05:59, 06:00, 07:59, 08:00, 17:59, 18:00, 18:59, 19:00, 23:59
-- **QUESTION** - What are the 3-value BVA coverage items, and what % coverage do these tests give?
-
-### 3-Value BVA - Finding Boundaries
+### Exercise: 3-Value BVA on the Boiler
 
 <SyllabusRef ref="4.2.2" />
 
-- The same Off partition between 08:00 and 18:00:
-- **Boundary + both neighbours** - Three coverage items at every boundary
-- **New items** - 08:01 and 17:58 (pink) are not boundary values themselves
+<Exercise title="3-value boundary value coverage">
 
-### 3-Value BVA - Answer
+You now have a test for **every 2-value BVA value**:
 
-<SyllabusRef ref="4.2.2" />
+**00:00, 05:59, 06:00, 07:59, 08:00, 17:59, 18:00, 18:59, 19:00, 23:59**
+
+What are the 3-value BVA coverage items, and what percentage coverage do these tests give?
+
+<div slot="answer">
+
+**50%** - 3-value BVA has **20** coverage items (each boundary plus **both** its neighbours), and the existing tests cover 10 of them.
+
+The new items are the neighbours *inside* each partition, for example 08:01 and 17:58 for the Off partition between 08:00 and 18:00. The full set (ignoring the invalid values -00:01 and 24:00):
 
 | Boundary | Below | Boundary | Above |
 |---|---|---|---|
@@ -316,7 +325,8 @@ In 3-value BVA (Koomen 2006, O'Regan 2019), for each boundary value there are th
 | Off 3 lower | 18:59 | 19:00 | 19:01 |
 | Off 3 upper | 23:58 | 23:59 | (24:00) |
 
-- **20 coverage items** - (valid partitions) · = 50% coverage · The 10 existing tests cover the boundary column only.
+</div>
+</Exercise>
 
 ### Why 3-Value BVA is More Rigorous
 
@@ -326,7 +336,17 @@ In 3-value BVA (Koomen 2006, O'Regan 2019), for each boundary value there are th
 - **IMPLEMENTED (DEFECT)** - if (x == 10)
 - **2-Value Tests: x = 10, x = 11** - Both behave correctly - defect missed
 - **3-VALUE ADDS** - Behaves wrongly - defect found
-- **Discuss:** what error in the UV example would 3-value BVA catch but 2-value miss?
+<Exercise kind="discuss" title="Spot the defect">
+
+In the UV index example, what coding error would 3-value BVA catch but 2-value BVA miss?
+
+<div slot="answer">
+
+For example, if the lower bound for **Very high** were written as `if (x == 8)` instead of `if (x >= 8)`.
+The 2-value tests (7 and 8) both behave correctly, but 3-value BVA adds **9**, which would be wrongly categorised.
+
+</div>
+</Exercise>
 
 <SyllabusText>
 
@@ -339,6 +359,7 @@ In 3-value BVA (Koomen 2006, O'Regan 2019), for each boundary value there are th
 <SyllabusRef ref="4.2.3" />
 
 - **Decision tables** record complex logic such as business rules - how combinations of conditions lead to different outcomes.
+
 |   |   | Rule 1 | Rule 2 | Rule 3 |
 |---|---|---|---|---|
 | Conditions | Condition A | T | T | F |
@@ -367,7 +388,7 @@ In limited-entry decision tables all the values of the conditions and actions (e
 
 - **A technical support company uses a decision table to diagnose printer problems from symptoms clients describe over the phone.** - The program uses the decision table to find the correct actions to perform.
 
-#### The Adviser Can Select One Or More Symptoms
+#### The adviser can select one or more symptoms
 
 - Printer does not print
 - A red light is flashing
@@ -387,7 +408,6 @@ In limited-entry decision tables all the values of the conditions and actions (e
 |   | Ensure printer software is installed | X |   | X |   | X |   | X |   |
 |   | Check / replace ink | X | X |   |   | X | X |   |   |
 |   | Check for paper jam |   | X |   | X |   |   |   |   |
-
 
 ### Decision Table Notation
 
@@ -453,8 +473,6 @@ A state transition diagram models the behavior of a system by showing its possib
 - You can't close it again until you open it
 - **So a door has two states** - OPEN and CLOSED
 
-#### Closed
-
 - Close door
 - Open door
 
@@ -464,18 +482,7 @@ A state transition diagram models the behavior of a system by showing its possib
 
 <DoorStates />
 
-
 - Extend the example: a closed door can be LOCKED or UNLOCKED.
-
-#### Closed Unlocked
-
-
-#### Closed Locked
-
-- Close door
-- Open door
-- Lock door
-- Unlock door
 
 ### State Tables
 
@@ -496,11 +503,6 @@ A state table is a model equivalent to a state transition diagram. Its rows repr
 
 <SyllabusRef ref="4.2.4" />
 
-
-#### Closed
-
-- Close door
-- Open door
 | State / event | Open door | Close door |
 |---|---|---|
 | OPEN |   | CLOSED |
@@ -527,7 +529,6 @@ A state table is a model equivalent to a state transition diagram. Its rows repr
 
 - **A sequence of events** - …producing a sequence of state changes (and actions)
 - **Several transitions per test** - One test case usually covers many transitions
-- **QUESTION** - How many test cases are needed to cover all valid transitions in the 3-state door diagram?
 
 <SyllabusText>
 
@@ -535,52 +536,31 @@ A test case based on a state transition diagram or state table is usually repres
 
 </SyllabusText>
 
-### Answer - Just One Test Case
+<Exercise title="How many test cases?">
 
-<SyllabusRef ref="4.2.4" />
+How many test cases are needed to cover **all valid transitions** in the 3-state door diagram (OPEN, CLOSED UNLOCKED, CLOSED LOCKED)?
 
-- close door
+<div slot="answer">
 
-#### Closed Unlocked
+**Just one.** A single test case can visit every state and exercise all four valid transitions:
 
-- lock door
+**OPEN** → *close door* → **CLOSED UNLOCKED** → *lock door* → **CLOSED LOCKED** → *unlock door* → **CLOSED UNLOCKED** → *open door* → **OPEN**
 
-#### Closed Locked
+<DoorStates />
 
-- unlock door
+</div>
+</Exercise>
 
-#### Closed Unlocked
+<Exercise title="Adding a broken state">
 
-- open door
+Now a door can also become **BROKEN** from any of its three states. How many test cases are needed to cover all valid transitions?
 
-#### Closed Unlocked
+<div slot="answer">
 
+**Three.** Use the test case above to cover OPEN, CLOSED UNLOCKED and CLOSED LOCKED, then finish by breaking the door. BROKEN is an end state, so the other two "break" transitions each need a test case of their own.
 
-#### Closed Locked
-
-- Close door
-- Open door
-- Lock door
-- Unlock door
-
-### Adding a Broken State
-
-<SyllabusRef ref="4.2.4" />
-
-- If a door can also become BROKEN from any state, how many test cases are needed to cover all valid transitions?
-
-#### Closed Unlocked
-
-
-#### Closed Locked
-
-- Close door
-- Open door
-- Lock door
-- Unlock door
-
-#### Broken
-
+</div>
+</Exercise>
 
 ### Coverage Criteria
 
@@ -592,25 +572,30 @@ A test case based on a state transition diagram or state table is usually repres
 | Valid transitions (0-switch) | Single valid transitions | Exercise all valid transitions | Valid transitions exercised ÷ total valid transitions |
 | All transitions | All transitions in the state table | Exercise all valid transitions and attempt all invalid ones | (Valid exercised + invalid attempted) ÷ total transitions |
 
-
-### Exercise - Calculate the Coverage
+### Exercise: Calculate the Coverage
 
 <SyllabusRef ref="4.2.4" />
 
-- For the test: OPEN → CLOSED UNLOCKED → CLOSED LOCKED → CLOSED UNLOCKED → OPEN
+<Exercise title="State transition coverage">
 
-#### Closed Unlocked
+For the 3-state door, one test case runs:
 
+**OPEN → CLOSED UNLOCKED → CLOSED LOCKED → CLOSED UNLOCKED → OPEN**
 
-#### Closed Locked
+What coverage does it achieve for **all states**, **valid transitions** and **all transitions**?
 
-- Close door
-- Open door
-- Lock door
-- Unlock door
-- All states
-- Valid transitions
-- **All transitions** - 33% (4 of 12)
+<div slot="answer">
+
+| Criterion | Coverage | Why |
+|---|---|---|
+| All states | **100%** | all 3 states are visited |
+| Valid transitions | **100%** | all 4 valid transitions are exercised |
+| All transitions | **33%** | 4 of the 12 transitions in the state table (3 states × 4 events); none of the 8 invalid ones are attempted |
+
+To reach 100% all transitions coverage you'd need to attempt every invalid transition too, which usually means up to 8 more test cases, because the behaviour after an invalid event is undefined.
+
+</div>
+</Exercise>
 
 ### Comparing the Criteria
 
@@ -629,7 +614,6 @@ All states coverage is weaker than valid transitions coverage, because it can ty
 
 ## 4.3 White-box Test Techniques
 
-
 ### White-box Techniques
 
 <SyllabusRef ref="4.3" />
@@ -637,7 +621,7 @@ All states coverage is weaker than valid transitions coverage, because it can ty
 - **Statement testing** - Section 4.3.1
 - **Branch testing** - Section 4.3.2
 
-#### Out Of Scope Of This Syllabus
+#### Out of scope of this syllabus
 
 - **More rigorous techniques** - for safety-critical, mission-critical or high-integrity work
 - **Higher test levels** - e.g. API testing
@@ -683,9 +667,6 @@ However, exercising a statement with a test case will not detect defects in all 
 
 <SyllabusRef ref="4.3.2" />
 
-
-#### Control Flow Graph
-
 - pink = conditional
 dark = unconditional
 - **Branch** - A transfer of control between two nodes in the control flow graph
@@ -702,8 +683,8 @@ A branch is a transfer of control between two nodes in the control flow graph, w
 
 <SyllabusRef ref="4.3.2" />
 
-- 100% branch
-- 100% statement
+<CoverageNest />
+
 - **At 100%** - Every branch - conditional and unconditional - is exercised
 - **Conditional branches** - if/then outcomes, switch/case outcomes, loop exit or continue
 - **Subsumes statement coverage** - 100% branch → 100% statement (but not vice versa)
@@ -723,12 +704,6 @@ Branch coverage subsumes statement coverage. This means that any set of test cas
 
 <ControlFlow />
 
-
-- Sequence
-- If-else
-- Switch-case
-- While / for
-- Do-while
 - Circles are nodes (chunks of code). Pink arrows are decision outcomes - make sure tests take every one.
 
 ### The Value of White-box Testing
@@ -751,7 +726,6 @@ Performing only black-box testing does not provide a measure of actual code cove
 </SyllabusText>
 
 ## 4.4 Experience-based Test Techniques
-
 
 ### Error Guessing
 
@@ -786,9 +760,14 @@ Fault attacks are a methodical approach to the implementation of error guessing.
 
 <SyllabusRef ref="4.4.2" />
 
+<Flow caption="Session-based exploratory testing (CTFL 4.4.2)" steps={[
+  { title: 'Test charter', sub: 'objectives to guide the session' }, { title: 'Time-boxed session', sub: 'design, run and learn at once' },
+  { title: 'Session sheet', sub: 'steps and discoveries' }, { title: 'Debrief', sub: 'share results with stakeholders' },
+]} />
+
 - **Design, execute and evaluate tests at the same time** - while learning about the test object.
 
-#### Session-Based Testing
+#### Session-based testing
 
 - **Test charter** - objectives guide the session
 - **Time-boxed session** - coverage items found and exercised
@@ -852,10 +831,13 @@ In the absence of detailed test cases, checklist-based testing can provide guide
 
 ## 4.5 Collaboration-based Test Approaches
 
-
 ### User Stories - the 3 Cs
 
 <SyllabusRef ref="4.5.1" />
+
+<Flow caption="The 3 Cs of a user story (CTFL 4.5.1)" steps={[
+  { title: 'Card', sub: 'As a… I want… so that…' }, { title: 'Conversation', sub: 'how it will be used' }, { title: 'Confirmation', sub: 'the acceptance criteria' },
+]} />
 
 - As a **[role]**, I want **[goal]**, so that I can **[business value]**
 - The medium - e.g. an index card or an entry on an electronic board
@@ -879,7 +861,7 @@ The most common format for a user story is "As a [role], I want [goal to be acco
 - Testing
 - Three perspectives → a shared vision (via brainstorming, mind mapping)
 
-#### Good Stories Are Invest
+#### Good stories are INVEST
 
 - Independent
 - Negotiable
@@ -926,6 +908,11 @@ There are several ways to write acceptance criteria for a user story. The two mo
 ### ATDD
 
 <SyllabusRef ref="4.5.3" />
+
+<Flow caption="Acceptance test-driven development - tests come before the code (CTFL 4.5.3)" steps={[
+  { title: 'Specification workshop', sub: 'story and acceptance criteria' }, { title: 'Write test cases', sub: 'positive, negative, non-functional' },
+  { title: 'Automate', sub: 'executable requirements' }, { title: 'Implement', sub: 'code until the tests pass' },
+]} />
 
 - **A test-first approach:** test cases are created before the user story is implemented - by customers, developers and testers together.
 - **Specification workshop** - Analyse and write the story and acceptance criteria; resolve gaps and ambiguities

@@ -1,0 +1,35 @@
+---
+/** Side-by-side columns, each with a heading, an optional tagline and short points. */
+import Figure from '../Figure.astro';
+import { wrap, fills } from '../../lib/svg';
+
+interface Column { title: string; sub?: string; points: string[]; }
+interface Props { columns: Column[]; caption: string; middle?: string; }
+const { columns, caption, middle } = Astro.props;
+const n = columns.length, gap = middle ? 60 : 20, w = (800 - gap * (n - 1)) / n;
+const rows = columns.map((c) => c.points.flatMap((p) => wrap(p, Math.floor((w - 50) / 8.2)).map((l, i) => ({ l, first: i === 0 }))));
+const height = 110 + Math.max(...rows.map((r) => r.length)) * 22;
+---
+<Figure caption={caption}>
+  <svg viewBox={`0 0 820 ${height}`} role="img" aria-label={columns.map((c) => c.title).join(' compared with ')}>
+    {columns.map((c, i) => {
+      const x = 10 + i * (w + gap);
+      return (
+        <g>
+          <rect class="b-white" x={x} y="10" width={w} height={height - 20} rx="14"/>
+          <rect class={fills[i % 2]} x={x} y="10" width={w} height="64" rx="14"/>
+          <rect class={fills[i % 2]} x={x} y="50" width={w} height="24"/>
+          <text class="t" x={x + w / 2} y={c.sub ? 34 : 42} style="font-size:18px">{c.title}</text>
+          {c.sub && <text class="t-sm-w" x={x + w / 2} y="58">{c.sub}</text>}
+          {rows[i].map((r, j) => (
+            <g>
+              {r.first && <circle cx={x + 22} cy={100 + j * 22} r="4" class="b-pink"/>}
+              <text class="t-dark" x={x + 34} y={100 + j * 22} style="font-size:14px;font-weight:600;text-anchor:start">{r.l}</text>
+            </g>
+          ))}
+        </g>
+      );
+    })}
+    {middle && <text class="t-lbl" x="410" y={height / 2} style="font-size:16px">{middle}</text>}
+  </svg>
+</Figure>

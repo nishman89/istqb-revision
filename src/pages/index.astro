@@ -45,7 +45,8 @@ const chapters = await getChapters();
       <div>
         <span class="eyebrow">Ready for the real thing?</span>
         <h2>Past papers</h2>
-        <p>Sit any of the four official ISTQB sample exams in full - 40 questions against the clock, with a score for every chapter.</p>
+        <p>Sit any of the four official ISTQB sample exams in full - 40 questions against the clock, with a score for every chapter.
+          Read the <a href={url('exam-tips')}>exam tips</a> first.</p>
       </div>
       <a class="btn" href={url('past-papers')}>Go to past papers</a>
     </section>
@@ -98,6 +99,7 @@ const chapters = await getChapters();
   .papers-cta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; margin-top: 2.5rem; border-left: 8px solid var(--pink); }
   .papers-cta h2 { margin: 0.25rem 0; }
   .papers-cta p { margin: 0; color: #ddd; max-width: 40rem; }
+  .papers-cta p a { color: var(--pink-soft); font-weight: 700; }
   .reset { margin-top: 2rem; color: var(--grey); font-size: 0.9rem; }
   .link { background: none; border: 0; color: var(--pink-dark); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
 </style>

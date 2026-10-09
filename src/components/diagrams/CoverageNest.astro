@@ -1,0 +1,16 @@
+---
+/** Branch coverage subsumes statement coverage. */
+import Figure from '../Figure.astro';
+---
+<Figure caption="100% branch coverage guarantees 100% statement coverage - but not the other way round (CTFL 4.3.2)">
+  <svg viewBox="0 0 820 260" role="img" aria-label="Branch coverage contains statement coverage">
+    <ellipse cx="300" cy="130" rx="260" ry="115" class="b-pink"/>
+    <ellipse cx="370" cy="150" rx="140" ry="70" class="b-dark"/>
+    <text class="t" x="170" y="70" style="font-size:18px">100% branch coverage</text>
+    <text class="t" x="370" y="150" style="font-size:16px">100% statement coverage</text>
+    <text class="t-dark" x="690" y="90" style="font-size:16px">Statement coverage</text>
+    <text class="t-sm" x="690" y="114">every executable statement run</text>
+    <text class="t-dark" x="690" y="160" style="font-size:16px">Branch coverage</text>
+    <text class="t-sm" x="690" y="184">every decision outcome taken too</text>
+  </svg>
+</Figure>

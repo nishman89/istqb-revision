@@ -1,0 +1,31 @@
+---
+/** A grid of numbered or labelled tiles. */
+import Figure from '../Figure.astro';
+import { wrap } from '../../lib/svg';
+
+interface Tile { label?: string; title: string; sub?: string; }
+interface Props { tiles: Tile[]; caption: string; cols?: number; }
+const { tiles, caption, cols = 4 } = Astro.props;
+const gap = 16, w = (800 - gap * (cols - 1)) / cols, h = 120;
+const rowsN = Math.ceil(tiles.length / cols);
+---
+<Figure caption={caption}>
+  <svg viewBox={`0 0 820 ${rowsN * (h + gap) + 10}`} role="img" aria-label={tiles.map((t) => t.title).join('; ')}>
+    {tiles.map((t, i) => {
+      const r = Math.floor(i / cols), inRow = r === rowsN - 1 ? tiles.length - r * cols : cols;
+      const off = ((cols - inRow) * (w + gap)) / 2;
+      const x = 10 + off + (i % cols) * (w + gap), y = 10 + r * (h + gap);
+      const title = wrap(t.title, Math.floor((w - 16) / 9.4));
+      const sub = t.sub ? wrap(t.sub, Math.floor((w - 16) / 7.8)) : [];
+      const dark = i % 2 === 1;
+      return (
+        <g>
+          <rect class={dark ? 'b-dark' : 'b-pink'} x={x} y={y} width={w} height={h} rx="12"/>
+          {t.label && <text class="t" x={x + 22} y={y + 24} style="font-size:20px;opacity:0.55">{t.label}</text>}
+          {title.map((l, j) => <text class="t" x={x + w / 2} y={y + 50 + j * 19}>{l}</text>)}
+          {sub.map((l, j) => <text class="t-sm-w" x={x + w / 2} y={y + 54 + (title.length + j) * 18}>{l}</text>)}
+        </g>
+      );
+    })}
+  </svg>
+</Figure>

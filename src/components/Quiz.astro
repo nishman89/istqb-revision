@@ -298,8 +298,8 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
 </script>
 
 <style>
-  .quiz { display: grid; gap: 1.25rem; }
-  .quiz-intro dl { display: flex; flex-wrap: wrap; gap: 2rem; margin: 0; }
+  .quiz { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+  .quiz-intro dl { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin: 0; }
   .quiz-intro dt { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--pink); }
   .quiz-intro dd { margin: 0; font: 700 1.4rem var(--font-head); }
   .quiz-intro dd small { font: 600 0.85rem var(--font-body); color: var(--grey); }
@@ -325,14 +325,14 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
   .mini span { display: block; height: 100%; background: var(--pink); width: 0; }
   .timer { font-weight: 700; font-variant-numeric: tabular-nums; }
   .timer.is-low { color: var(--pink-soft); }
-  .questions ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; }
+  .questions ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
   .q { border-left: 6px solid transparent; }
   .q.is-right { border-left-color: var(--success); }
   .q.is-wrong { border-left-color: var(--pink); }
   .only-wrong .q.is-right { display: none; }
   .q__head { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
   .q__num { font: 700 1.1rem var(--font-head); }
-  .q__tags { display: flex; gap: 0.4rem; }
+  .q__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
   fieldset { border: 0; padding: 0; margin: 0.5rem 0 0; display: grid; gap: 0.5rem; }
   .q__instruction { font-size: 0.85rem; font-weight: 700; color: var(--grey); margin-bottom: 0.5rem; }
@@ -361,7 +361,16 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
 
   .submit-bar { position: sticky; bottom: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; background: var(--charcoal); color: #fff; padding: 0.75rem 0.75rem 0.75rem 1.5rem; border-radius: 999px; box-shadow: var(--shadow); margin-top: 1.25rem; }
   @media (max-width: 40rem) {
-    .opt { grid-template-columns: auto 2rem 1fr; }
+    .q { padding: 1.1rem; }
+    .opt { grid-template-columns: auto 2rem 1fr; padding: 0.7rem 0.8rem; gap: 0.6rem; }
     .opt__flag { grid-column: 1 / -1; }
+    .results { flex-direction: column; align-items: stretch; }
+    .breakdown { max-width: none; }
+    .mini { width: 5rem; }
+    .score__big { font-size: 2.75rem; }
+    .submit-bar { bottom: 0.5rem; padding: 0.5rem 0.5rem 0.5rem 1rem; font-size: 0.9rem; }
+    .submit-bar .btn { padding: 0.55rem 1rem; }
+    .start { flex-direction: column; align-items: stretch; }
+    .start select { width: 100%; }
   }
 </style>

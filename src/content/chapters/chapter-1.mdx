@@ -12,19 +12,16 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Exercise from '../../components/Exercise.astro';
+import Compare from '../../components/diagrams/Compare.astro';
+import Flow from '../../components/diagrams/Flow.astro';
+import Tiles from '../../components/diagrams/Tiles.astro';
 import DefectChain from '../../components/diagrams/DefectChain.astro';
 import IndependenceStairs from '../../components/diagrams/IndependenceStairs.astro';
 import TestProcess from '../../components/diagrams/TestProcess.astro';
 
-### Example: Parachuting School
-
-- **“I want a website for the local parachuting school, which I run. We're on a small island in New Zealand and a lot of the locals are into parachuting.”** - - The client
-- **Live weather** - Wind speed and cloud level, so people don't drive over when it's too cloudy to jump
-- **Online shop & hire** - Sell and hire kit, lessons and memorabilia. Must look good and load quickly
-- **Events & lessons** - Upcoming events, sales, competitions, open days and the lessons on offer
 
 ## 1.1 What is Testing?
-
 
 ### What is Testing?
 
@@ -59,6 +56,11 @@ Actually: testing also involves validation - checking whether the system meets u
 ### Verification vs Validation
 
 <SyllabusRef ref="1.1" />
+
+<Compare caption="Verification and validation - both are part of testing (CTFL 1.1)" columns={[
+  { title: 'Verification', sub: 'Are we building the product right?', points: ['Checks the specified requirements have been met', 'Objective evidence against the spec', 'VeRification - Requirements'] },
+  { title: 'Validation', sub: 'Are we building the right product?', points: ["Checks it meets users' and stakeholders' needs", 'In its operational environment', 'VALidation - VALuable to the user'] },
+]} />
 
 - What is the difference between verification and validation?
 - **Verification** - Are we building the product right? · Confirms, with objective evidence, that the specified requirements have been fulfilled
@@ -156,8 +158,12 @@ Validating whether the test object is complete and works as expected by the stak
 
 <SyllabusRef ref="1.1.2" />
 
+<Flow caption="Dynamic testing finds failures; debugging finds and fixes the defect; testing then confirms the fix and checks for regressions (CTFL 1.1.2)" steps={[
+  { title: 'Dynamic test', sub: 'triggers a failure' }, { title: 'Reproduce', sub: 'debugging' }, { title: 'Diagnose', sub: 'find the root cause' },
+  { title: 'Fix', sub: 'remove the defect' }, { title: 'Confirmation test', sub: 'is it fixed?' }, { title: 'Regression test', sub: 'anything else broken?' },
+]} />
 
-#### Dynamic Testing
+#### Dynamic testing
 
 - **Dynamic test** - triggers a failure
 - **Reproduce** - the failure
@@ -167,7 +173,7 @@ Validating whether the test object is complete and works as expected by the stak
 - **Regression test** - anything else broken?
 - Debugging - a development activity, not testing
 
-#### Static Testing
+#### Static testing
 
 - **Static test** - e.g. a review
 - **Defect found** - directly
@@ -187,7 +193,6 @@ Static testing directly finds defects, which should then be fixed. There is no n
 </SyllabusText>
 
 ## 1.2 Why is Testing Necessary?
-
 
 ### Why is Testing Necessary?
 
@@ -236,6 +241,11 @@ May be required to meet contractual or legal requirements, or to comply with reg
 
 <SyllabusRef ref="1.2.2" />
 
+<Compare caption="Testing is a form of quality control; quality assurance improves the process (CTFL 1.2.2)" columns={[
+  { title: 'Quality control', sub: 'product-oriented · corrective', points: ['Finds and fixes defects in the product', 'Testing, formal methods, simulation, prototyping'] },
+  { title: 'Quality assurance', sub: 'process-oriented · preventive', points: ['Implements and improves processes', 'A good process gives a good product', "Everyone's responsibility"] },
+]} />
+
 - Testing ≠ QA     ·     Testing is a form of Quality Control
 - **Quality Control (QC)** - Product-oriented · Corrective · Supports achieving appropriate levels of quality · Testing, formal methods (model checking, proof of correctness), simulation, prototyping
 - **Quality Assurance (QA)** - Process-oriented · Preventive · Implements and improves processes - a good process should give a good product · Applies to development and testing · Everyone's responsibility
@@ -268,7 +278,6 @@ QA is a process-oriented, preventive approach that focuses on the implementation
 <SyllabusRef ref="1.2.3" />
 
 <DefectChain />
-
 
 - **aka mistake** - A human action that produces an incorrect result
 - **Defect** - aka fault, bug · An imperfection in a work product - docs, code or build files
@@ -308,9 +317,6 @@ Errors and defects are not the only cause of failures. Failures can also be caus
 - **Why #4** Miscommunication between School CEO and Product Owner
 - **Why #5No review of specification**
 
-#### Root Cause
-
-
 ### Find It Early, Fix It Once
 
 <SyllabusRef ref="1.2.3" />
@@ -333,10 +339,16 @@ The earlier we do this in the development process, the better.
 
 ## 1.3 The Seven Testing Principles
 
-
 ### The Seven Testing Principles
 
 <SyllabusRef ref="1.3" />
+
+<Tiles caption="The seven testing principles (CTFL 1.3)" tiles={[
+  { label: '1', title: 'Testing shows the presence of defects', sub: 'not their absence' }, { label: '2', title: 'Exhaustive testing is impossible', sub: 'use techniques and risk' },
+  { label: '3', title: 'Early testing saves time and money' }, { label: '4', title: 'Defects cluster together', sub: 'the Pareto principle' },
+  { label: '5', title: 'Tests wear out', sub: 'the pesticide paradox' }, { label: '6', title: 'Testing is context dependent' },
+  { label: '7', title: 'Absence-of-defects fallacy', sub: 'verify AND validate' },
+]} />
 
 - Testing shows the presence, not the absence, of defects
 - Exhaustive testing is impossible
@@ -352,7 +364,16 @@ The earlier we do this in the development process, the better.
 
 - Testing shows the presence, not the absence, of defects
 - **IN A NUTSHELL** - Testing can show that defects are present, but cannot prove there are none. It reduces the chance of undiscovered defects remaining.
-- **DISCUSS** - If no defects are found, does that mean the software is correct?
+<Exercise kind="discuss" title="Think about it">
+
+If no defects are found, does that mean the software is correct?
+
+<div slot="answer">
+
+No. Testing can show that defects are present, but it can't prove there are none. If you didn't find any, it may mean the tests weren't good enough - you never know how many defects remain unfound.
+
+</div>
+</Exercise>
 
 <SyllabusText>
 
@@ -366,7 +387,16 @@ Testing can show that defects are present in the test object, but cannot prove t
 
 - Exhaustive testing is impossible
 - **IN A NUTSHELL** - Testing everything isn't feasible except in trivial cases. Use test techniques, prioritisation and risk-based testing to focus effort.
-- **DISCUSS** - How many tests would a "Good morning / Good afternoon" greeting need?
+<Exercise kind="discuss" title="Think about it">
+
+How many tests would a "Good morning / Good afternoon" greeting need?
+
+<div slot="answer">
+
+At least two - one before noon and one after. But do you test every second between 00:00:01 and 23:59:59? Fractions of seconds? Different time formats? The switch to and from daylight saving time? Testing everything is impossible, so we use techniques, priorities and risk to choose.
+
+</div>
+</Exercise>
 
 <SyllabusText>
 
@@ -380,7 +410,16 @@ Testing everything is not feasible except in trivial cases (Manna 1978). Rather 
 
 - Early testing saves time and money
 - **IN A NUTSHELL** - Defects removed early don't cause further defects in derived work products, so fewer failures occur later in the SDLC.
-- **DISCUSS** - What could we test on the parachuting school project before any code exists?
+<Exercise kind="discuss" title="Think about it">
+
+On a new project, what could we test before any code exists?
+
+<div slot="answer">
+
+Plenty: review the requirements and user stories, check the acceptance criteria are clear and testable, review designs, and start test analysis and design. Defects found here are the cheapest to fix.
+
+</div>
+</Exercise>
 
 <SyllabusText>
 
@@ -394,7 +433,16 @@ Defects that are removed early in the process will not cause subsequent defects 
 
 - Defects cluster together
 - **IN A NUTSHELL** - A small number of components usually contain most of the defects or cause most failures - an example of the Pareto principle.
-- **DISCUSS** - Why do you think defects cluster together?
+<Exercise kind="discuss" title="Think about it">
+
+Why do you think defects cluster together?
+
+<div slot="answer">
+
+Often they share a root cause - less experienced developers, rushed code, too little unit testing, or an unfamiliar library or design. A few early defects can also have knock-on effects. It's an observation (the Pareto principle), not a law.
+
+</div>
+</Exercise>
 
 <SyllabusText>
 
@@ -408,7 +456,16 @@ A small number of system components usually contain most of the defects discover
 
 - Tests wear out
 - **IN A NUTSHELL** - Repeating the same tests makes them less effective at finding new defects - also known as the pesticide paradox.
-- **DISCUSS** - Why does this happen? And when is repeating tests actually useful?
+<Exercise kind="discuss" title="Think about it">
+
+Why does this happen? And when is repeating tests actually useful?
+
+<div slot="answer">
+
+The defects those tests can find have already been found and fixed - like spraying pesticide on bugs that are already dead. To find new defects, change the tests and data, or test less-explored areas. Repeating tests is still valuable as automated regression testing, to catch new defects as soon as they're introduced.
+
+</div>
+</Exercise>
 
 <SyllabusText>
 
@@ -422,7 +479,16 @@ If the same tests are repeated many times, they become increasingly ineffective 
 
 - Testing is context dependent
 - **IN A NUTSHELL** - There is no single universally applicable approach to testing - it is done differently in different contexts.
-- **DISCUSS** - How would testing a games console differ from testing a space shuttle?
+<Exercise kind="discuss" title="Think about it">
+
+How would testing a games console differ from testing a space shuttle?
+
+<div slot="answer">
+
+The risk is completely different. A space shuttle is safety- and mission-critical, so it needs formal, highly rigorous testing, independence and documentation. A games console needs strong usability and performance testing, with more emphasis on time to market.
+
+</div>
+</Exercise>
 
 <SyllabusText>
 
@@ -436,7 +502,16 @@ There is no single universally applicable approach to testing. Testing is done d
 
 - Absence-of-defects fallacy
 - **IN A NUTSHELL** - Fixing every defect against the specified requirements can still give a system that doesn't meet users' needs. Verification alone isn't enough - validate too.
-- **DISCUSS** - What do you think this means?
+<Exercise kind="discuss" title="Think about it">
+
+What do you think this means?
+
+<div slot="answer">
+
+Finding and fixing lots of defects doesn't guarantee success. A system can meet every specified requirement and still not meet the users' needs, not help the business, or be worse than competitors. That's why we validate as well as verify.
+
+</div>
+</Exercise>
 
 <SyllabusText>
 
@@ -446,13 +521,11 @@ It is a fallacy (i.e., a misconception) to expect that software verification wil
 
 ## 1.4 Test Activities, Testware and Test Roles
 
-
 ### The Test Process
 
 <SyllabusRef ref="1.4.1" />
 
 <TestProcess />
-
 
 - **Test Planning** Define test objectives and select an approach
 - **Test Analysis** - Identify WHAT to test
@@ -477,7 +550,6 @@ It is a fallacy (i.e., a misconception) to expect that software verification wil
 | Test Execution | Run tests and log results · Analyse anomalies to identify likely causes · Create reports |
 | Test Completion | Resolve loose ends · Archive testware · Shut down test environment · Write and distribute the test completion report |
 
-
 ### Test Process in Context
 
 <SyllabusRef ref="1.4.2" />
@@ -490,7 +562,7 @@ It is a fallacy (i.e., a misconception) to expect that software verification wil
 - Project constraints
 - Organisational factors
 
-#### These Factors Affect
+#### These factors affect
 
 - Test strategy
 - Test techniques
@@ -513,10 +585,14 @@ It is a fallacy (i.e., a misconception) to expect that software verification wil
 | Test Execution | Test logs, defect reports |
 | Test Completion | Test completion report, action items for improvement, lessons learnt, change requests |
 
-
 ### Traceability
 
 <SyllabusRef ref="1.4.4" />
+
+<Flow caption="Traceability links the test basis through to defects, in both directions (CTFL 1.4.4)" steps={[
+  { title: 'Test basis', sub: 'requirements, stories, risks' }, { title: 'Test conditions', sub: 'what to test' }, { title: 'Test cases', sub: 'how to test' },
+  { title: 'Test results', sub: 'pass / fail' }, { title: 'Defects', sub: 'what went wrong' },
+]} />
 
 - Test basis
 - Testware
@@ -582,6 +658,11 @@ Traceability provides information to assess product quality, process capability,
 
 <SyllabusRef ref="1.4.5" />
 
+<Compare caption="The two principal testing roles (CTFL 1.4.5)" columns={[
+  { title: 'Test management', points: ['Overall responsibility for the test process and team', 'Test planning', 'Monitoring and control', 'Test completion'] },
+  { title: 'Testing', points: ['Engineering (technical) side of testing', 'Test analysis and design', 'Test implementation', 'Test execution'] },
+]} />
+
 - **Test Management** - Overall responsibility for the test process, the test team and leadership of test activities · FOCUSES ON
 - Test planning
 - Monitoring & control
@@ -598,7 +679,7 @@ Traceability provides information to assess product quality, process capability,
 
 - Roles aren't job titles - different people may take them on at different times.
 
-#### Test Management Can Be Done By A…
+#### Test management can be done by a…
 
 - Team leader
 - Test manager
@@ -621,7 +702,6 @@ It is also possible for one person to take on the roles of testing and test mana
 
 ## 1.5 Essential Skills and Good Practices in Testing
 
-
 ### Generic Skills for Testers
 
 <SyllabusRef ref="1.5.1" />
@@ -637,14 +717,11 @@ It is also possible for one person to take on the roles of testing and test mana
 
 <SyllabusRef ref="1.5.1" />
 
-
-
 ### Communication Skills
 
 <SyllabusRef ref="1.5.1" />
 
-
-#### The Challenge
+#### The challenge
 
 - **Testers bring bad news** - …and people tend to blame the messenger
 - **Results feel like criticism** - of the product and of its author
@@ -674,7 +751,7 @@ To try to improve this view, information about defects and failures should be co
 - Everyone is responsible for quality
 - Shared workspace - physical or virtual
 
-#### Testers Collaborate With…
+#### Testers collaborate with…
 
 - **Business representatives** - to create suitable acceptance tests
 - **Developers** - to agree the test strategy and test automation approach
@@ -701,12 +778,10 @@ Depending on the context, the whole team approach may not always be appropriate.
 
 <IndependenceStairs />
 
-
 - **No independence** - Work products are tested by their author
 - **Some independence** - Tested by the author's peers on the same team
 - **High independence** - Tested by testers outside the author's team, within the organisation
 - **Very high independence** - Tested by testers from outside the organisation
-- More independent
 
 ### Independence: Pros and Cons
 

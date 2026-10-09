@@ -1,0 +1,21 @@
+---
+/** Three-point estimation on a number line. */
+import Figure from '../Figure.astro';
+const X = (v: number) => 60 + ((v - 4) / 16) * 700;
+---
+<Figure caption="Three-point estimation: E = (a + 4m + b) / 6 and SD = (b − a) / 6. Worked example: a = 6, m = 9, b = 18 gives 10 ± 2 hours (CTFL 5.1.4)">
+  <svg viewBox="0 0 820 220" role="img" aria-label="Three-point estimate number line">
+    <line class="ln" x1="40" y1="120" x2="780" y2="120"/>
+    <rect x={X(8)} y="102" width={X(12) - X(8)} height="36" class="b-tint"/>
+    {[[6, 'a = 6', 'optimistic', 'b-soft'], [9, 'm = 9', 'most likely', 'b-pink'], [18, 'b = 18', 'pessimistic', 'b-dark']].map(([v, l, s, b]) => (
+      <g>
+        <circle cx={X(Number(v))} cy="120" r="14" class={String(b)}/>
+        <text class="t-dark" x={X(Number(v))} y="80" style="font-size:16px">{l}</text>
+        <text class="t-sm" x={X(Number(v))} y="56">{s}</text>
+      </g>
+    ))}
+    <path class="b-deep" d={`M${X(10)} 150 l-10 16 h20 z`}/>
+    <text class="t-dark" x={X(10)} y="186" style="font-size:16px;fill:#b8234b">E = 10</text>
+    <text class="t-sm" x={X(10)} y="206">range 8-12 (± SD of 2)</text>
+  </svg>
+</Figure>

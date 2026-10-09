@@ -1,0 +1,21 @@
+---
+/** Verification vs validation. */
+import Figure from '../Figure.astro';
+import Icon from '../Icon.astro';
+---
+<Figure caption="Verification checks against the specification; validation checks against what users actually need (CTFL 1.1)">
+  <svg viewBox="0 0 820 230" role="img" aria-label="Verification versus validation">
+    <rect class="b-dark" x="10" y="10" width="390" height="210" rx="16"/>
+    <Icon name="clipboardCheck" size={44} x={36} y={34} fill="#fff"/>
+    <text class="t" x="230" y="56" style="font-size:24px">Verification</text>
+    <text class="t" x="205" y="112" style="font-size:18px">"Are we building the</text>
+    <text class="t" x="205" y="138" style="font-size:18px">product right?"</text>
+    <text class="t-sm-w" x="205" y="188">Checked against specified requirements</text>
+    <rect class="b-pink" x="420" y="10" width="390" height="210" rx="16"/>
+    <Icon name="userCheck" size={44} x={446} y={34} fill="#fff"/>
+    <text class="t" x="640" y="56" style="font-size:24px">Validation</text>
+    <text class="t" x="615" y="112" style="font-size:18px">"Are we building the</text>
+    <text class="t" x="615" y="138" style="font-size:18px">right product?"</text>
+    <text class="t-sm-w" x="615" y="188">Checked against stakeholders' real needs</text>
+  </svg>
+</Figure>

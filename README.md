@@ -5,7 +5,10 @@ Sparta Global course slides into readable chapter notes and adds end-of-chapter 
 the official ISTQB sample exams.
 
 It is a static website, hosted free on **GitHub Pages**. There is no server or database. Learners'
-progress is saved in their own browser.
+progress is saved in their own browser. It works on desktops, tablets and phones.
+
+> **Developers:** see **[ARCHITECTURE.md](ARCHITECTURE.md)** for how the code is structured: the content layer,
+> the quiz engine, progress storage, diagrams, styling, and how to make common changes.
 
 ---
 
@@ -15,9 +18,10 @@ progress is saved in their own browser.
 |---|---|
 | **Home** | A card for each of the six chapters, showing its weighting in the exam, course time and the learner's progress. |
 | **Introduction to the ISTQB** | What the ISTQB is, the Foundation certificate, the exam at a glance, how marks are granted, K-levels, and the question spread by chapter. |
-| **Chapter notes** (1–6) | The slide content as notes. Every topic shows the syllabus section it covers (e.g. *CTFL v4.0 · Section 4.2.1*), and **"What the syllabus says"** opens the official wording. |
-| **Chapter quiz** | The questions from **ISTQB Sample Exam C** for that chapter. |
-| **Extra practice** | The same chapter's questions from **Sample Exams A, B and D**. |
+| **Chapter notes** (1–6) | The slide content as notes, with diagrams. Key points are shown as cards. Each syllabus section (e.g. *2.1*) is a **collapsible** block, and the "In this chapter" menu opens to list that section's topics. Every topic shows the syllabus section it covers (e.g. *CTFL v4.0 · Section 4.2.1*), and **"What the syllabus says"** opens the official wording. |
+| **Chapter quiz** | The questions from **ISTQB Sample Paper C** that cover that chapter (the same number the real exam asks on it). |
+| **Extra practice** | The same chapter's questions from **Sample Papers A, B and D**, three more sets on exactly the same topics. |
+| **Exam tips** | Exam technique based on an analysis of all 160 sample-paper questions: the 8 calculation topics worth 20% of the exam (with a method for each), the K-level mix, key words, guessing myths and question formats. Includes a quiz of all 32 K3 questions. |
 | **Past papers** | Sit any of the four ISTQB sample exams in full: 40 questions with an optional 60- or 75-minute timer, then a score for each chapter. |
 
 ### How the quizzes work
@@ -39,9 +43,27 @@ Each sample exam can be sat as a full mock exam:
 
 ### Diagrams
 
-Key topics in the chapter notes have diagrams: the test process, error → defect → failure, the V-model, the test pyramid,
-the DevOps pipeline, the review process, boundary values, state transitions, control flow graphs, the testing quadrants,
-the risk matrix and the defect lifecycle. They're drawn as SVG, so they stay sharp at any size and use the Sparta colours.
+The chapter notes include about 50 diagrams, drawn as SVG so they stay sharp at any size and use the Sparta colours. Examples
+include the test process, error → defect → failure, the seven principles, the V-model, the test pyramid, the DevOps pipeline,
+shift-left, the review process, boundary values, state transitions, control flow graphs, the testing quadrants, risk
+management, three-point estimation and the defect lifecycle.
+
+### Exercises
+
+Practice questions in the notes (the UV index, boiler timer, BVA, state transition and estimation exercises, and the
+"think about it" prompts on the testing principles) appear in a clearly marked **Exercise** or **Discuss** box. The
+answer is hidden until you click **Show answer**.
+
+### "Watch out for…" boxes
+
+At the end of each chapter is a list of the common traps for that chapter: the confusions the sample papers
+deliberately test, taken from ISTQB's own explanations of why wrong answers are wrong. They're edited in
+`src/data/traps.ts`.
+
+### Collapsible sections
+
+Each syllabus section (1.1, 1.2, 2.1…) opens and closes. Use **Expand all sections** / **Collapse all** above the notes.
+Clicking a topic in the "In this chapter" menu opens its section and jumps straight to it.
 
 ### Progress
 
@@ -186,6 +208,26 @@ Block types for the question text:
 one of the options, if a "Select TWO" question doesn't have two answers, or if an exam doesn't have 40
 questions. Run `npm run check` after editing.
 
+### Adding an exercise to the notes
+
+```mdx
+import Exercise from '../../components/Exercise.astro';
+
+<Exercise title="UV index partitions" options={['1, 2, 5, 9, 11', '1, 5, 7, 9, 11']}>
+
+Which set of input data exercises all the partitions?
+
+<div slot="answer">
+
+**b)** - one value in each partition.
+
+</div>
+</Exercise>
+```
+
+Use `kind="discuss"` for an open question with a suggested answer. Leave a blank line after the opening tag and
+around the answer so the Markdown inside is formatted.
+
 ### Other things you might change
 
 | To change… | Edit… |
@@ -198,21 +240,39 @@ questions. Run `npm run check` after editing.
 
 ### Adding a diagram to the notes
 
-Import it at the top of the chapter file, then place it under any topic:
+Most diagrams use three reusable building blocks, so you can add a new one with just a few lines of MDX and no drawing.
+Import the one you need at the top of the chapter file, then place it under any topic:
 
 ```mdx
-import VModel from '../../components/diagrams/VModel.astro';
+import Flow from '../../components/diagrams/Flow.astro';
+import Compare from '../../components/diagrams/Compare.astro';
+import Tiles from '../../components/diagrams/Tiles.astro';
 
-### The V-Model
+<!-- A process: boxes joined by arrows (add loop="…" for a cycle) -->
+<Flow caption="The review process (CTFL 3.2.2)" steps={[
+  { title: 'Planning' }, { title: 'Individual review', sub: 'find anomalies' }, { title: 'Fixing & reporting' },
+]} />
 
-<SyllabusRef ref="2.1" />
+<!-- Two or three columns side by side (add middle="vs" between two) -->
+<Compare caption="Static vs dynamic testing" columns={[
+  { title: 'Static', sub: 'no code run', points: ['Finds defects directly'] },
+  { title: 'Dynamic', sub: 'code is run', points: ['Finds failures'] },
+]} />
 
-<VModel />
+<!-- A grid of tiles (cols defaults to 4) -->
+<Tiles cols={3} caption="Roles in a review" tiles={[
+  { title: 'Author', sub: 'creates and fixes it' }, { title: 'Moderator' }, { title: 'Scribe' },
+]} />
 ```
+
+The more detailed diagrams (V-model, state diagram, defect lifecycle and so on) each have their own file in
+`src/components/diagrams/` and are used like `<VModel />`. Text inside the building blocks wraps automatically.
 
 ---
 
 ## How it's built
+
+*For the full picture, read **[ARCHITECTURE.md](ARCHITECTURE.md)**.*
 
 The site uses **[Astro](https://astro.build)**, a framework for content sites. Astro turns the Markdown notes and JSON
 questions into plain, fast HTML pages at build time. JavaScript only runs where it's needed: the quiz and the
@@ -226,10 +286,12 @@ progress tracking.
     ├── content/chapters/          Chapter notes (MDX)
     ├── data/exams/                ISTQB sample exams A–D (JSON)
     ├── components/                Reusable pieces: Quiz, QuestionBody, SyllabusRef, Header…
-    │   └── diagrams/              SVG diagrams used in the notes
+    │   └── diagrams/              SVG diagrams (Flow, Compare and Tiles are reusable)
     ├── layouts/BaseLayout.astro   The shared page shell (head, header, footer)
     ├── lib/
     │   ├── site.ts                Settings and helpers (pass mark, links)
+    │   ├── svg.ts                 Text wrapping for diagrams
+    │   ├── rehype-collapsible-sections.mjs   Makes each chapter section collapsible
     │   ├── data.ts                Loads chapters and questions
     │   └── progress.ts            Saves progress in the browser
     ├── pages/                     One file per page or page pattern

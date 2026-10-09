@@ -1,0 +1,25 @@
+---
+/** Testing finds failures and defects; debugging finds and fixes the cause; testing then confirms. */
+import Figure from '../Figure.astro';
+const steps: [string, string, string][] = [
+  ['Dynamic test', 'triggers a failure', 'b-dark'], ['Reproduce', 'the failure', 'b-pink'], ['Diagnose', 'find the root cause', 'b-pink'],
+  ['Fix', 'the defect', 'b-pink'], ['Confirmation test', 'is it fixed?', 'b-dark'], ['Regression test', 'anything else broken?', 'b-dark'],
+];
+---
+<Figure caption="Debugging (pink) sits between testing activities - it is a development task, not testing (CTFL 1.1.2)">
+  <svg viewBox="0 0 820 190" role="img" aria-label="Testing and debugging cycle">
+    <defs><marker id="td-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6b6b6b"/></marker></defs>
+    {steps.map(([h, s, b], i) => (
+      <g>
+        <rect class={b} x={10 + i * 136} y="40" width="120" height="96" rx="12"/>
+        <text class="t" x={70 + i * 136} y="78" style="font-size:13.5px">{h}</text>
+        <text class="t-sm-w" x={70 + i * 136} y="104" style="font-size:11.5px">{s}</text>
+        {i < 5 && <line class="ln" x1={132 + i * 136} y1="88" x2={144 + i * 136} y2="88" marker-end="url(#td-a)"/>}
+      </g>
+    ))}
+    <path class="ln-dash" d="M146 150 v14 h390 v-14"/>
+    <text class="t-lbl" x="341" y="182">DEBUGGING</text>
+    <text class="t-lbl" x="70" y="24">TESTING</text>
+    <text class="t-lbl" x="682" y="24">TESTING</text>
+  </svg>
+</Figure>

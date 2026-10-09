@@ -9,11 +9,13 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Exercise from '../../components/Exercise.astro';
+import Compare from '../../components/diagrams/Compare.astro';
+import Tiles from '../../components/diagrams/Tiles.astro';
 import ReviewFormality from '../../components/diagrams/ReviewFormality.astro';
 import ReviewProcess from '../../components/diagrams/ReviewProcess.astro';
 
 ## 3.1 Static Testing Basics
-
 
 ### What is Static Testing?
 
@@ -168,7 +170,13 @@ Stakeholders can verify that the documented requirements describe their actual n
 
 <SyllabusRef ref="3.1.3" />
 
+<Compare middle="vs" caption="Static and dynamic testing find different defects - they complement each other (CTFL 3.1.3)" columns={[
+  { title: 'Static testing', sub: 'no code is run', points: ['Finds defects directly', 'Works on any readable work product', 'e.g. unreachable code, spec gaps, standards'] },
+  { title: 'Dynamic testing', sub: 'the software is run', points: ['Causes failures, then defects are found', 'Needs executable code', 'e.g. performance, wrong outputs'] },
+]} />
+
 - Both find defects - and they complement each other.
+
 |   | Static testing | Dynamic testing |
 |---|---|---|
 | Unique finds | Some defects can only be found statically | Some defects can only be found dynamically |
@@ -176,7 +184,6 @@ Stakeholders can verify that the documented requirements describe their actual n
 | Hard-to-reach code | More easily finds defects on rarely executed paths | - |
 | Applies to | Non-executable work products too | Executable work products only |
 | Quality characteristics | Not dependent on execution (e.g. maintainability) | Dependent on execution (e.g. performance efficiency) |
-
 
 ### Defects Easier to Find Statically
 
@@ -197,7 +204,6 @@ Typical defects that are easier and/or cheaper to find through static testing in
 </SyllabusText>
 
 ## 3.2 Feedback and Review Process
-
 
 ### Early and Frequent Feedback
 
@@ -224,12 +230,6 @@ Frequent stakeholder feedback throughout the SDLC can prevent misunderstandings 
 
 <ReviewProcess />
 
-
-- Planning
-- Review initiation
-- Individual review
-- Communication & analysis
-- Fixing & reporting
 - **Structured but flexible** - A generic framework, tailored to the situation
 - **More formal = more tasks** - Formal reviews need more of the tasks in each activity
 - **Big work products** - May need the process run several times to cover everything
@@ -254,10 +254,14 @@ The size of many work products makes them too large to be covered by a single re
 | Communication & analysis | Analyse and discuss the anomalies | Decisions on status, ownership and action for each anomaly - maybe a follow-up review |
 | Fixing & reporting | Reach exit criteria; accept the work product | Defect reports for corrective action; report on review results |
 
-
 ### Roles in Reviews
 
 <SyllabusRef ref="3.2.3" />
+
+<Tiles cols={3} caption="Roles in a review (CTFL 3.2.3)" tiles={[
+  { title: 'Manager', sub: 'decides what is reviewed' }, { title: 'Author', sub: 'creates and fixes it' }, { title: 'Moderator', sub: 'runs the meetings' },
+  { title: 'Scribe', sub: 'records anomalies' }, { title: 'Reviewer', sub: 'performs the review' }, { title: 'Review leader', sub: 'overall responsibility' },
+]} />
 
 - **Manager** - Decides what is reviewed; provides resources such as staff and time
 - **Author** - Creates and fixes the work product under review
@@ -272,21 +276,8 @@ The size of many work products makes them too large to be covered by a single re
 
 <ReviewFormality />
 
+#### Formality depends on…
 
-- Informal review
-- Walkthrough
-- Technical review
-- Inspection
-- Less formal
-- More formal
-
-#### Formality Depends On…
-
-- The SDLC
-- Process maturity
-- Criticality & complexity
-- Legal / regulatory needs
-- Need for an audit trail
 - The same work product can be reviewed more than once - e.g. informally first, formally later.
 
 <SyllabusText>
@@ -312,17 +303,26 @@ Selecting the right review type is key to achieving the required review objectiv
 
 </SyllabusText>
 
-### Review Types - Answers
+### Exercise: Compare the Review Types
 
 <SyllabusRef ref="3.2.4" />
+
+<Exercise title="Review types">
+
+Using section 3.2.4 of the syllabus, describe each review type's **objectives**, **participants**, **process** and **output**:
+informal review, walkthrough, technical review and inspection.
+
+<div slot="answer">
 
 | Review type | Objectives | Participants | Process | Output |
 |---|---|---|---|---|
 | Informal review | Find anomalies | Author, peers | Not defined | No formal documentation required |
 | Walkthrough | Find anomalies, evaluate quality, build confidence, educate reviewers, gain consensus, generate ideas, motivate authors | Author, reviewers | Led by the author; individual review beforehand is optional | Defect reports |
-| Technical review | As walkthrough, plus gain consensus and make decisions on a technical problem | Author, technically qualified reviewers, moderator | Led by a moderator; technically qualified reviewers | Defect reports, technical decisions |
-| Inspection | Find anomalies, evaluate quality, build confidence, motivate authors | Manager, author, moderator, scribe, reviewers, review leader | Full generic process; author can't be moderator or scribe | Defect reports, decisions, metrics, accepted work product, review results |
+| Technical review | As walkthrough, plus gain consensus and make decisions on a technical problem | Author, technically qualified reviewers, moderator | Led by a moderator | Defect reports, technical decisions |
+| Inspection | Find anomalies, evaluate quality, build confidence, motivate authors | Manager, author, moderator, scribe, reviewers, review leader | Full generic process; the author can't be moderator or scribe | Defect reports, decisions, metrics, accepted work product, review results |
 
+</div>
+</Exercise>
 
 ### Success Factors for Reviews
 

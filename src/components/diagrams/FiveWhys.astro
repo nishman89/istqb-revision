@@ -1,0 +1,19 @@
+---
+/** 5 Whys worked example from the course. */
+import Figure from '../Figure.astro';
+const whys = ['Error in the calculation of the OAP discount', 'Developer entered the discount as 10% rather than 20%',
+  'Specification states 10% instead of 20%', 'Miscommunication between the school CEO and the Product Owner', 'No review of the specification'];
+---
+<Figure caption="Root cause analysis with the 5 Whys - keep asking until you reach a cause you can fix (CTFL 1.2.3)">
+  <svg viewBox="0 0 820 360" role="img" aria-label="Five whys example">
+    <rect class="b-dark" x="10" y="10" width="800" height="48" rx="10"/>
+    <text class="t" x="410" y="34">Failure: customers over 60 are overcharged for their lessons</text>
+    {whys.map((w, i) => (
+      <g>
+        <rect class={i === 4 ? 'b-pink' : 'b-white'} x={30 + i * 30} y={72 + i * 56} width={780 - i * 30} height="46" rx="10"/>
+        <text class="t-lbl" x={70 + i * 30} y={100 + i * 56} style={i === 4 ? "fill:#fff" : undefined}>WHY {i + 1}</text>
+        <text class={i === 4 ? 't' : 't-dark'} x={110 + i * 30} y={95 + i * 56} style="text-anchor:start;font-weight:600">{w}</text>
+      </g>
+    ))}
+  </svg>
+</Figure>

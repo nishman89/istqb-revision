@@ -1,0 +1,334 @@
+# Architecture
+
+This document explains how the Sparta Global ISTQB CTFL study site is put together. It covers why it's built
+this way, how the pieces fit, and how to make common changes safely. It's written for a developer picking the
+project up for the first time. For setup and day-to-day editing, start with the [README](README.md).
+
+---
+
+## 1. The big picture
+
+The site is a **static site** built with [Astro](https://astro.build) and hosted on **GitHub Pages**.
+
+```
+ Content (Markdown + JSON)  ──►  Astro build (npm run build)  ──►  Plain HTML/CSS/JS in dist/  ──►  GitHub Pages
+        you edit this               runs on GitHub Actions             what visitors download
+```
+
+- **Everything is decided at build time.** Astro reads the chapter notes and exam data, validates them, and turns
+  every page into a ready-made HTML file. There is no server and no database at runtime.
+- **JavaScript is only used where it's needed:** marking quizzes, the exam timer, collapsible menus, and saving progress.
+  Reading pages work with JavaScript switched off.
+- **Learner progress lives in the browser** (`localStorage`). Nothing is sent anywhere.
+
+### Why these choices
+
+| Decision | Why |
+|---|---|
+| **Static site, no backend** | GitHub Pages only serves files. It's free, fast, needs no maintenance, and has nothing to hack. |
+| **Astro** | Built for content sites. It turns Markdown into pages, validates content with schemas, and outputs plain HTML with very little JavaScript. Components let the header, quiz and diagrams be written once. |
+| **MDX for notes** | Markdown that also accepts components, so a chapter can contain `<VModel />` or `<SyllabusRef ref="2.1" />`. |
+| **JSON for questions** | Exam questions are structured data (options, answers, explanations), not prose. JSON with a schema means a broken question fails the build instead of reaching a learner. |
+| **SVG diagrams as components** | Sharp at any size, themeable with CSS, accessible, and editable in code. No image files to keep in sync. |
+| **localStorage for progress** | It's the only persistence available without a server. It's private to each learner and enough for "what have I done and how did I score". |
+
+---
+
+## 2. How a request becomes a page
+
+There are four kinds of page. Each is a file in `src/pages/` and gets its data from the content layer.
+
+```
+src/pages/
+├── index.astro                    /                          Home: chapter cards + progress
+├── introduction.astro             /introduction/             Introduction to the ISTQB
+├── chapters/[chapter].astro       /chapters/1/ … /6/         Chapter notes (one MDX file each)
+├── quiz/[chapter]/[set].astro     /quiz/4/c/ …               Chapter quiz (set C) or extra practice (A, B, D)
+├── past-papers/index.astro        /past-papers/              List of the four sample papers
+├── past-papers/[set].astro        /past-papers/c/ …          A full 40-question timed paper
+├── exam-tips/index.astro          /exam-tips/                Exam technique, with statistics calculated from the papers
+├── exam-tips/k3.astro             /exam-tips/k3/             All 32 K3 questions, grouped by skill
+└── 404.astro
+```
+
+Files with `[brackets]` are **dynamic routes**. Each exports a `getStaticPaths()` function that lists every page to
+generate. For example, the quiz route builds one page for each chapter and exam set, which is 6 × 4 = 24 pages.
+
+```ts
+// src/pages/quiz/[chapter]/[set].astro (simplified)
+export async function getStaticPaths() {
+  const chapters = await getChapters();
+  return chapters.flatMap(({ data }) =>
+    ['C', 'A', 'B', 'D'].map((set) => ({ params: { chapter: String(data.number), set: set.toLowerCase() }, props: { chapter: data, set } })),
+  );
+}
+```
+
+---
+
+## 3. The content layer
+
+Content lives in `src/content/` and `src/data/`, and is declared in **`src/content.config.ts`**. This file is the
+single source of truth for what the content must look like.
+
+### Chapters: `src/content/chapters/chapter-N.mdx`
+
+Each file has frontmatter (validated) followed by the notes:
+
+```mdx
+---
+number: 2
+title: "Testing Throughout the SDLC"
+minutes: 130
+summary: "…"
+objectives:
+  - "How testing is incorporated into different development approaches"
+---
+import SyllabusRef from '../../components/SyllabusRef.astro';
+import VModel from '../../components/diagrams/VModel.astro';
+
+## 2.1 Testing in the Context of an SDLC      ← a section (becomes collapsible)
+
+### The V-Model                               ← a topic (listed in the side menu)
+<SyllabusRef ref="2.1" />
+<VModel />
+- **Pros** - Test plans developed earlier · Defects found earlier
+```
+
+The heading levels matter:
+
+- `##` = a syllabus **section** (1.1, 2.1…). Each one is wrapped in a collapsible block.
+- `###` = a **topic** inside a section. Topics are listed in the "In this chapter" menu.
+- `####` = a small label within a topic.
+
+### Exams: `src/data/exams/exam-a.json` … `exam-d.json`
+
+Each file is one ISTQB sample paper:
+
+```jsonc
+{ "set": "C", "version": "1.6", "questions": [ /* exactly 40 */ ] }
+```
+
+The question schema (`question` in `content.config.ts`) enforces the rules a question must follow:
+
+- the `k` level is K1, K2 or K3
+- there are at least 4 options
+- `answer.length === select`, so "Select TWO" has two answers
+- every answer key is one of the options
+- each paper has exactly 40 questions
+
+If any rule fails, **`npm run build` stops with an error** that names the file and the field.
+
+A question's text is an ordered list of **blocks**, so tables, boxed text and diagrams appear exactly where the
+original paper put them:
+
+| `t` | Renders as | Example use |
+|---|---|---|
+| `p` | paragraph | most question text |
+| `list` | marker + text rows | "1. … 2. …", "A. … B. …" |
+| `table` | HTML table, first row is the header | decision tables, traceability matrices |
+| `box` | bordered block of lines | user stories, test logs, business rules |
+| `formula` | centred formula | estimation formulas |
+| `img` | image from `public/exam-figures/` | state diagrams, control flow graphs, charts |
+
+Each question also has a `chapter` (taken from its learning objective). That's how the chapter quizzes pick out "the
+Paper C questions for Chapter 4".
+
+### Reading content: `src/lib/data.ts`
+
+Pages never read files directly. They call three small functions:
+
+```ts
+getChapters()                 // all chapters, sorted 1-6
+getQuestions(set, chapter)    // e.g. the Chapter 4 questions from Paper C
+getExam(set)                  // a whole paper (all 40 questions)
+```
+
+---
+
+## 4. Turning Markdown into the notes page
+
+Two small **rehype plugins** (rehype transforms HTML after the Markdown is parsed) shape the notes. They're
+registered in `astro.config.mjs`:
+
+```js
+integrations: [mdx({ rehypePlugins: [topicCards, collapsibleSections] })]
+```
+
+| Plugin | File | What it does |
+|---|---|---|
+| **topicCards** | `src/lib/rehype-topic-cards.mjs` | Finds lists where **every** item starts with bold text (`- **Title** - description`) and turns them into a grid of cards. ` · ` in a description becomes a line break. Plain lists are left alone. |
+| **collapsibleSections** | `src/lib/rehype-collapsible-sections.mjs` | Wraps each `##` heading and everything up to the next `##` in a `<details>` element, so sections open and close. |
+
+The chapter page (`src/pages/chapters/[chapter].astro`) then:
+
+1. calls `render(entry)`, which returns the compiled notes **and** a list of every heading;
+2. groups the `###` topics under their `##` section to build the collapsible "In this chapter" menu;
+3. includes a small script that, when a topic link is clicked, **opens its section** and scrolls to it (a link
+   into a closed `<details>` would otherwise go nowhere).
+
+---
+
+## 5. Components
+
+```
+src/components/
+├── Header.astro          Logo + navigation (desktop links; a "Menu" panel on phones)
+├── Footer.astro          ISTQB copyright acknowledgement
+├── PageHead.astro        Slide-style page title with the pink full stop and rule
+├── SyllabusRef.astro     The "Syllabus · CTFL v4.0 · Section 2.1" badge
+├── SyllabusText.astro    The collapsible "What the syllabus says" box
+├── WatchOut.astro        "Watch out for…" exam traps at the end of each chapter (data: src/data/traps.ts)
+├── Exercise.astro        A practice question in the notes, answer in a collapsible panel (slot="answer")
+├── ExamSplit.astro       Questions-per-chapter bar chart (Introduction page)
+├── QuestionBody.astro    Renders a question's blocks (p / list / table / box / formula / img)
+├── Quiz.astro            The quiz and mock-exam engine - see section 6
+├── Figure.astro          Card + caption wrapper used by every diagram
+└── diagrams/
+    ├── Flow.astro        Reusable: steps joined by arrows (optional loop)
+    ├── Compare.astro     Reusable: 2-3 columns of points
+    ├── Tiles.astro       Reusable: a grid of tiles
+    └── VModel.astro …    Bespoke diagrams (V-model, defect lifecycle, quadrants, BVA, etc.)
+```
+
+### Diagrams
+
+All diagrams are inline SVG with a `viewBox`, so they scale to any width. Colours come from CSS classes in
+`src/styles/global.css` (`.b-pink`, `.b-dark`, `.t`, `.ln`…), which use the theme variables. Changing the
+brand colours therefore restyles every diagram.
+
+SVG has no automatic text wrapping, so `src/lib/svg.ts` provides `wrap(text, maxChars)`. **Flow**, **Compare** and
+**Tiles** use it to fit text into their boxes, which is why they're the recommended way to add new diagrams: you pass
+data, not coordinates.
+
+---
+
+## 6. The quiz engine (`src/components/Quiz.astro`)
+
+The quiz is built so that **everything a learner might see is rendered into the HTML at build time**. That includes
+questions, options and every explanation. The browser script only shows, hides and marks.
+
+```
+Build time (Astro)                                   Browser (script in Quiz.astro)
+──────────────────                                   ──────────────────────────────
+<section data-quiz-id="ch4-c" data-exam?>            • count answered questions
+  <li data-question="c-21"                           • stop a 3rd tick on "Select TWO"
+      data-answer="b" data-select="1"                • on submit: compare picked vs data-answer,
+      data-chapter="4">                                mark options, reveal each review block
+    question blocks + options (inputs)               • compute score, pass/fail (65%)
+    <div data-review hidden> explanations </div>     • save the attempt to localStorage
+  </li>                                              • exam mode: start screen, countdown,
+  <div data-results hidden> score, breakdown           auto-submit at 0:00, chapter breakdown
+```
+
+- **Chapter quizzes and past papers use the same component.** Past papers pass `examMode`, which adds the time-limit
+  picker, the countdown and the score-by-chapter table.
+- **The answers are in the page source** (`data-answer`). That's fine for a revision site: it's open-book practice,
+  not an assessment. If it ever needs to be secure, marking would have to move to a server.
+- State is kept in the DOM (checked inputs and CSS classes such as `is-right` / `is-wrong`), not in a framework, so the
+  script needs no libraries.
+
+---
+
+## 7. Progress storage (`src/lib/progress.ts`)
+
+All reading and writing of progress goes through this one module:
+
+```ts
+loadProgress()                 // { version: 1, chaptersRead: number[], quizzes: Record<id, QuizRecord> }
+markChapterRead(n)
+saveQuizAttempt(id, attempt)   // keeps attempts, best and last
+getQuiz(id)
+resetProgress()
+quizId(chapter, set)           // "ch4-c"  - chapter quizzes
+examId(set)                    // "exam-c" - full past papers
+```
+
+- Everything is stored under one `localStorage` key, `sparta-ctfl-progress`, as JSON with a `version` field. If the
+  shape ever changes, bump the version and `loadProgress()` will start fresh instead of crashing on old data.
+- Every call is wrapped in `try/catch`, because storage can be blocked (some private-browsing modes). The site
+  still works; it just doesn't remember.
+
+---
+
+## 8. Styling
+
+- **`src/styles/global.css`** holds the theme: CSS variables (colours, fonts, radius, shadow) at the top, then shared
+  utilities (`.card`, `.btn`, `.pill`, `.grid`, `.eyebrow`), table styles, diagram classes and mobile tweaks.
+- **Component styles** are written in a `<style>` block inside each `.astro` file. Astro scopes these to that component
+  automatically, so they can't leak. `:global(...)` is used where a page styles HTML it didn't create itself, such as
+  the notes produced from MDX.
+- **Brand:** charcoal `#2d2a2b`, pink `#e33661`, the pink full stop after titles, and a rule with an end dot, all taken
+  from the Sparta slide template. Headings use Zilla Slab (a free slab font close to Sparta's Bw Glenn Slab) and the
+  body uses Source Sans 3, both from Google Fonts.
+
+### Responsive design
+
+The site is designed for desktop and tested at phone width (390 px):
+
+| Area | Desktop | Phone (≤ 48 rem / 56 rem) |
+|---|---|---|
+| Header | Inline links + Chapters dropdown | One **Menu** button opening a full-width panel |
+| Chapter page | Sticky contents sidebar + notes | Contents becomes a collapsed panel above the notes |
+| Card lists, tiles | Multi-column grid | Single column (`auto-fill` + `minmax`) |
+| Tables | Normal | Scroll sideways inside their own box |
+| Quiz | Options with "✓ Correct answer" on the right | Flags move under the option; results stack vertically |
+
+Layout grids use `minmax(0, 1fr)` columns, so wide content (a big table) can't push the page wider than the screen.
+
+---
+
+## 9. Build and deployment
+
+```
+npm run dev      → local server with live reload (http://localhost:4321)
+npm run build    → astro check (TypeScript + content schemas) then astro build → dist/
+npm run preview  → serve dist/ exactly as it will be published
+```
+
+**`.github/workflows/deploy.yml`** runs on every push to `main`:
+
+1. `withastro/action` installs dependencies and runs `npm run build`. A content or type error stops the deploy here.
+2. `actions/deploy-pages` publishes `dist/` to GitHub Pages.
+
+GitHub Pages serves a project site from a sub-path (`/istqb-revision/`), so `astro.config.mjs` reads `BASE_PATH`
+from the workflow. **All internal links must go through `url()`** in `src/lib/site.ts`, which adds that prefix:
+
+```astro
+<a href={url('chapters/2')}>   <!-- → /istqb-revision/chapters/2/ on GitHub, /chapters/2/ locally -->
+```
+
+A hard-coded `href="/chapters/2"` would work locally but break on GitHub Pages.
+
+---
+
+## 10. Common changes
+
+| I want to… | Do this |
+|---|---|
+| Fix a typo in the notes | Edit `src/content/chapters/chapter-N.mdx`. |
+| Add a topic | Add a `###` heading in the right `##` section. It appears in the side menu automatically. |
+| Edit a chapter's exam traps | `src/data/traps.ts` (a `trap` and the `truth` for each). |
+| Change the K3 methods on Exam tips | `src/lib/k3.ts`. The statistics on that page are calculated from the exam JSON at build time, so they update themselves. |
+| Add a practice question to the notes | Wrap it in `<Exercise title="…">` with the answer in `<div slot="answer">` (see the README). |
+| Add a diagram | Use `<Flow>`, `<Compare>` or `<Tiles>` in the MDX (see the README), or copy a bespoke one in `components/diagrams/`. |
+| Fix a question or explanation | Edit `src/data/exams/exam-X.json`, then run `npm run check`. |
+| Add a new sample paper | Add `exam-e.json` (40 questions), add `'E'` to the `set` enum in `content.config.ts`, and add it to `PRACTICE_SETS` in `src/lib/site.ts`. The routes pick it up automatically. |
+| Change the main chapter-quiz paper | Change `MAIN_SET` in `src/lib/site.ts`. |
+| Change the pass mark | `PASS_MARK` in `src/lib/site.ts`. |
+| Change colours or fonts | The variables at the top of `src/styles/global.css` (fonts are loaded in `BaseLayout.astro`). |
+| Add a page | Create `src/pages/my-page.astro` using `BaseLayout` and `PageHead`. Link to it with `url('my-page')`. |
+
+---
+
+## 11. Where the content came from
+
+- **Chapter notes:** converted once from the Sparta Global CTFL slide decks (titles, key points, syllabus
+  references and the "syllabus detail" speaker notes), then tidied by hand. They're now maintained directly as MDX.
+  There's no link back to the slides.
+- **Questions and explanations:** extracted once from the official ISTQB CTFL v4.0 sample exam PDFs (A v1.7, B v1.7,
+  C v1.6, D v1.5). Tables were rebuilt as data, and the diagrams were cropped into `public/exam-figures/`. They're now
+  maintained directly as JSON. If ISTQB publishes a new version of a paper, update the matching JSON file by hand.
+
+ISTQB material is © International Software Testing Qualifications Board and is acknowledged on every page, as its
+copyright terms require.

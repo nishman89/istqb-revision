@@ -1,0 +1,20 @@
+---
+/** The four test types as a 2x2. */
+import Figure from '../Figure.astro';
+---
+<Figure caption="Four test types - every one can be applied at every test level (CTFL 2.2.2)">
+  <svg viewBox="0 0 820 260" role="img" aria-label="Four test types">
+    {[
+      ['Functional', 'WHAT the system does', 'b-pink', 20, 20], ['Non-functional', 'HOW WELL it does it', 'b-dark', 420, 20],
+      ['Black-box', 'based on the specification', 'b-dark', 20, 140], ['White-box', 'based on the internal structure', 'b-pink', 420, 140],
+    ].map(([h, s, b, x, y]) => (
+      <g>
+        <rect class={b as string} x={x as number} y={y as number} width="380" height="100" rx="14"/>
+        <text class="t" x={(x as number) + 190} y={(y as number) + 40} style="font-size:22px">{h}</text>
+        <text class="t-sm-w" x={(x as number) + 190} y={(y as number) + 72} style="font-size:14px">{s}</text>
+      </g>
+    ))}
+    <text class="t-lbl" x="410" y="76">VS</text>
+    <text class="t-lbl" x="410" y="196">VS</text>
+  </svg>
+</Figure>

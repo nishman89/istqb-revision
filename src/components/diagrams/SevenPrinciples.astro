@@ -1,0 +1,30 @@
+---
+/** The seven testing principles at a glance. */
+import Icon from '../Icon.astro';
+const pr = [
+  ['magnifyingGlass', 'Testing shows the presence, not the absence, of defects'], ['infinity', 'Exhaustive testing is impossible'],
+  ['clock', 'Early testing saves time and money'], ['circleNodes', 'Defects cluster together'], ['sprayCan', 'Tests wear out'],
+  ['compass', 'Testing is context dependent'], ['triangleExclamation', 'Absence-of-defects fallacy'],
+] as const;
+---
+<figure class="diagram">
+  <ol class="principles">
+    {pr.map(([icon, text], i) => (
+      <li>
+        <span class="num">{i + 1}</span>
+        <span class="ic"><Icon name={icon} size={26} /></span>
+        <span class="txt">{text}</span>
+      </li>
+    ))}
+  </ol>
+  <figcaption>The seven testing principles (CTFL 1.3)</figcaption>
+</figure>
+
+<style>
+  .principles { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+  li { display: grid; grid-template-columns: 2.5rem 2rem 1fr; align-items: center; gap: 0.6rem; padding: 0.7rem 0.9rem; border-radius: 12px; background: var(--bg); }
+  li:nth-child(odd) .num { background: var(--pink); }
+  .num { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--charcoal); color: #fff; font: 700 1.2rem var(--font-head); }
+  .ic { color: var(--pink); display: grid; place-items: center; }
+  .txt { font-weight: 700; line-height: 1.3; }
+</style>

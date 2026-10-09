@@ -1,0 +1,22 @@
+---
+/** How far a change's side effects can reach. */
+import Figure from '../Figure.astro';
+---
+<Figure caption="A change can affect more than the code that changed - impact analysis decides how far regression testing should go (CTFL 2.2.3)">
+  <svg viewBox="0 0 820 300" role="img" aria-label="Regression ripple effect">
+    <circle cx="300" cy="150" r="140" class="b-light"/>
+    <circle cx="300" cy="150" r="105" class="b-soft"/>
+    <circle cx="300" cy="150" r="70" class="b-pink"/>
+    <circle cx="300" cy="150" r="38" class="b-dark"/>
+    <text class="t" x="300" y="150" style="font-size:12.5px">Changed code</text>
+    <text class="t" x="300" y="98" style="font-size:12.5px">Other components</text>
+    <text class="t-dark" x="300" y="62" style="font-size:12.5px">Connected systems</text>
+    <text class="t-dark" x="300" y="27" style="font-size:12.5px">Environment</text>
+    <rect class="b-white" x="480" y="40" width="320" height="104" rx="12"/>
+    <text class="t-dark" x="640" y="72">Confirmation testing</text>
+    <text class="t-sm" x="640" y="104">Is the original defect fixed?</text>
+    <rect class="b-white" x="480" y="160" width="320" height="104" rx="12"/>
+    <text class="t-dark" x="640" y="192">Regression testing</text>
+    <text class="t-sm" x="640" y="224">Has the change broken anything else?</text>
+  </svg>
+</Figure>

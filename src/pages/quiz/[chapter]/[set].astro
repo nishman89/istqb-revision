@@ -25,6 +25,13 @@ const others = [MAIN_SET, ...PRACTICE_SETS].filter((s) => s !== set);
   </PageHead>
 
   <div class="container">
+    <p class="explain card card--tint">
+      {isMain
+        ? <>This is the <strong>Chapter {chapter.number} quiz</strong>: the {questions.length} questions from <strong>ISTQB Sample Paper {set}</strong> that cover this chapter.
+            For more practice, try the Chapter {chapter.number} questions from Papers {PRACTICE_SETS.join(', ').replace(/, ([^,]*)$/, ' and $1')} below.</>
+        : <>These are the {questions.length} <strong>Chapter {chapter.number}</strong> questions from <strong>ISTQB Sample Paper {set}</strong> - extra practice
+            alongside the main chapter quiz (Paper {MAIN_SET}).</>}
+    </p>
     <Quiz questions={questions} quizId={quizId(chapter.number, set)} />
 
     <nav class="more card no-print" aria-label="Other question sets">
@@ -40,6 +47,7 @@ const others = [MAIN_SET, ...PRACTICE_SETS].filter((s) => s !== set);
 
 <style>
   .back { margin: 1rem 0 0; font-weight: 700; }
+  .explain { margin: 0 0 1.25rem; }
   .more { margin-top: 2rem; }
   .more ul { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; list-style: none; padding: 0; margin: 0.5rem 0 0; font-weight: 700; }
 </style>

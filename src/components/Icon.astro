@@ -1,0 +1,9 @@
+---
+/** Inline Font Awesome icon (paths stored in src/data/icons.json). Works inside HTML and inside SVG diagrams. */
+import icons from '../data/icons.json';
+
+interface Props { name: keyof typeof icons; size?: number; x?: number; y?: number; fill?: string; }
+const { name, size = 24, x, y, fill = 'currentColor' } = Astro.props;
+const { viewBox, d } = icons[name];
+---
+<svg viewBox={viewBox} width={size} height={size} x={x} y={y} fill={fill} aria-hidden="true" focusable="false"><path d={d} /></svg>
