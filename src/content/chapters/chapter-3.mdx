@@ -1,0 +1,337 @@
+---
+number: 3
+title: "Static Testing"
+minutes: 80
+summary: "Finding defects without running the code: static analysis, reviews, the review process and what makes reviews succeed."
+objectives:
+  - "Static testing basics"
+  - "Feedback and review processes"
+---
+import SyllabusRef from '../../components/SyllabusRef.astro';
+import SyllabusText from '../../components/SyllabusText.astro';
+
+## 3.1 Static Testing Basics
+
+
+### What is Static Testing?
+
+<SyllabusRef ref="3.1" />
+
+- **Static testing** evaluates work products **without executing** the software under test.
+- **Manual examination** - e.g. reviews
+- **Tool support** - e.g. static analysis
+
+#### Objectives
+
+- Improve quality
+- Detect defects
+- Readability
+- Completeness
+- Correctness
+- Testability
+- Consistency
+- Verification + validation
+
+<SyllabusText>
+
+In contrast to dynamic testing, in static testing the software under test does not need to be executed. Code, process specification, system architecture specification or other work products are evaluated through manual examination (e.g., reviews) or with the help of a tool (e.g., static analysis). Test objectives include improving quality, detecting defects and assessing characteristics like readability, completeness, correctness, testability and consistency. Static testing can be applied for both verification and validation.
+
+</SyllabusText>
+
+### Static Testing in Agile
+
+<SyllabusRef ref="3.1" />
+
+- **Work together** - Testers, business reps and developers - in example mapping, story writing and backlog refinement
+- **Meet the criteria** - e.g. the Definition of Ready
+- **Review user stories** - Complete, understandable, with testable acceptance criteria
+- **Ask the right questions** - Testers explore, challenge and help improve stories
+
+<SyllabusText>
+
+For example, in agile software development, testers, business representatives and developers work together during example mappings, collaborative user story writing and backlog refinement sessions to ensure that user stories and related work products meet defined criteria, e.g., the Definition of Ready (see section 5.1.3). Review techniques can be applied to ensure user stories are complete and understandable and include testable acceptance criteria. By asking the right questions, testers explore, challenge and help improve the proposed user stories.
+
+</SyllabusText>
+
+### Why Static Analysis?
+
+<SyllabusRef ref="3.1" />
+
+- **Finds problems early** - before dynamic testing
+- **Less effort** - No test cases needed - tools do the work (Ch. 6)
+- **Part of CI** - Often built into CI frameworks (2.1.4)
+- **Beyond code defects** - Also evaluates maintainability and security
+- **Everyday examples** - Spelling checkers and readability tools
+
+<SyllabusText>
+
+Static analysis can identify problems prior to dynamic testing while often requiring less effort, since no test cases are required, and tools (see chapter 6) are typically used. Static analysis is often incorporated into CI frameworks (see section 2.1.4). While largely used to detect specific code defects, static analysis is also used to evaluate maintainability and security. Spelling checkers and readability tools are other examples of static analysis tools.
+
+</SyllabusText>
+
+### What Can We Statically Test?
+
+<SyllabusRef ref="3.1.1" />
+
+- Almost any work product can be examined using static testing:
+- Requirement specs
+- Source code
+- Test cases
+- Backlog items
+- Test charters
+- Test plans
+- Project docs
+- Contracts
+- Models
+- User guides
+
+<SyllabusText>
+
+Almost any work product can be examined using static testing, for example: requirement specification documents, source code, test plans, test cases, product backlog items, test charters, project documentation, contracts and models.
+
+</SyllabusText>
+
+### Reviews vs Static Analysis
+
+<SyllabusRef ref="3.1.1" />
+
+- **Reviews** - Any work product that can be read and understood
+- **Static analysis** - Needs a structure to check against · e.g. models, code, or text with a formal syntax
+- **Not appropriate** - Hard for humans to interpret and shouldn't be analysed by tools · e.g. 3rd-party executable code, for legal reasons
+
+<SyllabusText>
+
+Any work product that can be read and understood can be the subject of a review. However, for static analysis, work products need a structure against which they can be checked (e.g., models, code or text with a formal syntax). Work products that are not appropriate for static testing include those that are difficult to interpret by human beings and that should not be analyzed by tools (e.g., 3rd party executable code due to legal reasons).
+
+</SyllabusText>
+
+### Example: A Static Analysis Tool
+
+<SyllabusRef ref="3.1" />
+
+- **SonarQube flags 3 issues - without running the code** - 1  int calcAvg(List&lt;Integer&gt; items) &#123; · 2      int Total = 0; · 3      if (items == null) return 0; · 4      for (int i : items) Total += i; · 5      return Total / items.size(); · 6      Total = 0; · 7  &#125;
+- Line 2: "Total" breaks the naming convention
+- Line 5: Possible divide by zero when the list is empty
+- Line 6: Unreachable code after return
+- **Works on** - Source code - checked against rules: standards, likely bugs, security, complexity
+- **How it helps** - Finds defects before any test runs - cheap, fast, and catches what dynamic testing can't
+- **When it's used** - From the first line of code - long before component or system testing
+
+### When Static Analysis Runs
+
+<SyllabusRef ref="3.1" />
+
+- **1. While coding** - IDE plugin (e.g. SonarLint) flags issues as the developer types
+- **2. On commit / pull request** - Code is scanned before it is merged
+- **3. In the CI pipeline** - A quality gate can fail the build if rules are broken
+- **4. Before dynamic testing** - Testers receive code that is already cleaner
+- **Early and often:** static analysis runs from the first line of code - the earliest testing there is.
+- **Not just code:** similar tools check models, configuration files, and even spelling and readability in documents.
+
+### Value of Static Testing
+
+<SyllabusRef ref="3.1.2" />
+
+- **Earliest defect detection** - Fulfils the early testing principle
+- **Finds what dynamic testing can't** - Unreachable code, poor design patterns, defects in non-executable work products
+- **Evaluates quality** - of work products
+- **Builds confidence** - in the work products
+- **Lower overall cost** - Reviews cost something - but less effort is spent fixing defects later
+
+<SyllabusText>
+
+Static testing can detect defects in the earliest phases of the SDLC, fulfilling the principle of early testing (see section 1.3). It can also identify defects which cannot be detected by dynamic testing (e.g., unreachable code, design patterns not implemented as desired, defects in non-executable work products).
+
+Static testing provides the ability to evaluate the quality of, and to build confidence in, work products.
+
+Even though reviews can be costly to implement, the overall project costs are usually much lower than when no reviews are performed because less time and effort needs to be spent on fixing defects later in the project.
+
+</SyllabusText>
+
+### Static Testing and Stakeholders
+
+<SyllabusRef ref="3.1.2" />
+
+- **Stakeholders verify the requirements** - ensuring they describe their actual needs
+- **A shared understanding** - is created among the stakeholders involved
+- **Involve a wide variety of stakeholders** - in static testing
+
+<SyllabusText>
+
+Stakeholders can verify that the documented requirements describe their actual needs. Static testing can create a shared understanding among the involved stakeholders. Communication will also improve between the involved stakeholders. For this reason, it is recommended to involve a wide variety of stakeholders in static testing.
+
+</SyllabusText>
+
+### Static vs Dynamic Testing
+
+<SyllabusRef ref="3.1.3" />
+
+- Both find defects - and they complement each other.
+|   | Static testing | Dynamic testing |
+|---|---|---|
+| Unique finds | Some defects can only be found statically | Some defects can only be found dynamically |
+| How defects are found | Finds defects directly | Causes failures; defects found through analysis |
+| Hard-to-reach code | More easily finds defects on rarely executed paths | - |
+| Applies to | Non-executable work products too | Executable work products only |
+| Quality characteristics | Not dependent on execution (e.g. maintainability) | Dependent on execution (e.g. performance efficiency) |
+
+
+### Defects Easier to Find Statically
+
+<SyllabusRef ref="3.1.3" />
+
+- **Requirements** - Inconsistencies, ambiguities, omissions, duplications
+- **Design** - Inefficient DB structures, poor modularisation
+- **Coding** - Undefined/undeclared variables, unreachable code, complexity
+- **Standards** - Coding standards, naming, formatting
+- **Interfaces** - Mismatched number, type or order of parameters
+- **Security** - e.g. buffer overflows
+- **Test basis coverage** - e.g. missing tests for an acceptance criterion
+
+<SyllabusText>
+
+Typical defects that are easier and/or cheaper to find through static testing include: defects in requirements (e.g., inconsistencies, ambiguities, contradictions, omissions, inaccuracies, duplications); design defects (e.g., inefficient database structures, poor modularization); certain types of coding defects (e.g., variables with undefined values, undeclared variables, unreachable or duplicated code, excessive code complexity); deviations from standards (e.g., lack of adherence to naming conventions in coding standards); incorrect interface specifications (e.g., mismatched number, type or order of parameters); specific types of security vulnerabilities (e.g., buffer overflows); gaps or inaccuracies in test basis coverage (e.g., missing tests for an acceptance criterion).
+
+</SyllabusText>
+
+## 3.2 Feedback and Review Process
+
+
+### Early and Frequent Feedback
+
+<SyllabusRef ref="3.2.1" />
+
+- **Early warning** - Potential quality problems are communicated early
+- **Clear requirements** - No misunderstandings about requirements
+- **Changes land sooner** - Requirement changes are understood and implemented earlier
+- **Clear purpose** - The team understands what it is building
+- **Focus on value** - Features with most stakeholder value and most impact on risk
+- **Without it:** the product may miss the stakeholders' vision - costly rework, missed deadlines, blame games, even project failure.
+
+<SyllabusText>
+
+Early and frequent feedback allows for the early communication of potential quality problems. If there is little stakeholder involvement during the SDLC, the product being developed might not meet the stakeholder's original or current vision. A failure to deliver what the stakeholder wants can result in costly rework, missed deadlines, blame games, and might even lead to complete project failure.
+
+Frequent stakeholder feedback throughout the SDLC can prevent misunderstandings about requirements and ensure that changes to requirements are understood and implemented earlier. This helps the development team to improve their understanding of what they are building. It allows them to focus on those features that deliver the most value to the stakeholders and that have the most positive impact on identified risks.
+
+</SyllabusText>
+
+### The Review Process
+
+<SyllabusRef ref="3.2.2" />
+
+- Planning
+- Review initiation
+- Individual review
+- Communication & analysis
+- Fixing & reporting
+- **Structured but flexible** - A generic framework, tailored to the situation
+- **More formal = more tasks** - Formal reviews need more of the tasks in each activity
+- **Big work products** - May need the process run several times to cover everything
+
+<SyllabusText>
+
+The ISO/IEC 20246 standard defines a generic review process that provides a structured but flexible framework from which a specific review process may be tailored to a particular situation. If the required review is more formal, then more of the tasks described for the different activities will be needed.
+
+The size of many work products makes them too large to be covered by a single review. The review process may be invoked a couple of times to complete the review for the entire work product.
+
+</SyllabusText>
+
+### Review Activities in Detail
+
+<SyllabusRef ref="3.2.2" />
+
+| Activity | Goal | Deliverables |
+|---|---|---|
+| Planning | Determine review scope and purpose | Work products to review, quality characteristics, focus areas, exit criteria, standards, effort, timeframes |
+| Review initiation | Ensure everyone and everything is ready | Every participant has access to the work product, understands their role, and has what they need |
+| Individual review | Assess the work product | Log of anomalies, recommendations and questions |
+| Communication & analysis | Analyse and discuss the anomalies | Decisions on status, ownership and action for each anomaly - maybe a follow-up review |
+| Fixing & reporting | Reach exit criteria; accept the work product | Defect reports for corrective action; report on review results |
+
+
+### Roles in Reviews
+
+<SyllabusRef ref="3.2.3" />
+
+- **Manager** - Decides what is reviewed; provides resources such as staff and time
+- **Author** - Creates and fixes the work product under review
+- **Moderator (facilitator)** - Runs effective review meetings - mediation, time management, a safe environment
+- **Scribe (recorder)** - Collates anomalies; records decisions and new anomalies in the meeting
+- **Reviewer** - Performs reviews - a project member, subject matter expert or other stakeholder
+- **Review leader** - Overall responsibility - who is involved, when and where it happens
+
+### Review Types
+
+<SyllabusRef ref="3.2.4" />
+
+- Informal review
+- Walkthrough
+- Technical review
+- Inspection
+- Less formal
+- More formal
+
+#### Formality Depends On…
+
+- The SDLC
+- Process maturity
+- Criticality & complexity
+- Legal / regulatory needs
+- Need for an audit trail
+- The same work product can be reviewed more than once - e.g. informally first, formally later.
+
+<SyllabusText>
+
+There exist many review types ranging from informal reviews to formal reviews. The required level of formality depends on factors such as the SDLC being followed, the maturity of the development process, the criticality and complexity of the work product being reviewed, legal or regulatory requirements, and the need for an audit trail. The same work product can be reviewed with different review types, e.g., first an informal one and later a more formal one.
+
+</SyllabusText>
+
+### Choosing a Review Type
+
+<SyllabusRef ref="3.2.4" />
+
+- **The right review type is key to meeting the review objectives.**  It also depends on:
+- Project needs
+- Available resources
+- Work product type & risks
+- Business domain
+- Company culture
+
+<SyllabusText>
+
+Selecting the right review type is key to achieving the required review objectives (see section 3.2.5). The selection is not only based on the objectives, but also on factors such as the project needs, available resources, work product type and risks, business domain, and company culture.
+
+</SyllabusText>
+
+### Review Types - Answers
+
+<SyllabusRef ref="3.2.4" />
+
+| Review type | Objectives | Participants | Process | Output |
+|---|---|---|---|---|
+| Informal review | Find anomalies | Author, peers | Not defined | No formal documentation required |
+| Walkthrough | Find anomalies, evaluate quality, build confidence, educate reviewers, gain consensus, generate ideas, motivate authors | Author, reviewers | Led by the author; individual review beforehand is optional | Defect reports |
+| Technical review | As walkthrough, plus gain consensus and make decisions on a technical problem | Author, technically qualified reviewers, moderator | Led by a moderator; technically qualified reviewers | Defect reports, technical decisions |
+| Inspection | Find anomalies, evaluate quality, build confidence, motivate authors | Manager, author, moderator, scribe, reviewers, review leader | Full generic process; author can't be moderator or scribe | Defect reports, decisions, metrics, accepted work product, review results |
+
+
+### Success Factors for Reviews
+
+<SyllabusRef ref="3.2.5" />
+
+- **Clear objectives** - and measurable exit criteria - never evaluating participants
+- **Right review type** - for the objectives, work product, people and context
+- **Small chunks** - so reviewers keep their concentration
+- **Feedback** - to stakeholders and authors, so they can improve
+- **Time to prepare** - for every participant
+- **Management support** - for the review process
+- **Review culture** - promotes learning and process improvement
+- **Training** - so everyone knows how to fulfil their role
+- Facilitated meetings
+
+<SyllabusText>
+
+There are several factors that determine the success of reviews, which include: defining clear objectives and measurable exit criteria (evaluation of participants should never be an objective); choosing the appropriate review type to achieve the given objectives, and to suit the type of work product, the review participants, the project needs and context; conducting reviews on small chunks, so that reviewers do not lose concentration during an individual review and/or the review meeting (when held); providing feedback from reviews to stakeholders and authors so they can improve the product and their activities; providing adequate time to participants to prepare for the review; support from management for the review process; making reviews part of the organization's culture, to promote learning and process improvement; providing adequate training for all participants so they know how to fulfil their role; facilitating meetings.
+
+</SyllabusText>

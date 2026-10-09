@@ -1,0 +1,715 @@
+---
+number: 1
+title: "Fundamentals of Testing"
+minutes: 180
+summary: "What testing is, why it matters, the seven testing principles, the test process and the skills a good tester needs."
+objectives:
+  - "Basic principles related to testing"
+  - "The reasons why testing is required"
+  - "What test objectives are"
+  - "An overview of the test process, major test activities and testware"
+  - "Essential skills for testing"
+---
+import SyllabusRef from '../../components/SyllabusRef.astro';
+import SyllabusText from '../../components/SyllabusText.astro';
+
+### Example: Parachuting School
+
+- **“I want a website for the local parachuting school, which I run. We're on a small island in New Zealand and a lot of the locals are into parachuting.”** - - The client
+- **Live weather** - Wind speed and cloud level, so people don't drive over when it's too cloudy to jump
+- **Online shop & hire** - Sell and hire kit, lessons and memorabilia. Must look good and load quickly
+- **Events & lessons** - Upcoming events, sales, competitions, open days and the lessons on offer
+
+## 1.1 What is Testing?
+
+
+### What is Testing?
+
+<SyllabusRef ref="1.1" />
+
+- **Software testing** is a set of activities to discover **defects** and evaluate the **quality** of software artifacts - known as **test objects** while being tested.
+- **Testing is just executing tests** - It includes many other activities, aligned with the SDLC (Ch. 2)
+- **Testing only verifies the test object** - Verification checks the system meets the specified requirements…
+- **Reality: Testing also involves validation** - …validation checks it meets users' and stakeholders' needs in operation
+
+<SyllabusText>
+
+Software testing is a set of activities to discover defects and evaluate the quality of software artifacts. These artifacts, when being tested, are known as test objects.
+
+Misconception: testing only consists of executing tests. Testing includes many other activities that must be aligned with the SDLC (Chapter 2).
+
+Misconception: testing focuses entirely on verifying the test object (checking whether the system meets the specified requirements).
+
+Actually: testing also involves validation - checking whether the system meets users' and other stakeholders' needs in its operational environment.
+
+</SyllabusText>
+
+### When Software Fails
+
+<SyllabusRef ref="1.1" />
+
+- When have you experienced software that did not work as expected? What were the consequences?
+- Testing assesses software quality and helps reduce the risk of software failure in operation.
+- Horizon IT - UK Post Office scandal
+- Boeing 737 MAX - MCAS failures
+
+### Verification vs Validation
+
+<SyllabusRef ref="1.1" />
+
+- What is the difference between verification and validation?
+- **Verification** - Are we building the product right? · Confirms, with objective evidence, that the specified requirements have been fulfilled
+- VeRification checks against Requirements
+- **Validation** - Are we building the right product? · Confirms that a work product matches a stakeholder's needs
+- VALidation checks it is VALuable to the user
+
+<SyllabusText>
+
+Verification: Confirmation by examination and through provision of objective evidence that specified requirements have been fulfilled.
+
+Validation: Confirmation by examination that a work product matches a stakeholder's needs.
+
+</SyllabusText>
+
+### More Than Running Tests
+
+<SyllabusRef ref="1.1" />
+
+- **Aligned with the SDLC** - Many activities, fitted to the lifecycle
+- **Static testing** - Reviews and static analysis - no execution
+- **Dynamic testing** - Executes software; techniques derive test cases
+- **Planned & managed** - Estimated, monitored and controlled
+- **Tool supported** - Tools help, but testing is still…
+- **…largely an intellectual activity** - Specialised knowledge, analytical skills, critical thinking and systems thinking
+
+<SyllabusText>
+
+Testing includes many activities and must be aligned with the software development lifecycle (see chapter 2).
+
+Testing may be dynamic or static. Dynamic testing involves the execution of software, while static testing does not.
+
+Static testing includes reviews and static analysis (see chapter 3).
+
+Dynamic testing uses different types of test techniques and test approaches to derive test cases (see chapter 4).
+
+Testing is not only a technical activity. It also needs to be properly planned, managed, estimated, monitored and controlled (see chapter 5).
+
+Testers use tools (see chapter 6), but it is important to remember that testing is largely an intellectual activity, requiring the testers to have specialized knowledge, use analytical skills and apply critical thinking and systems thinking (Myers 2011, Roman 2018).
+
+The ISO/IEC/IEEE 29119-1 standard provides further information about software testing concepts.
+
+</SyllabusText>
+
+### Typical Test Objectives
+
+<SyllabusRef ref="1.1.1" />
+
+- **Evaluate work products** - Requirements, user stories, designs, code
+- Trigger failures & find defects
+- **Ensure required coverage** - of the test object
+- **Reduce risk** - of inadequate software quality
+- **Verify requirements** - have been fulfilled
+- **Verify compliance** - Contractual, legal, regulatory
+- **Inform stakeholders** - so they can make decisions
+- **Build confidence** - in the test object
+- **Validate** - Complete and works as stakeholders expect
+
+<SyllabusText>
+
+Evaluating work products such as requirements, user stories, designs and code
+
+Triggering failures and finding defects
+
+Ensuring required coverage of a test object
+
+Reducing the level of risk of inadequate software quality
+
+Verifying whether the specified requirements have been fulfilled
+
+Verifying whether a test object complies with contractual, legal and regulatory requirements
+
+Providing information to stakeholders to allow them to make informed decisions
+
+Building confidence in the test object
+
+Validating whether the test object is complete and works as expected by the stakeholders
+
+</SyllabusText>
+
+### What Shapes Test Objectives?
+
+<SyllabusRef ref="1.1.1" />
+
+- Technical context
+- The work product being tested
+- The test level
+- The SDLC being followed
+- Business context
+- Corporate structure
+- Competitive considerations
+- Time to market
+
+### Testing vs Debugging
+
+<SyllabusRef ref="1.1.2" />
+
+
+#### Dynamic Testing
+
+- **Dynamic test** - triggers a failure
+- **Reproduce** - the failure
+- **Diagnose** - find the root cause
+- the cause
+- **Confirmation test** - is it fixed?
+- **Regression test** - anything else broken?
+- Debugging - a development activity, not testing
+
+#### Static Testing
+
+- **Static test** - e.g. a review
+- **Defect found** - directly
+- the defect
+- No reproduction or diagnosis needed - static testing cannot trigger failures
+
+<SyllabusText>
+
+Dynamic testing can trigger failures that are caused by defects in the software.
+
+When dynamic testing triggers a failure, debugging is concerned with: reproduction of the failure, diagnosis (finding the root cause), and fixing the cause.
+
+Subsequent confirmation testing checks whether the fixes resolved the problem. Regression testing checks whether the fixes are causing failures in other parts of the test object.
+
+Static testing directly finds defects, which should then be fixed. There is no need for reproduction or diagnosis, since static testing cannot trigger failures.
+
+</SyllabusText>
+
+## 1.2 Why is Testing Necessary?
+
+
+### Why is Testing Necessary?
+
+<SyllabusRef ref="1.2" />
+
+- Quality
+- Budget
+- **A form of quality control** - Helps hit the agreed goals within scope, time, quality and budget
+- **Not just the test team** - Any stakeholder can use testing skills to move the project closer to success
+- **Finds defects** - Testing components, systems and documentation helps identify defects
+
+<SyllabusText>
+
+Testing, as a form of quality control, helps in achieving the agreed upon goals within the set scope, time, quality, and budget constraints.
+
+Testing's contribution to success should not be restricted to the test team activities. Any stakeholder can use their testing skills to bring the project closer to success.
+
+Testing components, systems, and associated documentation helps to identify defects in software.
+
+</SyllabusText>
+
+### Testing's Contribution to Success
+
+<SyllabusRef ref="1.2.1" />
+
+- **Cost-effective defect detection** - Defects are then removed by debugging - indirectly raising quality
+- **Evaluates quality at each stage** - Measurements feed decisions such as moving to the next stage or releasing
+- **Represents the users** - Makes sure their needs are considered throughout the lifecycle
+- **Meets obligations** - Contractual or legal requirements, and regulatory standards
+
+<SyllabusText>
+
+Testing:
+
+Provides a cost-effective means of detecting defects, which can be removed by debugging (a non-testing activity), indirectly contributing to higher quality test objects.
+
+Provides a means of directly evaluating the quality of a test object at various stages in the SDLC. These measurements are used as part of a larger project management activity, contributing to decisions to move to the next stage of the SDLC, such as the release decision.
+
+Indirectly represents the users on the development project, which ensures their needs are considered throughout the development lifecycle.
+
+May be required to meet contractual or legal requirements, or to comply with regulatory standards.
+
+</SyllabusText>
+
+### Testing and Quality Assurance
+
+<SyllabusRef ref="1.2.2" />
+
+- Testing ≠ QA     ·     Testing is a form of Quality Control
+- **Quality Control (QC)** - Product-oriented · Corrective · Supports achieving appropriate levels of quality · Testing, formal methods (model checking, proof of correctness), simulation, prototyping
+- **Quality Assurance (QA)** - Process-oriented · Preventive · Implements and improves processes - a good process should give a good product · Applies to development and testing · Everyone's responsibility
+
+<SyllabusText>
+
+Testing and Quality Assurance (QA) are not the same. Testing is a form of Quality Control (QC).
+
+QC is a product-oriented, corrective approach that focuses on those activities supporting the achievement of appropriate levels of quality. Examples include testing, formal methods (model checking and proof of correctness), simulation and prototyping.
+
+QA is a process-oriented, preventive approach that focuses on the implementation and improvement of processes. It works on the basis that if a good process is followed correctly, then it will generate a good product. QA applies to both the development and testing processes, and is the responsibility of everyone on a project.
+
+</SyllabusText>
+
+### Onsite Spartan Job Titles
+
+<SyllabusRef ref="1.2.2" />
+
+- QA Engineer
+- Automation SDET
+- Java Automation Tester
+- Test Automation Engineer
+- QA Analyst
+- Test Analyst
+- Automation roles
+- Manual testing roles
+
+### Errors, Defects and Failures
+
+<SyllabusRef ref="1.2.3" />
+
+- **aka mistake** - A human action that produces an incorrect result
+- **Defect** - aka fault, bug · An imperfection in a work product - docs, code or build files
+- **Failure** - The system does not do what it should, or does what it shouldn't
+- **Not every defect causes a failure** - and failures can also come from environmental conditions, e.g. radiation damaging firmware.
+
+<SyllabusText>
+
+Human beings make errors (mistakes), which produce defects (faults, bugs), which in turn may result in failures.
+
+Humans make errors for various reasons, such as time pressure, complexity of work products, processes, infrastructure or interactions, or simply because they are tired or lack adequate training.
+
+Defects can be found in documentation, such as a requirements specification or a test script, in source code, or in a supporting artifact such as a build file. Defects in artifacts produced earlier in the SDLC, if undetected, often lead to defective artifacts later in the lifecycle.
+
+If a defect in code is executed, the system may fail to do what it should do, or do something it shouldn't, causing a failure. Some defects will always result in a failure if executed, while others will only result in a failure in specific circumstances, and some may never result in a failure.
+
+Errors and defects are not the only cause of failures. Failures can also be caused by environmental conditions, such as when radiation or electromagnetic fields cause defects in firmware.
+
+</SyllabusText>
+
+### Root Causes
+
+<SyllabusRef ref="1.2.3" />
+
+- Root cause analysis finds why a defect happened - not just where it is.
+- **Istqb Definition: Root cause** - A source of a defect such that if it is removed, the occurrence of the defect type is decreased or removed
+- **Istqb Definition: Root cause analysis** - An analysis technique aimed at identifying the root causes of defects
+
+### Root Cause Analysis - 5 Whys
+
+<SyllabusRef ref="1.2.3" />
+
+- **FAILURECustomers over 60 are overcharged for their lessons**
+- **Why #1** Error in the calculation of the OAP discount
+- **Why #2** Developer entered the OAP discount as 10% rather than 20%
+- **Why #3** Specification states 10% instead of 20%
+- **Why #4** Miscommunication between School CEO and Product Owner
+- **Why #5No review of specification**
+
+#### Root Cause
+
+
+### Find It Early, Fix It Once
+
+<SyllabusRef ref="1.2.3" />
+
+- Identify and fix the defect whenever a failure or defect is found
+- **Understand** - Find what error was made, and what caused it
+- **Prevent** - Stop further errors, defects and failures with the same cause
+- Earlier in the lifecycle
+- **The earlier we do this, the better** - fewer derived work products to rework, and less effort to fix.
+
+<SyllabusText>
+
+Whenever a failure occurs or a defect is identified, we need to identify and fix the defect.
+
+If we can identify why the defect occurred (what error was made, and what was its cause), we can prevent further errors, defects and failures.
+
+The earlier we do this in the development process, the better.
+
+</SyllabusText>
+
+## 1.3 The Seven Testing Principles
+
+
+### The Seven Testing Principles
+
+<SyllabusRef ref="1.3" />
+
+- Testing shows the presence, not the absence, of defects
+- Exhaustive testing is impossible
+- Early testing saves time and money
+- Defects cluster together
+- Tests wear out
+- Testing is context dependent
+- Absence-of-defects fallacy
+
+### Testing Principles
+
+<SyllabusRef ref="1.3" />
+
+- Testing shows the presence, not the absence, of defects
+- **IN A NUTSHELL** - Testing can show that defects are present, but cannot prove there are none. It reduces the chance of undiscovered defects remaining.
+- **DISCUSS** - If no defects are found, does that mean the software is correct?
+
+<SyllabusText>
+
+Testing can show that defects are present in the test object, but cannot prove that there are no defects (Buxton 1970). Testing reduces the probability of defects remaining undiscovered in the test object, but even if no defects are found, testing cannot prove test object correctness.
+
+</SyllabusText>
+
+### Testing Principles
+
+<SyllabusRef ref="1.3" />
+
+- Exhaustive testing is impossible
+- **IN A NUTSHELL** - Testing everything isn't feasible except in trivial cases. Use test techniques, prioritisation and risk-based testing to focus effort.
+- **DISCUSS** - How many tests would a "Good morning / Good afternoon" greeting need?
+
+<SyllabusText>
+
+Testing everything is not feasible except in trivial cases (Manna 1978). Rather than attempting to test exhaustively, test techniques (see chapter 4), test case prioritization (see section 5.1.5), and risk-based testing (see section 5.2) should be used to focus test efforts.
+
+</SyllabusText>
+
+### Testing Principles
+
+<SyllabusRef ref="1.3" />
+
+- Early testing saves time and money
+- **IN A NUTSHELL** - Defects removed early don't cause further defects in derived work products, so fewer failures occur later in the SDLC.
+- **DISCUSS** - What could we test on the parachuting school project before any code exists?
+
+<SyllabusText>
+
+Defects that are removed early in the process will not cause subsequent defects in derived work products. The cost of quality will be reduced since fewer failures will occur later in the SDLC (Boehm 1981). To find defects early, both static testing (see chapter 3) and dynamic testing (see chapter 4) should be started as early as possible.
+
+</SyllabusText>
+
+### Testing Principles
+
+<SyllabusRef ref="1.3" />
+
+- Defects cluster together
+- **IN A NUTSHELL** - A small number of components usually contain most of the defects or cause most failures - an example of the Pareto principle.
+- **DISCUSS** - Why do you think defects cluster together?
+
+<SyllabusText>
+
+A small number of system components usually contain most of the defects discovered or are responsible for most of the operational failures (Enders 1975). This phenomenon is an illustration of the Pareto principle. Predicted defect clusters, and actual defect clusters observed during testing or in operation, are an important input for risk-based testing (see section 5.2).
+
+</SyllabusText>
+
+### Testing Principles
+
+<SyllabusRef ref="1.3" />
+
+- Tests wear out
+- **IN A NUTSHELL** - Repeating the same tests makes them less effective at finding new defects - also known as the pesticide paradox.
+- **DISCUSS** - Why does this happen? And when is repeating tests actually useful?
+
+<SyllabusText>
+
+If the same tests are repeated many times, they become increasingly ineffective in detecting new defects (Beizer 1990). To overcome this effect, existing tests and test data may need to be modified, and new tests may need to be written. However, in some cases, repeating the same tests can have a beneficial outcome, e.g., in automated regression testing (see section 2.2.3).
+
+</SyllabusText>
+
+### Testing Principles
+
+<SyllabusRef ref="1.3" />
+
+- Testing is context dependent
+- **IN A NUTSHELL** - There is no single universally applicable approach to testing - it is done differently in different contexts.
+- **DISCUSS** - How would testing a games console differ from testing a space shuttle?
+
+<SyllabusText>
+
+There is no single universally applicable approach to testing. Testing is done differently in different contexts (Kaner 2011).
+
+</SyllabusText>
+
+### Testing Principles
+
+<SyllabusRef ref="1.3" />
+
+- Absence-of-defects fallacy
+- **IN A NUTSHELL** - Fixing every defect against the specified requirements can still give a system that doesn't meet users' needs. Verification alone isn't enough - validate too.
+- **DISCUSS** - What do you think this means?
+
+<SyllabusText>
+
+It is a fallacy (i.e., a misconception) to expect that software verification will ensure the success of a system. Thoroughly testing all the specified requirements and fixing all the defects found could still produce a system that does not fulfill the users' needs and expectations, that does not help in achieving the customer's business goals, and that is inferior compared to other competing systems. In addition to verification, validation should also be carried out (Boehm 1981).
+
+</SyllabusText>
+
+## 1.4 Test Activities, Testware and Test Roles
+
+
+### The Test Process
+
+<SyllabusRef ref="1.4.1" />
+
+- **Test Planning** Define test objectives and select an approach
+- **Test Analysis** - Identify WHAT to test
+- **Test Design** - Decide in detail HOW to test
+- **Test Implementation** - Set up the test environment
+- **Test Execution** - Run and report on the tests
+- **Test Completion** - Finalise and hand over at the end
+- **Test Monitoring & Control** Keep the project on track - runs throughout
+- Often iterative or in parallel - not a strict sequence
+
+### Test Activities - Key Tasks
+
+<SyllabusRef ref="1.4.1" />
+
+| Activity | Key tasks |
+|---|---|
+| Test Planning | Define test objectives · Select approach |
+| Monitoring & Control | Check test activities · Compare actual progress against plan · Take action where necessary |
+| Test Analysis | Identify testable features · Define & prioritise test conditions · Analyse risks |
+| Test Design | Create test cases and other testware · Identify coverage items (a guide to test inputs) · Define test data requirements, design the test environment, identify infrastructure & tools |
+| Test Implementation | Acquire or create test data · Create test procedures, suites, scripts and prioritised schedules · Set up test environment |
+| Test Execution | Run tests and log results · Analyse anomalies to identify likely causes · Create reports |
+| Test Completion | Resolve loose ends · Archive testware · Shut down test environment · Write and distribute the test completion report |
+
+
+### Test Process in Context
+
+<SyllabusRef ref="1.4.2" />
+
+- **How we test** - depends on…
+- Stakeholders
+- Team members
+- Business domain
+- Technical factors
+- Project constraints
+- Organisational factors
+
+#### These Factors Affect
+
+- Test strategy
+- Test techniques
+- Degree of automation
+- Level of coverage
+- Documentation detail
+- Reporting
+
+### Testware
+
+<SyllabusRef ref="1.4.3" />
+
+| Activity | Testware produced |
+|---|---|
+| Test Planning | Test plan, test schedule, risk register, entry & exit criteria |
+| Monitoring & Control | Test progress reports, control directives, risk information |
+| Test Analysis | Prioritised test conditions (what to test), defect reports on the test basis |
+| Test Design | Prioritised test cases, test charters, coverage items, test data requirements, test environment requirements |
+| Test Implementation | Test procedures, automated test scripts, test suites, test data, test execution schedule, test environment elements |
+| Test Execution | Test logs, defect reports |
+| Test Completion | Test completion report, action items for improvement, lessons learnt, change requests |
+
+
+### Traceability
+
+<SyllabusRef ref="1.4.4" />
+
+- Test basis
+- Testware
+- Test results
+- Defects
+- **Enables monitoring & control** - Maintain links across the whole test process
+- **Supports coverage evaluation** - Easier when the test basis has measurable coverage criteria
+- **Coverage criteria as KPIs** - Show how far the test objectives have been achieved
+
+<SyllabusText>
+
+In order to implement effective test monitoring and control, it is important to establish and maintain traceability throughout the test process between the test basis elements, testware associated with these elements, test results, and detected defects.
+
+Accurate traceability supports coverage evaluation, so it is very useful if measurable coverage criteria are defined in the test basis.
+
+The coverage criteria can function as key performance indicators to drive the activities that show to what extent the test objectives have been achieved (see section 1.1.1).
+
+</SyllabusText>
+
+### Why Traceability Matters
+
+<SyllabusRef ref="1.4.4" />
+
+- **Requirements coverage** - Test cases ↔ requirements shows requirements are covered
+- **Residual risk** - Test results ↔ risks shows how much risk remains
+- **Impact of change** - See what is affected when something changes
+- **Audits & governance** - Facilitates test audits and IT governance criteria
+- **Clearer reporting** - Status of test basis elements makes reports understandable
+- **Progress vs goals** - Assess quality, process capability and project progress
+
+<SyllabusText>
+
+Traceability of test cases to requirements can verify that the requirements are covered by test cases.
+
+Traceability of test results to risks can be used to evaluate the level of residual risk in a test object.
+
+In addition to evaluating coverage, good traceability makes it possible to determine the impact of changes, facilitates test audits, and helps meet IT governance criteria.
+
+Good traceability also makes test progress and completion reports more easily understandable by including the status of test basis elements. This can also assist in communicating the technical aspects of testing to stakeholders in an understandable manner.
+
+Traceability provides information to assess product quality, process capability, and project progress against business goals.
+
+</SyllabusText>
+
+### Traceability Matrix
+
+<SyllabusRef ref="1.4.4" />
+
+| Test case | Reqs tested | Req1 | Req2 | Req3 | Req4 | Req5 | Req6 | Req7 | Req8 | Req9 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Test cases per req | 16 | 2 | 1 | 3 | 2 | 1 | 1 | 2 | 1 | 3 |
+| 1.1.1 | 3 | X |   |   |   |   |   |   | X | X |
+| 1.1.2 | 1 |   | X |   |   |   |   |   |   |   |
+| 1.1.3 | 4 | X |   |   |   |   | X | X |   | X |
+| 1.1.4 | 1 |   |   |   |   |   |   | X |   |   |
+| 1.1.5 | 4 |   |   | X | X | X |   |   |   | X |
+| 1.1.6 | 2 |   |   | X | X |   |   |   |   |   |
+| 1.1.7 | 1 |   |   | X |   |   |   |   |   |   |
+
+- **If test 1.1.1 fails** → Req1, Req8 and Req9 are impacted
+
+### Roles in Testing
+
+<SyllabusRef ref="1.4.5" />
+
+- **Test Management** - Overall responsibility for the test process, the test team and leadership of test activities · FOCUSES ON
+- Test planning
+- Monitoring & control
+- Test completion
+- **Testing** - Overall responsibility for the engineering (technical) aspects of testing · FOCUSES ON
+- Test analysis
+- Test design
+- Test implementation
+- Test execution
+
+### Who Plays These Roles?
+
+<SyllabusRef ref="1.4.5" />
+
+- Roles aren't job titles - different people may take them on at different times.
+
+#### Test Management Can Be Done By A…
+
+- Team leader
+- Test manager
+- Development manager
+- **Agile teams** - may handle some test management tasks themselves
+- **Across teams** - Organisation-wide tasks may sit with test managers outside the dev team
+- **One person, two roles** - Someone can do testing and test management at the same time
+
+<SyllabusText>
+
+Different people may take on these roles at different times.
+
+For example, the test management role can be performed by a team leader, by a test manager, by a development manager, etc.
+
+In Agile software development, some of the test management tasks may be handled by the Agile team. Tasks that span multiple teams or the entire organization may be performed by test managers outside of the development team.
+
+It is also possible for one person to take on the roles of testing and test management at the same time.
+
+</SyllabusText>
+
+## 1.5 Essential Skills and Good Practices in Testing
+
+
+### Generic Skills for Testers
+
+<SyllabusRef ref="1.5.1" />
+
+- **Testing knowledge** - To increase effectiveness, e.g. by using test techniques
+- **Thoroughness & curiosity** - Carefulness, attention to detail, being methodical - to find hard-to-find defects
+- **Communication** - Active listening and teamwork - to report and discuss defects with all stakeholders
+- **Analytical & critical thinking** - Plus creativity - to increase effectiveness of testing
+- **Technical knowledge** - To increase efficiency, e.g. by using appropriate test tools
+- **Domain knowledge** - To understand and communicate with end users and business representatives
+
+### Developer vs Tester Mindset
+
+<SyllabusRef ref="1.5.1" />
+
+
+
+### Communication Skills
+
+<SyllabusRef ref="1.5.1" />
+
+
+#### The Challenge
+
+- **Testers bring bad news** - …and people tend to blame the messenger
+- **Results feel like criticism** - of the product and of its author
+- **Confirmation bias** - makes conflicting information hard to accept
+- **"Testing is destructive"** - despite its big contribution to success
+- **THE RESPONSE** - Communicate information about defects and failures constructively.
+
+<SyllabusText>
+
+Testers are often the bearers of bad news. It is a common human trait to blame the bearer of bad news. This makes communication skills crucial for testers.
+
+Communicating test results may be perceived as criticism of the product and of its author.
+
+Confirmation bias can make it difficult to accept information that disagrees with currently held beliefs.
+
+Some people may perceive testing as a destructive activity, even though it contributes greatly to project success and product quality.
+
+To try to improve this view, information about defects and failures should be communicated in a constructive way.
+
+</SyllabusText>
+
+### Whole Team Approach
+
+<SyllabusRef ref="1.5.2" />
+
+- Anyone with the skills can do any task
+- Everyone is responsible for quality
+- Shared workspace - physical or virtual
+
+#### Testers Collaborate With…
+
+- **Business representatives** - to create suitable acceptance tests
+- **Developers** - to agree the test strategy and test automation approach
+- **The whole team** - to transfer testing knowledge and influence the product
+- **Not always appropriate** - e.g. safety-critical systems may need high test independence
+
+<SyllabusText>
+
+In the whole-team approach any team member with the necessary knowledge and skills can perform any task, and everyone is responsible for quality.
+
+The team members share the same workspace (physical or virtual), as co-location facilitates communication and interaction.
+
+Testers work closely with other team members to ensure that the desired quality levels are achieved. This includes collaborating with business representatives to help them create suitable acceptance tests and working with developers to agree on the test strategy and decide on test automation approaches.
+
+Testers can thus transfer testing knowledge to other team members and influence the development of the product.
+
+Depending on the context, the whole team approach may not always be appropriate. For instance, in some situations, such as safety-critical, a high level of test independence may be needed.
+
+</SyllabusText>
+
+### Levels of Test Independence
+
+<SyllabusRef ref="1.5.3" />
+
+- **No independence** - Work products are tested by their author
+- **Some independence** - Tested by the author's peers on the same team
+- **High independence** - Tested by testers outside the author's team, within the organisation
+- **Very high independence** - Tested by testers from outside the organisation
+- More independent
+
+### Independence: Pros and Cons
+
+<SyllabusRef ref="1.5.3" />
+
+- **Advantages** - Different cognitive biases from the author - so more effective at finding defects · Different backgrounds and perspectives spot different kinds of failures and defects · Can verify, challenge or disprove stakeholders' assumptions
+- **Drawbacks** - Isolation from developers - less collaboration, communication problems, an adversarial relationship · Developers may lose a sense of responsibility for quality · Seen as a bottleneck, or blamed for release delays
+- **Independence doesn't replace familiarity** - developers efficiently find many defects in their own code.
+
+<SyllabusText>
+
+A certain degree of independence makes the tester more effective at finding defects due to differences between the author's and the tester's cognitive biases (cf. Salman 1995). Independence is not, however, a replacement for familiarity, e.g., developers can efficiently find many defects in their own code.
+
+The main benefit of independence of testing is that independent testers are likely to recognize different kinds of failures and defects compared to developers because of their different backgrounds, technical perspectives, and biases. Moreover, an independent tester can verify, challenge, or disprove assumptions made by stakeholders during specification and implementation of the system.
+
+However, there are also some drawbacks. Independent testers may be isolated from the development team, which may lead to a lack of collaboration, communication problems, or an adversarial relationship with the development team. Developers may lose a sense of responsibility for quality. Independent testers may be seen as a bottleneck or be blamed for delays in release.
+
+</SyllabusText>

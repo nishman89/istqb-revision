@@ -1,0 +1,23 @@
+---
+import { url } from '../lib/site';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container inner">
+    <img src={url('sparta-logo-white.png')} alt="Sparta Global" width="110" height="43" />
+    <p>
+      Sample exam questions, answers and syllabus extracts are © International Software Testing Qualifications Board
+      (ISTQB®), used with acknowledgement for training purposes. ISTQB® is a registered trademark of the International
+      Software Testing Qualifications Board.
+    </p>
+    <p class="small">© {year} Sparta Global. Progress is saved in your browser only.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--charcoal); color: #ddd; margin-top: 4rem; padding: 2.5rem 0; font-size: 0.9rem; }
+  .inner { display: grid; gap: 0.75rem; }
+  img { width: 110px; height: auto; }
+  p { margin: 0; max-width: 60rem; }
+  .small { color: #aaa; }
+</style>

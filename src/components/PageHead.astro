@@ -1,0 +1,11 @@
+---
+/** Slide-style page title: eyebrow, title with pink full stop, and the rule with an end dot. */
+interface Props { eyebrow?: string; title: string; }
+const { eyebrow, title } = Astro.props;
+---
+<header class="page-head container">
+  {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+  <h1 class="dot">{title}</h1>
+  <div class="rule" aria-hidden="true"></div>
+  <slot />
+</header>

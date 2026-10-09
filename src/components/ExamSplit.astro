@@ -1,0 +1,39 @@
+---
+import { QUESTIONS_PER_CHAPTER } from '../lib/site';
+
+/** Bar chart of the official questions-per-chapter split. */
+const titles: Record<number, string> = {
+  1: 'Fundamentals of Testing', 2: 'Testing Throughout the SDLC', 3: 'Static Testing',
+  4: 'Test Analysis and Design', 5: 'Managing the Test Activities', 6: 'Test Tools',
+};
+const max = Math.max(...Object.values(QUESTIONS_PER_CHAPTER));
+---
+<figure class="split">
+  <figcaption>Question spread by chapter</figcaption>
+  <ul>
+    {Object.entries(QUESTIONS_PER_CHAPTER).map(([ch, n]) => (
+      <li class:list={{ big: n >= 9 }}>
+        <span class="label"><b>Ch {ch}</b> {titles[Number(ch)]}</span>
+        <span class="bar" style={`--w:${(n / max) * 100}%`}>
+          <span class="fill"></span>
+          <span class="value">{n} <small>{Math.round((n / 40) * 1000) / 10}%</small></span>
+        </span>
+      </li>
+    ))}
+  </ul>
+</figure>
+
+<style>
+  .split { margin: 0; }
+  figcaption { font: 700 1.2rem var(--font-head); margin-bottom: 1rem; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+  li { display: grid; grid-template-columns: minmax(12rem, 18rem) 1fr; gap: 1rem; align-items: center; }
+  .label { font-size: 0.95rem; }
+  .label b { color: var(--pink-dark); margin-right: 0.35rem; }
+  .bar { position: relative; display: flex; align-items: center; gap: 0.6rem; }
+  .fill { height: 1.8rem; width: var(--w); background: var(--charcoal); border-radius: 6px; min-width: 0.5rem; }
+  .big .fill { background: var(--pink); }
+  .value { font-weight: 700; white-space: nowrap; }
+  .value small { color: var(--grey); font-weight: 600; }
+  @media (max-width: 40rem) { li { grid-template-columns: 1fr; gap: 0.25rem; } }
+</style>

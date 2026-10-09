@@ -1,0 +1,108 @@
+---
+number: 6
+title: "Test Tools"
+minutes: 20
+summary: "Categories of test tools, and the benefits and risks of test automation."
+objectives:
+  - "How to classify test tools"
+  - "The benefits and risks of test automation"
+---
+import SyllabusRef from '../../components/SyllabusRef.astro';
+import SyllabusText from '../../components/SyllabusText.astro';
+
+## 6.1 Tool Support for Testing
+
+
+### Recap - The Test Pyramid
+
+<SyllabusRef ref="5.1.6" />
+
+- Acceptance
+- System integration
+- System
+- Component integration
+- Component (unit)
+- **Higher levels** - Automated, manual - or both
+- **Lower levels** - Component and component integration tests are usually automated
+
+### Recap - Non-Functional Testing
+
+- Which of these can - or must - be automated? Which are better done manually?
+- Performance efficiency
+- Compatibility
+- Usability
+- Reliability
+- Security
+- Maintainability
+- Portability
+
+### Categories of Test Tools
+
+<SyllabusRef ref="6.1" />
+
+- **Management tools** - Manage the SDLC, requirements, tests, defects and configuration - for efficiency
+- **Static testing tools** - Support reviews and static analysis
+- **Test design & implementation** - Generate test cases, test data and test procedures
+- **Test execution & coverage** - Automated test execution and coverage measurement
+- **Non-functional testing tools** - Non-functional testing that is hard or impossible to do manually
+
+### More Categories of Test Tools
+
+<SyllabusRef ref="6.1" />
+
+- **DevOps tools** - Delivery pipeline, workflow tracking, automated builds, CI/CD
+- **Collaboration tools** - Facilitate communication
+- **Scalability & deployment** - Standardisation - e.g. virtual machines, containerisation
+- **Anything else that helps** - e.g. a spreadsheet is a test tool in the context of testing
+
+## 6.2 Benefits and Risks of Test Automation
+
+
+### A Tool is Not a Guarantee
+
+<SyllabusRef ref="6.2" />
+
+- Simply acquiring a tool does not guarantee success.
+- **It takes effort** - Introducing the tool, maintaining it and training people
+- **It brings risks** - which need analysis and mitigation
+- **So what are the benefits?** - Over to you…
+
+<SyllabusText>
+
+Simply acquiring a tool does not guarantee success. Each new tool will require effort to achieve real and lasting benefits (e.g., for tool introduction, maintenance and training). There are also some risks, which need analysis and mitigation.
+
+</SyllabusText>
+
+### Benefits of Test Automation
+
+<SyllabusRef ref="6.2" />
+
+- **Less repetitive work** - Regression tests, re-entering data, comparing results, checking coding standards
+- **Fewer human errors** - Consistent, repeatable - tests derived, data created and runs ordered the same way every time
+- **Objective measures** - e.g. coverage - too complicated for humans to derive
+- **Easier reporting** - Statistics, graphs, progress, defect rates, execution times
+- **Faster everything** - Earlier defect detection, faster feedback, faster time to market
+- **Better tests** - More time to design new, deeper, more effective tests
+
+<SyllabusText>
+
+Potential benefits of using test automation include: time saved by reducing repetitive manual work (e.g., execute regression tests, re-enter the same test data, compare expected results vs actual results, and check against coding standards); prevention of simple human errors through greater consistency and repeatability (e.g., tests are consistently derived from requirements, test data is created in a systematic manner, and tests are executed by a tool in the same order with the same frequency); more objective assessment (e.g., coverage) and providing measures that are too complicated for humans to derive; easier access to information about testing to support test management and test reporting (e.g., statistics, graphs, and aggregated data about test progress, defect rates, and test execution duration); reduced test execution times to provide earlier defect detection, faster feedback and faster time to market; more time for testers to design new, deeper and more effective tests.
+
+</SyllabusText>
+
+### Risks of Test Automation
+
+<SyllabusRef ref="6.2" />
+
+- **Unrealistic expectations** - about functionality and ease of use
+- **Bad estimates** - Time, cost and effort to introduce the tool, maintain scripts, change the manual process
+- **Over-reliance** - e.g. ignoring the need for human critical thinking
+- **Vendor dependency** - Vendor folds, retires or sells the tool, or gives poor support
+- **Abandoned open source** - No more updates - or components that need very frequent updates
+- **Wrong fit** - Incompatible with the platform, or non-compliant with regulations or safety standards
+
+<SyllabusText>
+
+Potential risks of using test automation include: unrealistic expectations about the benefits of a tool (including functionality and ease of use); inaccurate estimations of time, costs, effort required to introduce a tool, maintain test scripts and change the existing manual test process; using a test tool when manual testing is more appropriate; relying on a tool too much, e.g., ignoring the need of human critical thinking; the dependency on the tool vendor which may go out of business, retire the tool, sell the tool to a different vendor or provide poor support (e.g., responses to queries, upgrades, and fixes to defects); using an open-source software which may be abandoned, meaning that no further updates are available, or its internal components may require quite frequent updates as a further development; the automation tool is not compatible with the development platform; choosing an unsuitable tool that did not comply with the regulatory requirements and/or safety standards.
+
+</SyllabusText>

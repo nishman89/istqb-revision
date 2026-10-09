@@ -1,0 +1,14 @@
+---
+/** Collapsible box holding the full syllabus wording behind a slide. */
+---
+<details class="syllabus">
+  <summary>What the syllabus says</summary>
+  <div class="body"><slot /></div>
+</details>
+
+<style>
+  .syllabus { margin: 1rem 0 0; border-left: 4px solid var(--pink); background: var(--pink-tint); border-radius: 0 10px 10px 0; }
+  summary { cursor: pointer; padding: 0.6rem 1rem; font-weight: 700; color: var(--pink-dark); }
+  .body { padding: 0 1rem 0.5rem; font-size: 0.95rem; }
+  .body :global(p) { margin: 0 0 0.6rem; }
+</style>

@@ -1,0 +1,635 @@
+---
+number: 2
+title: "Testing Throughout the SDLC"
+minutes: 130
+summary: "How testing fits into different development lifecycles, DevOps and shift-left, test levels and test types, and maintenance testing."
+objectives:
+  - "How testing is incorporated into different development approaches"
+  - "Concepts of test-first approaches"
+  - "DevOps concepts"
+  - "Different test levels and test types"
+  - "Maintenance testing"
+---
+import SyllabusRef from '../../components/SyllabusRef.astro';
+import SyllabusText from '../../components/SyllabusText.astro';
+
+## 2.1 Testing in the Context of an SDLC
+
+
+### SDLC Models
+
+<SyllabusRef ref="2.1" />
+
+- **An SDLC model** is an abstract, high-level representation of the software development process - how its phases and activities relate, logically and chronologically.
+- **Sequential** - e.g. Waterfall, V-model
+- **Iterative** - e.g. Spiral model, prototyping
+- **Incremental** - e.g. Unified Process
+
+<SyllabusText>
+
+A software development lifecycle (SDLC) model is an abstract, high-level representation of the software development process. A SDLC model defines how different development phases and types of activities performed within this process relate to each other, both logically and chronologically.
+
+Examples of SDLC models include: sequential development models (e.g., waterfall model, V-model), iterative development models (e.g., spiral model, prototyping), and incremental development models (e.g., Unified Process).
+
+</SyllabusText>
+
+### Methods and Agile Practices
+
+<SyllabusRef ref="2.1" />
+
+- Activities within an SDLC can be described by more detailed methods and Agile practices:
+- Acceptance Test-Driven Dev.
+- Behavior-Driven Development
+- Domain-Driven Design
+- Extreme Programming
+- Feature-Driven Development
+- **Kanban** - Visualise and limit work in progress
+- **Lean IT** - Lean principles applied to IT
+- Time-boxed sprints
+- Test-Driven Development
+
+<SyllabusText>
+
+Some activities within software development processes can also be described by more detailed software development methods and Agile practices, such as: Acceptance Test-Driven Development (ATDD), Behavior-Driven Development (BDD), Domain-Driven Design (DDD), Extreme Programming (XP), Feature-Driven Development (FDD), Kanban, Lean IT, Scrum, and Test-Driven Development (TDD).
+
+</SyllabusText>
+
+### Royce's Waterfall Model
+
+<SyllabusRef ref="2.1" />
+
+- System requirements
+- Software requirements
+- Analysis
+- Program design
+- Coding
+- Testing
+- Operations
+- **Enforces discipline at each stage** - Defined start and end · Progress is easy to identify · Requirements before code - less wasted time, better quality
+- **Everything is delivered at the end - maybe years later** - Customers don't always know what they want until they see it · Requirements change with business & technology · Time and cost are hard to estimate · What is requested can't always be built as wanted
+
+### The V-Model
+
+<SyllabusRef ref="2.1" />
+
+- Requirement specification
+- Acceptance testing
+- test planning
+- Functional specification
+- System testing
+- Technical specification
+- Integration testing
+- Program specification
+- Unit testing
+- Coding
+
+#### Verification
+
+
+#### Validation
+
+- **Test plans developed earlier - higher chance of success** - Defects found earlier · Works well on smaller projects
+- **Quite rigid in execution** - No early prototype · Test documents must be updated along the way
+
+### Unified Process
+
+<SyllabusRef ref="2.1" />
+
+- **Sequential phases** - Inception, elaboration, construction, transition
+- **Incremental business value** - Delivered in time-boxed, cross-discipline iterations
+- **Balance of activities shifts** - The mix of activities changes within each phase
+- **Iterative & incremental** - From business modelling to deployment
+
+### Agile Methodologies
+
+<SyllabusRef ref="2.1" />
+
+- Sprints, backlog, daily stand-up, review and retro
+- Extreme Programming: nested feedback loops - from release plan down to pair programming
+- **Kanban** - Visual board; limit work in progress
+- Red → Green → Refactor
+- Feature-Driven Development: plan, design and build by feature
+- Define value, map the stream, create flow, establish pull
+- Behaviour described in plain-language scenarios
+
+### Agile - Pros and Cons
+
+<SyllabusRef ref="2.1" />
+
+- **Fast deployment** - Small, frequent improvements following feedback · Team skill improvement
+- **Light documentation** - Formal records of change may not be created · Regression testing may get out of control
+
+### Impact of the SDLC on Testing
+
+<SyllabusRef ref="2.1.1" />
+
+- **Testing must be adapted to the SDLC to succeed.**  The SDLC affects:
+- **Scope & timing** - of test activities - test levels and test types
+- **Documentation** - Level of detail of test documentation
+- **Techniques & approach** - Choice of test techniques and test approach
+- **Automation** - Extent of test automation
+- **Tester's role** - Role and responsibilities of a tester
+
+<SyllabusText>
+
+Testing must be adapted to the SDLC to succeed. The choice of the SDLC impacts on the: scope and timing of test activities (e.g., test levels and test types); level of detail of test documentation; choice of test techniques and test approach; extent of test automation; role and responsibilities of a tester.
+
+</SyllabusText>
+
+### Testing in Different SDLCs
+
+<SyllabusRef ref="2.1.1" />
+
+- **Sequential** - Waterfall, V-model · Early phases: requirement reviews, test analysis and design · Code arrives late - dynamic testing comes late · Static testing can happen at any time
+- **Iterative & incremental** - Each iteration delivers an increment · Static and dynamic testing at all test levels, every iteration · Needs fast feedback · Needs extensive regression testing
+- **Change expected throughout** - Lightweight documentation · Extensive test automation for regression · Manual testing mostly experience-based (4.4)
+
+<SyllabusText>
+
+Sequential: in the initial phases testers typically participate in requirement reviews, test analysis, and test design. The executable code is usually created in the later phases, so typically dynamic testing cannot be performed early in the SDLC.
+
+Iterative and incremental: in some models it is assumed that each iteration delivers a working prototype or product increment. This implies that in each iteration both static and dynamic testing may be performed at all test levels. Frequent delivery of increments requires fast feedback and extensive regression testing.
+
+Agile: Agile software development assumes that change may occur throughout the project. Therefore, lightweight work product documentation and extensive test automation to make regression testing easier are favored in agile projects. Also, most of the manual testing tends to be done using experience-based test techniques (see Section 4.4) that do not require extensive prior test analysis and design.
+
+</SyllabusText>
+
+### SDLC and Good Testing Practices
+
+<SyllabusRef ref="2.1.2" />
+
+- Whatever the SDLC model:
+- **Every development activity has a test activity** - So all development is subject to quality control
+- **Each test level has its own objectives** - Comprehensive testing without redundancy
+- **Test analysis & design start in the matching dev phase** - Supports the early testing principle
+- **Testers review drafts as soon as they exist** - Supports the shift-left strategy
+
+<SyllabusText>
+
+Good testing practices, independent of the chosen SDLC model, include the following:
+
+For every software development activity, there is a corresponding test activity, so that all development activities are subject to quality control.
+
+Different test levels (see chapter 2.2.1) have specific and different test objectives, which allows for testing to be appropriately comprehensive while avoiding redundancy.
+
+Test analysis and design for a given test level begins during the corresponding development phase of the SDLC, so that testing can adhere to the principle of early testing (see section 1.3).
+
+Testers are involved in reviewing work products as soon as drafts of this documentation are available, so that this earlier testing and defect detection can support the shift-left strategy (see section 2.1.5).
+
+</SyllabusText>
+
+### Test-First Development
+
+<SyllabusRef ref="2.1.3" />
+
+- **TDD, ATDD and BDD** - tests are defined first, as a way of directing development
+- **Early testing** - Tests are defined before the code is written
+- **Shift-left** - Testing moves earlier in the SDLC
+- **Iterative** - Supports an iterative development model
+- **Lasting value** - Tests persist as automated tests for future refactoring
+
+<SyllabusText>
+
+TDD, ATDD and BDD are similar development approaches, where tests are defined as a means of directing development. Each of these approaches implements the principle of early testing (see section 1.3) and follows a shift-left approach (see section 2.1.5), since the tests are defined before the code is written. They support an iterative development model. Tests may persist as automated tests to ensure the code quality in future adaptations / refactoring.
+
+</SyllabusText>
+
+### TDD, ATDD and BDD
+
+<SyllabusRef ref="2.1.3" />
+
+- **Test-Driven Development** - Directs coding through test cases (instead of extensive design) · Write a test → write code to pass it → refactor
+- **Acceptance Test-Driven Dev.** - Derives tests from acceptance criteria as part of system design · Tests written before that part of the application is built
+- **Behaviour-Driven Development** - Expresses desired behaviour as test cases · Usually in Gherkin: Given / When / Then
+
+### DevOps and Testing
+
+<SyllabusRef ref="2.1.4" />
+
+- Development
+(incl. testing)
+- Operations
+- Common goals, equal value - a cultural shift
+- Build, test and release high-quality code faster through a delivery pipeline
+
+#### Devops Promotes
+
+- Team autonomy
+- Fast feedback
+- Integrated toolchains
+- CI and CD
+
+<SyllabusText>
+
+DevOps is an organizational approach aiming to create synergy by getting development (including testing) and operations to work together to achieve a set of common goals. DevOps requires a cultural shift within an organization to bridge the gaps between development (including testing) and operations while treating their functions with equal value. DevOps promotes team autonomy, fast feedback, integrated toolchains, and technical practices like continuous integration (CI) and continuous delivery (CD). This enables the teams to build, test and release high-quality code faster through a DevOps delivery pipeline (Kim 2016).
+
+</SyllabusText>
+
+### The DevOps Delivery Pipeline
+
+<SyllabusRef ref="2.1.4" />
+
+- Code repository
+- CI/CD server
+- monitors changes
+- Write code and automated tests
+- **Development** - CI server deploys and runs tests
+- **Pre-production** - Mirrors production as closely as possible
+- **Production** - Live - no tests
+- Continuous integration
+- Continuous delivery
+- Continuous deployment
+- Continuous delivery is automated up to production; continuous deployment releases to production automatically too.
+
+### DevOps Benefits for Testing
+
+<SyllabusRef ref="2.1.4" />
+
+- **Fast feedback** - on code quality - and whether changes break existing code
+- **Shift-left** - Developers submit quality code with component tests and static analysis
+- **Stable environments** - Automated CI/CD processes help establish them
+- **Non-functional focus** - More attention to performance, reliability, etc.
+- **Less repetitive manual testing** - Thanks to automation in the pipeline
+- **Lower regression risk** - Due to the scale and range of automated regression tests
+
+<SyllabusText>
+
+From a testing perspective, some of the benefits of DevOps are: fast feedback on the code quality, and whether changes adversely affect existing code; CI promotes a shift-left approach in testing (see section 2.1.5) by encouraging developers to submit high quality code accompanied by component tests and static analysis; promotes automated processes like CI/CD that facilitate establishing stable test environments; increases the view on non-functional quality characteristics (e.g., performance, reliability); automation through a delivery pipeline reduces the need for repetitive manual testing; the risk in regression is minimized due to the scale and range of automated regression tests.
+
+</SyllabusText>
+
+### DevOps Risks and Challenges
+
+<SyllabusRef ref="2.1.4" />
+
+- The delivery pipeline must be defined and established
+- CI/CD tools must be introduced and maintained
+- **Test automation needs extra resources** - and may be difficult to establish and maintain
+- **Manual testing is still needed** - especially from the user's perspective
+
+<SyllabusText>
+
+DevOps is not without its risks and challenges, which include: the DevOps delivery pipeline must be defined and established; CI/CD tools must be introduced and maintained; test automation requires additional resources and may be difficult to establish and maintain. Although DevOps comes with a high level of automated testing, manual testing - especially from the user's perspective - will still be needed.
+
+</SyllabusText>
+
+### Shift-Left Approach
+
+<SyllabusRef ref="2.1.5" />
+
+- Requirements
+- Design
+- Integrate
+- System
+- Release
+- Testing starts earlier
+- **Early testing** - Don't wait for code to be written or components to be integrated
+- **Later testing still matters** - Shift-left doesn't mean neglecting testing later on
+- **Invest now, save later** - More training, effort or cost early - less later
+- **Stakeholder buy-in** - Stakeholders must be convinced of the approach
+
+<SyllabusText>
+
+The principle of early testing (see section 1.3) is sometimes referred to as shift-left because it is an approach where testing is performed earlier in the SDLC. Shift-left normally suggests that testing should be done earlier (e.g., not waiting for code to be implemented or for components to be integrated), but it does not mean that testing later in the SDLC should be neglected.
+
+A shift-left approach might result in extra training, effort and/or costs earlier in the process but is expected to save efforts and/or costs later in the process.
+
+For the shift-left approach it is important that stakeholders are convinced and bought into this concept.
+
+</SyllabusText>
+
+### Shift-Left Good Practices
+
+<SyllabusRef ref="2.1.5" />
+
+- **Review specs as a tester** - Often finds ambiguities, incompleteness and inconsistencies
+- **Write test cases before code** - and run code in a test harness during implementation
+- **Use CI and CD** - Fast feedback; automated component tests go in with the code
+- **Static analysis first** - Before dynamic testing, or as part of an automated process
+- **Non-functional testing early** - Start at component level - don't wait for the full system and environment
+
+### Retrospectives
+
+<SyllabusRef ref="2.1.6" />
+
+- The whole team asks:
+- **What was successful?** - …and should be retained
+- **What wasn't?** - …and could be improved
+- **How do we move forward?** - Incorporate improvements and keep the successes
+- End of a project or iteration, at a release milestone, or as needed
+- **Record it** - Usually in the test completion report
+- **Follow up** - Essential for continuous improvement
+
+<SyllabusText>
+
+Retrospectives (also known as "post-project meetings" and project retrospectives) are often held at the end of a project or an iteration, at a release milestone, or can be held when needed. The timing and organization of the retrospectives depend on the particular SDLC model being followed.
+
+In these meetings the participants (not only testers, but also e.g., developers, architects, product owner, business analysts) discuss: What was successful, and should be retained? What was not successful and could be improved? How to incorporate the improvements and retain the successes in the future?
+
+The results should be recorded and are normally part of the test completion report (see section 5.3.2). Retrospectives are critical for the successful implementation of continuous improvement and it is important that any recommended improvements are followed up.
+
+</SyllabusText>
+
+### Benefits of Retrospectives
+
+<SyllabusRef ref="2.1.6" />
+
+- **Test effectiveness & efficiency** - by implementing process improvement suggestions
+- **Better testware** - by jointly reviewing the test process
+- **Team bonding & learning** - a chance to raise issues and propose improvements
+- **Better test basis** - gaps in requirements can be addressed and solved
+- **Dev-test cooperation** - collaboration is reviewed and optimised regularly
+
+<SyllabusText>
+
+Typical benefits for testing include: increased test effectiveness / efficiency (e.g., by implementing suggestions for process improvement); increased quality of testware (e.g., by jointly reviewing the test processes); team bonding and learning (e.g., as a result of the opportunity to raise issues and propose improvement points); improved quality of the test basis (e.g., as deficiencies in the extent and quality of the requirements could be addressed and solved); better cooperation between development and testing (e.g., as collaboration is reviewed and optimized regularly).
+
+</SyllabusText>
+
+## 2.2 Test Levels and Test Types
+
+
+### Test Levels vs Test Types
+
+<SyllabusRef ref="2.2" />
+
+- **Test levels** - Groups of test activities organised and managed together · An instance of the test process at a stage of development - from components to systems of systems · Sequential models: exit criteria of one level feed the next level's entry criteria · Iterative models: activities may span levels, and levels may overlap
+- **Test types** - Groups of test activities related to quality characteristics · Most test types can be performed at every test level · Levels and types are two different dimensions - a level can include many types
+
+<SyllabusText>
+
+Test levels are groups of test activities that are organized and managed together. Each test level is an instance of the test process, performed in relation to software at a given stage of development, from individual components to complete systems or, where applicable, systems of systems. Test levels are related to other activities within the SDLC. In sequential SDLC models, the test levels are often defined such that the exit criteria of one level are part of the entry criteria for the next level. In some iterative models, this may not apply. Development activities may span through multiple test levels. Test levels may overlap in time.
+
+Test types are groups of test activities related to specific quality characteristics and most of those test activities can be performed at every test level.
+
+</SyllabusText>
+
+### The Five Test Levels
+
+<SyllabusRef ref="2.2.1" />
+
+- Acceptance
+- Does it satisfy user needs?
+- System integration
+- Does it integrate with the third-party payment system?
+- System
+- Does the entire store work?
+- Component integration
+- Do the basket, catalogue and checkout modules work together?
+- Component (unit)
+- Do the methods calculating totals and shipping work?
+
+#### E-Commerce Example
+
+- Fewer, bigger, slower tests at the top - many small, fast tests at the base
+
+### Test Levels and the V-Model
+
+<SyllabusRef ref="2.2.1" />
+
+- Requirement specification
+- Acceptance testing
+- test planning
+- Functional specification
+- System testing
+- Technical specification
+- Integration testing
+- Program specification
+- Unit testing
+- Coding
+
+#### Verification
+
+
+#### Validation
+
+
+### Component Testing
+
+<SyllabusRef ref="2.2.1" />
+
+- Testing components in isolation
+- **Often needs specific support** - Unit test frameworks and test harnesses
+- **Normally done by developers** - in their development environment
+- **E-commerce example** Individual methods for calculating the total and adding shipping in the shopping basket
+
+### Component Integration Testing
+
+<SyllabusRef ref="2.2.1" />
+
+- Interfaces and interactions between components
+- Also known as unit integration testing
+- **Heavily dependent on the integration strategy** - Bottom-up, top-down or big-bang
+- **E-commerce example** Integration of the shopping basket, catalogue and checkout modules
+
+### System Testing
+
+<SyllabusRef ref="2.2.1" />
+
+- Overall behaviour and capabilities of the entire system or product
+- **Functional testing** - of end-to-end tasks
+- **Non-functional testing** - of quality characteristics, e.g. usability
+- **Representative test environment** - for some tests; sub-systems may need simulating
+- **Often an independent test team** - related to the system specifications
+- **E-commerce example** Does the entire store work?
+
+### System Integration Testing
+
+<SyllabusRef ref="2.2.1" />
+
+- Interfaces with other systems and external services
+- **Needs suitable test environments** - preferably similar to the operational environment
+- **Real connections** - Systems simulated in system testing are now integrated for real
+- **E-commerce example** Does it integrate with the third-party payment system?
+
+### Acceptance Testing
+
+<SyllabusRef ref="2.2.1" />
+
+- Validation - and demonstrating readiness for deployment
+- **Does it fulfil the user's business need?** - Ideally performed by the intended users
+- User acceptance testing (UAT)
+- Operational acceptance testing
+- Contractual and regulatory acceptance testing
+- Alpha and beta testing
+- **E-commerce example** Does it satisfy the users' needs?
+
+### What Distinguishes Each Level?
+
+<SyllabusRef ref="2.2.1" />
+
+- Each test level is distinguished by these attributes - so test activities don't overlap:
+- Test object
+- Test objectives
+- Test basis
+- Typical defects & failures
+- Approach & responsibilities
+
+<SyllabusText>
+
+Test levels are distinguished by the following non-exhaustive list of attributes, to avoid overlapping of test activities: test object; test objectives; test basis; defects and failures; approach and responsibilities.
+
+</SyllabusText>
+
+### The Four Test Types
+
+<SyllabusRef ref="2.2.2" />
+
+- **Functional** - WHAT the system does
+- **Non-functional** - HOW WELL it behaves
+- **Black-box** - Based on the specification
+- **White-box** - Based on the internal structure
+- **All four apply at every test level** - the focus differs by level, and any test technique can derive their test cases.
+
+<SyllabusText>
+
+A lot of test types exist and can be applied in projects. In this syllabus, the following four test types are addressed: functional testing, non-functional testing, black-box testing, white-box testing.
+
+All four test types can be applied to all test levels, although the focus will be different at each level. Different test techniques can be used to derive test conditions and test cases for all the mentioned test types.
+
+</SyllabusText>
+
+### Functional vs Non-Functional
+
+<SyllabusRef ref="2.2.2" />
+
+- **Functional testing** - WHAT the test object should do · Evaluates the functions a component or system should perform · Checks functional completeness, correctness and appropriateness
+- **Non-functional testing** - HOW WELL the system behaves · Evaluates attributes other than functional characteristics · Checks the non-functional software quality characteristics
+
+### Quality Characteristics
+
+<SyllabusRef ref="2.2.2" />
+
+- Performance efficiency
+- Compatibility
+- Usability
+- Reliability
+- Security
+- Maintainability
+- Portability
+
+### Non-Functional Testing in Practice
+
+<SyllabusRef ref="2.2.2" />
+
+- **Start early** - e.g. in reviews and component testing
+- **Built on functional tests** - Same test, plus a non-functional check - e.g. response time
+- **Late discovery is dangerous** - Late non-functional defects threaten the project
+- **Special environments** - e.g. a usability lab for usability testing
+
+<SyllabusText>
+
+It is sometimes appropriate for non-functional testing to start early in the lifecycle (e.g., as part of reviews and component testing or system testing). Many non-functional tests are derived from functional tests as they use the same functional tests, but check that while performing the function, a non-functional constraint is satisfied (e.g., checking that a function performs within a specified time, or a function can be ported to a new platform). The late discovery of non-functional defects can pose a serious threat to the success of a project. Non-functional testing sometimes needs a very specific test environment, such as a usability lab for usability testing.
+
+</SyllabusText>
+
+### Black-Box vs White-Box
+
+<SyllabusRef ref="2.2.2" />
+
+- **Black-box testing** - Specification-based · Derives tests from documentation external to the test object · Objective: check system behaviour against its specification
+- **White-box testing** - Structure-based · Derives tests from the implementation or internal structure - code, architecture, workflows, data flows · Objective: cover the underlying structure with tests to an acceptable level
+
+### Confirmation Testing
+
+<SyllabusRef ref="2.2.3" />
+
+- **Confirmation testing** confirms that an original defect has been successfully fixed.
+
+#### Depending On Risk, You Might…
+
+- **Re-run failed tests** - Execute all test cases that previously failed due to the defect
+- **Add new tests** - Cover any changes that were needed to fix the defect
+- **When time is short** - Just repeat the steps that reproduce the failure and check it no longer occurs
+
+<SyllabusText>
+
+Changes are typically made to a component or system to either enhance it by adding a new feature or to fix it by removing a defect. Testing should then also include confirmation testing and regression testing.
+
+Confirmation testing confirms that an original defect has been successfully fixed. Depending on the risk, one can test the fixed version of the software in several ways, including: executing all test cases that previously have failed due to the defect, or also by adding new tests to cover any changes that were needed to fix the defect. However, when time or money is short when fixing defects, confirmation testing might be restricted to simply exercising the steps that should reproduce the failure caused by the defect and checking that the failure does not occur.
+
+</SyllabusText>
+
+### Regression Testing
+
+<SyllabusRef ref="2.2.3" />
+
+- Connected systems
+- Environment
+- **Other components** - Changed component
+- **Regression testing** confirms a change - even a confirmed fix - hasn't caused adverse consequences.
+- **Start with impact analysis** - It shows which parts of the software could be affected - so you can optimise the extent of regression testing. Effects can spread to the same component, other components, connected systems and the environment.
+
+<SyllabusText>
+
+Regression testing confirms that no adverse consequences have been caused by a change, including a fix that has already been confirmation tested. These adverse consequences could affect the same component where the change was made, other components in the same system, or even other connected systems. Regression testing may not be restricted to the test object itself but can also be related to the environment. It is advisable first to perform an impact analysis to optimize the extent of the regression testing. Impact analysis shows which parts of the software could be affected.
+
+</SyllabusText>
+
+### Automating Regression Tests
+
+<SyllabusRef ref="2.2.3" />
+
+- **Run many times** - and the suite grows with every iteration or release
+- **Strong candidate for automation** - Start automating early in the project
+- **Include in CI** - Automated regression tests belong in the pipeline - possibly at several levels
+- **At every test level** - Confirmation and/or regression testing wherever fixes or changes are made
+
+<SyllabusText>
+
+Regression test suites are run many times and generally the number of regression test cases will increase with each iteration or release, so regression testing is a strong candidate for automation. Automation of these tests should start early in the project. Where CI is used, such as in DevOps (see section 2.1.4), it is good practice to also include automated regression tests. Depending on the situation, this may include regression tests on different test levels.
+
+Confirmation testing and/or regression testing for the test object are needed on all test levels if defects are fixed and/or changes are made on these test levels.
+
+</SyllabusText>
+
+## 2.3 Maintenance Testing
+
+
+### Maintenance Testing
+
+<SyllabusRef ref="2.3" />
+
+- **Categories of maintenance** - Corrective, adaptive to environment changes, or improving performance / maintainability (ISO/IEC 14764)
+- **Planned or unplanned** - Planned releases and deployments - or unplanned hot fixes
+- **Impact analysis** - Done before a change, to help decide whether to make it
+- **Testing in production** - Did the change work? And are there regressions in the unchanged parts - usually most of the system?
+
+<SyllabusText>
+
+There are different categories of maintenance: it can be corrective, adaptive to changes in the environment, or improve performance or maintainability (see ISO/IEC 14764 for details), so maintenance can involve planned releases/deployments and unplanned releases/deployments (hot fixes).
+
+Impact analysis may be done before a change is made, to help decide if the change should be made, based on the potential consequences in other areas of the system.
+
+Testing the changes to a system in production includes both evaluating the success of the implementation of the change and the checking for possible regressions in parts of the system that remain unchanged (which is usually most of the system).
+
+</SyllabusText>
+
+### Scope of Maintenance Testing
+
+<SyllabusRef ref="2.3" />
+
+- The scope of maintenance testing typically depends on:
+- **The degree of risk** - of the change
+- The size of the existing system
+- The size of the change
+
+### Triggers for Maintenance
+
+<SyllabusRef ref="2.3" />
+
+- **Modifications** - Planned enhancements (release-based) · Corrective changes · Hot fixes
+- **Upgrades & migrations** - e.g. moving from one platform to another · Test the new environment and the changed software · Test data conversion when data is migrated in
+- **Retirement** - When an application reaches end of life · Test data archiving for long retention periods · Test restore and retrieval after archiving
+
+<SyllabusText>
+
+The triggers for maintenance and maintenance testing can be classified as follows:
+
+Modifications, such as planned enhancements (i.e., release-based), corrective changes or hot fixes.
+
+Upgrades or migrations of the operational environment, such as from one platform to another, which can require tests associated with the new environment as well as of the changed software, or tests of data conversion when data from another application is migrated into the system being maintained.
+
+Retirement, such as when an application reaches the end of its life. When a system is retired, this can require testing of data archiving if long data-retention periods are required. Testing of restore and retrieval procedures after archiving may also be needed in the event that certain data is required during the archiving period.
+
+</SyllabusText>

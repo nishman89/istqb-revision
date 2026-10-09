@@ -1,0 +1,105 @@
+/* Sparta Global theme - colours and type taken from the training slide template. */
+:root {
+  --charcoal: #2d2a2b;
+  --pink: #e33661;
+  --pink-dark: #b8234b;
+  --pink-soft: #f4b6c5;
+  --pink-tint: #fbe3e9;
+  --bg: #f0f1f1;
+  --surface: #ffffff;
+  --grey: #6b6b6b;
+  --line: #d9dbdb;
+  --success: #1f8a5b;
+  --success-tint: #e3f4ec;
+
+  --font-head: 'Zilla Slab', 'Rockwell', Georgia, serif;
+  --font-body: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+  --radius: 16px;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px rgb(0 0 0 / 0.05);
+  --content: 72rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--charcoal);
+  font: 1.0625rem/1.65 var(--font-body);
+}
+img { max-width: 100%; height: auto; }
+a { color: var(--pink-dark); text-underline-offset: 3px; }
+a:hover { color: var(--pink); }
+:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; border-radius: 4px; }
+
+h1, h2, h3, h4 { font-family: var(--font-head); line-height: 1.2; margin: 0 0 0.5em; }
+h1 { font-size: clamp(2rem, 4vw, 2.75rem); }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.35rem; }
+
+/* The pink full stop used on every slide title */
+.dot::after { content: '.'; color: var(--pink); }
+
+.container { width: min(100% - 2rem, var(--content)); margin-inline: auto; }
+
+/* Title with the slide-style rule and end dot */
+.page-head { padding: 2.5rem 0 1.5rem; }
+.page-head .eyebrow { margin-bottom: 0.25rem; }
+.page-head h1 { margin: 0; }
+.rule {
+  position: relative; height: 3px; background: var(--charcoal);
+  margin: 1rem 0 0; max-width: 40rem;
+}
+.rule::after {
+  content: ''; position: absolute; right: -6px; top: -5px;
+  width: 13px; height: 13px; border-radius: 50%; background: var(--charcoal);
+}
+
+.eyebrow {
+  display: block; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--pink);
+}
+.muted { color: var(--grey); }
+
+.card {
+  background: var(--surface); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 1.5rem;
+}
+.card--dark { background: var(--charcoal); color: #fff; }
+.card--tint { background: var(--pink-tint); box-shadow: none; }
+
+.grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem; justify-content: center;
+  padding: 0.7rem 1.3rem; border-radius: 999px; border: 2px solid var(--pink);
+  background: var(--pink); color: #fff; font: 700 1rem var(--font-body);
+  text-decoration: none; cursor: pointer; transition: background 0.15s, color 0.15s;
+}
+.btn:hover { background: var(--pink-dark); border-color: var(--pink-dark); color: #fff; }
+.btn--ghost { background: transparent; color: var(--pink-dark); }
+.btn--ghost:hover { background: var(--pink-tint); color: var(--pink-dark); }
+.btn--dark { background: var(--charcoal); border-color: var(--charcoal); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.pill {
+  display: inline-block; padding: 0.15rem 0.7rem; border-radius: 999px;
+  font-size: 0.8rem; font-weight: 700; background: var(--pink-tint); color: var(--pink-dark);
+}
+.pill--dark { background: var(--charcoal); color: #fff; }
+.pill--success { background: var(--success-tint); color: var(--success); }
+
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+th, td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+thead th, tr:first-child th { background: var(--pink); color: #fff; }
+.table-wrap { overflow-x: auto; margin: 1rem 0; border-radius: 10px; background: var(--surface); }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+@media print {
+  .site-header, .site-footer, .no-print { display: none !important; }
+  body { background: #fff; }
+}

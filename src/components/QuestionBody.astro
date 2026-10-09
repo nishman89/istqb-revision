@@ -1,0 +1,40 @@
+---
+import type { Question } from '../content.config';
+import { url } from '../lib/site';
+
+/** Renders a question's stem: paragraphs, lists, tables, boxed text and figures. */
+interface Props { blocks: Question['blocks']; label: string; }
+const { blocks, label } = Astro.props;
+---
+<div class="stem">
+  {blocks.map((b) => {
+    switch (b.t) {
+      case 'p': return <p>{b.text}</p>;
+      case 'formula': return <p class="formula">{b.text}</p>;
+      case 'list': return (
+        <ul class="list">{b.items.map((i) => <li><span class="marker">{i.marker}</span><span>{i.text}</span></li>)}</ul>
+      );
+      case 'table': return (
+        <div class="table-wrap">
+          <table>
+            <thead><tr>{b.rows[0].map((c) => <th scope="col">{c}</th>)}</tr></thead>
+            <tbody>{b.rows.slice(1).map((r) => <tr>{r.map((c) => <td>{c}</td>)}</tr>)}</tbody>
+          </table>
+        </div>
+      );
+      case 'box': return <div class="box">{b.lines.map((l) => <span>{l}</span>)}</div>;
+      case 'img': return <img class="figure" src={url(`exam-figures/${b.src}`)} alt={`Figure for ${label}`} loading="lazy" />;
+    }
+  })}
+</div>
+
+<style>
+  .stem p { margin: 0 0 0.75rem; }
+  .formula { font: 600 1.15rem var(--font-head); text-align: center; background: var(--bg); padding: 0.75rem; border-radius: 10px; }
+  .list { list-style: none; padding: 0; margin: 0 0 0.75rem; display: grid; gap: 0.25rem; }
+  .list li { display: grid; grid-template-columns: 2.25rem 1fr; }
+  .marker { font-weight: 700; color: var(--pink-dark); }
+  .box { display: grid; border: 2px solid var(--line); border-radius: 10px; padding: 0.75rem 1rem; margin: 0 0 0.75rem; background: var(--bg); font-size: 0.95rem; white-space: pre-wrap; }
+  .figure { display: block; margin: 0.5rem auto 1rem; max-height: 22rem; background: #fff; border-radius: 8px; padding: 0.5rem; border: 1px solid var(--line); }
+  td { font-variant-numeric: tabular-nums; }
+</style>

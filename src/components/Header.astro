@@ -1,0 +1,61 @@
+---
+import { url } from '../lib/site';
+
+const chapters = [
+  [1, 'Fundamentals of Testing'],
+  [2, 'Testing Throughout the SDLC'],
+  [3, 'Static Testing'],
+  [4, 'Test Analysis and Design'],
+  [5, 'Managing the Test Activities'],
+  [6, 'Test Tools'],
+] as const;
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === url() ? path === href : path.startsWith(href));
+---
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand" href={url()} aria-label="Sparta Global ISTQB home">
+      <img src={url('sparta-logo.png')} alt="Sparta Global" width="120" height="47" />
+      <span class="brand__label">ISTQB CTFL</span>
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href={url()} aria-current={isActive(url()) ? 'page' : undefined}>Home</a></li>
+        <li><a href={url('introduction')} aria-current={isActive(url('introduction')) ? 'page' : undefined}>Introduction</a></li>
+        <li class="has-menu">
+          <details>
+            <summary>Chapters</summary>
+            <ul class="menu">
+              {chapters.map(([n, title]) => (
+                <li><a href={url(`chapters/${n}`)}><span>{n}</span>{title}</a></li>
+              ))}
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header { background: var(--surface); border-bottom: 4px solid var(--pink); position: sticky; top: 0; z-index: 10; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.6rem; }
+  .brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+  .brand img { width: 110px; height: auto; display: block; }
+  .brand__label { font: 700 0.85rem var(--font-body); letter-spacing: 0.08em; color: var(--charcoal); border-left: 2px solid var(--line); padding-left: 0.75rem; }
+  nav > ul { display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0; align-items: center; }
+  nav a, summary { display: block; padding: 0.5rem 0.85rem; border-radius: 999px; color: var(--charcoal); font-weight: 700; text-decoration: none; cursor: pointer; }
+  nav a:hover, summary:hover { background: var(--pink-tint); color: var(--pink-dark); }
+  nav a[aria-current='page'] { background: var(--charcoal); color: #fff; }
+  summary { list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: ' ▾'; color: var(--pink); }
+  .has-menu { position: relative; }
+  .menu { position: absolute; right: 0; top: calc(100% + 0.5rem); background: var(--surface); list-style: none; margin: 0; padding: 0.5rem; border-radius: 12px; box-shadow: var(--shadow); min-width: 19rem; }
+  .menu a { display: flex; gap: 0.75rem; border-radius: 8px; font-weight: 600; }
+  .menu span { color: var(--pink); font-weight: 700; }
+  @media (max-width: 40rem) {
+    .brand__label { display: none; }
+    nav a, summary { padding: 0.4rem 0.6rem; }
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHead from '../../../components/PageHead.astro';
+import Quiz from '../../../components/Quiz.astro';
+import { getChapters, getQuestions } from '../../../lib/data';
+import { url, MAIN_SET, PRACTICE_SETS } from '../../../lib/site';
+import { quizId } from '../../../lib/progress';
+
+export async function getStaticPaths() {
+  const chapters = await getChapters();
+  const sets = [MAIN_SET, ...PRACTICE_SETS];
+  return chapters.flatMap(({ data }) =>
+    sets.map((set) => ({ params: { chapter: String(data.number), set: set.toLowerCase() }, props: { chapter: data, set } })),
+  );
+}
+
+const { chapter, set } = Astro.props;
+const questions = await getQuestions(set, chapter.number);
+const isMain = set === MAIN_SET;
+const others = [MAIN_SET, ...PRACTICE_SETS].filter((s) => s !== set);
+---
+<BaseLayout title={`Chapter ${chapter.number} quiz - Sample Exam ${set}`}>
+  <PageHead eyebrow={`Chapter ${chapter.number} · ${isMain ? 'Chapter quiz' : 'Extra practice'} · ISTQB Sample Exam ${set}`} title={chapter.title}>
+    <p class="back no-print"><a href={url(`chapters/${chapter.number}`)}>← Back to the Chapter {chapter.number} notes</a></p>
+  </PageHead>
+
+  <div class="container">
+    <Quiz questions={questions} quizId={quizId(chapter.number, set)} />
+
+    <nav class="more card no-print" aria-label="Other question sets">
+      <span class="eyebrow">Other question sets for this chapter</span>
+      <ul>
+        {others.map((s) => (
+          <li><a href={url(`quiz/${chapter.number}/${s.toLowerCase()}`)}>Sample Exam {s}{s === MAIN_SET ? ' (chapter quiz)' : ''}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</BaseLayout>
+
+<style>
+  .back { margin: 1rem 0 0; font-weight: 700; }
+  .more { margin-top: 2rem; }
+  .more ul { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; list-style: none; padding: 0; margin: 0.5rem 0 0; font-weight: 700; }
+</style>

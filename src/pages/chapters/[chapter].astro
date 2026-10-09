@@ -1,0 +1,110 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHead from '../../components/PageHead.astro';
+import { getChapters, getQuestions } from '../../lib/data';
+import { url, MAIN_SET, PRACTICE_SETS, QUESTIONS_PER_CHAPTER } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const chapters = await getChapters();
+  return chapters.map((entry, i) => ({
+    params: { chapter: String(entry.data.number) },
+    props: { entry, prev: chapters[i - 1]?.data, next: chapters[i + 1]?.data },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const { data } = entry;
+const { Content, headings } = await render(entry);
+const sections = headings.filter((h) => h.depth === 2);
+const practice = await Promise.all(PRACTICE_SETS.map(async (s) => ({ set: s, count: (await getQuestions(s, data.number)).length })));
+---
+<BaseLayout title={`Chapter ${data.number}: ${data.title}`} description={data.summary}>
+  <PageHead eyebrow={`Chapter ${data.number} · ${QUESTIONS_PER_CHAPTER[data.number]} questions in the exam`} title={data.title}>
+    <p class="summary">{data.summary}</p>
+  </PageHead>
+
+  <div class="container layout">
+    <aside class="toc no-print" aria-label="In this chapter">
+      <div class="card">
+        <span class="eyebrow">In this chapter</span>
+        <ol>{sections.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+        <a class="btn quiz-btn" href={url(`quiz/${data.number}/${MAIN_SET.toLowerCase()}`)}>Chapter quiz →</a>
+      </div>
+    </aside>
+
+    <article class="notes">
+      <section class="card objectives">
+        <h2>You will learn</h2>
+        <ul>{data.objectives.map((o) => <li>{o}</li>)}</ul>
+      </section>
+
+      <div class="prose"><Content /></div>
+
+      <section class="card card--dark finish no-print">
+        <h2>Finished the notes?</h2>
+        <p>Test yourself with the {QUESTIONS_PER_CHAPTER[data.number]} Chapter {data.number} questions from ISTQB Sample Exam C.</p>
+        <div class="finish__actions">
+          <button class="btn btn--ghost btn--light" type="button" data-mark-read={data.number}>Mark notes as read</button>
+          <a class="btn" href={url(`quiz/${data.number}/${MAIN_SET.toLowerCase()}`)}>Take the chapter quiz</a>
+        </div>
+        <p class="practice">More practice:
+          {practice.map(({ set, count }) => (
+            <a href={url(`quiz/${data.number}/${set.toLowerCase()}`)}>Sample Exam {set} ({count})</a>
+          ))}
+        </p>
+      </section>
+
+      <nav class="pager no-print" aria-label="Chapters">
+        {prev ? <a href={url(`chapters/${prev.number}`)}>← Chapter {prev.number}: {prev.title}</a> : <span></span>}
+        {next && <a href={url(`chapters/${next.number}`)}>Chapter {next.number}: {next.title} →</a>}
+      </nav>
+    </article>
+  </div>
+</BaseLayout>
+
+<script>
+  import { isChapterRead, markChapterRead } from '../../lib/progress';
+
+  const button = document.querySelector<HTMLButtonElement>('[data-mark-read]');
+  if (button) {
+    const chapter = Number(button.dataset.markRead);
+    const showDone = () => { button.textContent = '✓ Marked as read'; button.disabled = true; };
+    if (isChapterRead(chapter)) showDone();
+    button.addEventListener('click', () => { markChapterRead(chapter); showDone(); });
+  }
+</script>
+
+<style>
+  .summary { max-width: 46rem; font-size: 1.1rem; color: var(--grey); margin: 1rem 0 0; }
+  .layout { display: grid; grid-template-columns: 17rem 1fr; gap: 2rem; align-items: start; }
+  .toc { position: sticky; top: 5.5rem; }
+  .toc ol { padding-left: 1.25rem; margin: 0.5rem 0 1rem; display: grid; gap: 0.4rem; font-size: 0.95rem; }
+  .toc a { color: var(--charcoal); text-decoration: none; }
+  .toc a:hover { color: var(--pink-dark); }
+  .quiz-btn { width: 100%; }
+  .notes { display: grid; gap: 1.5rem; min-width: 0; }
+  .objectives { border-left: 8px solid var(--pink); }
+  .objectives ul { margin: 0; padding-left: 1.25rem; }
+
+  /* Notes generated from the slides */
+  .prose :global(h2) { margin: 2.5rem 0 1rem; padding: 0.75rem 1.25rem; background: var(--charcoal); color: #fff; border-radius: 12px; border-left: 8px solid var(--pink); }
+  .prose :global(h3) { margin: 2rem 0 0.5rem; }
+  .prose :global(h4) { font: 700 0.8rem var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink); margin: 1rem 0 0.25rem; }
+  .prose :global(ul) { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1rem 1.25rem 1rem 2.25rem; margin: 0.5rem 0; }
+  .prose :global(li) { margin: 0.3rem 0; }
+  .prose :global(li)::marker { color: var(--pink); }
+  .prose :global(table) { background: var(--surface); }
+
+  .finish p { color: #ddd; }
+  .finish__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
+  .btn--light { color: #fff; border-color: #fff; }
+  .btn--light:hover { background: #fff; color: var(--charcoal); }
+  .practice { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.95rem; }
+  .practice a { color: var(--pink-soft); font-weight: 700; }
+  .pager { display: flex; justify-content: space-between; gap: 1rem; font-weight: 700; }
+  @media (max-width: 56rem) {
+    .layout { grid-template-columns: 1fr; }
+    .toc { position: static; }
+  }
+</style>

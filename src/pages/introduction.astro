@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/PageHead.astro';
+import ExamSplit from '../components/ExamSplit.astro';
+import { url } from '../lib/site';
+
+const kLevels = [
+  { k: 'K1', name: 'Remember', desc: 'Recall a term or fact - e.g. "Which of the following is a typical test objective?"', mins: '1 min' },
+  { k: 'K2', name: 'Understand', desc: 'Explain, compare or classify - e.g. pick the best description of a concept.', mins: '1-2 min' },
+  { k: 'K3', name: 'Apply', desc: 'Use a technique on a scenario - e.g. work out boundary values or decision table coverage.', mins: '3 min' },
+];
+---
+<BaseLayout title="Introduction to the ISTQB" description="What the ISTQB is, the Foundation Level certificate, and how the exam is structured and marked.">
+  <PageHead eyebrow="Start here" title="Introduction to the ISTQB" />
+
+  <div class="container intro">
+    <section class="lead card">
+      <h2>What is the ISTQB?</h2>
+      <p>The <strong>International Software Testing Qualifications Board (ISTQB®)</strong> is a not-for-profit
+        organisation, founded in 2002, that defines a common body of knowledge for software testers and certifies
+        them against it. National member boards run the scheme in their own countries, so the same certificate is
+        recognised by employers around the world.</p>
+      <p>ISTQB writes the syllabi, the glossary of testing terms and the exam rules. Training providers such as
+        Sparta Global teach the syllabus; the exams themselves are set by ISTQB and run by approved exam providers.</p>
+    </section>
+
+    <section>
+      <h2 class="dot">The Foundation Level certificate</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="eyebrow">What it is</span>
+          <h3>CTFL v4.0</h3>
+          <p>The <strong>Certified Tester Foundation Level</strong> is the entry point to the ISTQB scheme and a
+            prerequisite for the Advanced and Specialist certificates. Version 4.0 of the syllabus was released in 2023.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow">Who it's for</span>
+          <h3>Anyone in testing</h3>
+          <p>Testers, test automation engineers, developers, business analysts and managers - anyone who needs a
+            shared vocabulary and a solid grounding in how testing works.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow">What it covers</span>
+          <h3>Six chapters</h3>
+          <p>Fundamentals, testing through the SDLC, static testing, test techniques, managing testing, and tools.
+            <a href={url('chapters/1')}>Start the notes →</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="dot">The exam at a glance</h2>
+      <div class="facts">
+        <div class="fact card card--dark"><span class="fact__big">40</span><span>multiple-choice questions</span></div>
+        <div class="fact card card--dark"><span class="fact__big">60</span><span>minutes - or 75 (+25%) if the exam isn't in your native language</span></div>
+        <div class="fact card fact--pink"><span class="fact__big">26/40</span><span>to pass - a score of 65%</span></div>
+        <div class="fact card card--dark"><span class="fact__big">1</span><span>point per question, whatever its difficulty</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>How the marks are granted</h2>
+      <ul class="rules">
+        <li><strong>One point per question.</strong> At Foundation Level every question is worth exactly one point, so
+          a hard K3 calculation counts the same as a K1 definition. Wrong or blank answers simply score zero.</li>
+        <li><strong>"Select ONE" or "Select TWO".</strong> Most questions have one correct option out of four. Some ask
+          you to choose two out of five - you must get both right to earn the point.</li>
+        <li><strong>65% to pass.</strong> You need at least 26 of the 40 points. There is no grading beyond pass or fail.</li>
+        <li><strong>Everything in the syllabus is examinable.</strong> Every learning objective can be tested, and every
+          keyword can be asked about at K2 (understanding its definition). A question may draw on more than one section.</li>
+        <li><strong>A fixed split by chapter.</strong> Each exam has the same number of questions from each chapter (below), so
+          Chapters 4 and 5 together make up half the paper.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="dot">Knowledge levels (K-levels)</h2>
+      <p class="muted">Every learning objective - and so every question - has a K-level. ISTQB gives a guide time for each.</p>
+      <div class="grid">
+        {kLevels.map((l) => (
+          <div class="card klevel">
+            <span class="klevel__k">{l.k}</span>
+            <h3>{l.name}</h3>
+            <p>{l.desc}</p>
+            <span class="pill">Allow about {l.mins}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="card">
+      <ExamSplit />
+    </section>
+
+    <section class="card card--tint">
+      <h2>How to use this site</h2>
+      <ol class="steps">
+        <li><strong>Read the chapter notes.</strong> Each topic shows its syllabus section, and "What the syllabus says"
+          opens the official wording.</li>
+        <li><strong>Take the end-of-chapter quiz.</strong> It uses the questions from ISTQB Sample Exam C for that chapter.
+          Answer them all, then submit to see your score and why each option is right or wrong.</li>
+        <li><strong>Practise more.</strong> Each chapter also has questions from Sample Exams A, B and D.</li>
+        <li><strong>Track your progress.</strong> Scores and completed chapters are saved in your browser on this device.</li>
+      </ol>
+      <a class="btn" href={url('chapters/1')}>Begin Chapter 1</a>
+    </section>
+
+    <p class="source muted">Exam structure and rules: ISTQB® Exam Structures and Rules v1.2 and the CTFL v4.0 exam structure tables.</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .intro { display: grid; gap: 2.5rem; }
+  .lead { border-left: 8px solid var(--pink); }
+  .lead p:last-child { margin-bottom: 0; }
+  .grid h3 { margin-top: 0.25rem; }
+  .facts { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+  .fact { display: flex; flex-direction: column; gap: 0.25rem; }
+  .fact__big { font: 700 2.75rem/1 var(--font-head); color: var(--pink-soft); }
+  .fact--pink { background: var(--pink); color: #fff; }
+  .fact--pink .fact__big { color: #fff; }
+  .rules { display: grid; gap: 0.75rem; padding-left: 1.25rem; margin: 0; }
+  .rules li::marker { color: var(--pink); }
+  .klevel__k { font: 700 2rem var(--font-head); color: var(--pink); }
+  .steps { display: grid; gap: 0.6rem; padding-left: 1.25rem; }
+  .source { font-size: 0.85rem; }
+</style>
