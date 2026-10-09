@@ -22,6 +22,7 @@ progress is saved in their own browser. It works on desktops, tablets and phones
 | **Chapter quiz** | The questions from **ISTQB Sample Paper C** that cover that chapter (the same number the real exam asks on it). |
 | **Extra practice** | The same chapter's questions from **Sample Papers A, B and D**, three more sets on exactly the same topics. |
 | **Exam tips** | Exam technique based on an analysis of all 160 sample-paper questions: the 8 calculation topics worth 20% of the exam (with a method for each), the K-level mix, key words, guessing myths and question formats. Includes a quiz of all 32 K3 questions. |
+| **Handouts** | Download the six chapter handouts and the practice workbook (PDF). Every topic in the notes links to its matching handout box (e.g. **Handout 4C**), which opens the PDF at the right page. |
 | **Past papers** | Sit any of the four ISTQB sample exams in full: 40 questions with an optional 60- or 75-minute timer, then a score for each chapter. |
 
 ### How the quizzes work
@@ -47,6 +48,20 @@ The chapter notes include about 50 diagrams, drawn as SVG so they stay sharp at 
 include the test process, error → defect → failure, the seven principles, the V-model, the test pyramid, the DevOps pipeline,
 shift-left, the review process, boundary values, state transitions, control flow graphs, the testing quadrants, risk
 management, three-point estimation and the defect lifecycle.
+
+### Finding your way around
+
+- **Search** - press **/** (or the 🔍 Search button) and type; results show the topic, its chapter and section. Arrow keys and Enter work.
+- **Continue where you left off** - the home page remembers the last topic you were reading.
+- **Next section** - the end of each section has a button that opens the next one.
+- **In this chapter** - the side menu highlights the topic you're reading.
+- **Back to top** - a button appears once you scroll down.
+
+### Handouts and the practice workbook
+
+The PDFs live in `public/handouts/`. To update one, replace the file with the same name. The map from syllabus
+sections to handout boxes (and which page each box is on) is in `src/data/handouts.ts`. Exercises taken from the practice
+workbook are tagged **📄 Practice workbook** in the notes.
 
 ### Exercises
 

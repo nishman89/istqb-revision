@@ -22,10 +22,18 @@ export interface QuizRecord {
   last: QuizAttempt;
 }
 
+export interface LastVisit {
+  chapter: number;
+  slug: string;
+  title: string;
+}
+
 export interface Progress {
   version: 1;
   chaptersRead: number[];
   quizzes: Record<string, QuizRecord>;
+  /** The topic the learner was last reading, for "Continue where you left off". */
+  lastVisit?: LastVisit;
 }
 
 const empty = (): Progress => ({ version: 1, chaptersRead: [], quizzes: {} });
@@ -51,6 +59,12 @@ function save(progress: Progress): void {
 export function markChapterRead(chapter: number): void {
   const p = loadProgress();
   if (!p.chaptersRead.includes(chapter)) p.chaptersRead.push(chapter);
+  save(p);
+}
+
+export function saveLastVisit(visit: LastVisit): void {
+  const p = loadProgress();
+  p.lastVisit = visit;
   save(p);
 }
 

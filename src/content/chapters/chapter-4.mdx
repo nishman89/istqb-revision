@@ -223,6 +223,23 @@ Strictly, invalid partitions are best tested one at a time, but that goes beyond
 </div>
 </Exercise>
 
+<Exercise source="workbook" title="Worked example: age and membership">
+
+Applicants aged **18-65** are eligible. Membership is **Standard** or **Gold**.
+
+1. Using Each Choice coverage, what is the minimum number of tests to cover every partition?
+2. List the 2-value and 3-value BVA coverage items for age.
+
+<div slot="answer">
+
+**1. Three tests** cover all five partitions (age: ≤17 invalid, 18-65 valid, ≥66 invalid · membership: Standard, Gold),
+for example **(10, Standard), (40, Gold), (70, Standard)**.
+
+**2.** **2-value BVA:** 17, 18, 65, 66 → 4 tests. **3-value BVA:** 16, 17, 18, 19, 64, 65, 66, 67 → 8 tests.
+
+</div>
+</Exercise>
+
 ### Boundary Value Analysis
 
 <SyllabusRef ref="4.2.2" />
@@ -324,6 +341,23 @@ The new items are the neighbours *inside* each partition, for example 08:01 and 
 | On 2 upper | 18:58 | 18:59 | 19:00 |
 | Off 3 lower | 18:59 | 19:00 | 19:01 |
 | Off 3 upper | 23:58 | 23:59 | (24:00) |
+
+</div>
+</Exercise>
+
+<Exercise source="workbook" title="Exercise 1: password length">
+
+A password must be **8 to 20 characters long** (inclusive).
+
+1. List the equivalence partitions and one test value for each.
+2. List the coverage items for **2-value** BVA.
+3. List the coverage items for **3-value** BVA.
+
+<div slot="answer">
+
+1. **≤7** (invalid), **8-20** (valid), **≥21** (invalid) - e.g. 5, 12, 25
+2. **2-value BVA:** 7, 8, 20, 21
+3. **3-value BVA:** 6, 7, 8, 9, 19, 20, 21, 22
 
 </div>
 </Exercise>
@@ -446,6 +480,30 @@ In decision table testing, the coverage items are the columns containing feasibl
 The strength of decision table testing is that it provides a systematic approach to identify all the combinations of conditions, some of which might otherwise be overlooked. It also helps to find any gaps or contradictions in the requirements. If there are many conditions, exercising all the decision rules may be time consuming, since the number of rules grows exponentially with the number of conditions. In such a case, to reduce the number of rules that need to be exercised, a minimized decision table or a risk-based approach may be used.
 
 </SyllabusText>
+
+<Exercise source="workbook" title="Worked example: cash machine">
+
+A cash machine checks: **card valid?** **PIN correct?** **sufficient funds?**
+
+How many columns does the **full** decision table have, and how many test cases give 100% coverage of the **minimised** table?
+
+<div slot="answer">
+
+The full table has **2³ = 8 columns**. If the card is invalid, the other conditions don't matter (–); if the PIN is wrong, funds don't matter.
+Merging those gives a minimised table of **4 rules → 4 test cases**:
+
+| Conditions / actions | R1 | R2 | R3 | R4 |
+|---|---|---|---|---|
+| Card valid? | F | T | T | T |
+| PIN correct? | – | F | T | T |
+| Sufficient funds? | – | – | F | T |
+| Reject card | X |  |  |  |
+| 'Incorrect PIN' |  | X |  |  |
+| 'Insufficient funds' |  |  | X |  |
+| Dispense cash |  |  |  | X |
+
+</div>
+</Exercise>
 
 ### State Transition Diagrams
 
@@ -572,6 +630,8 @@ Now a door can also become **BROKEN** from any of its three states. How many tes
 | Valid transitions (0-switch) | Single valid transitions | Exercise all valid transitions | Valid transitions exercised ÷ total valid transitions |
 | All transitions | All transitions in the state table | Exercise all valid transitions and attempt all invalid ones | (Valid exercised + invalid attempted) ÷ total transitions |
 
+- **Defect masking** - Try only one invalid transition per test case, so one defect can't hide another
+
 ### Exercise: Calculate the Coverage
 
 <SyllabusRef ref="4.2.4" />
@@ -611,6 +671,22 @@ To reach 100% all transitions coverage you'd need to attempt every invalid trans
 All states coverage is weaker than valid transitions coverage, because it can typically be achieved without exercising all the transitions. Valid transitions coverage is the most widely used coverage criterion. Achieving full valid transitions coverage guarantees full all states coverage. Achieving full all transitions coverage guarantees both full all states coverage and full valid transitions coverage and should be a minimum requirement for mission and safety-critical software.
 
 </SyllabusText>
+
+<Exercise source="workbook" title="Worked example: TV states">
+
+A TV has three states. **Off:** TV button → Standby (Remote does nothing). **Standby:** TV button → Off, Remote → On.
+**On:** TV button → Off, Remote → Standby.
+
+How many coverage items are there for **all states**, **valid transitions** and **all transitions** - and what tests cover them?
+
+<div slot="answer">
+
+- **All states (3 items):** Off → Standby → On
+- **Valid transitions (5 items), one test:** Off →*TV* Standby →*Remote* On →*Remote* Standby →*TV* Off →*TV* Standby →*Remote* On →*TV* Off
+- **All transitions (6 items):** the test above, plus a separate test pressing Remote in Off (expect no change)
+
+</div>
+</Exercise>
 
 ## 4.3 White-box Test Techniques
 
@@ -698,6 +774,26 @@ Branch coverage subsumes statement coverage. This means that any set of test cas
 
 </SyllabusText>
 
+<Exercise source="workbook" title="Worked example: statement vs branch coverage">
+
+```
+1  READ A, B
+2  IF A > B THEN
+3     PRINT "A bigger"
+   ENDIF
+4  PRINT "Done"
+```
+
+Test 1 uses **A = 5, B = 2**. What statement and branch coverage does it achieve, and what would you add for 100% branch coverage?
+
+<div slot="answer">
+
+Test 1 runs all 4 statements → **100% statement coverage**. It takes branches 1→2, 2→3 and 3→4 but not 2→4 → **3/4 = 75% branch coverage**.
+Adding test 2 (**A = 1, B = 3**) takes the false branch → **100% branch coverage**.
+
+</div>
+</Exercise>
+
 ### Control Flow Patterns
 
 <SyllabusRef ref="4.3.2" />
@@ -705,6 +801,39 @@ Branch coverage subsumes statement coverage. This means that any set of test cas
 <ControlFlow />
 
 - Circles are nodes (chunks of code). Pink arrows are decision outcomes - make sure tests take every one.
+
+<Exercise source="workbook" title="Exercise 2: minimum tests for 100% coverage">
+
+*Rules of thumb (simple, non-nested code):* IF without ELSE: 1 test for statement / 2 for branch · IF-ELSE: 2 / 2 ·
+SWITCH with n outcomes: n / n · a loop a test can enter and exit: 1 / 1.
+
+**Q1**
+
+```
+READ P, Q
+IF P + Q > 100 THEN PRINT "Large" ENDIF
+IF P > 50 THEN PRINT "P Large" ENDIF
+```
+
+**Q2**
+
+```
+READ A, B, C
+IF C > A THEN
+   IF C > B THEN PRINT "X"
+   ELSE PRINT "Y" ENDIF
+ELSE PRINT "Z" ENDIF
+```
+
+How many tests are needed for 100% statement coverage and for 100% branch coverage?
+
+<div slot="answer">
+
+- **Q1:** **1** test for statement coverage (e.g. P = 60, Q = 50), **2** for branch coverage (add P = 10, Q = 10)
+- **Q2:** **3** and **3** - X, Y and Z each need their own path
+
+</div>
+</Exercise>
 
 ### The Value of White-box Testing
 
@@ -962,3 +1091,18 @@ The test cases must cover all the characteristics of the user story and should n
 When captured in a format supported by a test automation framework, the developers can automate the test cases by writing the supporting code as they implement the feature described by a user story. The acceptance tests then become executable requirements.
 
 </SyllabusText>
+
+<Exercise source="workbook" title="Worked example: ATDD for a discount code">
+
+**US-88 Apply a discount code** - *As a shopper, I want to apply a discount code so that I pay less.*
+Acceptance criteria: valid code → 10% off · expired code → error.
+
+Write one **positive** and one **negative** test case in Given / When / Then form.
+
+<div slot="answer">
+
+- **Positive:** Given a £50 basket, When I apply WELCOME10, Then the total is £45
+- **Negative:** Given a £50 basket, When I apply an expired code, Then I see 'Code expired' and the total stays £50
+
+</div>
+</Exercise>

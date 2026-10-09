@@ -254,6 +254,21 @@ In this expert-based technique, three estimations are made by the experts: the m
 
 </SyllabusText>
 
+<Exercise source="workbook" title="Exercise 3: estimation">
+
+1. **Ratios:** the past development : test effort ratio is **5 : 3**. New development effort is **250 person-days**. What is the test effort?
+2. **Extrapolation:** the last three iterations took **18, 21 and 24** test hours. What do you estimate for the next iteration?
+3. **Three-point:** a = **4**, m = **7**, b = **16**. What are E and SD?
+
+<div slot="answer">
+
+1. 250 × 3/5 = **150 person-days**
+2. (18 + 21 + 24) / 3 = **21 hours**
+3. E = (4 + 28 + 16) / 6 = **8**, SD = (16 − 4) / 6 = **2** → **8 ± 2**
+
+</div>
+</Exercise>
+
 ### Test Case Prioritisation
 
 <SyllabusRef ref="5.1.5" />
@@ -287,6 +302,18 @@ Ideally, test cases would be ordered to run based on their priority levels, usin
 
 </SyllabusText>
 
+<Exercise source="workbook" title="Worked example: prioritisation">
+
+**TC1** (High, depends on TC3) · **TC2** (Medium) · **TC3** (Low) · **TC4** (High). In what order should they run?
+
+<div slot="answer">
+
+Run high-priority tests as early as possible, but **TC3 must run before TC1**. One valid order: **TC4 → TC3 → TC1 → TC2**
+(TC3 → TC1 → TC4 → TC2 is equally valid).
+
+</div>
+</Exercise>
+
 ### The Test Pyramid
 
 <SyllabusRef ref="5.1.6" />
@@ -307,14 +334,8 @@ The test pyramid is a model showing that different tests may have different gran
 
 <SyllabusRef ref="5.1.6" />
 
-- Cohn's original (2009)
-- UI tests
-- Service tests
-- Unit tests
-- Another popular model
-- End-to-end
-- Integration (component integration)
-- Unit (component)
+- **Cohn's original model (2009)** - UI tests · Service tests · Unit tests
+- **Another popular model** - End-to-end tests · Integration (component integration) tests · Unit (component) tests
 
 ### Testing Quadrants
 
@@ -830,6 +851,26 @@ A defect report logged during dynamic testing typically includes: unique identif
 - Status
 - Defect description - enough information for the defect to be reproduced
 - Further comments - references, other areas that might be affected
+
+<Exercise source="workbook" title="Worked example: a defect report">
+
+A discount code that expired on 31-08-2026 is still accepted at checkout. Fill in a defect report using the template above.
+
+<div slot="answer">
+
+| Field | Example |
+|---|---|
+| ID / title | DEF-214 · Discount code accepted after expiry date |
+| Date / author | 23-09-2026 · J. Smith (tester) |
+| Test object / environment | Checkout service v2.3.1 · UAT, Chrome 128 |
+| Context | TC-CHK-017 (acceptance criterion AC3), system testing |
+| Steps | 1. Add £50 item 2. Enter SUMMER24 (expired 31-08-2026) 3. Click Apply |
+| Expected / actual | 'Code expired', total £50.00 / code accepted, total £45.00 |
+| Severity / priority / status | High · High · Open |
+| References | TC-CHK-017, US-88 · screenshot, server log |
+
+</div>
+</Exercise>
 
 ### Traceability and Defects
 

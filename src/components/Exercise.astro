@@ -1,4 +1,5 @@
 ---
+import { workbook, handoutUrl } from '../data/handouts';
 /**
  * A practice question inside the notes: clearly marked as a question, with the answer
  * hidden in a collapsible panel. Put the answer in a child element with slot="answer".
@@ -14,8 +15,10 @@ interface Props {
   kind?: 'exercise' | 'discuss';
   /** Optional multiple-choice options, shown as a), b), c)… */
   options?: string[];
+  /** Set to "workbook" for exercises taken from the Sparta practice workbook PDF. */
+  source?: 'workbook';
 }
-const { title, kind = 'exercise', options } = Astro.props;
+const { title, kind = 'exercise', options, source } = Astro.props;
 const label = kind === 'discuss' ? 'Discuss' : 'Exercise';
 const reveal = kind === 'discuss' ? 'Show suggested answer' : 'Show answer';
 ---
@@ -23,6 +26,7 @@ const reveal = kind === 'discuss' ? 'Show suggested answer' : 'Show answer';
   <header class="exercise__head">
     <span class="exercise__badge">{kind === 'discuss' ? '💬' : '?'} {label}</span>
     <span class="exercise__title">{title}</span>
+    {source === 'workbook' && <a class="exercise__source" href={handoutUrl(workbook)} target="_blank" rel="noopener">📄 Practice workbook</a>}
   </header>
   <div class="exercise__body">
     <slot />
@@ -48,6 +52,8 @@ const reveal = kind === 'discuss' ? 'Show suggested answer' : 'Show answer';
   .exercise__badge { background: var(--pink); color: #fff; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.7rem; border-radius: 999px; }
   .exercise--discuss .exercise__badge { background: var(--charcoal); }
   .exercise__title { font: 700 1.1rem var(--font-head); }
+  .exercise__source { margin-left: auto; font-size: 0.8rem; font-weight: 700; color: var(--grey); text-decoration: none; }
+  .exercise__source:hover { color: var(--pink-dark); }
   .exercise__body { padding: 1rem 1.25rem 0.5rem; }
   .exercise__body :global(p) { margin: 0 0 0.75rem; }
   /* Lists inside an exercise are plain - not the card style used elsewhere in the notes */
@@ -56,6 +62,8 @@ const reveal = kind === 'discuss' ? 'Show suggested answer' : 'Show answer';
   .exercise :global(.card-item__title) { font: 700 1rem var(--font-body); }
   .exercise :global(.card-item__title)::after { content: ' - '; font-weight: 400; }
   .exercise :global(.card-item__body) { display: inline; font-size: 1rem; color: inherit; }
+  .exercise :global(ul.tags) { display: flex; padding: 0; }
+  .exercise :global(p.lead-in) { font-size: 1rem; }
   .exercise__options { list-style: none; padding: 0; margin: 0.25rem 0 0.75rem; display: grid; gap: 0.5rem; }
   .exercise__options li { display: flex; gap: 0.75rem; align-items: center; padding: 0.55rem 0.85rem; border: 2px solid var(--line); border-radius: 10px; }
   .exercise__key { display: grid; place-items: center; flex: none; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--charcoal); color: #fff; font-weight: 700; }

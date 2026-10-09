@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHead from '../../components/PageHead.astro';
 import WatchOut from '../../components/WatchOut.astro';
+import { chapterHandout, handoutUrl } from '../../data/handouts';
 import { getChapters, getQuestions } from '../../lib/data';
 import { url, MAIN_SET, PRACTICE_SETS, QUESTIONS_PER_CHAPTER } from '../../lib/site';
 
@@ -34,6 +35,12 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
 <BaseLayout title={`Chapter ${data.number}: ${data.title}`} description={data.summary}>
   <PageHead eyebrow={`Chapter ${data.number} · ${QUESTIONS_PER_CHAPTER[data.number]} questions in the exam`} title={data.title}>
     <p class="summary">{data.summary}</p>
+    <p class="downloads no-print">
+      <a class="btn btn--dark" href={handoutUrl(chapterHandout(data.number))} download>
+        <span aria-hidden="true">⬇</span> Chapter {data.number} handout (PDF)
+      </a>
+      <a class="btn btn--ghost" href={url('handouts')}>All handouts &amp; practice workbook</a>
+    </p>
   </PageHead>
 
   <div class="container layout">
@@ -68,7 +75,7 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
 
       <WatchOut chapter={data.number} />
 
-      <section class="card card--dark finish no-print">
+      <section class="card card--dark finish no-print" id="finish">
         <h2>Finished the notes? Test yourself.</h2>
         <p>The <strong>chapter quiz</strong> uses the questions from <strong>ISTQB Sample Paper {MAIN_SET}</strong> that cover
           Chapter {data.number}: {practiceCount(MAIN_SET)} question{practiceCount(MAIN_SET) === 1 ? '' : 's'}, the same number
@@ -96,7 +103,46 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
 </BaseLayout>
 
 <script>
-  import { isChapterRead, markChapterRead } from '../../lib/progress';
+  import { isChapterRead, markChapterRead, saveLastVisit } from '../../lib/progress';
+
+  // ---- Highlight the topic being read in the contents menu, and remember it for "Continue where you left off"
+  const chapterNo = Number(document.querySelector<HTMLElement>('[data-mark-read]')?.dataset.markRead);
+  const tocLinks = new Map([...document.querySelectorAll<HTMLAnchorElement>('.toc__groups a')].map((a) => [a.hash.slice(1), a]));
+  const spy = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      const h = entry.target as HTMLElement;
+      tocLinks.forEach((a) => a.removeAttribute('aria-current'));
+      const link = tocLinks.get(h.id);
+      if (link) {
+        link.setAttribute('aria-current', 'true');
+        const group = link.closest('details');
+        if (group && !group.open) group.open = true;
+      }
+      saveLastVisit({ chapter: chapterNo, slug: h.id, title: h.textContent ?? '' });
+    }
+  }, { rootMargin: '0px 0px -70% 0px' });
+  document.querySelectorAll('.prose h3[id]').forEach((h) => spy.observe(h));
+
+  // ---- "Next section" button at the end of every section
+  const sections = [...document.querySelectorAll<HTMLDetailsElement>('details.chapter-section')];
+  sections.forEach((section, i) => {
+    const next = sections[i + 1];
+    const body = section.querySelector('.chapter-section__body');
+    if (!body) return;
+    const bar = document.createElement('div');
+    bar.className = 'section-end no-print';
+    const title = (next?.querySelector('h2')?.textContent ?? '').replace(/[<>&]/g, '');
+    bar.innerHTML = next
+      ? `<button type="button" class="btn btn--dark">Next: ${title} →</button>`
+      : `<a class="btn" href="#finish">Finished - test yourself →</a>`;
+    body.append(bar);
+    bar.querySelector('button')?.addEventListener('click', () => {
+      section.open = false;
+      next!.open = true;
+      next!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 
   // The contents panel starts open on desktop (sticky sidebar) and closed on phones (it sits above the notes).
   const toc = document.querySelector<HTMLDetailsElement>('[data-toc]');
@@ -142,6 +188,8 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
 
 <style>
   .summary { max-width: 46rem; font-size: 1.1rem; color: var(--grey); margin: 1rem 0 0; }
+  .downloads { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 0; }
+  .downloads .btn { padding: 0.55rem 1.1rem; font-size: 0.95rem; }
   .layout { display: grid; grid-template-columns: 17rem 1fr; gap: 2rem; align-items: start; }
   .toc { position: sticky; top: 5.5rem; }
   .toc__panel { max-height: calc(100vh - 7rem); overflow-y: auto; }
@@ -156,6 +204,9 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
   .toc details ul { list-style: none; margin: 0 0 0.5rem; padding: 0 0 0 1.1rem; border-left: 2px solid var(--pink-tint); display: grid; gap: 0.2rem; font-size: 0.875rem; }
   .toc details a { color: var(--grey); text-decoration: none; display: block; padding: 0.15rem 0.4rem; border-radius: 6px; }
   .toc details a:hover { color: var(--pink-dark); background: var(--bg); }
+  .toc details a[aria-current] { color: var(--pink-dark); background: var(--pink-tint); font-weight: 700; }
+  .prose :global(.section-end) { display: flex; justify-content: flex-end; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed var(--line); }
+  .prose :global(.section-end .btn) { white-space: normal; text-align: left; }
   .quiz-btn { width: 100%; }
   .notes { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; min-width: 0; }
   .objectives { border-left: 8px solid var(--pink); }
@@ -177,7 +228,19 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
   .prose :global(ul) { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1rem 1.25rem 1rem 2.25rem; margin: 0.5rem 0; }
   .prose :global(li) { margin: 0.3rem 0; }
 
-  /* Key-point lists rendered as cards (see rehype-topic-cards.mjs) */
+  /* Lists reshaped by rehype-tidy-lists.mjs: lead-in paragraphs, tag rows and key-point cards */
+  .prose :global(p.lead-in) { margin: 0.5rem 0 0.75rem; font-size: 1.05rem; }
+  .prose :global(ul.tags) {
+    list-style: none; background: none; box-shadow: none; padding: 0; margin: 0.5rem 0 1rem;
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .prose :global(ul.tags li) {
+    margin: 0; padding: 0.4rem 0.9rem; border-radius: 999px; background: var(--surface);
+    border: 2px solid var(--pink-tint); font-weight: 600; font-size: 0.95rem; box-shadow: var(--shadow);
+  }
+  .prose :global(ul.tags li)::marker { content: none; }
+
+  /* Key-point lists rendered as cards */
   .prose :global(ul.cards) {
     list-style: none; background: none; box-shadow: none; padding: 0; margin: 0.75rem 0;
     display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));

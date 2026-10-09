@@ -9,6 +9,7 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Exercise from '../../components/Exercise.astro';
 import Compare from '../../components/diagrams/Compare.astro';
 import Tiles from '../../components/diagrams/Tiles.astro';
 import TestPyramid from '../../components/diagrams/TestPyramid.astro';
@@ -24,7 +25,15 @@ import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 - **Higher levels** - Automated, manual - or both
 - **Lower levels** - Component and component integration tests are usually automated
 
+<SyllabusText>
+
+The test pyramid is a model showing that different tests may have different granularity. The test pyramid model supports the team in test automation and in test effort allocation by showing that different goals are supported by different levels of test automation. The pyramid layers represent groups of tests. The higher the layer, the lower the test granularity, test isolation and test execution time. Tests in the bottom layer are small, isolated, fast, and check a small piece of functionality, so usually a lot of them are needed to achieve a reasonable coverage. The top layer represents complex, high-level, end-to-end tests. These high-level tests are generally slower than the tests from the lower layers, and they typically check a large piece of functionality, so usually just a few of them are needed to achieve a reasonable coverage.
+
+</SyllabusText>
+
 ### Recap - Non-Functional Testing
+
+<SyllabusRef ref="2.2.2" />
 
 - Which of these can - or must - be automated? Which are better done manually?
 - Performance efficiency
@@ -34,6 +43,17 @@ import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 - Security
 - Maintainability
 - Portability
+
+<SyllabusText>
+
+Functional testing evaluates the functions that a component or system should perform. The functions are "what" the test object should do. The main objective of functional testing is checking the functional completeness, functional correctness and functional appropriateness.
+
+Non-functional testing evaluates attributes other than functional characteristics of a component or system. Non-functional testing is the testing of "how well the system behaves". The main objective of non-functional testing is checking the non-functional software quality characteristics.
+
+
+The ISO/IEC 25010 standard provides the following classification of the non-functional software quality characteristics: performance efficiency, compatibility, usability, reliability, security, maintainability, portability.
+
+</SyllabusText>
 
 ### Categories of Test Tools
 
@@ -50,6 +70,22 @@ import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 - **Test execution & coverage** - Automated test execution and coverage measurement
 - **Non-functional testing tools** - Non-functional testing that is hard or impossible to do manually
 
+<SyllabusText>
+
+Test tools support and facilitate many test activities. Examples include, but are not limited to:
+
+Management tools - increase the test process efficiency by facilitating management of the SDLC, requirements, tests, defects, configuration.
+
+Static testing tools - support the tester in performing reviews and static analysis.
+
+Test design and test implementation tools - facilitate generation of test cases, test data and test procedures.
+
+Test execution and coverage tools - facilitate automated test execution and coverage measurement.
+
+Non-functional testing tools - allow the tester to perform non-functional testing that is difficult or impossible to perform manually.
+
+</SyllabusText>
+
 ### More Categories of Test Tools
 
 <SyllabusRef ref="6.1" />
@@ -58,6 +94,36 @@ import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 - **Collaboration tools** - Facilitate communication
 - **Scalability & deployment** - Standardisation - e.g. virtual machines, containerisation
 - **Anything else that helps** - e.g. a spreadsheet is a test tool in the context of testing
+
+<SyllabusText>
+
+DevOps tools - support the DevOps delivery pipeline, workflow tracking, automated build process(es), CI/CD.
+
+Collaboration tools - facilitate communication.
+
+Tools supporting scalability and deployment standardization (e.g., virtual machines, containerization tools).
+
+Any other tool that assists in testing (e.g., a spreadsheet is a test tool in the context of testing).
+
+</SyllabusText>
+
+<Exercise source="workbook" kind="discuss" title="Exercise 4: match tools to test activities">
+
+For each tool type, write the test activities it mainly supports, what it does, and an example you know.
+*(Example: **Management** - planning, monitoring & control, completion · manages requirements, tests, defects · e.g. Jira + Xray.)*
+
+<div slot="answer">
+
+- **Static testing** - reviews and static analysis
+- **Test design & implementation** - test cases, test data, test procedures
+- **Test execution & coverage** - automated test runs and coverage measurement
+- **Non-functional** - performance, security, etc.
+- **DevOps** - the delivery pipeline, CI/CD
+- **Collaboration** - all activities
+- **Scalability & deployment** - test environments (VMs, containers)
+
+</div>
+</Exercise>
 
 ## 6.2 Benefits and Risks of Test Automation
 

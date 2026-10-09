@@ -1,5 +1,6 @@
 ---
 import { url } from '../lib/site';
+import Search from './Search.astro';
 
 const chapters = [
   [1, 'Fundamentals of Testing'],
@@ -14,6 +15,7 @@ const links = [
   ['introduction', 'Introduction'],
   ['past-papers', 'Past papers'],
   ['exam-tips', 'Exam tips'],
+  ['handouts', 'Handouts'],
 ] as const;
 const path = Astro.url.pathname;
 const isActive = (href: string) => (href === url() ? path === href : path.startsWith(href));
@@ -24,6 +26,11 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
       <img src={url('sparta-logo.png')} alt="Sparta Global" width="120" height="47" />
       <span class="brand__label">ISTQB CTFL</span>
     </a>
+
+    <details class="search-desktop">
+      <summary aria-label="Search the notes"><span aria-hidden="true">🔍</span> Search</summary>
+      <div class="search-panel"><Search /></div>
+    </details>
 
     <!-- Desktop navigation -->
     <nav class="nav-desktop" aria-label="Main">
@@ -46,6 +53,7 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
     <details class="nav-mobile">
       <summary aria-label="Open menu"><span class="burger" aria-hidden="true"></span>Menu</summary>
       <nav aria-label="Main (mobile)">
+        <div class="search-mobile"><Search /></div>
         <ul>
           {links.map(([href, label]) => (
             <li><a href={url(href)} aria-current={isActive(url(href)) ? 'page' : undefined}>{label}</a></li>
@@ -62,6 +70,10 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
 
 <script>
   // Close any open menu when clicking elsewhere, or when a link inside it is followed.
+  const searchToggle = document.querySelector<HTMLDetailsElement>('.search-desktop');
+  searchToggle?.addEventListener('toggle', () => {
+    if (searchToggle.open) searchToggle.querySelector('input')?.focus();
+  });
   document.addEventListener('click', (e) => {
     for (const menu of document.querySelectorAll<HTMLDetailsElement>('.site-header details[open]')) {
       if (!menu.contains(e.target as Node) || (e.target as Element).closest('a')) menu.open = false;
@@ -90,6 +102,11 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
   .menu a, .chapters a { display: flex; gap: 0.75rem; border-radius: 8px; font-weight: 600; }
   .menu span, .chapters span { color: var(--pink); font-weight: 700; }
 
+  .search-desktop { margin-left: auto; position: relative; }
+  .search-desktop > summary { border: 2px solid var(--line); }
+  .search-desktop[open] > summary { border-color: var(--pink); background: var(--pink-tint); }
+  .search-panel { position: absolute; left: 0; top: calc(100% + 0.5rem); width: min(32rem, 90vw); background: var(--surface); padding: 0.6rem; border-radius: 14px; box-shadow: 0 12px 32px rgb(0 0 0 / 0.16); }
+  .search-mobile { margin-bottom: 0.75rem; }
   .nav-mobile { display: none; }
   .nav-mobile summary { display: flex; align-items: center; gap: 0.5rem; border: 2px solid var(--charcoal); padding: 0.4rem 0.9rem; }
   .burger, .burger::before, .burger::after { display: block; width: 18px; height: 2px; background: var(--charcoal); position: relative; }
@@ -108,7 +125,8 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
   .nav-mobile .eyebrow { padding: 0 0.85rem; }
   .nav-mobile .chapters { display: grid; gap: 0.1rem; margin-top: 0.25rem; }
 
-  @media (max-width: 60rem) {
+  @media (max-width: 70rem) {
+    .search-desktop { display: none; }
     .nav-desktop { display: none; }
     .nav-mobile { display: block; }
     .brand__label { display: none; }

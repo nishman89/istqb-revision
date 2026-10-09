@@ -46,6 +46,8 @@ src/pages/
 ├── quiz/[chapter]/[set].astro     /quiz/4/c/ …               Chapter quiz (set C) or extra practice (A, B, D)
 ├── past-papers/index.astro        /past-papers/              List of the four sample papers
 ├── past-papers/[set].astro        /past-papers/c/ …          A full 40-question timed paper
+├── handouts.astro                 /handouts/                 Download the chapter handouts and practice workbook
+├── search.json.ts                 /search.json               Build-time search index (one entry per topic)
 ├── exam-tips/index.astro          /exam-tips/                Exam technique, with statistics calculated from the papers
 ├── exam-tips/k3.astro             /exam-tips/k3/             All 32 K3 questions, grouped by skill
 └── 404.astro
@@ -152,12 +154,12 @@ Two small **rehype plugins** (rehype transforms HTML after the Markdown is parse
 registered in `astro.config.mjs`:
 
 ```js
-integrations: [mdx({ rehypePlugins: [topicCards, collapsibleSections] })]
+integrations: [mdx({ rehypePlugins: [tidyLists, collapsibleSections] })]
 ```
 
 | Plugin | File | What it does |
 |---|---|---|
-| **topicCards** | `src/lib/rehype-topic-cards.mjs` | Finds lists where **every** item starts with bold text (`- **Title** - description`) and turns them into a grid of cards. ` · ` in a description becomes a line break. Plain lists are left alone. |
+| **tidyLists** | `src/lib/rehype-tidy-lists.mjs` | Reshapes bullet lists so the notes aren't a wall of bullets. Key points (`- **Title** - description`) become a grid of **cards**, with ` · ` becoming a new line. Full sentences become ordinary **paragraphs**. Lists of short items (e.g. "Test strategy", "Level of coverage") become a row of **tags**. Numbered lists are left alone. |
 | **collapsibleSections** | `src/lib/rehype-collapsible-sections.mjs` | Wraps each `##` heading and everything up to the next `##` in a `<details>` element, so sections open and close. |
 
 The chapter page (`src/pages/chapters/[chapter].astro`) then:
@@ -176,7 +178,9 @@ src/components/
 ├── Header.astro          Logo + navigation (desktop links; a "Menu" panel on phones)
 ├── Footer.astro          ISTQB copyright acknowledgement
 ├── PageHead.astro        Slide-style page title with the pink full stop and rule
-├── SyllabusRef.astro     The "Syllabus · CTFL v4.0 · Section 2.1" badge
+├── SyllabusRef.astro     The "Syllabus · Section 2.1" badge + the matching "Handout 2A" link (via data/handouts.ts)
+├── Search.astro          Header search box (loads /search.json on first use)
+├── BackToTop.astro       Floating back-to-top button
 ├── SyllabusText.astro    The collapsible "What the syllabus says" box
 ├── WatchOut.astro        "Watch out for…" exam traps at the end of each chapter (data: src/data/traps.ts)
 ├── Exercise.astro        A practice question in the notes, answer in a collapsible panel (slot="answer")
@@ -230,12 +234,27 @@ Build time (Astro)                                   Browser (script in Quiz.ast
 
 ---
 
+## 6b. Handouts, search and reading aids
+
+- **Handouts** - PDFs in `public/handouts/` are served as plain files. `src/data/handouts.ts` lists them and maps every
+  syllabus section to its **handout box** (e.g. 4.2.2 → box B on page 1 of the Chapter 4 handout). `SyllabusRef` uses
+  `boxFor(ref)` to show a "Handout 4B" link that opens the PDF at `#page=N`. Where one section spans several boxes,
+  the MDX passes `box="…"` to override (used for the five 2.1 topics).
+- **Search** - `src/pages/search.json.ts` builds an index at build time: one entry per `###` topic (title, chapter,
+  section, the first ~400 characters of plain text, and a link using the same slug Astro gives the heading, via
+  `github-slugger`). Exercise answers and syllabus boxes are left out. `Search.astro` fetches it the first time the box is used
+  and scores matches (title hits beat body hits; every word must match).
+- **Reading aids** (script in `chapters/[chapter].astro`) - an `IntersectionObserver` highlights the current topic in the
+  contents menu and saves it as `lastVisit` (shown on the home page as "Continue where you left off"); a "Next section"
+  button is appended to the end of each collapsible section.
+
 ## 7. Progress storage (`src/lib/progress.ts`)
 
 All reading and writing of progress goes through this one module:
 
 ```ts
-loadProgress()                 // { version: 1, chaptersRead: number[], quizzes: Record<id, QuizRecord> }
+loadProgress()                 // { version: 1, chaptersRead, quizzes, lastVisit? }
+saveLastVisit(visit)           // the topic being read, for "Continue where you left off"
 markChapterRead(n)
 saveQuizAttempt(id, attempt)   // keeps attempts, best and last
 getQuiz(id)
@@ -316,6 +335,7 @@ A hard-coded `href="/chapters/2"` would work locally but break on GitHub Pages.
 | Add a new sample paper | Add `exam-e.json` (40 questions), add `'E'` to the `set` enum in `content.config.ts`, and add it to `PRACTICE_SETS` in `src/lib/site.ts`. The routes pick it up automatically. |
 | Change the main chapter-quiz paper | Change `MAIN_SET` in `src/lib/site.ts`. |
 | Change the pass mark | `PASS_MARK` in `src/lib/site.ts`. |
+| Update a handout PDF | Replace the file in `public/handouts/` (same name). If its boxes change, update `src/data/handouts.ts`. |
 | Change colours or fonts | The variables at the top of `src/styles/global.css` (fonts are loaded in `BaseLayout.astro`). |
 | Add a page | Create `src/pages/my-page.astro` using `BaseLayout` and `PageHead`. Link to it with `url('my-page')`. |
 

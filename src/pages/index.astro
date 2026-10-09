@@ -17,9 +17,18 @@ const chapters = await getChapters();
         <a class="btn" href={url('introduction')}>Start with the introduction</a>
         <a class="btn btn--ghost btn--light" href={url('chapters/1')}>Go to Chapter 1</a>
         <a class="btn btn--ghost btn--light" href={url('past-papers')}>Sit a past paper</a>
+        <a class="btn btn--ghost btn--light" href={url('handouts')}>Download handouts</a>
       </div>
     </div>
   </section>
+
+  <div class="container">
+    <a class="card continue no-print" data-continue data-base={url()} hidden href="#">
+      <span class="eyebrow">Continue where you left off</span>
+      <span class="continue__title" data-continue-title></span>
+      <span class="continue__arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
 
   <section class="container chapters">
     <h2 class="dot">Chapters</h2>
@@ -70,6 +79,13 @@ const chapters = await getChapters();
     card.querySelector('[data-status]')!.textContent = parts.join(' · ');
     card.classList.toggle('is-done', read && !!quiz?.best.passed);
   }
+  const cont = document.querySelector<HTMLAnchorElement>('[data-continue]');
+  if (cont && progress.lastVisit) {
+    const { chapter, slug, title } = progress.lastVisit;
+    cont.href = `${cont.dataset.base}chapters/${chapter}/#${slug}`;
+    cont.querySelector('[data-continue-title]')!.textContent = `Chapter ${chapter} · ${title}`;
+    cont.hidden = false;
+  }
   document.querySelector('[data-reset]')?.addEventListener('click', () => {
     if (confirm('Clear all saved progress and quiz scores on this device?')) {
       resetProgress();
@@ -84,6 +100,11 @@ const chapters = await getChapters();
   .hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
   .btn--light { color: #fff; border-color: #fff; }
   .btn--light:hover { background: #fff; color: var(--charcoal); }
+  .continue { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0.2rem 1rem; margin-top: -1.5rem; position: relative; z-index: 1; text-decoration: none; color: var(--charcoal); border-left: 8px solid var(--pink); }
+  .continue:hover { background: var(--pink-tint); }
+  .continue .eyebrow { grid-column: 1; }
+  .continue__title { grid-column: 1; font: 700 1.2rem var(--font-head); }
+  .continue__arrow { grid-column: 2; grid-row: 1 / span 2; font-size: 1.6rem; color: var(--pink); }
   .chapters { margin-top: 3rem; }
   .chapters ol { list-style: none; padding: 0; margin: 1.5rem 0 0; }
   .chapter { position: relative; display: flex; flex-direction: column; gap: 0.25rem; border-top: 6px solid var(--charcoal); }

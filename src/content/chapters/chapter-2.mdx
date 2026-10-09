@@ -66,7 +66,7 @@ Some activities within software development processes can also be described by m
 
 ### Royce's Waterfall Model
 
-<SyllabusRef ref="2.1" />
+<SyllabusRef ref="2.1" box="B" />
 
 <Waterfall />
 
@@ -75,16 +75,18 @@ Some activities within software development processes can also be described by m
 
 ### The V-Model
 
-<SyllabusRef ref="2.1" />
+<SyllabusRef ref="2.1" box="C" />
 
 <VModel />
 
 - **Pros** - Test plans developed earlier, so a higher chance of success · Defects found earlier · Works well on smaller projects
 - **Cons** - Quite rigid in execution · No early prototype · Test documents must be updated along the way
 
+- **Four levels or five?** - The classic V shows four test levels · The syllabus defines five (section 2.2), splitting integration into component integration and system integration
+
 ### Unified Process
 
-<SyllabusRef ref="2.1" />
+<SyllabusRef ref="2.1" box="D" />
 
 - **Sequential phases** - Inception, elaboration, construction, transition
 - **Incremental business value** - Delivered in time-boxed, cross-discipline iterations
@@ -93,7 +95,7 @@ Some activities within software development processes can also be described by m
 
 ### Agile Methodologies
 
-<SyllabusRef ref="2.1" />
+<SyllabusRef ref="2.1" box="E" />
 
 - Sprints, backlog, daily stand-up, review and retro
 - Extreme Programming: nested feedback loops - from release plan down to pair programming
@@ -105,7 +107,7 @@ Some activities within software development processes can also be described by m
 
 ### Agile - Pros and Cons
 
-<SyllabusRef ref="2.1" />
+<SyllabusRef ref="2.1" box="E" />
 
 - **Fast deployment** - Small, frequent improvements following feedback · Team skill improvement
 - **Light documentation** - Formal records of change may not be created · Regression testing may get out of control
@@ -373,16 +375,6 @@ Test types are groups of test activities related to specific quality characteris
 
 <SyllabusRef ref="2.2.1" />
 
-- Requirement specification
-- Acceptance testing
-- test planning
-- Functional specification
-- System testing
-- Technical specification
-- Integration testing
-- Program specification
-- Unit testing
-- Coding
 
 ### Component Testing
 
@@ -481,6 +473,14 @@ All four test types can be applied to all test levels, although the focus will b
 - **Functional testing** - WHAT the test object should do · Evaluates the functions a component or system should perform · Checks functional completeness, correctness and appropriateness
 - **Non-functional testing** - HOW WELL the system behaves · Evaluates attributes other than functional characteristics · Checks the non-functional software quality characteristics
 
+<SyllabusText>
+
+Functional testing evaluates the functions that a component or system should perform. The functions are "what" the test object should do. The main objective of functional testing is checking the functional completeness, functional correctness and functional appropriateness.
+
+Non-functional testing evaluates attributes other than functional characteristics of a component or system. Non-functional testing is the testing of "how well the system behaves". The main objective of non-functional testing is checking the non-functional software quality characteristics.
+
+</SyllabusText>
+
 ### Quality Characteristics
 
 <SyllabusRef ref="2.2.2" />
@@ -492,6 +492,15 @@ All four test types can be applied to all test levels, although the focus will b
 - Security
 - Maintainability
 - Portability
+- Safety
+
+*Safety was added in the 2023 edition of ISO/IEC 25010, so it appears on the Chapter 2 handout alongside the seven characteristics in the syllabus.*
+
+<SyllabusText>
+
+The ISO/IEC 25010 standard provides the following classification of the non-functional software quality characteristics: performance efficiency, compatibility, usability, reliability, security, maintainability, portability.
+
+</SyllabusText>
 
 ### Non-Functional Testing in Practice
 

@@ -1,0 +1,118 @@
+---
+import { url } from '../lib/site';
+/**
+ * Header search: loads /search.json on first focus, then filters topics as you type.
+ * Keyboard: "/" focuses the box, ↑/↓ move through results, Enter opens, Esc closes.
+ */
+---
+<div class="search" data-search data-index={url('search.json')} data-base={url()}>
+  <label class="visually-hidden" for="site-search">Search the notes</label>
+  <input id="site-search" type="search" placeholder="Search topics…  ( / )" autocomplete="off"
+         role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list" />
+  <ul id="search-results" class="search__results" role="listbox" hidden></ul>
+</div>
+
+<script>
+  interface Entry { title: string; where: string; path: string; text: string }
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-search]')) {
+    const input = root.querySelector('input')!;
+    const list = root.querySelector('ul')!;
+    let index: Entry[] | null = null;
+    let active = -1;
+
+    const load = async () => {
+      if (!index) index = await fetch(root.dataset.index!).then((r) => r.json()).catch(() => []);
+      return index!;
+    };
+    const escape = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+    const mark = (s: string, words: string[]) =>
+      words.reduce((acc, w) => acc.replace(new RegExp(`(${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'ig'), '<mark>$1</mark>'), escape(s));
+
+    function score(e: Entry, words: string[]) {
+      const title = e.title.toLowerCase(), text = e.text.toLowerCase();
+      let total = 0;
+      for (const w of words) {
+        if (title.includes(w)) total += title.startsWith(w) ? 6 : 4;
+        else if (text.includes(w)) total += 1;
+        else return 0; // every word must match somewhere
+      }
+      return total;
+    }
+
+    function close() {
+      list.hidden = true; active = -1; input.setAttribute('aria-expanded', 'false');
+    }
+
+    async function update() {
+      const q = input.value.trim().toLowerCase();
+      if (q.length < 2) return close();
+      const words = q.split(/\s+/);
+      const hits = (await load())
+        .map((e) => ({ e, s: score(e, words) }))
+        .filter((h) => h.s > 0)
+        .sort((a, b) => b.s - a.s)
+        .slice(0, 8);
+      list.innerHTML = hits.length
+        ? hits.map(({ e }, i) => {
+            const snippet = e.text.slice(0, 110) + (e.text.length > 110 ? '…' : '');
+            return `<li role="option" id="sr-${i}"><a href="${root.dataset.base}${e.path}">
+              <span class="search__title">${mark(e.title, words)}</span>
+              <span class="search__where">${escape(e.where)}</span>
+              ${snippet ? `<span class="search__text">${mark(snippet, words)}</span>` : ''}</a></li>`;
+          }).join('')
+        : '<li class="search__none">No topics found</li>';
+      list.hidden = false; active = -1; input.setAttribute('aria-expanded', 'true');
+    }
+
+    function move(step: number) {
+      const items = [...list.querySelectorAll<HTMLElement>('li[role="option"]')];
+      if (!items.length) return;
+      active = (active + step + items.length) % items.length;
+      items.forEach((li, i) => li.classList.toggle('is-active', i === active));
+      input.setAttribute('aria-activedescendant', items[active].id);
+      items[active].scrollIntoView({ block: 'nearest' });
+    }
+
+    input.addEventListener('focus', load, { once: true });
+    input.addEventListener('input', update);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+      else if (e.key === 'Enter') {
+        const link = list.querySelectorAll<HTMLAnchorElement>('li[role="option"] a')[Math.max(active, 0)];
+        if (link) { e.preventDefault(); location.href = link.href; close(); }
+      } else if (e.key === 'Escape') {
+        close(); input.blur();
+        input.closest('details')?.removeAttribute('open');
+      }
+    });
+    document.addEventListener('click', (e) => { if (!root.contains(e.target as Node)) close(); });
+  }
+
+  // "/" anywhere focuses the first search box (unless you're typing in a field)
+  document.addEventListener('keydown', (e) => {
+    const tag = (e.target as HTMLElement).tagName;
+    if (e.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(tag)) {
+      e.preventDefault();
+      const toggle = document.querySelector<HTMLDetailsElement>('.search-desktop');
+      if (toggle && toggle.offsetParent) { toggle.open = true; toggle.querySelector('input')?.focus(); return; }
+      const mobile = document.querySelector<HTMLDetailsElement>('.nav-mobile');
+      if (mobile) { mobile.open = true; mobile.querySelector('input')?.focus(); }
+    }
+  });
+</script>
+
+<style>
+  .search { position: relative; }
+  input { width: 100%; font: inherit; font-size: 0.95rem; padding: 0.5rem 0.9rem; border: 2px solid var(--line); border-radius: 999px; background: var(--bg); }
+  input:focus { outline: none; border-color: var(--pink); background: #fff; }
+  .search__results { position: absolute; left: 0; right: 0; top: calc(100% + 0.5rem); width: auto; max-height: 70vh; overflow-y: auto; list-style: none; margin: 0; padding: 0.4rem; background: var(--surface); border-radius: 12px; box-shadow: 0 12px 32px rgb(0 0 0 / 0.16); z-index: 20; }
+  .search__results :global(a) { display: grid; gap: 0.1rem; padding: 0.6rem 0.75rem; border-radius: 8px; text-decoration: none; color: var(--charcoal); }
+  .search__results :global(li.is-active a), .search__results :global(a:hover) { background: var(--pink-tint); }
+  .search__results :global(.search__title) { font-weight: 700; }
+  .search__results :global(.search__where) { font-size: 0.8rem; font-weight: 700; color: var(--pink-dark); }
+  .search__results :global(.search__text) { font-size: 0.85rem; color: var(--grey); }
+  .search__results :global(mark) { background: #ffe58a; color: inherit; border-radius: 2px; }
+  .search__results :global(.search__none) { padding: 0.75rem; color: var(--grey); }
+</style>
