@@ -3,7 +3,10 @@
 ---
 <details class="syllabus">
   <summary>What the syllabus says</summary>
-  <div class="body"><slot /></div>
+  <div class="body">
+    <slot />
+    <p class="source">Source: <a href="https://istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0" target="_blank" rel="noopener">ISTQB® CTFL v4.0 syllabus</a> © ISTQB®</p>
+  </div>
 </details>
 
 <style>
@@ -11,4 +14,5 @@
   summary { cursor: pointer; padding: 0.6rem 1rem; font-weight: 700; color: var(--pink-dark); }
   .body { padding: 0 1rem 0.5rem; font-size: 0.95rem; }
   .body :global(p) { margin: 0 0 0.6rem; }
+  .source { font-size: 0.8rem; color: var(--grey); margin-top: 0.5rem !important; }
 </style>

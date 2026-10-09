@@ -4,7 +4,7 @@ import Figure from '../Figure.astro';
 ---
 <Figure caption="Three families of SDLC model - sequential, iterative and incremental (CTFL 2.1)">
   <svg viewBox="0 0 820 240" role="img" aria-label="Sequential, iterative and incremental models">
-    <defs><marker id="sm-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e33661"/></marker></defs>
+    <defs><marker id="sm-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d42a57"/></marker></defs>
     <text class="t-dark" x="135" y="20" style="font-size:18px">Sequential</text>
     {[0, 1, 2, 3].map((i) => <rect class="b-dark" x={20 + i * 50} y={45 + i * 34} width="90" height="26" rx="6"/>)}
     {[0, 1, 2].map((i) => <path class="ln-pink" d={`M${112 + i * 50} ${58 + i * 34} h14 v18`} marker-end="url(#sm-a)"/>)}

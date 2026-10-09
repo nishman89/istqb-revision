@@ -202,9 +202,9 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
   .toc__groups details[open] > summary::before { transform: rotate(90deg); }
   .toc__groups summary:hover { background: var(--pink-tint); }
   .toc details ul { list-style: none; margin: 0 0 0.5rem; padding: 0 0 0 1.1rem; border-left: 2px solid var(--pink-tint); display: grid; gap: 0.2rem; font-size: 0.875rem; }
-  .toc details a { color: var(--grey); text-decoration: none; display: block; padding: 0.15rem 0.4rem; border-radius: 6px; }
-  .toc details a:hover { color: var(--pink-dark); background: var(--bg); }
-  .toc details a[aria-current] { color: var(--pink-dark); background: var(--pink-tint); font-weight: 700; }
+  .toc__groups details a { color: var(--grey); text-decoration: none; display: block; padding: 0.15rem 0.4rem; border-radius: 6px; }
+  .toc__groups details a:hover { color: var(--pink-dark); background: var(--bg); }
+  .toc__groups details a[aria-current] { color: var(--pink-dark); background: var(--pink-tint); font-weight: 700; }
   .prose :global(.section-end) { display: flex; justify-content: flex-end; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed var(--line); }
   .prose :global(.section-end .btn) { white-space: normal; text-align: left; }
   .quiz-btn { width: 100%; }
@@ -224,7 +224,7 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
   .prose :global(details.chapter-section > summary:hover) { background: #3a3637; }
   .prose :global(.chapter-section__body) { padding: 0.5rem 0.25rem 1rem; }
   .prose :global(h3) { margin: 2rem 0 0.5rem; }
-  .prose :global(h4) { font: 700 0.8rem var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink); margin: 1rem 0 0.25rem; }
+  .prose :global(h4) { font: 700 0.8rem var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-dark); margin: 1rem 0 0.25rem; }
   .prose :global(ul) { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1rem 1.25rem 1rem 2.25rem; margin: 0.5rem 0; }
   .prose :global(li) { margin: 0.3rem 0; }
 

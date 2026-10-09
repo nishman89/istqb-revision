@@ -1,15 +1,17 @@
 ---
 import { TRAPS } from '../data/traps';
 
-/** "Watch out for" box: the common exam traps for one chapter. */
+/** "Watch out for…" box: the common exam traps for one chapter, collapsed until opened. */
 interface Props { chapter: number; }
 const traps = TRAPS[Astro.props.chapter] ?? [];
 ---
 {traps.length > 0 && (
-  <section class="watch card" aria-labelledby={`watch-${Astro.props.chapter}`}>
-    <span class="eyebrow">Exam tips</span>
-    <h2 id={`watch-${Astro.props.chapter}`}>Watch out for…</h2>
-    <p class="muted">The confusions the ISTQB sample papers deliberately test in this chapter.</p>
+  <details class="watch card">
+    <summary>
+      <span class="eyebrow">Exam tips</span>
+      <span class="watch__heading">Watch out for… <span class="watch__count">{traps.length} common traps</span></span>
+      <span class="watch__hint">The confusions the ISTQB sample papers deliberately test in this chapter.</span>
+    </summary>
     <ul>
       {traps.map((t) => (
         <li>
@@ -18,13 +20,20 @@ const traps = TRAPS[Astro.props.chapter] ?? [];
         </li>
       ))}
     </ul>
-  </section>
+  </details>
 )}
 
 <style>
-  .watch { border-left: 8px solid var(--pink); }
-  .watch h2 { margin: 0.25rem 0; }
-  .watch ul { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.75rem; }
+  .watch { border-left: 8px solid var(--pink); padding: 0; }
+  .watch > summary { list-style: none; cursor: pointer; display: grid; gap: 0.15rem; padding: 1.25rem 3.5rem 1.25rem 1.5rem; position: relative; border-radius: var(--radius); }
+  .watch > summary::-webkit-details-marker { display: none; }
+  .watch > summary::after { content: '+'; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); font: 700 1.8rem/1 var(--font-head); color: var(--pink); }
+  .watch[open] > summary::after { content: '−'; }
+  .watch > summary:hover { background: var(--pink-tint); }
+  .watch__heading { font: 700 1.5rem var(--font-head); }
+  .watch__count { font: 700 0.85rem var(--font-body); color: #fff; background: var(--pink); padding: 0.15rem 0.6rem; border-radius: 999px; vertical-align: middle; margin-left: 0.4rem; }
+  .watch__hint { color: var(--grey); }
+  .watch ul { list-style: none; padding: 0 1.5rem 1.5rem; margin: 0; display: grid; gap: 0.75rem; }
   .watch li { display: grid; gap: 0.25rem; padding: 0.75rem 1rem; background: var(--bg); border-radius: 10px; }
   .watch p { margin: 0; }
   .watch__trap { font-weight: 700; color: var(--pink-dark); text-decoration: line-through; text-decoration-color: rgb(227 54 97 / 0.5); }

@@ -1,13 +1,13 @@
 /* Sparta Global theme - colours and type taken from the training slide template. */
 :root {
   --charcoal: #2d2a2b;
-  --pink: #e33661;
+  --pink: #d42a57;          /* Sparta pink, deepened slightly so white text on it passes WCAG AA */
   --pink-dark: #b8234b;
   --pink-soft: #f4b6c5;
   --pink-tint: #fbe3e9;
   --bg: #f0f1f1;
   --surface: #ffffff;
-  --grey: #6b6b6b;
+  --grey: #5c5c5c;
   --line: #d9dbdb;
   --success: #1f8a5b;
   --success-tint: #e3f4ec;
@@ -58,8 +58,10 @@ h3 { font-size: 1.35rem; }
 
 .eyebrow {
   display: block; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--pink);
+  text-transform: uppercase; color: var(--pink-dark);
 }
+/* labels on dark backgrounds */
+.card--dark .eyebrow, .hero .eyebrow, .site-footer .eyebrow { color: var(--pink-soft); }
 .muted { color: var(--grey); }
 
 .card {

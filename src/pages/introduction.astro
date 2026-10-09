@@ -4,6 +4,8 @@ import PageHead from '../components/PageHead.astro';
 import ExamSplit from '../components/ExamSplit.astro';
 import { url } from '../lib/site';
 
+const ISTQB_CTFL = 'https://istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0';
+
 const kLevels = [
   { k: 'K1', name: 'Remember', desc: 'Recall a term or fact - e.g. "Which of the following is a typical test objective?"', mins: '1 min' },
   { k: 'K2', name: 'Understand', desc: 'Explain, compare or classify - e.g. pick the best description of a concept.', mins: '1-2 min' },
@@ -95,8 +97,10 @@ const kLevels = [
     <section class="card card--tint">
       <h2>How to use this site</h2>
       <ol class="steps">
-        <li><strong>Read the chapter notes.</strong> Each topic shows its syllabus section, and "What the syllabus says"
-          opens the official wording.</li>
+        <li><strong>Read the chapter notes.</strong> Each topic shows the syllabus section it covers and the matching box
+          on the Sparta handout. Where a topic has a <strong>"What the syllabus says"</strong> box, it opens the wording taken
+          directly from the official <a href={ISTQB_CTFL} target="_blank" rel="noopener">ISTQB CTFL v4.0 syllabus</a> - the
+          exam is set against this text, so it's worth reading.</li>
         <li><strong>Take the end-of-chapter quiz.</strong> Each chapter's quiz uses the questions from <strong>ISTQB Sample Paper C</strong>
           that cover that chapter, so you answer the same number of questions the real exam asks on it. Answer them all, then
           submit to see your score and why each option is right or wrong.</li>
@@ -109,7 +113,8 @@ const kLevels = [
       <a class="btn" href={url('chapters/1')}>Begin Chapter 1</a>
     </section>
 
-    <p class="source muted">Exam structure and rules: ISTQB® Exam Structures and Rules v1.2 and the CTFL v4.0 exam structure tables.</p>
+    <p class="source muted">Exam structure and rules: ISTQB® Exam Structures and Rules v1.2 and the CTFL v4.0 exam structure tables.
+      The syllabus, glossary and sample exams are available from the <a href={ISTQB_CTFL} target="_blank" rel="noopener">ISTQB CTFL v4.0 page</a>.</p>
   </div>
 </BaseLayout>
 

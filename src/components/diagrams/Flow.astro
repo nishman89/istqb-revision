@@ -13,7 +13,7 @@ const perChar = size * 0.62;
 ---
 <Figure caption={caption}>
   <svg viewBox={`0 0 820 ${loop ? 210 : 160}`} role="img" aria-label={steps.map((s) => s.title).join(', then ')}>
-    <defs><marker id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6b6b6b"/></marker></defs>
+    <defs><marker id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5c5c5c"/></marker></defs>
     {steps.map((s, i) => {
       const x = 10 + i * (w + gap), cx = x + w / 2;
       const title = wrap(s.title, Math.floor((w - 12) / perChar));

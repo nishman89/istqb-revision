@@ -4,7 +4,7 @@ import Figure from '../Figure.astro';
 ---
 <Figure caption="A human error produces a defect, which may cause a failure when the code runs (CTFL 1.2.3)">
   <svg viewBox="0 0 820 210" role="img" aria-label="Root cause leads to error, error to defect, defect to failure">
-    <defs><marker id="dc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e33661"/></marker></defs>
+    <defs><marker id="dc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d42a57"/></marker></defs>
     {[['Root cause', 'why it happened', 'b-light', 't-dark'], ['Error', 'a human mistake', 'b-dark', 't'], ['Defect', 'aka fault, bug', 'b-pink', 't'], ['Failure', 'seen when it runs', 'b-dark', 't']].map(([h, s, b, t], i) => (
       <g>
         <rect class={b} x={10 + i * 205} y="40" width="180" height="110" rx="14"/>

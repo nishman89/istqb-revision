@@ -154,22 +154,9 @@ Validating whether the test object is complete and works as expected by the stak
   { title: 'Fix', sub: 'remove the defect' }, { title: 'Confirmation test', sub: 'is it fixed?' }, { title: 'Regression test', sub: 'anything else broken?' },
 ]} />
 
-#### Dynamic testing
-
-- **Dynamic test** - triggers a failure
-- **Reproduce** - the failure
-- **Diagnose** - find the root cause
-- the cause
-- **Confirmation test** - is it fixed?
-- **Regression test** - anything else broken?
-- Debugging - a development activity, not testing
-
-#### Static testing
-
-- **Static test** - e.g. a review
-- **Defect found** - directly
-- the defect
-- No reproduction or diagnosis needed - static testing cannot trigger failures
+- **Debugging is not testing** - It's a development activity: finding, analysing and removing the cause of a failure
+- **Static testing finds the defect directly** - Nothing is run, so there's no failure to reproduce or diagnose - only the fix is needed
+- **Confirmation testing** - Ideally run by the person who ran the original test
 
 <SyllabusText>
 
@@ -237,9 +224,8 @@ May be required to meet contractual or legal requirements, or to comply with reg
   { title: 'Quality assurance', sub: 'process-oriented · preventive', points: ['Implements and improves processes', 'A good process gives a good product', "Everyone's responsibility"] },
 ]} />
 
-- Testing ≠ QA     ·     Testing is a form of Quality Control
-- **Quality Control (QC)** - Product-oriented · Corrective · Supports achieving appropriate levels of quality · Testing, formal methods (model checking, proof of correctness), simulation, prototyping
-- **Quality Assurance (QA)** - Process-oriented · Preventive · Implements and improves processes - a good process should give a good product · Applies to development and testing · Everyone's responsibility
+- **Related, but not the same** - Testing is a form of quality control; QA is about the processes
+- **Test results feed QA** - They show how well the development and test processes are working, so QA can improve them
 
 <SyllabusText>
 
@@ -654,15 +640,7 @@ Traceability provides information to assess product quality, process capability,
   { title: 'Testing', points: ['Engineering (technical) side of testing', 'Test analysis and design', 'Test implementation', 'Test execution'] },
 ]} />
 
-- **Test Management** - Overall responsibility for the test process, the test team and leadership of test activities · FOCUSES ON
-- Test planning
-- Monitoring & control
-- Test completion
-- **Testing** - Overall responsibility for the engineering (technical) aspects of testing · FOCUSES ON
-- Test analysis
-- Test design
-- Test implementation
-- Test execution
+- **One person, two roles?** - Different people can take these roles at different times, and one person can hold both
 
 ### Who Plays These Roles?
 
@@ -769,10 +747,8 @@ Depending on the context, the whole team approach may not always be appropriate.
 
 <IndependenceStairs />
 
-- **No independence** - Work products are tested by their author
-- **Some independence** - Tested by the author's peers on the same team
-- **High independence** - Tested by testers outside the author's team, within the organisation
-- **Very high independence** - Tested by testers from outside the organisation
+- **More independence, different defects** - Independent testers don't share the author's assumptions and biases
+- **Familiarity still matters** - Developers can find many defects in their own code efficiently
 
 ### Independence: Pros and Cons
 

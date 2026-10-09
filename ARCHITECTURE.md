@@ -277,9 +277,15 @@ examId(set)                    // "exam-c" - full past papers
 - **Component styles** are written in a `<style>` block inside each `.astro` file. Astro scopes these to that component
   automatically, so they can't leak. `:global(...)` is used where a page styles HTML it didn't create itself, such as
   the notes produced from MDX.
-- **Brand:** charcoal `#2d2a2b`, pink `#e33661`, the pink full stop after titles, and a rule with an end dot, all taken
+- **Brand:** charcoal `#2d2a2b`, pink `#d42a57` (Sparta's `#e33661` deepened very slightly so white text on it meets the WCAG AA contrast ratio of 4.5:1), the pink full stop after titles, and a rule with an end dot, all taken
   from the Sparta slide template. Headings use Zilla Slab (a free slab font close to Sparta's Bw Glenn Slab) and the
   body uses Source Sans 3, both from Google Fonts.
+
+### Accessible colour
+
+All text meets WCAG AA contrast (4.5:1, or 3:1 for large text). Small pink labels use `--pink-dark` on light backgrounds
+and `--pink-soft` on dark ones; body text never uses grey on a coloured background. Keep to these variables when adding
+new styles.
 
 ### Responsive design
 
