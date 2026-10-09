@@ -2,7 +2,7 @@
  * Rehype plugin: makes the chapter notes collapsible at two levels.
  *
  *   ## 2.1 Testing in the Context of an SDLC   → <details class="chapter-section">  (closed by default)
- *     ### SDLC Models                          → <details class="chapter-topic" open>  (open by default)
+ *     ### SDLC Models                          → <details class="chapter-topic">  (closed by default)
  *
  * Each heading becomes the <summary> of its block, so clicking it opens or closes everything
  * up to the next heading of the same level.
@@ -32,7 +32,7 @@ export default function collapsibleSections() {
     tree.children = wrap(tree.children, 'h2', 'chapter-section', false);
     for (const section of tree.children) {
       const body = section.tagName === 'details' && section.children[1];
-      if (body) body.children = wrap(body.children, 'h3', 'chapter-topic', true);
+      if (body) body.children = wrap(body.children, 'h3', 'chapter-topic', false);
     }
   };
 }

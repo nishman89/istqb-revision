@@ -17,6 +17,8 @@ const links = [
   ['exam-tips', 'Exam tips'],
   ['handouts', 'Handouts'],
 ] as const;
+/** External links, opened in a new tab. */
+const external = [['https://glossary.istqb.org/', 'Glossary', 'The official ISTQB glossary of testing terms (opens in a new tab)']] as const;
 const path = Astro.url.pathname;
 const isActive = (href: string) => (href === url() ? path === href : path.startsWith(href));
 ---
@@ -28,7 +30,7 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
     </a>
 
     <details class="search-desktop">
-      <summary aria-label="Search the notes"><span aria-hidden="true">🔍</span> Search</summary>
+      <summary aria-label="Search the notes" title="Search the notes ( / )"><span aria-hidden="true">🔍</span></summary>
       <div class="search-panel"><Search /></div>
     </details>
 
@@ -37,6 +39,9 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
       <ul>
         {links.map(([href, label]) => (
           <li><a href={url(href)} aria-current={isActive(url(href)) ? 'page' : undefined}>{label}</a></li>
+        ))}
+        {external.map(([href, label, title]) => (
+          <li><a href={href} target="_blank" rel="noopener" title={title}>{label}<span class="ext" aria-hidden="true">↗</span></a></li>
         ))}
         <li class="has-menu">
           <details>
@@ -57,6 +62,9 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
         <ul>
           {links.map(([href, label]) => (
             <li><a href={url(href)} aria-current={isActive(url(href)) ? 'page' : undefined}>{label}</a></li>
+          ))}
+          {external.map(([href, label, title]) => (
+            <li><a href={href} target="_blank" rel="noopener" title={title}>{label}<span class="ext" aria-hidden="true">↗</span></a></li>
           ))}
         </ul>
         <span class="eyebrow">Chapters</span>
@@ -89,21 +97,23 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
   .brand__label { font: 700 0.85rem var(--font-body); letter-spacing: 0.08em; color: var(--charcoal); border-left: 2px solid var(--line); padding-left: 0.75rem; }
 
   nav ul { list-style: none; margin: 0; padding: 0; }
-  nav a, summary { display: block; padding: 0.5rem 0.85rem; border-radius: 999px; color: var(--charcoal); font-weight: 700; text-decoration: none; cursor: pointer; }
+  nav a, summary { display: block; padding: 0.5rem 0.7rem; border-radius: 999px; color: var(--charcoal); font-weight: 700; text-decoration: none; cursor: pointer; white-space: nowrap; }
+  .brand__label { white-space: nowrap; }
   nav a:hover, summary:hover { background: var(--pink-tint); color: var(--pink-dark); }
   nav a[aria-current='page'] { background: var(--charcoal); color: #fff; }
   summary { list-style: none; }
   summary::-webkit-details-marker { display: none; }
 
-  .nav-desktop > ul { display: flex; gap: 0.25rem; align-items: center; }
+  .nav-desktop > ul { display: flex; gap: 0.1rem; align-items: center; }
   .nav-desktop summary::after { content: ' ▾'; color: var(--pink); }
   .has-menu { position: relative; }
   .menu { position: absolute; right: 0; top: calc(100% + 0.5rem); background: var(--surface); padding: 0.5rem; border-radius: 12px; box-shadow: var(--shadow); min-width: 19rem; }
   .menu a, .chapters a { display: flex; gap: 0.75rem; border-radius: 8px; font-weight: 600; }
   .menu span, .chapters span { color: var(--pink); font-weight: 700; }
+  .ext { margin-left: 0.25rem; font-size: 0.8em; color: var(--pink-dark); }
 
   .search-desktop { margin-left: auto; position: relative; }
-  .search-desktop > summary { border: 2px solid var(--line); }
+  .search-desktop > summary { border: 2px solid var(--line); width: 2.6rem; height: 2.6rem; padding: 0; display: grid; place-items: center; }
   .search-desktop[open] > summary { border-color: var(--pink); background: var(--pink-tint); }
   .search-panel { position: absolute; left: 0; top: calc(100% + 0.5rem); width: min(32rem, 90vw); background: var(--surface); padding: 0.6rem; border-radius: 14px; box-shadow: 0 12px 32px rgb(0 0 0 / 0.16); }
   .search-mobile { margin-bottom: 0.75rem; }
@@ -125,7 +135,7 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
   .nav-mobile .eyebrow { padding: 0 0.85rem; }
   .nav-mobile .chapters { display: grid; gap: 0.1rem; margin-top: 0.25rem; }
 
-  @media (max-width: 70rem) {
+  @media (max-width: 74rem) {
     .search-desktop { display: none; }
     .nav-desktop { display: none; }
     .nav-mobile { display: block; }

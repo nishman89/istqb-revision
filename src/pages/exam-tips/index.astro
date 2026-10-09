@@ -65,7 +65,20 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
       <ul class="words">
         {keywords.map(({ word, n }) => <li><span class="word">{word}</span><span class="muted">{n} questions</span></li>)}
       </ul>
-      <p class="muted">NOT and LEAST flip the question: you're looking for the one option that is wrong or weakest.</p>
+      <div class="table-wrap">
+        <table class="kw">
+          <thead><tr><th>Key word</th><th>What it means</th><th>How to answer</th></tr></thead>
+          <tbody>
+            <tr><td><strong>BEST</strong> / <strong>MOST</strong></td><td>Several options may be partly true - one is the strongest fit.</td><td>Don't stop at the first true-sounding option. Compare them all against the exact situation in the question.</td></tr>
+            <tr><td><strong>CORRECT</strong> / <strong>TRUE</strong></td><td>Exactly one option is fully true; the others contain an error.</td><td>Look for the small detail that makes each wrong option false - a swapped term, a wrong order, a reversed cause and effect.</td></tr>
+            <tr><td><strong>NOT</strong> / <strong>LEAST</strong></td><td>The question is flipped: three options are true or likely.</td><td>You're hunting for the odd one out. Tick off the three that fit, and what's left is the answer.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Also watch the wording inside the options.</strong> Words like <em>always</em>, <em>never</em>, <em>only</em>, <em>all</em> and <em>guarantees</em>
+        make a statement absolute - it must be true in every case, so check whether the syllabus really says that
+        (for example, testing can never <em>guarantee</em> there are no defects). Words like <em>typically</em>, <em>may</em> and <em>can</em> are softer and
+        easier to be true. Neither is a reliable clue on its own - read what the statement actually claims.</p>
       <p class="caveat">These counts come from the 160 questions in ISTQB Sample Papers A-D. The real exam is written to the same
         rules, but its exact mix of key words will vary.</p>
     </section>
@@ -123,6 +136,7 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
   .formats .card { border-top: 5px solid var(--pink); }
   .formats .card:nth-child(even) { border-top-color: var(--charcoal); }
   .formats h3 { margin: 0 0 0.25rem; }
+  .kw td:first-child { white-space: nowrap; color: var(--pink-dark); }
   .caveat { font-size: 0.9rem; color: var(--grey); border-left: 4px solid var(--line); padding-left: 0.75rem; margin-top: 0.5rem; }
   .day { display: grid; gap: 0.5rem; padding-left: 1.25rem; }
   .day li::marker { color: var(--pink); }

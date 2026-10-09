@@ -23,6 +23,7 @@ progress is saved in their own browser. It works on desktops, tablets and phones
 | **Extra practice** | The same chapter's questions from **Sample Papers A, B and D**, three more sets on exactly the same topics. |
 | **Exam tips** | Exam technique based on an analysis of all 160 sample-paper questions: the 8 calculation topics worth 20% of the exam (with a method for each), the K-level mix, key words and question formats. Includes a quiz of all 32 K3 questions. |
 | **Handouts** | Download the six chapter handouts and the practice workbook (PDF). Each chapter page also has a download button for its handout. |
+| **Glossary** (header link) | Opens the official ISTQB glossary at glossary.istqb.org in a new tab |
 | **Past papers** | Sit any of the four ISTQB sample exams in full: 40 questions with an optional 60- or 75-minute timer, then a score for each chapter. |
 
 ### How the quizzes work
@@ -76,7 +77,7 @@ deliberately test, taken from ISTQB's own explanations of why wrong answers are 
 
 ### Collapsible sections
 
-Each syllabus section (1.1, 1.2, 2.1…) opens and closes, and so does every topic inside it (click its heading, or the −/+).
+Each syllabus section (1.1, 1.2, 2.1…) opens and closes, and so does every topic inside it (click its heading, or the +/−). Everything starts closed.
 Use **Expand all sections** / **Collapse all** above the notes.
 Clicking a topic in the "In this chapter" menu opens its section and jumps straight to it.
 
@@ -104,24 +105,80 @@ https://<your-github-username-or-organisation>.github.io/<repository-name>/
 For example, a repository called `istqb-ctfl` owned by `sparta-global` would be at
 `https://sparta-global.github.io/istqb-ctfl/`.
 
-### On your own computer
+### On your own computer (step by step)
 
-You need **Node.js 20 or newer**, available from https://nodejs.org. Choose the "LTS" version.
+You only need to do steps 1-4 once.
 
-1. Open a terminal in this folder.
-2. Install the project's packages. You only need to do this once:
-   ```bash
-   npm install
-   ```
-3. Start the local preview:
-   ```bash
-   npm run dev
-   ```
-4. Open **http://localhost:4321** in your browser. The page reloads automatically when you edit a file.
-5. Press `Ctrl + C` in the terminal to stop it.
+**1. Install the tools**
 
-> Opening `index.html` by double-clicking it **won't work**. The site has to be built first and served by a web
-> server, which is what `npm run dev` does for you.
+| Tool | Why | Where to get it |
+|---|---|---|
+| **Visual Studio Code** | The editor you'll open the project in | https://code.visualstudio.com - download and install with the default options |
+| **Node.js (LTS, version 20 or newer)** | Runs the site's build tools (includes `npm`) | https://nodejs.org - choose the **LTS** button |
+| **Git** | Downloads the project from GitHub and publishes changes | https://git-scm.com/downloads |
+
+Check they installed: open a terminal (Windows: *Command Prompt* or *PowerShell*; Mac: *Terminal*) and run
+`node -v`, `npm -v` and `git --version`. Each should print a version number. If not, restart your computer and try again.
+
+**2. Add the recommended VS Code extensions** *(optional, but they make editing easier)*
+
+In VS Code, open the Extensions panel (`Ctrl+Shift+X` / `Cmd+Shift+X`) and install:
+- **Astro** (astro-build.astro-vscode) - syntax highlighting and error checking for `.astro` files
+- **MDX** (unifiedjs.vscode-mdx) - highlighting for the chapter notes
+
+**3. Get the project**
+
+Either clone it from GitHub:
+
+```bash
+git clone https://github.com/<your-username>/istqb-revision.git
+```
+
+…or unzip the project zip somewhere sensible (e.g. `Documents/istqb-revision`).
+
+Then in VS Code choose **File → Open Folder…** and pick the `istqb-revision` folder.
+
+**4. Install the project's packages**
+
+Open VS Code's built-in terminal (**Terminal → New Terminal**, or `` Ctrl+` ``) and run:
+
+```bash
+npm install
+```
+
+This downloads everything listed in `package.json` (Astro, the MDX integration, TypeScript and a couple of helpers)
+into a `node_modules` folder. It takes a minute and only needs doing again if `package.json` changes.
+
+**5. Run the site**
+
+```bash
+npm run dev
+```
+
+Open **http://localhost:4321** in your browser. Leave the terminal running - every time you save a file, the page
+updates by itself. Press `Ctrl + C` in the terminal to stop.
+
+**6. Publish your changes**
+
+```bash
+git add .
+git commit -m "Describe what you changed"
+git push
+```
+
+GitHub Actions rebuilds and publishes the site in a couple of minutes (see [Publishing on GitHub Pages](#publishing-on-github-pages)).
+
+**Troubleshooting**
+
+| Problem | Fix |
+|---|---|
+| `npm` or `node` "is not recognised" | Node.js isn't installed or the terminal was open before you installed it - close and reopen VS Code |
+| `npm install` fails | Check you're in the project folder (the one containing `package.json`), then try again |
+| Port 4321 is already in use | Another copy is running - stop it, or use the other address `npm run dev` prints |
+| The build shows an error about a question or chapter | Read the message - it names the file and field that's wrong (see [Editing the content](#editing-the-content)) |
+
+> Opening `index.html` by double-clicking it **won't work** - the site has to be built and served, which is what
+> `npm run dev` does for you.
 
 ### Commands
 

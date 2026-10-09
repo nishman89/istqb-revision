@@ -50,10 +50,34 @@ Actually: testing also involves validation - checking whether the system meets u
 
 <SyllabusRef ref="1.1" />
 
-- When have you experienced software that did not work as expected? What were the consequences?
-- Testing assesses software quality and helps reduce the risk of software failure in operation.
-- Horizon IT - UK Post Office scandal
-- Boeing 737 MAX - MCAS failures
+Testing assesses software quality and helps reduce the risk of software failure in operation. When software does fail,
+the consequences can be catastrophic: loss of money, time and business reputation - even injury or death.
+
+<Exercise kind="discuss" title="Think about it">
+
+When have you experienced software that did not work as expected? What were the consequences?
+
+</Exercise>
+
+#### Case study 1: Horizon and the UK Post Office scandal
+
+The Post Office's accounting software, **Horizon**, had faults that made branch accounts show money that was missing
+when it wasn't. The Post Office trusted the system over its staff, and **hundreds of subpostmasters were falsely accused
+of theft, fraud and false accounting**. Many were prosecuted, made to repay "shortfalls" from their own savings,
+or lost their businesses - ruining careers and lives. Convictions were later overturned once the system's defects
+came to light. [Read more on Wikipedia](https://en.wikipedia.org/wiki/British_Post_Office_scandal).
+
+- **What failed** - accounting software reporting shortfalls that didn't exist
+- **The lesson** - software output is not proof; failures in operation can do enormous human harm
+
+#### Case study 2: Boeing 737 MAX and MCAS
+
+The **Maneuvering Characteristics Augmentation System (MCAS)** was designed to push the aircraft's nose down in certain conditions.
+A failure in MCAS contributed to **two fatal crashes in which 346 people died**. The aircraft was **grounded for 20 months**,
+and Boeing faced around **$20 billion** in fines and legal fees.
+
+- **What failed** - flight-control software acting on bad data, which pilots struggled to override
+- **The lesson** - in safety-critical systems, failures can cost lives - so the testing must be rigorous and independent
 
 ### Verification vs Validation
 

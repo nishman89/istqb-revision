@@ -3,7 +3,7 @@
 import Figure from '../Figure.astro';
 import { wrap } from '../../lib/svg';
 
-interface Step { title: string; sub?: string; }
+interface Step { title: string; sub?: string; /** Optional colour, e.g. red/green/yellow for TDD. */ tone?: 'red' | 'green' | 'yellow'; }
 interface Props { steps: Step[]; caption: string; center?: string; }
 const { steps, caption, center } = Astro.props;
 const n = steps.length, cx = 410, cy = 185, rx = 270, ry = 125, w = 190, h = 70;
@@ -35,9 +35,9 @@ const arc = (i: number) => {
       const lines = title.length + sub.length, y0 = y - ((lines - 1) * 17) / 2;
       return (
         <g>
-          <rect class={i % 2 ? 'b-dark' : 'b-pink'} x={x - w / 2} y={y - h / 2} width={w} height={h} rx="14"/>
-          {title.map((t, j) => <text class="t" x={x} y={y0 + j * 17}>{t}</text>)}
-          {sub.map((t, j) => <text class="t-sm-w" x={x} y={y0 + (title.length + j) * 17}>{t}</text>)}
+          <rect class={s.tone ? `b-${s.tone}` : i % 2 ? 'b-dark' : 'b-pink'} x={x - w / 2} y={y - h / 2} width={w} height={h} rx="14"/>
+          {title.map((t, j) => <text class={s.tone === 'yellow' ? 't-dark' : 't'} x={x} y={y0 + j * 17}>{t}</text>)}
+          {sub.map((t, j) => <text class={s.tone === 'yellow' ? 't-sm' : 't-sm-w'} x={x} y={y0 + (title.length + j) * 17} style={s.tone === 'yellow' ? 'fill:#2d2a2b' : undefined}>{t}</text>)}
         </g>
       );
     })}

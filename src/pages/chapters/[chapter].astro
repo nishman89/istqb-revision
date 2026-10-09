@@ -237,7 +237,8 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
     border-radius: 50%; border: 2px solid var(--line); font: 700 1.1rem/1 var(--font-body); color: var(--pink-dark);
   }
   .prose :global(details.chapter-topic:not([open]) > summary::after) { content: '+'; }
-  .prose :global(details.chapter-topic:not([open]) > summary) { background: var(--surface); box-shadow: var(--shadow); margin-bottom: 0.25rem; }
+  .prose :global(details.chapter-topic:not([open]) > summary) { background: var(--surface); box-shadow: var(--shadow); margin: 0.5rem 0; padding: 0.7rem 1rem; }
+  .prose :global(details.chapter-topic:not([open]) > summary h3) { font-size: 1.15rem; }
   .prose :global(.chapter-topic__body) { padding-bottom: 0.5rem; }
   .prose :global(h3) { margin: 0; }
   .prose :global(h4) { font: 700 0.8rem var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-dark); margin: 1rem 0 0.25rem; }

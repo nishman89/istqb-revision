@@ -9,10 +9,9 @@ const chapters = await getChapters();
 <BaseLayout title="Home">
   <section class="hero">
     <div class="container hero__inner">
-      <span class="eyebrow">ISTQB® CTFL v4.0</span>
-      <h1 class="dot">Certified Tester Foundation Level</h1>
-      <p>Chapter notes taken from the Sparta Global course slides, each mapped to its section of the syllabus, plus
-        end-of-chapter practice using the official ISTQB sample exams - with an explanation for every answer.</p>
+      <span class="hero__badge">ISTQB® CTFL v4.0</span>
+      <h1 class="hero__title">ISTQB Revision Guide<span class="hero__dot">.</span></h1>
+      <p class="hero__sub">for the ISTQB® Certified Tester Foundation Level (CTFL) v4.0</p>
       <div class="hero__actions">
         <a class="btn" href={url('introduction')}>Start with the introduction</a>
         <a class="btn btn--ghost btn--light" href={url('chapters/1')}>Go to Chapter 1</a>
@@ -96,7 +95,10 @@ const chapters = await getChapters();
 
 <style>
   .hero { background: var(--charcoal); color: #fff; padding: 3.5rem 0; border-bottom: 6px solid var(--pink); }
-  .hero__inner p { max-width: 46rem; font-size: 1.15rem; color: #ddd; }
+  .hero__badge { display: inline-block; padding: 0.3rem 0.9rem; border: 2px solid var(--pink-soft); border-radius: 999px; color: var(--pink-soft); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; }
+  .hero__title { font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1.05; margin: 1rem 0 0.5rem; }
+  .hero__dot { color: var(--pink); }
+  .hero__sub { font-size: clamp(1.1rem, 2.4vw, 1.4rem); color: #ddd; margin: 0; max-width: 40rem; }
   .hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
   .btn--light { color: #fff; border-color: #fff; }
   .btn--light:hover { background: #fff; color: var(--charcoal); }

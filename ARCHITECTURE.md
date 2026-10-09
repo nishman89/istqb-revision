@@ -160,7 +160,7 @@ integrations: [mdx({ rehypePlugins: [tidyLists, collapsibleSections] })]
 | Plugin | File | What it does |
 |---|---|---|
 | **tidyLists** | `src/lib/rehype-tidy-lists.mjs` | Reshapes bullet lists so the notes aren't a wall of bullets. Key points (`- **Title** - description`) become a grid of **cards**, with ` · ` becoming a new line. Full sentences become ordinary **paragraphs**. Lists of short items (e.g. "Test strategy", "Level of coverage") become a row of **tags**. Numbered lists are left alone. Card grids pick a column count that keeps them symmetrical (4 cards → 2×2, 5 → 3 + 2 centred); a pair titled Pros/Cons (or Benefits/Drawbacks…) becomes a green-and-pink side-by-side comparison; 7 or more points become a compact two-column list. A bold phrase that starts a sentence ("**Software testing** is…") stays a paragraph. |
-| **collapsibleSections** | `src/lib/rehype-collapsible-sections.mjs` | Makes the notes collapsible at two levels: each `##` section becomes a `<details>` (closed by default), and each `###` topic inside it another `<details>` (open by default). Links into the notes open every collapsed block around their target. |
+| **collapsibleSections** | `src/lib/rehype-collapsible-sections.mjs` | Makes the notes collapsible at two levels: each `##` section becomes a `<details>` (closed by default), and each `###` topic inside it another `<details>` (also closed by default). Links into the notes open every collapsed block around their target. |
 
 The chapter page (`src/pages/chapters/[chapter].astro`) then:
 
@@ -359,3 +359,146 @@ A hard-coded `href="/chapters/2"` would work locally but break on GitHub Pages.
 
 ISTQB material is © International Software Testing Qualifications Board and is acknowledged on every page, as its
 copyright terms require.
+
+---
+
+## 12. Build pipeline in detail
+
+What happens when you run `npm run build` (or when GitHub Actions does it for you):
+
+```
+ 1. astro check
+    ├── TypeScript type-checks every .astro / .ts file
+    └── content schemas (src/content.config.ts) validate every chapter frontmatter and all 160 questions
+        → any error stops here, before anything is published
+
+ 2. astro build
+    ├── Content layer loads   src/content/chapters/*.mdx   and   src/data/exams/*.json
+    ├── MDX compile, for each chapter:
+    │     Markdown → mdast (remark) → hast (rehype)
+    │       → tidyLists            reshapes bullet lists (cards / tags / paragraphs / pros-cons / two-column list)
+    │       → collapsibleSections  wraps ## sections and ### topics in <details>
+    │       → heading ids          Astro adds slug ids to every heading (used by links, search, the contents menu)
+    ├── Every route in src/pages/ is rendered to static HTML
+    │     dynamic routes run getStaticPaths(): 6 chapters, 24 chapter quizzes, 4 past papers
+    ├── search.json is generated from the chapter Markdown (one entry per topic)
+    ├── <script> blocks in components are bundled and minified into dist/_astro/*.js
+    └── public/ is copied as-is (logo, favicon, exam figures, handout PDFs)
+
+ 3. Output: dist/  - plain HTML, CSS, JS and assets.  This folder is what GitHub Pages serves.
+```
+
+## 13. Data flow at runtime
+
+There is no server. Everything a visitor sees comes from the static files; the only things that change are in their browser.
+
+```
+ Visitor's browser
+ ├── loads the static page (HTML already contains all text, questions and explanations)
+ ├── runs the page's small script(s):
+ │     Quiz.astro        marks answers, shows explanations, runs the timer
+ │     chapters/[n]      opens sections, highlights the current topic, "Next section"
+ │     Search.astro      fetches /search.json once, filters it as you type
+ │     Header / BackToTop menus and the back-to-top button
+ └── reads/writes localStorage key "sparta-ctfl-progress" via src/lib/progress.ts
+       { version: 1,
+         chaptersRead: [1, 2],
+         quizzes: { "ch4-c": { attempts, best, last }, "exam-b": {...}, "k3-practice": {...} },
+         lastVisit: { chapter: 2, slug: "the-v-model", title: "The V-Model" } }
+```
+
+## 14. File-by-file reference
+
+| File | Responsibility | Depends on |
+|---|---|---|
+| `astro.config.mjs` | Site URL and base path (from env), MDX + the two rehype plugins | `src/lib/rehype-*.mjs` |
+| `src/content.config.ts` | Defines the `chapters` and `exams` collections and their Zod schemas; exports the `Question` type | - |
+| `src/lib/site.ts` | Constants (pass mark, main/practice sets, questions per chapter, K-level timings) and `url()` | - |
+| `src/lib/data.ts` | `getChapters()`, `getQuestions(set, chapter)`, `getExam(set)` | content collections |
+| `src/lib/progress.ts` | All localStorage access: load/save, chapters read, quiz attempts, last visit, reset | - |
+| `src/lib/k3.ts` | The 8 K3 skills, their methods and links into the notes | - |
+| `src/lib/svg.ts` | `wrap()` text for SVG; shared fill classes | - |
+| `src/lib/rehype-tidy-lists.mjs` | List → cards / tags / paragraphs / versus / definition list | - |
+| `src/lib/rehype-collapsible-sections.mjs` | `##` and `###` → nested `<details>` | - |
+| `src/data/exams/exam-*.json` | The four ISTQB sample papers (40 questions each) | validated by `content.config.ts` |
+| `src/data/traps.ts` | "Watch out for…" content per chapter | - |
+| `src/data/handouts.ts` | The PDF list and `handoutUrl()` | `site.ts` |
+| `src/layouts/BaseLayout.astro` | `<head>`, fonts, header, footer, back-to-top - wraps every page | components |
+| `src/components/Quiz.astro` | Quiz and mock-exam engine (build-time markup + client script) | `QuestionBody`, `progress.ts` |
+| `src/components/QuestionBody.astro` | Renders a question's blocks | `Question` type |
+| `src/components/Exercise.astro` | Practice question with collapsible answer (`slot="answer"`) | `handouts.ts` |
+| `src/components/SyllabusRef.astro` / `SyllabusText.astro` | Syllabus badge / collapsible syllabus wording | - |
+| `src/components/WatchOut.astro` | Collapsible exam traps | `traps.ts` |
+| `src/components/Search.astro` | Search box + client-side matching | `/search.json` |
+| `src/components/diagrams/*` | SVG diagrams (reusable: Flow, Compare, Tiles, Cycle, Hub, Partitions) | `Figure`, `svg.ts` |
+
+## 15. Component contracts
+
+The props each reusable component accepts (TypeScript checks these at build time):
+
+```ts
+<Quiz questions={Question[]} quizId="ch4-c" examMode?={boolean} />
+<Exercise title="…" kind?="exercise" | "discuss" options?={string[]} source?="workbook">
+  question…  <div slot="answer">answer…</div>
+</Exercise>
+<SyllabusRef ref="4.2.1" />          <SyllabusRef beyond />
+<SyllabusText> official wording… </SyllabusText>
+<WatchOut chapter={4} />
+
+<Flow    caption="…" steps={[{ title, sub? }]} loop?="label" />
+<Compare caption="…" columns={[{ title, sub?, points: string[] }]} middle?="vs" />
+<Tiles   caption="…" tiles={[{ label?, title, sub? }]} cols?={4} />
+<Cycle   caption="…" steps={[{ title, sub?, tone?: 'red'|'green'|'yellow' }]} center?="…" />
+<Hub     caption="…" center="…" items={string[]} />
+<Partitions caption="…" rows={[{ label, segments: [{ text, kind?: 'valid'|'invalid'|'neutral', size?, pick? }] }]} />
+```
+
+## 16. Quality checks built in
+
+| Check | Where | What it catches |
+|---|---|---|
+| Content schemas | `content.config.ts` | a question whose answer isn't an option, wrong number of answers for "Select TWO", a paper without 40 questions, missing chapter fields |
+| Type checking | `astro check` | wrong component props, typos in variable names, unused/undefined imports |
+| Build-time rendering | `astro build` | broken MDX (e.g. an unclosed `<Exercise>`), components that throw |
+| Deploy gate | GitHub Actions | nothing is published unless steps above pass |
+
+Things that are **not** automated, so check them by eye after a big content change: diagram text fitting its boxes,
+layout on a phone (≈390 px wide), and colour contrast for any new colours (keep to the CSS variables).
+
+## 17. Design decisions and trade-offs
+
+| Decision | Benefit | Trade-off |
+|---|---|---|
+| Static site, no backend | Free hosting, nothing to maintain or secure, fast | No shared data - trainers can't see learners' scores |
+| Answers in the page source | Quizzes work offline and instantly, no server | A determined learner could read the answers in the HTML - fine for revision, not for assessment |
+| localStorage for progress | Private, zero setup | Per browser and device; cleared with browser data |
+| Content converted once from slides/PDFs | Content is now plain text that anyone can edit | Changes to the original slides don't flow through automatically |
+| SVG diagrams as components | Sharp, themeable, accessible, editable in code | Need a little SVG knowledge for brand-new bespoke diagrams (the reusable ones avoid this) |
+| Two-level `<details>` for the notes | Works without JavaScript, accessible by default | Browser "find in page" doesn't search inside closed sections - use the site search or Expand all |
+
+## 18. Extending the site - recipes
+
+**A new page** - create `src/pages/my-page.astro`:
+
+```astro
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/PageHead.astro';
+---
+<BaseLayout title="My page">
+  <PageHead eyebrow="Section" title="My page" />
+  <div class="container"> … </div>
+</BaseLayout>
+```
+
+Add it to the header by appending `['my-page', 'My page']` to `links` in `Header.astro` (or to `external` for an
+outside link that should open in a new tab, like the Glossary).
+
+**A new reusable diagram** - copy `Hub.astro` or `Cycle.astro`, change the layout maths, keep using the CSS classes
+(`b-pink`, `b-dark`, `t`, `t-sm`…) so colours follow the theme, and wrap the SVG in `<Figure caption=…>`.
+
+**A new list layout** - add a rule in `tidy()` inside `rehype-tidy-lists.mjs` that sets a class on the `<ul>`, then style
+that class in `chapters/[chapter].astro` (look for the "Lists reshaped by…" comment).
+
+**A new kind of stored progress** - add a field to the `Progress` interface and a small save/load function in
+`progress.ts`. If the change isn't backwards compatible, bump `version` so old data is ignored rather than misread.
