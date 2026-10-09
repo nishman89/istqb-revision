@@ -1,0 +1,22 @@
+---
+/** Unified Process: four sequential phases, each delivered through time-boxed iterations. */
+import Figure from '../Figure.astro';
+const phases = ['Inception', 'Elaboration', 'Construction', 'Transition'];
+---
+<Figure caption="The Unified Process - sequential phases delivered in time-boxed iterations; the mix of activities shifts in each phase (CTFL 2.1)">
+  <svg viewBox="0 0 820 170" role="img" aria-label="Inception, elaboration, construction and transition phases, each with two iterations">
+    {phases.map((p, i) => (
+      <g>
+        <path class={['b-pink', 'b-deep', 'b-dark', 'b-pink'][i]} d={`M${10 + i * 200} 20 h180 l20 30 l-20 30 h-180 ${i ? 'l20 -30' : ''} z`}/>
+        <text class="t" x={110 + i * 200} y="50" style="font-size:16px">{p}</text>
+        {[0, 1].map((k) => (
+          <g>
+            <rect class="b-tint" x={22 + i * 200 + k * 92} y="100" width="84" height="32" rx="16"/>
+            <text class="t-dark" x={64 + i * 200 + k * 92} y="116" style="font-size:12px">Iteration {i * 2 + k + 1}</text>
+          </g>
+        ))}
+      </g>
+    ))}
+    <text class="t-sm" x="410" y="158">Each iteration delivers business value</text>
+  </svg>
+</Figure>

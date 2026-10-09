@@ -1,34 +1,14 @@
 ---
-import { boxFor } from '../data/handouts';
-
-/**
- * Shows which part of the CTFL v4.0 syllabus a topic covers, and which box of the
- * Sparta handout matches it (with a link that opens the PDF at the right page).
- * Use box="B" to override the handout box when a section spans several boxes.
- */
-interface Props { ref?: string; beyond?: boolean; box?: string; }
-const { ref, beyond = false, box } = Astro.props;
-const handout = ref ? boxFor(ref, box) : null;
+/** Shows which part of the CTFL v4.0 syllabus a topic covers. */
+interface Props { ref?: string; beyond?: boolean; }
+const { ref, beyond = false } = Astro.props;
 ---
-<div class="refs">
-  {beyond
-    ? <p class="ref ref--beyond"><span>Beyond the syllabus</span> Useful background - not examined</p>
-    : <p class="ref"><span>Syllabus</span> CTFL v4.0 · Section {ref}</p>}
-  {handout && (
-    <a class="handout" href={handout.href} target="_blank" rel="noopener" title={`Open the Chapter ${handout.chapter} handout at box ${handout.letter}: ${handout.title}`}>
-      <span aria-hidden="true">📄</span> Handout {handout.chapter}{handout.letter}
-      <span class="handout__title">· {handout.title}</span>
-    </a>
-  )}
-</div>
+{beyond
+  ? <p class="ref ref--beyond"><span>Beyond the syllabus</span> Useful background - not examined</p>
+  : <p class="ref"><span>Syllabus</span> CTFL v4.0 · Section {ref}</p>}
 
 <style>
-  .refs { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin: 0 0 1rem; }
-  .ref { display: inline-flex; align-items: center; gap: 0.5rem; margin: 0; font-size: 0.85rem; font-weight: 600; color: var(--grey); }
+  .ref { display: inline-flex; align-items: center; gap: 0.5rem; margin: 0 0 1rem; font-size: 0.85rem; font-weight: 600; color: var(--grey); }
   .ref span { background: var(--pink); color: #fff; padding: 0.1rem 0.6rem; border-radius: 999px; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
   .ref--beyond span { background: var(--charcoal); }
-  .handout { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; font-weight: 700; color: var(--charcoal); text-decoration: none; border: 2px solid var(--line); border-radius: 999px; padding: 0.1rem 0.7rem; background: var(--surface); }
-  .handout:hover { border-color: var(--pink); color: var(--pink-dark); }
-  .handout__title { font-weight: 600; color: var(--grey); }
-  @media (max-width: 40rem) { .handout__title { display: none; } }
 </style>

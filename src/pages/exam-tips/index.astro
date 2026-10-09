@@ -18,18 +18,6 @@ const keywords = ['BEST', 'MOST', 'NOT', 'CORRECT', 'LEAST'].map((w) => ({
   n: qs.filter((q) => new RegExp(`\\b${w}\\b`).test(stemText(q))).length,
 }));
 const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b${word}\\b`).test(stemText(q)))).length;
-const single = qs.filter((q) => q.select === 1);
-const longestRight = single.filter((q) => q.answer.includes([...q.options].sort((a, b) => b.text.length - a.text.length)[0].key)).length;
-const letters = ['a', 'b', 'c', 'd'].map((l) => ({ l, n: single.filter((q) => q.answer[0] === l).length }));
-const absolute = /\b(always|never|all|only|guarantees?|every|fully)\b/i;
-const opts = qs.flatMap((q) => q.options.map((o) => ({ right: q.answer.includes(o.key), abs: absolute.test(o.text) })));
-const absRight = Math.round((opts.filter((o) => o.right && o.abs).length / opts.filter((o) => o.right).length) * 100);
-const absWrong = Math.round((opts.filter((o) => !o.right && o.abs).length / opts.filter((o) => !o.right).length) * 100);
-const perPaper = (n: number) => Math.round((n / exams.length) * 10) / 10;
-const selectTwo = qs.filter((q) => q.select === 2).length;
-const matching = qs.filter((q) => /^\d[A-D],/.test(q.options[0].text.replace(/\s/g, ''))).length;
-const roman = qs.filter((q) => /^[ivx]+(,|$)/.test(q.options[0].text.replace(/\s/g, ''))).length;
-const visual = qs.filter((q) => q.blocks.some((b) => ['table', 'img', 'box'].includes(b.t))).length;
 ---
 <BaseLayout title="Exam tips" description="Exam technique for ISTQB CTFL v4.0, based on an analysis of the four official sample papers.">
   <PageHead eyebrow="Exam technique" title="Exam tips">
@@ -78,43 +66,24 @@ const visual = qs.filter((q) => q.blocks.some((b) => ['table', 'img', 'box'].inc
         {keywords.map(({ word, n }) => <li><span class="word">{word}</span><span class="muted">{n} questions</span></li>)}
       </ul>
       <p class="muted">NOT and LEAST flip the question: you're looking for the one option that is wrong or weakest.</p>
+      <p class="caveat">These counts come from the 160 questions in ISTQB Sample Papers A-D. The real exam is written to the same
+        rules, but its exact mix of key words will vary.</p>
     </section>
 
-    <section>
-      <h2 class="dot">4. Guessing tricks don't work on these papers</h2>
-      <div class="grid myths">
-        <div class="card">
-          <span class="eyebrow">Myth</span>
-          <h3>"Pick the longest answer"</h3>
-          <p>The longest option was right in only <strong>{Math.round((longestRight / single.length) * 100)}%</strong> of single-answer questions - about the same as guessing.</p>
-        </div>
-        <div class="card">
-          <span class="eyebrow">Myth</span>
-          <h3>"Words like always and only mean it's wrong"</h3>
-          <p>They appear in <strong>{absWrong}%</strong> of wrong options and <strong>{absRight}%</strong> of right ones - no real difference.</p>
-        </div>
-        <div class="card">
-          <span class="eyebrow">Myth</span>
-          <h3>"It's usually C"</h3>
-          <p>Correct answers are spread evenly: {letters.map(({ l, n }) => `${l}) ${n}`).join(' · ')}.</p>
-        </div>
-      </div>
-      <p><strong>What does work:</strong> eliminate options that are clearly wrong, and answer every question - a blank scores zero, a guess might score one.</p>
-    </section>
 
     <section>
-      <h2 class="dot">5. Know the question formats</h2>
-      <p>Per paper, expect roughly:</p>
+      <h2 class="dot">4. Know the question formats</h2>
+      <p>Every paper mixes in a few question formats that need a different approach:</p>
       <div class="grid formats">
-        <div class="card"><p class="big-sm">{perPaper(matching)}</p><h3>Matching</h3><p>Pair 1-4 with A-D. Find the pairings you're sure of, then rule out options that contradict them.</p></div>
-        <div class="card"><p class="big-sm">{perPaper(selectTwo)}</p><h3>Select TWO</h3><p>Out of five options. You need both right to score the point.</p></div>
-        <div class="card"><p class="big-sm">{perPaper(roman)}</p><h3>i, ii, iii combinations</h3><p>Decide each statement true or false first, then find the option that matches.</p></div>
-        <div class="card"><p class="big-sm">{perPaper(visual)}</p><h3>Tables, logs and diagrams</h3><p>Decision tables, state models, traceability matrices, test logs. Work through them on the scratch paper.</p></div>
+        <div class="card"><h3>Matching</h3><p>Pair 1-4 with A-D. Find the pairings you're sure of, then rule out options that contradict them.</p></div>
+        <div class="card"><h3>Select TWO</h3><p>Out of five options. You need both right to score the point.</p></div>
+        <div class="card"><h3>i, ii, iii combinations</h3><p>Decide each statement true or false first, then find the option that matches.</p></div>
+        <div class="card"><h3>Tables, logs and diagrams</h3><p>Decision tables, state models, traceability matrices, test logs. Work through them on the scratch paper.</p></div>
       </div>
     </section>
 
     <section class="card card--tint">
-      <h2>6. On the day</h2>
+      <h2>5. On the day</h2>
       <ul class="day">
         <li><strong>60 minutes for 40 questions</strong> (75 if the exam isn't in your native language) - about 1½ minutes each.</li>
         <li><strong>Do a first pass</strong> answering everything you're sure of; flag the slow calculations and come back to them.</li>
@@ -134,6 +103,7 @@ const visual = qs.filter((q) => q.blocks.some((b) => ['table', 'img', 'box'].inc
   .highlight p { margin: 0; color: #ddd; max-width: 50rem; }
   .highlight .btn { justify-self: start; margin-top: 0.5rem; }
   .big { font: 700 2.75rem/1 var(--font-head) !important; color: var(--pink-soft) !important; }
+  .k3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.5rem), 1fr)); }
   .k3__card { position: relative; display: flex; flex-direction: column; gap: 0.4rem; border-top: 5px solid var(--pink); }
   .k3__card:nth-child(even) { border-top-color: var(--charcoal); }
   .k3__num { position: absolute; right: 1rem; top: 0.5rem; font: 700 2.5rem var(--font-head); color: var(--pink-tint); }
@@ -149,10 +119,11 @@ const visual = qs.filter((q) => q.blocks.some((b) => ['table', 'img', 'box'].inc
   .words { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; }
   .words li { display: flex; flex-direction: column; align-items: center; background: var(--surface); box-shadow: var(--shadow); border-radius: 12px; padding: 0.75rem 1.25rem; }
   .word { font: 700 1.4rem var(--font-head); color: var(--pink-dark); }
-  .myths .card { border-top: 5px solid var(--charcoal); }
-  .myths h3 { margin: 0.25rem 0; }
-  .formats h3 { margin: 0.25rem 0; }
-  .big-sm { font: 700 2.2rem/1 var(--font-head); color: var(--pink); margin: 0; }
+  .formats { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+  .formats .card { border-top: 5px solid var(--pink); }
+  .formats .card:nth-child(even) { border-top-color: var(--charcoal); }
+  .formats h3 { margin: 0 0 0.25rem; }
+  .caveat { font-size: 0.9rem; color: var(--grey); border-left: 4px solid var(--line); padding-left: 0.75rem; margin-top: 0.5rem; }
   .day { display: grid; gap: 0.5rem; padding-left: 1.25rem; }
   .day li::marker { color: var(--pink); }
   @media (max-width: 40rem) { .kmix { flex-direction: column; } .kmix__bar { flex: none !important; } }

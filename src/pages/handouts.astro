@@ -1,13 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHead from '../components/PageHead.astro';
-import { HANDOUTS, BOX_TITLES, handoutUrl } from '../data/handouts';
+import { HANDOUTS, handoutUrl } from '../data/handouts';
 import { url } from '../lib/site';
 ---
 <BaseLayout title="Handouts" description="Download the Sparta Global CTFL chapter handouts and practice workbook as PDFs.">
   <PageHead eyebrow="Downloads" title="Handouts">
-    <p class="lead">One summary sheet per chapter, plus a practice workbook with worked examples and exercises. In the notes, every
-      topic shows the handout box that matches it (for example <strong>Handout 4C</strong>) - click it to open the PDF at that page.</p>
+    <p class="lead">One summary sheet per chapter, plus a practice workbook with worked examples and exercises.
+      Each chapter page also has a download button for its handout.</p>
   </PageHead>
 
   <div class="container">
@@ -17,9 +17,7 @@ import { url } from '../lib/site';
           <span class="handout__num" aria-hidden="true">{h.chapter ?? '✎'}</span>
           <span class="eyebrow">{h.chapter ? `Chapter ${h.chapter}` : 'All chapters'} · PDF · {h.pages} page{h.pages > 1 ? 's' : ''}</span>
           <h2>{h.title}</h2>
-          {h.chapter
-            ? <p class="boxes">{BOX_TITLES[h.chapter].map((b) => <span title={b.title}>{b.letter}</span>)}</p>
-            : <p class="muted">Worked examples, exercises and answers for the calculation topics.</p>}
+          {!h.chapter && <p class="muted">Worked examples, exercises and answers for the calculation topics.</p>}
           <div class="actions">
             <a class="btn" href={handoutUrl(h)} download>Download PDF</a>
             <a class="btn btn--ghost" href={handoutUrl(h)} target="_blank" rel="noopener">Open</a>
@@ -41,8 +39,6 @@ import { url } from '../lib/site';
   .handout__num { position: absolute; right: 1rem; top: 0.25rem; font: 700 3rem var(--font-head); color: var(--pink-tint); }
   .handout--workbook .handout__num { color: #fff; }
   .handout h2 { margin: 0; font-size: 1.3rem; padding-right: 2.5rem; }
-  .boxes { display: flex; flex-wrap: wrap; gap: 0.25rem; margin: 0.25rem 0; }
-  .boxes span { display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 6px; background: var(--bg); font-weight: 700; font-size: 0.8rem; color: var(--pink-dark); cursor: help; }
   .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: auto; padding-top: 0.5rem; }
   .actions .btn { padding: 0.5rem 1rem; font-size: 0.95rem; }
   .notes { font-weight: 700; margin-left: auto; }

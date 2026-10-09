@@ -12,6 +12,8 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import FiveWhys from '../../components/diagrams/FiveWhys.astro';
+import Hub from '../../components/diagrams/Hub.astro';
 import Exercise from '../../components/Exercise.astro';
 import Compare from '../../components/diagrams/Compare.astro';
 import Flow from '../../components/diagrams/Flow.astro';
@@ -274,19 +276,14 @@ Errors and defects are not the only cause of failures. Failures can also be caus
 <SyllabusRef ref="1.2.3" />
 
 - Root cause analysis finds why a defect happened - not just where it is.
-- **Istqb Definition: Root cause** - A source of a defect such that if it is removed, the occurrence of the defect type is decreased or removed
-- **Istqb Definition: Root cause analysis** - An analysis technique aimed at identifying the root causes of defects
+- **ISTQB definition: Root cause** - A source of a defect such that if it is removed, the occurrence of the defect type is decreased or removed
+- **ISTQB definition: Root cause analysis** - An analysis technique aimed at identifying the root causes of defects
 
 ### Root Cause Analysis - 5 Whys
 
 <SyllabusRef ref="1.2.3" />
 
-- **FAILURECustomers over 60 are overcharged for their lessons**
-- **Why #1** Error in the calculation of the OAP discount
-- **Why #2** Developer entered the OAP discount as 10% rather than 20%
-- **Why #3** Specification states 10% instead of 20%
-- **Why #4** Miscommunication between School CEO and Product Owner
-- **Why #5No review of specification**
+<FiveWhys />
 
 ### Find It Early, Fix It Once
 
@@ -620,7 +617,7 @@ Traceability provides information to assess product quality, process capability,
 
 ### Key Terms
 
-<SyllabusRef ref="1.4.3" box="L" />
+<SyllabusRef ref="1.4.3" />
 
 - **Test object** - the work product being tested
 - **Test basis** - the information used to decide what to test (e.g. requirements)
@@ -716,16 +713,19 @@ To try to improve this view, information about defects and failures should be co
 
 <SyllabusRef ref="1.5.2" />
 
-- Anyone with the skills can do any task
-- Everyone is responsible for quality
-- Shared workspace - physical or virtual
+<Hub center="Everyone owns quality" caption="The whole-team approach, from Extreme Programming (CTFL 1.5.2)" items={['Tester', 'Developer', 'Product owner', 'Architect', 'Business analyst', 'Ops']} />
+
+- **Any task** - Anyone with the right skills can do any task
+- **Everyone** - is responsible for quality
+- **Shared workspace** - physical or virtual
 
 #### Testers collaborate with…
 
 - **Business representatives** - to create suitable acceptance tests
 - **Developers** - to agree the test strategy and test automation approach
 - **The whole team** - to transfer testing knowledge and influence the product
-- **Not always appropriate** - e.g. safety-critical systems may need high test independence
+
+- **Not always appropriate** - e.g. safety-critical systems may need a high level of test independence
 
 <SyllabusText>
 

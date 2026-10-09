@@ -12,7 +12,8 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
-import Flow from '../../components/diagrams/Flow.astro';
+import Cycle from '../../components/diagrams/Cycle.astro';
+import UnifiedProcess from '../../components/diagrams/UnifiedProcess.astro';
 import Ripple from '../../components/diagrams/Ripple.astro';
 import SdlcModels from '../../components/diagrams/SdlcModels.astro';
 import ShiftLeft from '../../components/diagrams/ShiftLeft.astro';
@@ -44,16 +45,17 @@ Examples of SDLC models include: sequential development models (e.g., waterfall 
 
 <SyllabusRef ref="2.1" />
 
-- Activities within an SDLC can be described by more detailed methods and Agile practices:
-- Acceptance Test-Driven Dev.
-- Behavior-Driven Development
-- Domain-Driven Design
-- Extreme Programming
-- Feature-Driven Development
+Activities within an SDLC can also be described by more detailed methods and Agile practices:
+
+- **ATDD** - Acceptance Test-Driven Development
+- **BDD** - Behaviour-Driven Development
+- **DDD** - Domain-Driven Design
+- **XP** - Extreme Programming
+- **FDD** - Feature-Driven Development
 - **Kanban** - Visualise and limit work in progress
 - **Lean IT** - Lean principles applied to IT
-- Time-boxed sprints
-- Test-Driven Development
+- **Scrum** - Time-boxed sprints
+- **TDD** - Test-Driven Development
 
 <SyllabusText>
 
@@ -63,7 +65,7 @@ Some activities within software development processes can also be described by m
 
 ### Royce's Waterfall Model
 
-<SyllabusRef ref="2.1" box="B" />
+<SyllabusRef ref="2.1" />
 
 <Waterfall />
 
@@ -72,7 +74,7 @@ Some activities within software development processes can also be described by m
 
 ### The V-Model
 
-<SyllabusRef ref="2.1" box="C" />
+<SyllabusRef ref="2.1" />
 
 <VModel />
 
@@ -83,28 +85,33 @@ Some activities within software development processes can also be described by m
 
 ### Unified Process
 
-<SyllabusRef ref="2.1" box="D" />
+<SyllabusRef ref="2.1" />
+
+<UnifiedProcess />
 
 - **Sequential phases** - Inception, elaboration, construction, transition
-- **Incremental business value** - Delivered in time-boxed, cross-discipline iterations
-- **Balance of activities shifts** - The mix of activities changes within each phase
-- **Iterative & incremental** - From business modelling to deployment
+- **Iterative and incremental** - Business value is delivered in time-boxed, cross-discipline iterations
+- **The balance of activities shifts** - The mix, from business modelling to deployment, changes within each phase
 
 ### Agile Methodologies
 
-<SyllabusRef ref="2.1" box="E" />
+<SyllabusRef ref="2.1" />
 
-- Sprints, backlog, daily stand-up, review and retro
-- Extreme Programming: nested feedback loops - from release plan down to pair programming
-- **Kanban** - Visual board; limit work in progress
-- Red → Green → Refactor
-- Feature-Driven Development: plan, design and build by feature
-- Define value, map the stream, create flow, establish pull
-- Behaviour described in plain-language scenarios
+<Cycle center="Sprint 2-4 weeks" caption="A Scrum sprint: the team plans from the product backlog and delivers a working increment every sprint (CTFL 2.1)" steps={[
+  { title: 'Requirements' }, { title: 'Analysis' }, { title: 'Design' }, { title: 'Implementation' },
+]} />
+
+- **Scrum** - Sprints, backlog, daily stand-up, review and retrospective
+- **XP (Extreme Programming)** - Nested feedback loops, from the release plan down to pair programming
+- **Kanban** - A visual board; limit work in progress
+- **TDD** - Red → green → refactor
+- **FDD (Feature-Driven Development)** - Model, list features, then plan, design and build by feature
+- **Lean** - Define value, map the stream, create flow, establish pull
+- **BDD** - Behaviour described in plain-language scenarios
 
 ### Agile - Pros and Cons
 
-<SyllabusRef ref="2.1" box="E" />
+<SyllabusRef ref="2.1" />
 
 - **Fast deployment** - Small, frequent improvements following feedback · Team skill improvement
 - **Light documentation** - Formal records of change may not be created · Regression testing may get out of control
@@ -188,15 +195,13 @@ TDD, ATDD and BDD are similar development approaches, where tests are defined as
 
 <SyllabusRef ref="2.1.3" />
 
-<Tiles cols={3} caption="Three test-first approaches - tests are written before the code they test (CTFL 2.1.3)" tiles={[
-  { label: 'TDD', title: 'Test-Driven Development', sub: 'red → green → refactor' },
-  { label: 'ATDD', title: 'Acceptance Test-Driven Dev.', sub: 'tests from acceptance criteria' },
-  { label: 'BDD', title: 'Behaviour-Driven Development', sub: 'Given / When / Then' },
+<Cycle center="TDD" caption="Test-driven development: write a failing test, write just enough code to pass it, then tidy the code (CTFL 2.1.3)" steps={[
+  { title: 'Red', sub: 'write a failing test' }, { title: 'Green', sub: 'write code to pass' }, { title: 'Refactor', sub: 'tidy the code' },
 ]} />
 
-- **Test-Driven Development** - Directs coding through test cases (instead of extensive design) · Write a test → write code to pass it → refactor
-- **Acceptance Test-Driven Dev.** - Derives tests from acceptance criteria as part of system design · Tests written before that part of the application is built
-- **Behaviour-Driven Development** - Expresses desired behaviour as test cases · Usually in Gherkin: Given / When / Then
+- **TDD (Test-Driven Development)** - Directs coding through test cases instead of extensive design · Write a test → write code to pass it → refactor
+- **ATDD (Acceptance Test-Driven Development)** - Derives tests from acceptance criteria as part of system design · Tests are written before that part of the application is built
+- **BDD (Behaviour-Driven Development)** - Expresses desired behaviour as test cases · Usually in Gherkin: Given / When / Then
 
 ### DevOps and Testing
 
@@ -294,17 +299,13 @@ For the shift-left approach it is important that stakeholders are convinced and 
 
 <SyllabusRef ref="2.1.6" />
 
-<Flow loop="REPEAT EVERY ITERATION" caption="A retrospective turns each iteration's lessons into improvements (CTFL 2.1.6)" steps={[
-  { title: 'What went well?', sub: 'keep doing it' }, { title: "What didn't?", sub: 'what to improve' }, { title: 'Agree actions', sub: 'record them' }, { title: 'Follow up', sub: 'next iteration' },
+<Cycle center="Retrospective" caption="A retrospective: held at the end of an iteration or project, at a release milestone, or as needed (CTFL 2.1.6)" steps={[
+  { title: 'What was successful?', sub: 'keep doing it' }, { title: "What wasn't?", sub: 'what to improve' }, { title: 'How do we move forward?', sub: 'agree actions' },
 ]} />
 
-- The whole team asks:
-- **What was successful?** - …and should be retained
-- **What wasn't?** - …and could be improved
-- **How do we move forward?** - Incorporate improvements and keep the successes
-- End of a project or iteration, at a release milestone, or as needed
-- **Record it** - Usually in the test completion report
-- **Follow up** - Essential for continuous improvement
+- **The whole team takes part** - not just the testers
+- **Record it** - usually in the test completion report
+- **Follow up** - essential for continuous improvement
 
 <SyllabusText>
 

@@ -1,0 +1,44 @@
+---
+/** Equivalence partitions as rows of segments, with the test value chosen from each partition. */
+import Figure from '../Figure.astro';
+
+interface Segment { text: string; kind?: 'valid' | 'invalid' | 'neutral'; size?: number; pick?: string; }
+interface Row { label: string; segments: Segment[]; }
+interface Props { rows: Row[]; caption: string; }
+const { rows, caption } = Astro.props;
+const X0 = 140, W = 670, H = 46, gap = 4;
+const fill = { valid: 'b-deep', invalid: 'b-tint', neutral: 'b-pink' } as const;
+const text = { valid: 't', invalid: 't-dark', neutral: 't' } as const;
+const layout = rows.map((r) => {
+  const total = r.segments.reduce((t, s) => t + (s.size ?? 1), 0);
+  let x = X0;
+  return r.segments.map((s) => {
+    const w = (W - gap * (r.segments.length - 1)) * ((s.size ?? 1) / total);
+    const seg = { ...s, x, w };
+    x += w + gap;
+    return seg;
+  });
+});
+const rowH = 96;
+---
+<Figure caption={caption}>
+  <svg viewBox={`0 0 820 ${rows.length * rowH + 10}`} role="img" aria-label={rows.map((r) => `${r.label}: ${r.segments.map((s) => s.text).join(', ')}`).join('; ')}>
+    {rows.map((r, i) => (
+      <g>
+        <text class="t-dark" x="20" y={20 + i * rowH + H / 2} style="text-anchor:start;font-size:16px">{r.label}</text>
+        {layout[i].map((s) => (
+          <g>
+            <rect class={fill[s.kind ?? 'neutral']} x={s.x} y={20 + i * rowH} width={s.w} height={H} rx="10"/>
+            <text class={text[s.kind ?? 'neutral']} x={s.x + s.w / 2} y={20 + i * rowH + H / 2}>{s.text}</text>
+            {s.pick && (
+              <g>
+                <path class="b-pink" d={`M${s.x + s.w / 2 - 7} ${24 + i * rowH + H} h14 l-7 10 z`}/>
+                <text class="t-lbl" x={s.x + s.w / 2} y={52 + i * rowH + H} style="font-size:14px">test: {s.pick}</text>
+              </g>
+            )}
+          </g>
+        ))}
+      </g>
+    ))}
+  </svg>
+</Figure>

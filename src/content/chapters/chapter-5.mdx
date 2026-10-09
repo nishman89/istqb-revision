@@ -12,6 +12,8 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Cycle from '../../components/diagrams/Cycle.astro';
+import Baselines from '../../components/diagrams/Baselines.astro';
 import Exercise from '../../components/Exercise.astro';
 import Compare from '../../components/diagrams/Compare.astro';
 import Flow from '../../components/diagrams/Flow.astro';
@@ -561,13 +563,13 @@ With respect to product risk control, once a risk has been analyzed, several res
 
 <SyllabusRef ref="5.3" />
 
-<Flow caption="Monitoring gathers information, control acts on it, completion wraps up (CTFL 5.3)" steps={[
-  { title: 'Monitor', sub: 'metrics and progress' }, { title: 'Control', sub: 'directives and corrective action' }, { title: 'Complete', sub: 'report, archive, lessons learned' },
+<Cycle center="Compare with the plan" caption="Monitoring gathers metrics, control acts on them, and the plan is updated - completion wraps up each stage (CTFL 5.3)" steps={[
+  { title: 'Test plan' }, { title: 'Monitor', sub: 'gather metrics, report' }, { title: 'Control', sub: 'directives, corrective action' },
 ]} />
 
 - **Monitoring** - Gather information · Assess test progress · Check exit criteria are being met - e.g. coverage of risks, requirements, acceptance criteria
-- **Control** - Act on it · Use monitoring information · Issue control directives - guidance and corrective actions
-- **Completion** - Wrap up · Collect data from completed activities · Consolidate experience, testware and other information
+- **Control** - Use monitoring information · Issue control directives - guidance and corrective actions
+- **Completion** - Collect data from completed activities · Consolidate experience, testware and other information
 
 <SyllabusText>
 
@@ -698,14 +700,9 @@ One or more of these options can be used. More formal communication may be more 
 
 <SyllabusRef ref="5.4" />
 
-<Flow caption="Configuration management keeps every item identified, versioned and traceable (CTFL 5.4)" steps={[
-  { title: 'Identify items', sub: 'code, testware, environments' }, { title: 'Version control', sub: 'track every change' }, { title: 'Baseline', sub: 'approved, change-controlled' }, { title: 'Reproduce', sub: 'revert to any baseline' },
-]} />
+CM identifies, controls and tracks work products - plans, conditions, cases, scripts, results, logs, reports - as **configuration items**.
 
-- **CM identifies, controls and tracks** work products - plans, conditions, cases, scripts, results, logs, reports - as configuration items.
-- **Configuration item** - components, relationships and versions recorded
-- **Approved = baseline** - changed only through formal change control
-- **New baseline** - changes recorded - revert to reproduce old results
+<Baselines />
 
 <SyllabusText>
 

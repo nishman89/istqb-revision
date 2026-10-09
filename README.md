@@ -21,8 +21,8 @@ progress is saved in their own browser. It works on desktops, tablets and phones
 | **Chapter notes** (1–6) | The slide content as notes, with diagrams. Key points are shown as cards. Each syllabus section (e.g. *2.1*) is a **collapsible** block, and the "In this chapter" menu opens to list that section's topics. Every topic shows the syllabus section it covers (e.g. *CTFL v4.0 · Section 4.2.1*), and **"What the syllabus says"** opens the official wording. |
 | **Chapter quiz** | The questions from **ISTQB Sample Paper C** that cover that chapter (the same number the real exam asks on it). |
 | **Extra practice** | The same chapter's questions from **Sample Papers A, B and D**, three more sets on exactly the same topics. |
-| **Exam tips** | Exam technique based on an analysis of all 160 sample-paper questions: the 8 calculation topics worth 20% of the exam (with a method for each), the K-level mix, key words, guessing myths and question formats. Includes a quiz of all 32 K3 questions. |
-| **Handouts** | Download the six chapter handouts and the practice workbook (PDF). Every topic in the notes links to its matching handout box (e.g. **Handout 4C**), which opens the PDF at the right page. |
+| **Exam tips** | Exam technique based on an analysis of all 160 sample-paper questions: the 8 calculation topics worth 20% of the exam (with a method for each), the K-level mix, key words and question formats. Includes a quiz of all 32 K3 questions. |
+| **Handouts** | Download the six chapter handouts and the practice workbook (PDF). Each chapter page also has a download button for its handout. |
 | **Past papers** | Sit any of the four ISTQB sample exams in full: 40 questions with an optional 60- or 75-minute timer, then a score for each chapter. |
 
 ### How the quizzes work
@@ -59,8 +59,7 @@ management, three-point estimation and the defect lifecycle.
 
 ### Handouts and the practice workbook
 
-The PDFs live in `public/handouts/`. To update one, replace the file with the same name. The map from syllabus
-sections to handout boxes (and which page each box is on) is in `src/data/handouts.ts`. Exercises taken from the practice
+The PDFs live in `public/handouts/` and are listed in `src/data/handouts.ts`. To update one, replace the file with the same name. Exercises taken from the practice
 workbook are tagged **📄 Practice workbook** in the notes.
 
 ### Exercises
@@ -77,7 +76,8 @@ deliberately test, taken from ISTQB's own explanations of why wrong answers are 
 
 ### Collapsible sections
 
-Each syllabus section (1.1, 1.2, 2.1…) opens and closes. Use **Expand all sections** / **Collapse all** above the notes.
+Each syllabus section (1.1, 1.2, 2.1…) opens and closes, and so does every topic inside it (click its heading, or the −/+).
+Use **Expand all sections** / **Collapse all** above the notes.
 Clicking a topic in the "In this chapter" menu opens its section and jumps straight to it.
 
 ### Progress
@@ -262,6 +262,8 @@ Import the one you need at the top of the chapter file, then place it under any 
 import Flow from '../../components/diagrams/Flow.astro';
 import Compare from '../../components/diagrams/Compare.astro';
 import Tiles from '../../components/diagrams/Tiles.astro';
+import Cycle from '../../components/diagrams/Cycle.astro';
+import Hub from '../../components/diagrams/Hub.astro';
 
 <!-- A process: boxes joined by arrows (add loop="…" for a cycle) -->
 <Flow caption="The review process (CTFL 3.2.2)" steps={[
@@ -273,6 +275,14 @@ import Tiles from '../../components/diagrams/Tiles.astro';
   { title: 'Static', sub: 'no code run', points: ['Finds defects directly'] },
   { title: 'Dynamic', sub: 'code is run', points: ['Finds failures'] },
 ]} />
+
+<!-- Steps in a loop, with an optional centre label -->
+<Cycle center="TDD" caption="Red, green, refactor" steps={[
+  { title: 'Red', sub: 'write a failing test' }, { title: 'Green' }, { title: 'Refactor' },
+]} />
+
+<!-- A centre idea with related items around it -->
+<Hub center="Test tools" caption="Tool categories" items={['Management', 'Static testing', 'DevOps']} />
 
 <!-- A grid of tiles (cols defaults to 4) -->
 <Tiles cols={3} caption="Roles in a review" tiles={[

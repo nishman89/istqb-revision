@@ -1,0 +1,27 @@
+---
+/** Configuration management: approved baselines, changed only through change control. */
+import Figure from '../Figure.astro';
+const b = ['Baseline 1.0', 'Baseline 1.1', 'Baseline 2.0'];
+---
+<Figure caption="Configuration management - each approved baseline is uniquely identified and version-controlled; any change goes through change control, and you can always revert to reproduce earlier results (CTFL 5.4)">
+  <svg viewBox="0 0 820 190" role="img" aria-label="Baselines 1.0, 1.1 and 2.0 linked by change control">
+    <defs><marker id="bl-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5c5c5c"/></marker></defs>
+    <line class="ln" x1="20" y1="120" x2="800" y2="120"/>
+    {b.map((t, i) => (
+      <g>
+        <rect class={['b-pink', 'b-deep', 'b-dark'][i]} x={20 + i * 290} y="30" width="200" height="54" rx="12"/>
+        <text class="t" x={120 + i * 290} y="57" style="font-size:17px">{t}</text>
+        <circle cx={120 + i * 290} cy="120" r="9" class="b-dark"/>
+        <text class="t-sm" x={120 + i * 290} y="150">tests · scripts · environment</text>
+        <text class="t-sm" x={120 + i * 290} y="170" style="font-size:11px">uniquely identified, versioned</text>
+        {i < 2 && (
+          <g>
+            <line class="ln" x1={224 + i * 290} y1="57" x2={306 + i * 290} y2="57" marker-end="url(#bl-a)"/>
+            <text class="t-lbl" x={265 + i * 290} y="45" style="font-size:11px">CHANGE</text>
+            <text class="t-lbl" x={265 + i * 290} y="80" style="font-size:11px">CONTROL</text>
+          </g>
+        )}
+      </g>
+    ))}
+  </svg>
+</Figure>

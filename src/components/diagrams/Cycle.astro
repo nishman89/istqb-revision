@@ -1,0 +1,45 @@
+---
+/** Steps arranged in a loop with curved arrows between them, and an optional centre label. */
+import Figure from '../Figure.astro';
+import { wrap } from '../../lib/svg';
+
+interface Step { title: string; sub?: string; }
+interface Props { steps: Step[]; caption: string; center?: string; }
+const { steps, caption, center } = Astro.props;
+const n = steps.length, cx = 410, cy = 185, rx = 270, ry = 125, w = 190, h = 70;
+const id = `cy-${caption.length}-${n}`;
+const pos = steps.map((_, i) => {
+  const a = -Math.PI / 2 + (i * 2 * Math.PI) / n;
+  return { x: cx + rx * Math.cos(a), y: cy + ry * Math.sin(a), a };
+});
+// arrow along the ellipse from step i to step i+1, trimmed so it starts/ends outside the boxes
+const arc = (i: number) => {
+  const a1 = pos[i].a + 0.42, a2 = pos[i].a + (2 * Math.PI) / n - 0.42;
+  const p = (a: number) => `${(cx + rx * Math.cos(a)).toFixed(1)} ${(cy + ry * Math.sin(a)).toFixed(1)}`;
+  return `M${p(a1)} A${rx} ${ry} 0 0 1 ${p(a2)}`;
+};
+---
+<Figure caption={caption}>
+  <svg viewBox="0 0 820 370" role="img" aria-label={steps.map((s) => s.title).join(', then ') + ', and repeat'}>
+    <defs><marker id={id} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d42a57"/></marker></defs>
+    {steps.map((_, i) => <path class="ln-pink" d={arc(i)} marker-end={`url(#${id})`}/>)}
+    {center && (
+      <g>
+        <circle cx={cx} cy={cy} r="62" class="b-dark"/>
+        {wrap(center, 12).map((l, j, all) => <text class="t" x={cx} y={cy + (j - (all.length - 1) / 2) * 18}>{l}</text>)}
+      </g>
+    )}
+    {steps.map((s, i) => {
+      const { x, y } = pos[i];
+      const title = wrap(s.title, 20), sub = s.sub ? wrap(s.sub, 26) : [];
+      const lines = title.length + sub.length, y0 = y - ((lines - 1) * 17) / 2;
+      return (
+        <g>
+          <rect class={i % 2 ? 'b-dark' : 'b-pink'} x={x - w / 2} y={y - h / 2} width={w} height={h} rx="14"/>
+          {title.map((t, j) => <text class="t" x={x} y={y0 + j * 17}>{t}</text>)}
+          {sub.map((t, j) => <text class="t-sm-w" x={x} y={y0 + (title.length + j) * 17}>{t}</text>)}
+        </g>
+      );
+    })}
+  </svg>
+</Figure>

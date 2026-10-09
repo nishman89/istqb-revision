@@ -1,34 +1,38 @@
 /**
- * Rehype plugin: wraps each <h2> section of a chapter (e.g. "2.1 Testing in the Context of an SDLC")
- * and everything up to the next <h2> in a <details> element, so learners can open and close sections.
+ * Rehype plugin: makes the chapter notes collapsible at two levels.
+ *
+ *   ## 2.1 Testing in the Context of an SDLC   → <details class="chapter-section">  (closed by default)
+ *     ### SDLC Models                          → <details class="chapter-topic" open>  (open by default)
+ *
+ * Each heading becomes the <summary> of its block, so clicking it opens or closes everything
+ * up to the next heading of the same level.
  */
+const el = (tagName, props, children) => ({ type: 'element', tagName, properties: props, children });
+const isHeading = (node, tag) => node.type === 'element' && node.tagName === tag;
+
+/** Wrap each `tag` heading and the nodes after it (until the next one) in a <details>. */
+function wrap(nodes, tag, className, open) {
+  const out = [];
+  let body = null;
+  for (const node of nodes) {
+    if (isHeading(node, tag)) {
+      body = el('div', { className: [`${className}__body`] }, []);
+      out.push(el('details', { className: [className], ...(open ? { open: true } : {}) }, [el('summary', {}, [node]), body]));
+    } else if (body) {
+      body.children.push(node);
+    } else {
+      out.push(node); // anything before the first heading (e.g. imports, an intro)
+    }
+  }
+  return out;
+}
+
 export default function collapsibleSections() {
   return (tree) => {
-    const out = [];
-    let current = null;
-    for (const node of tree.children) {
-      if (node.type === 'element' && node.tagName === 'h2') {
-        current = {
-          type: 'element',
-          tagName: 'div',
-          properties: { className: ['chapter-section__body'] },
-          children: [],
-        };
-        out.push({
-          type: 'element',
-          tagName: 'details',
-          properties: { className: ['chapter-section'] },
-          children: [
-            { type: 'element', tagName: 'summary', properties: {}, children: [node] },
-            current,
-          ],
-        });
-      } else if (current) {
-        current.children.push(node);
-      } else {
-        out.push(node); // imports and any intro content before the first section
-      }
+    tree.children = wrap(tree.children, 'h2', 'chapter-section', false);
+    for (const section of tree.children) {
+      const body = section.tagName === 'details' && section.children[1];
+      if (body) body.children = wrap(body.children, 'h3', 'chapter-topic', true);
     }
-    tree.children = out;
   };
 }

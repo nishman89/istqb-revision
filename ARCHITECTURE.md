@@ -159,8 +159,8 @@ integrations: [mdx({ rehypePlugins: [tidyLists, collapsibleSections] })]
 
 | Plugin | File | What it does |
 |---|---|---|
-| **tidyLists** | `src/lib/rehype-tidy-lists.mjs` | Reshapes bullet lists so the notes aren't a wall of bullets. Key points (`- **Title** - description`) become a grid of **cards**, with ` · ` becoming a new line. Full sentences become ordinary **paragraphs**. Lists of short items (e.g. "Test strategy", "Level of coverage") become a row of **tags**. Numbered lists are left alone. |
-| **collapsibleSections** | `src/lib/rehype-collapsible-sections.mjs` | Wraps each `##` heading and everything up to the next `##` in a `<details>` element, so sections open and close. |
+| **tidyLists** | `src/lib/rehype-tidy-lists.mjs` | Reshapes bullet lists so the notes aren't a wall of bullets. Key points (`- **Title** - description`) become a grid of **cards**, with ` · ` becoming a new line. Full sentences become ordinary **paragraphs**. Lists of short items (e.g. "Test strategy", "Level of coverage") become a row of **tags**. Numbered lists are left alone. Card grids pick a column count that keeps them symmetrical (4 cards → 2×2, 5 → 3 + 2 centred); a pair titled Pros/Cons (or Benefits/Drawbacks…) becomes a green-and-pink side-by-side comparison; 7 or more points become a compact two-column list. A bold phrase that starts a sentence ("**Software testing** is…") stays a paragraph. |
+| **collapsibleSections** | `src/lib/rehype-collapsible-sections.mjs` | Makes the notes collapsible at two levels: each `##` section becomes a `<details>` (closed by default), and each `###` topic inside it another `<details>` (open by default). Links into the notes open every collapsed block around their target. |
 
 The chapter page (`src/pages/chapters/[chapter].astro`) then:
 
@@ -178,7 +178,7 @@ src/components/
 ├── Header.astro          Logo + navigation (desktop links; a "Menu" panel on phones)
 ├── Footer.astro          ISTQB copyright acknowledgement
 ├── PageHead.astro        Slide-style page title with the pink full stop and rule
-├── SyllabusRef.astro     The "Syllabus · Section 2.1" badge + the matching "Handout 2A" link (via data/handouts.ts)
+├── SyllabusRef.astro     The "Syllabus · CTFL v4.0 · Section 2.1" badge
 ├── Search.astro          Header search box (loads /search.json on first use)
 ├── BackToTop.astro       Floating back-to-top button
 ├── SyllabusText.astro    The collapsible "What the syllabus says" box
@@ -192,6 +192,9 @@ src/components/
     ├── Flow.astro        Reusable: steps joined by arrows (optional loop)
     ├── Compare.astro     Reusable: 2-3 columns of points
     ├── Tiles.astro       Reusable: a grid of tiles
+    ├── Cycle.astro       Reusable: steps in a loop (Scrum sprint, TDD, retrospectives, monitor/control)
+    ├── Hub.astro         Reusable: a centre idea with items around it (whole team, test tools)
+    ├── Partitions.astro  Reusable: equivalence partitions with the test value picked from each
     └── VModel.astro …    Bespoke diagrams (V-model, defect lifecycle, quadrants, BVA, etc.)
 ```
 
@@ -236,10 +239,8 @@ Build time (Astro)                                   Browser (script in Quiz.ast
 
 ## 6b. Handouts, search and reading aids
 
-- **Handouts** - PDFs in `public/handouts/` are served as plain files. `src/data/handouts.ts` lists them and maps every
-  syllabus section to its **handout box** (e.g. 4.2.2 → box B on page 1 of the Chapter 4 handout). `SyllabusRef` uses
-  `boxFor(ref)` to show a "Handout 4B" link that opens the PDF at `#page=N`. Where one section spans several boxes,
-  the MDX passes `box="…"` to override (used for the five 2.1 topics).
+- **Handouts** - PDFs in `public/handouts/` are served as plain files and listed in `src/data/handouts.ts`, which
+  the Handouts page and each chapter's download button read from.
 - **Search** - `src/pages/search.json.ts` builds an index at build time: one entry per `###` topic (title, chapter,
   section, the first ~400 characters of plain text, and a link using the same slug Astro gives the heading, via
   `github-slugger`). Exercise answers and syllabus boxes are left out. `Search.astro` fetches it the first time the box is used
@@ -341,7 +342,7 @@ A hard-coded `href="/chapters/2"` would work locally but break on GitHub Pages.
 | Add a new sample paper | Add `exam-e.json` (40 questions), add `'E'` to the `set` enum in `content.config.ts`, and add it to `PRACTICE_SETS` in `src/lib/site.ts`. The routes pick it up automatically. |
 | Change the main chapter-quiz paper | Change `MAIN_SET` in `src/lib/site.ts`. |
 | Change the pass mark | `PASS_MARK` in `src/lib/site.ts`. |
-| Update a handout PDF | Replace the file in `public/handouts/` (same name). If its boxes change, update `src/data/handouts.ts`. |
+| Update a handout PDF | Replace the file in `public/handouts/` (same name). |
 | Change colours or fonts | The variables at the top of `src/styles/global.css` (fonts are loaded in `BaseLayout.astro`). |
 | Add a page | Create `src/pages/my-page.astro` using `BaseLayout` and `PageHead`. Link to it with `url('my-page')`. |
 

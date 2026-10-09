@@ -2,7 +2,9 @@
  * Rehype plugin: turns the bullet lists in the chapter notes into neater layouts.
  *
  *   Key points   "- **Fast feedback** - on code quality · and regressions"
- *                → a grid of cards (bold title on top, description below; " · " becomes a new line)
+ *                → a grid of cards (bold title on top, description below; " · " becomes a new line).
+ *                The column count suits the number of cards so grids stay symmetrical; a Pros/Cons pair
+ *                becomes a side-by-side comparison, and 7+ points become a compact two-column list.
  *   Sentences    "- What is the difference between verification and validation?"
  *                → ordinary paragraphs, placed before any cards
  *   Short items  "- Test strategy  - Test techniques  - Level of coverage"
@@ -38,18 +40,34 @@ function content(li) {
 const textOf = (nodes) => nodes.map((n) => (n.type === 'text' ? n.value : textOf(n.children ?? []))).join('');
 const words = (nodes) => textOf(nodes).trim().split(/\s+/).filter(Boolean).length;
 const startsBold = (nodes) => isEl(nodes[0], 'strong');
+/** "**Title** - description" (a key point) vs "**Software testing** is a set of…" (a sentence that starts in bold). */
+const isKeyPoint = (nodes) => {
+  if (!startsBold(nodes)) return false;
+  const next = nodes.slice(1).find((n) => !isBlank(n));
+  return !next || (next.type === 'text' && /^\s*[-–:]\s/.test(next.value)) || (next.type === 'text' && !next.value.trim());
+};
+const PAIR = /^(pros|cons|benefits|drawbacks|advantages|disadvantages|strengths|limitations|risks)\b/i;
+/** Columns that keep a grid symmetrical: 4 → 2×2, 5 → 3+2, 7 → 4+3 … (an odd last row is centred). */
+const COLS = { 1: 1, 2: 2, 3: 3, 4: 2, 5: 3, 6: 3 };
 const isSentence = (nodes) => /[.?!:…]$/.test(textOf(nodes).trim()) || words(nodes) > SHORT_FRAGMENT;
 
 function tidy(ul) {
   const items = ul.children.filter((n) => isEl(n, 'li')).map(content);
   if (!items.length) return [ul];
-  const hasKeyPoints = items.some(startsBold);
+  const hasKeyPoints = items.some(isKeyPoint);
 
   if (hasKeyPoints) {
     // Sentences become paragraphs; key points and short fragments become cards.
-    const paras = items.filter((c) => !startsBold(c) && isSentence(c)).map((c) => el('p', 'lead-in', c));
-    const cards = items.filter((c) => startsBold(c) || !isSentence(c)).map(card);
-    return [...paras, ...(cards.length ? [el('ul', 'cards', cards)] : [])];
+    const paras = items.filter((c) => !isKeyPoint(c) && isSentence(c)).map((c) => el('p', 'lead-in', c));
+    const pts = items.filter((c) => isKeyPoint(c) || !isSentence(c));
+    if (!pts.length) return paras;
+    const titles = pts.map((c) => textOf(startsBold(c) ? c[0].children : c).trim());
+    let layout = 'cards';
+    if (pts.length === 2 && titles.every((t) => PAIR.test(t))) layout = 'cards versus'; // pros vs cons, side by side
+    else if (pts.length >= 7) layout = 'deflist'; // long lists read better as a two-column list
+    const list = el('ul', layout, pts.map(card));
+    list.properties.style = `--cols: ${COLS[pts.length] ?? 3}`;
+    return [...paras, list];
   }
   // An intro line ending in ":" (e.g. "Product risks may lead to:") becomes a sentence above the list.
   const intro = /:$/.test(textOf(items[0]).trim()) ? [el('p', 'lead-in', items.shift())] : [];
@@ -62,7 +80,7 @@ function tidy(ul) {
 
 function card(nodes) {
   let title, rest;
-  if (startsBold(nodes)) {
+  if (isKeyPoint(nodes)) {
     [title, ...rest] = nodes;
     title = title.children;
     // drop the " - " that separated the title from its description

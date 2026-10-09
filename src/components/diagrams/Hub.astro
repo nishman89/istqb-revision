@@ -1,0 +1,30 @@
+---
+/** A centre idea with related items arranged around it. */
+import Figure from '../Figure.astro';
+import { wrap } from '../../lib/svg';
+
+interface Props { center: string; items: string[]; caption: string; }
+const { center, items, caption } = Astro.props;
+const n = items.length, cx = 410, cy = 175, rx = 300, ry = 125, w = 170, h = 52;
+const pos = items.map((_, i) => {
+  const a = -Math.PI / 2 + (i * 2 * Math.PI) / n;
+  return { x: cx + rx * Math.cos(a), y: cy + ry * Math.sin(a) };
+});
+---
+<Figure caption={caption}>
+  <svg viewBox="0 0 820 350" role="img" aria-label={`${center}: ${items.join(', ')}`}>
+    {pos.map(({ x, y }) => <line class="ln-dash" x1={cx} y1={cy} x2={x} y2={y}/>)}
+    <ellipse cx={cx} cy={cy} rx="105" ry="48" class="b-deep"/>
+    {wrap(center, 18).map((l, j, all) => <text class="t" x={cx} y={cy + (j - (all.length - 1) / 2) * 18} style="font-size:16px">{l}</text>)}
+    {items.map((it, i) => {
+      const { x, y } = pos[i];
+      const lines = wrap(it, 19);
+      return (
+        <g>
+          <rect class={i % 2 ? 'b-dark' : 'b-pink'} x={x - w / 2} y={y - h / 2} width={w} height={h} rx="12"/>
+          {lines.map((l, j) => <text class="t" x={x} y={y + (j - (lines.length - 1) / 2) * 17} style="font-size:14px">{l}</text>)}
+        </g>
+      );
+    })}
+  </svg>
+</Figure>

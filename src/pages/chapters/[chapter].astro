@@ -51,7 +51,7 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
           {groups.map((g) => (
             <li>
               <details>
-                <summary>{g.text}</summary>
+                <summary><span class="chev" aria-hidden="true"></span><span>{g.text}</span></summary>
                 <ul>{g.topics.map((t) => <li><a href={`#${t.slug}`}>{t.text}</a></li>)}</ul>
               </details>
             </li>
@@ -155,8 +155,7 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
   function reveal(id: string) {
     const target = document.getElementById(decodeURIComponent(id));
     if (!target) return;
-    const section = target.closest<HTMLDetailsElement>('details.chapter-section');
-    if (section) section.open = true;
+    for (let d = target.closest('details'); d; d = d.parentElement?.closest('details') ?? null) d.open = true;
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   document.addEventListener('click', (e) => {
@@ -173,7 +172,7 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
   document.querySelectorAll<HTMLButtonElement>('[data-expand]').forEach((btn) =>
     btn.addEventListener('click', () => {
       const open = btn.dataset.expand === 'open';
-      document.querySelectorAll<HTMLDetailsElement>('details.chapter-section').forEach((d) => (d.open = open));
+      document.querySelectorAll<HTMLDetailsElement>('details.chapter-section, details.chapter-topic').forEach((d) => (d.open = open));
     }),
   );
 
@@ -196,10 +195,10 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
   .toc__panel > summary.eyebrow { list-style: none; cursor: default; pointer-events: none; margin-bottom: 0.25rem; }
   .toc__panel > summary::-webkit-details-marker { display: none; }
   .toc__groups { list-style: none; padding: 0; margin: 0.5rem 0 1rem; display: grid; gap: 0.25rem; }
-  .toc__groups summary { cursor: pointer; font-weight: 700; font-size: 0.95rem; padding: 0.35rem 0.25rem; border-radius: 6px; list-style: none; display: flex; gap: 0.4rem; }
+  .toc__groups summary { cursor: pointer; font-weight: 700; font-size: 0.95rem; padding: 0.35rem 0.25rem; border-radius: 6px; list-style: none; display: grid; grid-template-columns: 0.9rem 1fr; gap: 0.35rem; align-items: start; }
+  .toc__groups .chev { width: 0; height: 0; margin-top: 0.42em; border-left: 6px solid var(--pink); border-top: 5px solid transparent; border-bottom: 5px solid transparent; transition: transform 0.15s; transform-origin: 30% 50%; }
+  .toc__groups details[open] > summary .chev { transform: rotate(90deg); }
   .toc__groups summary::-webkit-details-marker { display: none; }
-  .toc__groups summary::before { content: '▸'; color: var(--pink); transition: transform 0.15s; }
-  .toc__groups details[open] > summary::before { transform: rotate(90deg); }
   .toc__groups summary:hover { background: var(--pink-tint); }
   .toc details ul { list-style: none; margin: 0 0 0.5rem; padding: 0 0 0 1.1rem; border-left: 2px solid var(--pink-tint); display: grid; gap: 0.2rem; font-size: 0.875rem; }
   .toc__groups details a { color: var(--grey); text-decoration: none; display: block; padding: 0.15rem 0.4rem; border-radius: 6px; }
@@ -223,7 +222,24 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
   .prose :global(details.chapter-section > summary h2) { margin: 0; font-size: 1.4rem; color: #fff; }
   .prose :global(details.chapter-section > summary:hover) { background: #3a3637; }
   .prose :global(.chapter-section__body) { padding: 0.5rem 0.25rem 1rem; }
-  .prose :global(h3) { margin: 2rem 0 0.5rem; }
+
+  /* Topics inside a section */
+  .prose :global(details.chapter-topic) { margin: 0.5rem 0 0.25rem; }
+  .prose :global(details.chapter-topic > summary) {
+    list-style: none; cursor: pointer; display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.4rem 0.6rem; margin: 1.25rem -0.6rem 0.5rem; border-radius: 10px;
+  }
+  .prose :global(details.chapter-topic > summary::-webkit-details-marker) { display: none; }
+  .prose :global(details.chapter-topic > summary:hover) { background: var(--pink-tint); }
+  .prose :global(details.chapter-topic > summary h3) { margin: 0; }
+  .prose :global(details.chapter-topic > summary::after) {
+    content: '−'; margin-left: auto; flex: none; display: grid; place-items: center; width: 1.8rem; height: 1.8rem;
+    border-radius: 50%; border: 2px solid var(--line); font: 700 1.1rem/1 var(--font-body); color: var(--pink-dark);
+  }
+  .prose :global(details.chapter-topic:not([open]) > summary::after) { content: '+'; }
+  .prose :global(details.chapter-topic:not([open]) > summary) { background: var(--surface); box-shadow: var(--shadow); margin-bottom: 0.25rem; }
+  .prose :global(.chapter-topic__body) { padding-bottom: 0.5rem; }
+  .prose :global(h3) { margin: 0; }
   .prose :global(h4) { font: 700 0.8rem var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-dark); margin: 1rem 0 0.25rem; }
   .prose :global(ul) { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1rem 1.25rem 1rem 2.25rem; margin: 0.5rem 0; }
   .prose :global(li) { margin: 0.3rem 0; }
@@ -243,8 +259,23 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
   /* Key-point lists rendered as cards */
   .prose :global(ul.cards) {
     list-style: none; background: none; box-shadow: none; padding: 0; margin: 0.75rem 0;
-    display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem;
   }
+  .prose :global(ul.cards > .card-item) { flex: 0 1 calc((100% - (var(--cols, 3) - 1) * 0.75rem) / var(--cols, 3)); }
+
+  /* Pros / cons side by side */
+  .prose :global(ul.versus > .card-item:first-child) { border-top-color: var(--success); background: var(--success-tint); }
+  .prose :global(ul.versus > .card-item:last-child) { border-top-color: var(--pink); background: var(--pink-tint); }
+  .prose :global(ul.versus .card-item__title) { font-size: 1.15rem; }
+
+  /* Long lists: a compact two-column definition list */
+  .prose :global(ul.deflist) { list-style: none; padding: 0.5rem 1.25rem; display: grid; gap: 0; }
+  .prose :global(ul.deflist > .card-item) {
+    display: grid; grid-template-columns: minmax(9rem, 14rem) 1fr; gap: 1rem; margin: 0; padding: 0.65rem 0;
+    background: none; box-shadow: none; border: 0; border-bottom: 1px solid var(--line); border-radius: 0;
+  }
+  .prose :global(ul.deflist > .card-item:last-child) { border-bottom: 0; }
+  .prose :global(ul.deflist .card-item__title) { color: var(--pink-dark); }
   .prose :global(.card-item) {
     margin: 0; display: flex; flex-direction: column; gap: 0.35rem;
     background: var(--surface); border-radius: 12px; box-shadow: var(--shadow);
@@ -280,5 +311,7 @@ const practiceCount = (set: string) => (set === MAIN_SET ? mainCount : practice.
     .prose :global(details.chapter-section > summary h2) { font-size: 1.15rem; }
     .prose :global(.table-wrap), .prose :global(table) { display: block; overflow-x: auto; }
     .pager { flex-direction: column; }
+    .prose :global(ul.cards > .card-item) { flex-basis: 100%; }
+    .prose :global(ul.deflist > .card-item) { grid-template-columns: 1fr; gap: 0.15rem; }
   }
 </style>
