@@ -22,6 +22,7 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
       <ul>
         <li><a href={url()} aria-current={isActive(url()) ? 'page' : undefined}>Home</a></li>
         <li><a href={url('introduction')} aria-current={isActive(url('introduction')) ? 'page' : undefined}>Introduction</a></li>
+        <li><a href={url('past-papers')} aria-current={isActive(url('past-papers')) ? 'page' : undefined}>Past papers</a></li>
         <li class="has-menu">
           <details>
             <summary>Chapters</summary>

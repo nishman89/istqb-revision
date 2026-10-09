@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHead from '../../components/PageHead.astro';
+import { getExam } from '../../lib/data';
+import { url, MAIN_SET, PRACTICE_SETS } from '../../lib/site';
+import { examId } from '../../lib/progress';
+
+const sets = await Promise.all([...PRACTICE_SETS.slice(0, 2), MAIN_SET, PRACTICE_SETS[2]].map((s) => getExam(s)));
+const kMix = (qs: { k: string }[]) => ['K1', 'K2', 'K3'].map((k) => `${qs.filter((q) => q.k === k).length} ${k}`).join(' · ');
+---
+<BaseLayout title="Past papers" description="Sit the official ISTQB CTFL v4.0 sample exams in full, timed, with a full review and a score by chapter.">
+  <PageHead eyebrow="Exam practice" title="Past papers">
+    <p class="lead">Sit a complete ISTQB sample exam under real conditions: 40 questions, 60 minutes, 26 to pass. At the end you'll see your score
+      for each chapter and an explanation for every answer.</p>
+  </PageHead>
+
+  <div class="container">
+    <ol class="grid papers">
+      {sets.map((exam) => (
+        <li class="card paper" data-exam-card={examId(exam.set)}>
+          <span class="paper__letter">{exam.set}</span>
+          <span class="eyebrow">ISTQB sample exam · v{exam.version}</span>
+          <h2>Sample Exam {exam.set}</h2>
+          <p class="muted">40 questions · 60 minutes · {kMix(exam.questions)}</p>
+          {exam.set === MAIN_SET && <p class="note">These questions also appear in the end-of-chapter quizzes.</p>}
+          <p class="paper__status" data-status>Not attempted yet</p>
+          <a class="btn" href={url(`past-papers/${exam.set.toLowerCase()}`)}>Sit this paper</a>
+        </li>
+      ))}
+    </ol>
+
+    <section class="card card--tint tips">
+      <h2>Exam technique</h2>
+      <ul>
+        <li><strong>Pace yourself.</strong> Aim for roughly 1 minute per K1 question, 1-2 minutes per K2 and 3 minutes per K3.</li>
+        <li><strong>Watch for the key word.</strong> MOST, BEST, LEAST and NOT change what's being asked.</li>
+        <li><strong>"Select TWO"</strong> needs both answers right to score the point.</li>
+        <li><strong>Answer everything.</strong> There's no penalty for a wrong answer, so never leave a blank.</li>
+        <li><strong>Chapters 4 and 5 are half the paper.</strong> Use your chapter breakdown to see where to revise.</li>
+      </ul>
+      <p class="muted">The original papers are available from the <a href="https://istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0" rel="noopener">ISTQB website</a>.</p>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { loadProgress } from '../../lib/progress';
+
+  const { quizzes } = loadProgress();
+  for (const card of document.querySelectorAll<HTMLElement>('[data-exam-card]')) {
+    const rec = quizzes[card.dataset.examCard!];
+    if (!rec) continue;
+    card.querySelector('[data-status]')!.textContent =
+      `Best ${rec.best.score}/40 (${rec.best.percent}%) ${rec.best.passed ? '✓ pass' : ''} · ${rec.attempts} attempt(s)`;
+    card.classList.toggle('is-passed', rec.best.passed);
+  }
+</script>
+
+<style>
+  .lead { max-width: 46rem; font-size: 1.1rem; color: var(--grey); margin: 1rem 0 0; }
+  .papers { list-style: none; padding: 0; margin: 0 0 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); }
+  .paper { position: relative; display: flex; flex-direction: column; gap: 0.25rem; border-top: 6px solid var(--charcoal); overflow: hidden; }
+  .paper.is-passed { border-top-color: var(--success); }
+  .paper__letter { position: absolute; right: -0.5rem; top: -1.5rem; font: 700 7rem/1 var(--font-head); color: var(--pink-tint); z-index: 0; }
+  .paper > :not(.paper__letter) { position: relative; }
+  .paper h2 { margin: 0.25rem 0; }
+  .note { font-size: 0.9rem; color: var(--pink-dark); font-weight: 600; margin: 0; }
+  .paper__status { font-weight: 700; color: var(--grey); font-size: 0.9rem; }
+  .paper .btn { margin-top: auto; align-self: flex-start; }
+  .tips ul { display: grid; gap: 0.5rem; padding-left: 1.25rem; }
+  .tips li::marker { color: var(--pink); }
+</style>

@@ -12,10 +12,18 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import DefectLifecycle from '../../components/diagrams/DefectLifecycle.astro';
+import Quadrants from '../../components/diagrams/Quadrants.astro';
+import RiskMatrix from '../../components/diagrams/RiskMatrix.astro';
+import TestProcess from '../../components/diagrams/TestProcess.astro';
+import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 
 ### Recap - The Test Process
 
 <SyllabusRef ref="1.4.1" />
+
+<TestProcess />
+
 
 - **Test Planning** Set out test objectives and approach
 - **Test Analysis** - Identify WHAT to test
@@ -259,6 +267,9 @@ Ideally, test cases would be ordered to run based on their priority levels, usin
 
 <SyllabusRef ref="5.1.6" />
 
+<TestPyramid />
+
+
 - Acceptance
 - System integration
 - System
@@ -305,6 +316,9 @@ The testing quadrants, defined by Brian Marick (Marick 2003, Crispin 2008), grou
 ### Agile Testing Quadrants
 
 <SyllabusRef ref="5.1.7" />
+
+<Quadrants />
+
 
 - Functional tests, examples, user story tests, BDD, ATDD, UX prototypes, simulations
 - Automated & manual
@@ -401,6 +415,9 @@ The test approach, in which test activities are selected, prioritized, and manag
 ### What is a Risk?
 
 <SyllabusRef ref="5.2.1" />
+
+<RiskMatrix />
+
 
 - A potential event, hazard, threat or situation whose occurrence causes an adverse effect.
 - **Likelihood** - Probability of occurrence - between 0 and 1
@@ -782,6 +799,9 @@ ISTQB glossary - Priority: the level of (business) importance assigned to an ite
 ### Defect Lifecycle
 
 <SyllabusRef beyond />
+
+<DefectLifecycle />
+
 
 - Assigned
 - Verified

@@ -12,6 +12,10 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import DevOpsPipeline from '../../components/diagrams/DevOpsPipeline.astro';
+import TestPyramid from '../../components/diagrams/TestPyramid.astro';
+import VModel from '../../components/diagrams/VModel.astro';
+import Waterfall from '../../components/diagrams/Waterfall.astro';
 
 ## 2.1 Testing in the Context of an SDLC
 
@@ -58,6 +62,9 @@ Some activities within software development processes can also be described by m
 
 <SyllabusRef ref="2.1" />
 
+<Waterfall />
+
+
 - System requirements
 - Software requirements
 - Analysis
@@ -71,6 +78,9 @@ Some activities within software development processes can also be described by m
 ### The V-Model
 
 <SyllabusRef ref="2.1" />
+
+<VModel />
+
 
 - Requirement specification
 - Acceptance testing
@@ -229,6 +239,9 @@ DevOps is an organizational approach aiming to create synergy by getting develop
 
 <SyllabusRef ref="2.1.4" />
 
+<DevOpsPipeline />
+
+
 - Code repository
 - CI/CD server
 - monitors changes
@@ -367,6 +380,9 @@ Test types are groups of test activities related to specific quality characteris
 ### The Five Test Levels
 
 <SyllabusRef ref="2.2.1" />
+
+<TestPyramid />
+
 
 - Acceptance
 - Does it satisfy user needs?

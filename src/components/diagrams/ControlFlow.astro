@@ -1,0 +1,50 @@
+---
+/** Control flow graphs for common code structures. */
+import Figure from '../Figure.astro';
+const W = 160;
+---
+<Figure caption="Control flow graphs - circles are nodes, pink arrows are decision outcomes that branch testing must cover (CTFL 4.3.2)">
+  <svg viewBox="0 0 820 300" role="img" aria-label="Control flow graph patterns">
+    <defs>
+      <marker id="cf-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6b6b6b"/></marker>
+      <marker id="cf-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e33661"/></marker>
+    </defs>
+    {['Sequence', 'If', 'If-else', 'Switch-case', 'Loop'].map((t, i) => <text class="t-dark" x={W / 2 + i * W + 10} y="22">{t}</text>)}
+    <g>
+      {[70, 150, 230].map((y) => <circle cx="90" cy={y} r="18" class="b-white"/>)}
+      <line class="ln" x1="90" y1="88" x2="90" y2="130" marker-end="url(#cf-g)"/>
+      <line class="ln" x1="90" y1="168" x2="90" y2="210" marker-end="url(#cf-g)"/>
+    </g>
+    <g>
+      <circle cx="250" cy="70" r="18" class="b-white"/><circle cx="290" cy="150" r="18" class="b-white"/><circle cx="250" cy="230" r="18" class="b-white"/>
+      <line class="ln-pink" x1="258" y1="86" x2="282" y2="132" marker-end="url(#cf-p)"/>
+      <line class="ln" x1="282" y1="168" x2="258" y2="212" marker-end="url(#cf-g)"/>
+      <line class="ln-pink" x1="248" y1="88" x2="248" y2="210" marker-end="url(#cf-p)"/>
+    </g>
+    <g>
+      <circle cx="410" cy="70" r="18" class="b-white"/><circle cx="370" cy="150" r="18" class="b-white"/><circle cx="450" cy="150" r="18" class="b-white"/><circle cx="410" cy="230" r="18" class="b-white"/>
+      <line class="ln-pink" x1="402" y1="86" x2="378" y2="132" marker-end="url(#cf-p)"/>
+      <line class="ln-pink" x1="418" y1="86" x2="442" y2="132" marker-end="url(#cf-p)"/>
+      <line class="ln" x1="378" y1="168" x2="402" y2="212" marker-end="url(#cf-g)"/>
+      <line class="ln" x1="442" y1="168" x2="418" y2="212" marker-end="url(#cf-g)"/>
+    </g>
+    <g>
+      <circle cx="570" cy="70" r="18" class="b-white"/><circle cx="570" cy="230" r="18" class="b-white"/>
+      {[520, 570, 620].map((x) => (
+        <g>
+          <circle cx={x} cy="150" r="16" class="b-white"/>
+          <line class="ln-pink" x1={570 + (x - 570) * 0.3} y1="88" x2={x} y2="132" marker-end="url(#cf-p)"/>
+          <line class="ln" x1={x} y1="166" x2={570 + (x - 570) * 0.3} y2="212" marker-end="url(#cf-g)"/>
+        </g>
+      ))}
+    </g>
+    <g>
+      <circle cx="730" cy="70" r="18" class="b-white"/><circle cx="730" cy="150" r="18" class="b-white"/><circle cx="730" cy="230" r="18" class="b-white"/>
+      <line class="ln-pink" x1="724" y1="88" x2="724" y2="132" marker-end="url(#cf-p)"/>
+      <path class="ln" d="M748 150 C790 150 790 70 750 70" marker-end="url(#cf-g)"/>
+      <path class="ln-pink" d="M712 74 C670 100 670 200 712 226" marker-end="url(#cf-p)"/>
+      <text class="t-sm" x="780" y="62">repeat</text>
+      <text class="t-sm" x="660" y="160">exit</text>
+    </g>
+  </svg>
+</Figure>

@@ -103,3 +103,23 @@ thead th, tr:first-child th { background: var(--pink); color: #fff; }
   .site-header, .site-footer, .no-print { display: none !important; }
   body { background: #fff; }
 }
+
+/* ---------- Diagrams (inline SVG) ---------- */
+.diagram { margin: 1rem 0 1.25rem; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem; }
+.diagram svg { display: block; width: 100%; height: auto; max-height: 30rem; margin-inline: auto; font-family: var(--font-body); }
+.diagram figcaption { margin-top: 0.75rem; font-size: 0.9rem; color: var(--grey); text-align: center; }
+.diagram .b-dark { fill: var(--charcoal); }
+.diagram .b-pink { fill: var(--pink); }
+.diagram .b-deep { fill: var(--pink-dark); }
+.diagram .b-soft { fill: var(--pink-soft); }
+.diagram .b-tint { fill: var(--pink-tint); }
+.diagram .b-light { fill: #e4e6e6; }
+.diagram .b-white { fill: #fff; stroke: var(--line); stroke-width: 2; }
+.diagram .t { font-size: 15px; font-weight: 700; fill: #fff; text-anchor: middle; dominant-baseline: central; }
+.diagram .t-dark { font-size: 15px; font-weight: 700; fill: var(--charcoal); text-anchor: middle; dominant-baseline: central; }
+.diagram .t-sm { font-size: 12.5px; font-weight: 600; fill: var(--grey); text-anchor: middle; dominant-baseline: central; }
+.diagram .t-sm-w { font-size: 12.5px; font-weight: 600; fill: #fff; opacity: 0.9; text-anchor: middle; dominant-baseline: central; }
+.diagram .t-lbl { font-size: 12px; font-weight: 700; fill: var(--pink-dark); text-anchor: middle; letter-spacing: 0.04em; }
+.diagram .ln { stroke: var(--grey); stroke-width: 2; fill: none; }
+.diagram .ln-pink { stroke: var(--pink); stroke-width: 2.5; fill: none; }
+.diagram .ln-dash { stroke: var(--grey); stroke-width: 1.5; fill: none; stroke-dasharray: 6 5; }

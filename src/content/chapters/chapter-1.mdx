@@ -12,6 +12,9 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import DefectChain from '../../components/diagrams/DefectChain.astro';
+import IndependenceStairs from '../../components/diagrams/IndependenceStairs.astro';
+import TestProcess from '../../components/diagrams/TestProcess.astro';
 
 ### Example: Parachuting School
 
@@ -264,6 +267,9 @@ QA is a process-oriented, preventive approach that focuses on the implementation
 
 <SyllabusRef ref="1.2.3" />
 
+<DefectChain />
+
+
 - **aka mistake** - A human action that produces an incorrect result
 - **Defect** - aka fault, bug · An imperfection in a work product - docs, code or build files
 - **Failure** - The system does not do what it should, or does what it shouldn't
@@ -340,7 +346,7 @@ The earlier we do this in the development process, the better.
 - Testing is context dependent
 - Absence-of-defects fallacy
 
-### Testing Principles
+### Principle 1: Testing shows the presence, not the absence, of defects
 
 <SyllabusRef ref="1.3" />
 
@@ -354,7 +360,7 @@ Testing can show that defects are present in the test object, but cannot prove t
 
 </SyllabusText>
 
-### Testing Principles
+### Principle 2: Exhaustive testing is impossible
 
 <SyllabusRef ref="1.3" />
 
@@ -368,7 +374,7 @@ Testing everything is not feasible except in trivial cases (Manna 1978). Rather 
 
 </SyllabusText>
 
-### Testing Principles
+### Principle 3: Early testing saves time and money
 
 <SyllabusRef ref="1.3" />
 
@@ -382,7 +388,7 @@ Defects that are removed early in the process will not cause subsequent defects 
 
 </SyllabusText>
 
-### Testing Principles
+### Principle 4: Defects cluster together
 
 <SyllabusRef ref="1.3" />
 
@@ -396,7 +402,7 @@ A small number of system components usually contain most of the defects discover
 
 </SyllabusText>
 
-### Testing Principles
+### Principle 5: Tests wear out
 
 <SyllabusRef ref="1.3" />
 
@@ -410,7 +416,7 @@ If the same tests are repeated many times, they become increasingly ineffective 
 
 </SyllabusText>
 
-### Testing Principles
+### Principle 6: Testing is context dependent
 
 <SyllabusRef ref="1.3" />
 
@@ -424,7 +430,7 @@ There is no single universally applicable approach to testing. Testing is done d
 
 </SyllabusText>
 
-### Testing Principles
+### Principle 7: Absence-of-defects fallacy
 
 <SyllabusRef ref="1.3" />
 
@@ -444,6 +450,9 @@ It is a fallacy (i.e., a misconception) to expect that software verification wil
 ### The Test Process
 
 <SyllabusRef ref="1.4.1" />
+
+<TestProcess />
+
 
 - **Test Planning** Define test objectives and select an approach
 - **Test Analysis** - Identify WHAT to test
@@ -689,6 +698,9 @@ Depending on the context, the whole team approach may not always be appropriate.
 ### Levels of Test Independence
 
 <SyllabusRef ref="1.5.3" />
+
+<IndependenceStairs />
+
 
 - **No independence** - Work products are tested by their author
 - **Some independence** - Tested by the author's peers on the same team

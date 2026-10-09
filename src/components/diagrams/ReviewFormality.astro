@@ -1,0 +1,18 @@
+---
+/** Review types on a formality spectrum. */
+import Figure from '../Figure.astro';
+const t = [['Informal review', 'b-soft', 't-dark'], ['Walkthrough', 'b-pink', 't'], ['Technical review', 'b-deep', 't'], ['Inspection', 'b-dark', 't']];
+---
+<Figure caption="Review types range from informal to formal (CTFL 3.2.4)">
+  <svg viewBox="0 0 820 150" role="img" aria-label="Review formality spectrum">
+    {t.map(([h, b, c], i) => (
+      <g>
+        <path class={b} d={`M${10 + i * 200} 40 h185 l20 35 l-20 35 h-185 ${i ? 'l20 -35' : ''} z`}/>
+        <text class={c} x={110 + i * 200} y="75">{h}</text>
+      </g>
+    ))}
+    <text class="t-sm" x="60" y="20">Less formal</text>
+    <text class="t-sm" x="760" y="20">More formal</text>
+    <text class="t-sm" x="410" y="135">Formality depends on the SDLC, process maturity, criticality, regulation and audit-trail needs</text>
+  </svg>
+</Figure>

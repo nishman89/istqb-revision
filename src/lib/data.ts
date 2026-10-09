@@ -13,3 +13,11 @@ export async function getQuestions(set: string, chapter: number): Promise<Questi
   if (!exam) throw new Error(`Unknown exam set ${set}`);
   return exam.data.questions.filter((q) => q.chapter === chapter);
 }
+
+/** A whole sample exam set (all 40 questions), in paper order. */
+export async function getExam(set: string) {
+  const exams = await getCollection('exams');
+  const exam = exams.find((e) => e.data.set === set);
+  if (!exam) throw new Error(`Unknown exam set ${set}`);
+  return exam.data;
+}

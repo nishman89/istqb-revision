@@ -1,0 +1,20 @@
+---
+/** Error -> defect -> failure, with root cause behind the error. */
+import Figure from '../Figure.astro';
+---
+<Figure caption="A human error produces a defect, which may cause a failure when the code runs (CTFL 1.2.3)">
+  <svg viewBox="0 0 820 210" role="img" aria-label="Root cause leads to error, error to defect, defect to failure">
+    <defs><marker id="dc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e33661"/></marker></defs>
+    {[['Root cause', 'why it happened', 'b-light', 't-dark'], ['Error', 'a human mistake', 'b-dark', 't'], ['Defect', 'aka fault, bug', 'b-pink', 't'], ['Failure', 'seen when it runs', 'b-dark', 't']].map(([h, s, b, t], i) => (
+      <g>
+        <rect class={b} x={10 + i * 205} y="40" width="180" height="110" rx="14"/>
+        <text class={t} x={100 + i * 205} y="85" style="font-size:20px">{h}</text>
+        <text class={t === 't' ? 't-sm-w' : 't-sm'} x={100 + i * 205} y="115">{s}</text>
+        {i < 3 && <line class="ln-pink" x1={192 + i * 205} y1="95" x2={213 + i * 205} y2="95" marker-end="url(#dc-a)"/>}
+      </g>
+    ))}
+    <text class="t-lbl" x="306" y="185">PRODUCES</text>
+    <text class="t-lbl" x="511" y="185">MAY CAUSE</text>
+    <text class="t-lbl" x="100" y="185">FIND IT WITH RCA</text>
+  </svg>
+</Figure>

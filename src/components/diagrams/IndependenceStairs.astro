@@ -1,0 +1,17 @@
+---
+/** Four levels of test independence as a staircase. */
+import Figure from '../Figure.astro';
+const lv = [['No', 'tested by the author', 'b-soft', 't-dark'], ['Some', 'by peers in the team', 'b-pink', 't'], ['High', 'testers outside the team', 'b-deep', 't'], ['Very high', 'outside the organisation', 'b-dark', 't']];
+---
+<Figure caption="Levels of test independence - from none to very high (CTFL 1.5.3)">
+  <svg viewBox="0 0 820 300" role="img" aria-label="Staircase of test independence levels">
+    {lv.map(([h, s, b, t], i) => (
+      <g>
+        <rect class={b} x={10 + i * 202} y={210 - i * 60} width="190" height={80 + i * 60} rx="10"/>
+        <text class={t} x={105 + i * 202} y={240 - i * 60} style="font-size:18px">{h}</text>
+        <text class={t === 't' ? 't-sm-w' : 't-sm'} x={105 + i * 202} y={265 - i * 60}>{s}</text>
+      </g>
+    ))}
+    <text class="t-lbl" x="140" y="40">MORE INDEPENDENT →</text>
+  </svg>
+</Figure>

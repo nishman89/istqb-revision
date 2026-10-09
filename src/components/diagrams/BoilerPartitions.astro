@@ -1,0 +1,30 @@
+---
+/** Boiler timer equivalence partitions on a 24-hour line, with one test value per partition. */
+import Figure from '../Figure.astro';
+const segs = [['Off', 0, 6], ['On', 6, 8], ['Off', 8, 18], ['On', 18, 19], ['Off', 19, 24]] as const;
+const ticks = [[0, '00:00'], [6, '06:00'], [8, '08:00'], [18, '18:00'], [19, '19:00'], [24, '24:00']] as const;
+const picks = [[0.5, '00:01'], [7, '06:00'], [13, '12:00'], [18.5, '18:30'], [23.5, '23:59']] as const;
+const X = (h: number) => 20 + (h / 24) * 780;
+---
+<Figure caption="Boiler timer: five partitions (two of them overnight) and one value from each - 100% EP coverage (CTFL 4.2.1)">
+  <svg viewBox="0 0 820 190" role="img" aria-label="Boiler timer partitions">
+    {segs.map(([n, a, b]) => (
+      <g>
+        <rect class={n === 'On' ? 'b-pink' : 'b-light'} x={X(a)} y="60" width={X(b) - X(a)} height="48" stroke="#fff" stroke-width="2"/>
+        <text class={n === 'On' ? 't' : 't-dark'} x={(X(a) + X(b)) / 2} y="84">{n}</text>
+      </g>
+    ))}
+    {ticks.map(([h, l], i) => (
+      <g>
+        <line class="ln" x1={X(h)} y1="50" x2={X(h)} y2="112"/>
+        <text class="t-sm" x={X(h) + (i === 3 ? -22 : i === 4 ? 22 : 0)} y="36">{l}</text>
+      </g>
+    ))}
+    {picks.map(([h, l]) => (
+      <g>
+        <path class="b-pink" d={`M${X(h) - 8} 132 L${X(h)} 118 L${X(h) + 8} 132 z`}/>
+        <text class="t-lbl" x={X(h)} y="152">{l}</text>
+      </g>
+    ))}
+  </svg>
+</Figure>

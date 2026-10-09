@@ -1,0 +1,25 @@
+---
+/** Test pyramid: many small fast tests at the base, few large slow ones at the top. */
+import Figure from '../Figure.astro';
+const lv = ['Acceptance', 'System integration', 'System', 'Component integration', 'Component (unit)'];
+---
+<Figure caption="The test pyramid - granularity, isolation and speed fall as you go up (CTFL 2.2.1 and 5.1.6)">
+  <svg viewBox="0 0 820 330" role="img" aria-label="Test pyramid">
+    {lv.map((l, i) => {
+      const w = 180 + i * 110, y = 10 + i * 62, x = 300 - w / 2;
+      return (
+        <g>
+          <rect class={i % 2 ? 'b-dark' : 'b-pink'} x={x} y={y} width={w} height="54" rx="8"/>
+          <text class="t" x="300" y={y + 27}>{l}</text>
+        </g>
+      );
+    })}
+    <text class="t-lbl" x="700" y="30" >FEWER · SLOWER</text>
+    <text class="t-sm" x="700" y="52">end-to-end, high level</text>
+    <line class="ln" x1="700" y1="80" x2="700" y2="250"/>
+    <path d="M693 92 L700 78 L707 92" class="ln"/>
+    <path d="M693 238 L700 252 L707 238" class="ln"/>
+    <text class="t-lbl" x="700" y="285">MANY · FAST</text>
+    <text class="t-sm" x="700" y="307">small, isolated</text>
+  </svg>
+</Figure>

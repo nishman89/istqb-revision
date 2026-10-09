@@ -1,0 +1,23 @@
+---
+/** DevOps delivery pipeline: CI, continuous delivery and continuous deployment over the environments. */
+import Figure from '../Figure.astro';
+const env = [['Local', 'code + automated tests'], ['Development', 'CI builds and tests'], ['Pre-production', 'mirrors production'], ['Production', 'live']];
+---
+<Figure caption="The DevOps delivery pipeline (CTFL 2.1.4)">
+  <svg viewBox="0 0 820 250" role="img" aria-label="DevOps pipeline">
+    {env.map(([h, s], i) => (
+      <g>
+        <rect class="b-white" x={10 + i * 202} y="10" width="190" height="96" rx="12"/>
+        <text class="t-dark" x={105 + i * 202} y="48" style="font-size:17px">{h}</text>
+        <text class="t-sm" x={105 + i * 202} y="76">{s}</text>
+      </g>
+    ))}
+    <path class="b-dark" d="M10 140 h175 l18 30 l-18 30 h-175 z"/>
+    <text class="t" x="96" y="170" style="font-size:13px">Continuous integration</text>
+    <path class="b-pink" d="M212 140 h370 l18 30 l-18 30 h-370 l18 -30 z"/>
+    <text class="t" x="412" y="170">Continuous delivery</text>
+    <path class="b-dark" d="M610 140 h182 l18 30 l-18 30 h-182 l18 -30 z"/>
+    <text class="t" x="708" y="170" style="font-size:13px">Continuous deployment</text>
+    <text class="t-sm" x="410" y="230">Delivery stops before production (manual release) · deployment releases automatically</text>
+  </svg>
+</Figure>

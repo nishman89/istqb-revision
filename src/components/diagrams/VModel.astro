@@ -1,0 +1,23 @@
+---
+/** The V-model: each development stage is paired with a test level. */
+import Figure from '../Figure.astro';
+const pairs = [['Requirement specification', 'Acceptance testing'], ['Functional specification', 'System testing'], ['Technical specification', 'Integration testing'], ['Program specification', 'Unit (component) testing']];
+---
+<Figure caption="The V-model - tests on the right are planned during the matching stage on the left (CTFL 2.1 and 2.2.1)">
+  <svg viewBox="0 0 820 340" role="img" aria-label="V-model diagram">
+    {pairs.map(([l, r], i) => (
+      <g>
+        <rect class="b-dark" x={10 + i * 45} y={10 + i * 66} width="250" height="48" rx="10"/>
+        <text class="t" x={135 + i * 45} y={34 + i * 66}>{l}</text>
+        <rect class="b-pink" x={560 - i * 45} y={10 + i * 66} width="250" height="48" rx="10"/>
+        <text class="t" x={685 - i * 45} y={34 + i * 66}>{r}</text>
+        <line class="ln-dash" x1={264 + i * 45} y1={34 + i * 66} x2={556 - i * 45} y2={34 + i * 66}/>
+      </g>
+    ))}
+    <rect class="b-light" x="320" y="276" width="180" height="48" rx="10"/>
+    <text class="t-dark" x="410" y="300">Coding</text>
+    <text class="t-lbl" x="140" y="312">VERIFICATION</text>
+    <text class="t-lbl" x="690" y="312">VALIDATION</text>
+    <text class="t-sm" x="410" y="22">test planning ↔</text>
+  </svg>
+</Figure>

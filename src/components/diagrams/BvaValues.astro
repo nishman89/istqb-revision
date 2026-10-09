@@ -1,0 +1,29 @@
+---
+/** 2-value vs 3-value BVA around one boundary. */
+import Figure from '../Figure.astro';
+const panels: { title: string; ox: number; vals: number[]; note: string }[] = [
+  { title: '2-value BVA', ox: 20, vals: [7, 8], note: 'boundary 8 + closest neighbour 7' },
+  { title: '3-value BVA', ox: 425, vals: [7, 8, 9], note: 'boundary 8 + both neighbours 7 and 9' },
+];
+---
+<Figure caption="Coverage items around the boundary between two partitions - 2-value takes the boundary and its neighbour; 3-value adds the other neighbour (CTFL 4.2.2)">
+  <svg viewBox="0 0 820 230" role="img" aria-label="2-value and 3-value BVA">
+    {panels.map(({ title, ox, vals, note }) => (
+      <g>
+        <text class="t-dark" x={ox + 187} y="20" style="font-size:18px">{title}</text>
+        <rect class="b-light" x={ox} y="60" width="187" height="46"/>
+        <rect class="b-tint" x={ox + 187} y="60" width="188" height="46"/>
+        <text class="t-dark" x={ox + 93} y="83">Partition A (… 7)</text>
+        <text class="t-dark" x={ox + 280} y="83">Partition B (8 …)</text>
+        <line class="ln" x1={ox + 187} y1="50" x2={ox + 187} y2="116"/>
+        {vals.map((v) => (
+          <g>
+            <circle cx={ox + 187 + (v - 7.5) * 60} cy="150" r="20" class={v === 8 ? 'b-pink' : 'b-dark'}/>
+            <text class="t" x={ox + 187 + (v - 7.5) * 60} y="150">{v}</text>
+          </g>
+        ))}
+        <text class="t-sm" x={ox + 187} y="200">{note}</text>
+      </g>
+    ))}
+  </svg>
+</Figure>

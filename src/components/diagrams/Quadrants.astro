@@ -1,0 +1,29 @@
+---
+/** Agile testing quadrants (Marick). */
+import Figure from '../Figure.astro';
+const q = [
+  ['Q2', 'Business-facing · supports the team', 'Functional tests, examples, story tests | UX prototypes, API tests, simulations | manual or automated', 'b-pink', 't'],
+  ['Q3', 'Business-facing · critiques the product', 'Exploratory testing, usability testing | user acceptance testing | user-oriented, often manual', 'b-dark', 't'],
+  ['Q1', 'Technology-facing · supports the team', 'Component and component | integration tests | automated, part of CI', 'b-dark', 't'],
+  ['Q4', 'Technology-facing · critiques the product', 'Smoke tests and non-functional tests | (except usability) | often automated', 'b-pink', 't'],
+];
+---
+<Figure caption="The agile testing quadrants (CTFL 5.1.7)">
+  <svg viewBox="0 0 820 380" role="img" aria-label="Testing quadrants">
+    <text class="t-lbl" x="410" y="16">BUSINESS-FACING</text>
+    <text class="t-lbl" x="410" y="374">TECHNOLOGY-FACING</text>
+    <text class="t-lbl" x="30" y="190" transform="rotate(-90 30 190)">SUPPORT THE TEAM</text>
+    <text class="t-lbl" x="796" y="190" transform="rotate(90 796 190)">CRITIQUE THE PRODUCT</text>
+    {q.map(([n, axis, ex, b, t], i) => {
+      const x = 50 + (i % 2) * 365, y = 28 + Math.floor(i / 2) * 168;
+      return (
+        <g>
+          <title>{`${n}: ${axis}`}</title>
+          <rect class={b} x={x} y={y} width="355" height="158" rx="14"/>
+          <text class={t} x={x + 40} y={y + 34} style="font-size:26px">{n}</text>
+          {ex.split(' | ').map((line, j) => <text class="t-sm-w" x={x + 177} y={y + 82 + j * 22} style="font-size:14px">{line}</text>)}
+        </g>
+      );
+    })}
+  </svg>
+</Figure>

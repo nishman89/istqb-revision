@@ -1,0 +1,37 @@
+---
+/** Defect lifecycle (Sparta course version): main flow, reopen loop and resolutions. */
+import Figure from '../Figure.astro';
+const main = [['New', 'b-dark', 't'], ['Assigned', 'b-dark', 't'], ['Open', 'b-pink', 't'], ['Fixed', 'b-pink', 't'], ['Tested', 'b-pink', 't'], ['Verified', 'b-light', 't-dark'], ['Closed', 'b-light', 't-dark']];
+const res = ['Rejected', 'Deferred', 'Duplicate', "Can't reproduce"];
+const Y = (i: number) => 10 + i * 54;
+---
+<Figure caption="A typical defect lifecycle - dark: logged, pink: being worked on, light: outcome. Workflows vary between teams and tools.">
+  <svg viewBox="0 0 820 400" role="img" aria-label="Defect lifecycle">
+    <defs>
+      <marker id="dl-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6b6b6b"/></marker>
+      <marker id="dl-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e33661"/></marker>
+    </defs>
+    {main.map(([s, b, t], i) => (
+      <g>
+        <rect class={b} x="300" y={Y(i)} width="200" height="40" rx="20"/>
+        <text class={t} x="400" y={Y(i) + 20}>{s}</text>
+        {i < 6 && <line class="ln" x1="400" y1={Y(i) + 40} x2="400" y2={Y(i + 1)} marker-end="url(#dl-g)"/>}
+      </g>
+    ))}
+    <rect class="b-pink" x="40" y={Y(3)} width="180" height="40" rx="20"/>
+    <text class="t" x="130" y={Y(3) + 20}>Reopened</text>
+    <path class="ln-pink" d={`M300 ${Y(4) + 20} H130 V${Y(3) + 42}`} marker-end="url(#dl-p)"/>
+    <path class="ln-pink" d={`M130 ${Y(3) - 2} V${Y(2) + 20} H296`} marker-end="url(#dl-p)"/>
+    <text class="t-lbl" x="200" y={Y(4) + 40}>STILL FAILS</text>
+    <line class="ln" x1="560" y1={Y(1) + 20} x2="560" y2={Y(4) + 20}/>
+    <line class="ln" x1="500" y1={Y(2) + 20} x2="560" y2={Y(2) + 20}/>
+    <line class="ln" x1="500" y1={Y(3) + 20} x2="560" y2={Y(3) + 20}/>
+    {res.map((r, i) => (
+      <g>
+        <line class="ln" x1="560" y1={Y(i + 1) + 20} x2="596" y2={Y(i + 1) + 20} marker-end="url(#dl-g)"/>
+        <rect class="b-light" x="600" y={Y(i + 1)} width="200" height="40" rx="20"/>
+        <text class="t-dark" x="700" y={Y(i + 1) + 20}>{r}</text>
+      </g>
+    ))}
+  </svg>
+</Figure>

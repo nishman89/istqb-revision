@@ -1,0 +1,9 @@
+---
+/** Wraps a diagram with a caption. */
+interface Props { caption: string; wide?: boolean; }
+const { caption, wide = false } = Astro.props;
+---
+<figure class:list={['diagram', { 'diagram--wide': wide }]}>
+  <slot />
+  <figcaption>{caption}</figcaption>
+</figure>

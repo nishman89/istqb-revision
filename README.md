@@ -18,6 +18,7 @@ progress is saved in their own browser.
 | **Chapter notes** (1–6) | The slide content as notes. Every topic shows the syllabus section it covers (e.g. *CTFL v4.0 · Section 4.2.1*), and **"What the syllabus says"** opens the official wording. |
 | **Chapter quiz** | The questions from **ISTQB Sample Exam C** for that chapter. |
 | **Extra practice** | The same chapter's questions from **Sample Exams A, B and D**. |
+| **Past papers** | Sit any of the four ISTQB sample exams in full: 40 questions with an optional 60- or 75-minute timer, then a score for each chapter. |
 
 ### How the quizzes work
 
@@ -26,6 +27,21 @@ progress is saved in their own browser.
 3. You get your score and whether you passed (the pass mark is 65%, the same as the real exam).
 4. Every question then shows your answer, the correct answer, and **why each option is right or wrong**, using ISTQB's own explanations.
 5. Tick **Show only questions I got wrong** to focus on mistakes, or press **Retake quiz** to try again.
+
+### Past papers
+
+Each sample exam can be sat as a full mock exam:
+
+1. Choose a time limit: **60 minutes** (standard), **75 minutes** (the exam isn't in your native language), or **no limit**.
+2. Press **Start exam**. A countdown appears in the bar at the bottom of the screen and turns pink in the last five minutes.
+3. Submit when you're done. If time runs out, the paper is marked automatically.
+4. The results show your score, pass or fail, the time taken, a **score for each chapter**, and the same full review as the chapter quizzes.
+
+### Diagrams
+
+Key topics in the chapter notes have diagrams: the test process, error → defect → failure, the V-model, the test pyramid,
+the DevOps pipeline, the review process, boundary values, state transitions, control flow graphs, the testing quadrants,
+the risk matrix and the defect lifecycle. They're drawn as SVG, so they stay sharp at any size and use the Sparta colours.
 
 ### Progress
 
@@ -178,6 +194,21 @@ questions. Run `npm run check` after editing.
 | Pass mark, questions per chapter, main quiz set | `src/lib/site.ts` |
 | The Introduction page | `src/pages/introduction.astro` |
 | Header, footer, logo | `src/components/Header.astro`, `Footer.astro`, `public/sparta-logo*.png` |
+| A diagram | `src/components/diagrams/` (one file per diagram) |
+
+### Adding a diagram to the notes
+
+Import it at the top of the chapter file, then place it under any topic:
+
+```mdx
+import VModel from '../../components/diagrams/VModel.astro';
+
+### The V-Model
+
+<SyllabusRef ref="2.1" />
+
+<VModel />
+```
 
 ---
 
@@ -195,6 +226,7 @@ progress tracking.
     ├── content/chapters/          Chapter notes (MDX)
     ├── data/exams/                ISTQB sample exams A–D (JSON)
     ├── components/                Reusable pieces: Quiz, QuestionBody, SyllabusRef, Header…
+    │   └── diagrams/              SVG diagrams used in the notes
     ├── layouts/BaseLayout.astro   The shared page shell (head, header, footer)
     ├── lib/
     │   ├── site.ts                Settings and helpers (pass mark, links)
@@ -204,7 +236,8 @@ progress tracking.
     │   ├── index.astro            Home
     │   ├── introduction.astro     Introduction to the ISTQB
     │   ├── chapters/[chapter].astro
-    │   └── quiz/[chapter]/[set].astro
+    │   ├── quiz/[chapter]/[set].astro
+    │   └── past-papers/           Past papers list and full mock exams
     └── styles/global.css          Sparta Global theme
 ```
 

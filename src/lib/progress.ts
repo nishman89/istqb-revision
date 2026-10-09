@@ -12,6 +12,8 @@ export interface QuizAttempt {
   passed: boolean;
   date: string;
   answers: Record<string, string[]>;
+  /** Time taken, for timed mock exams. */
+  seconds?: number;
 }
 
 export interface QuizRecord {
@@ -82,3 +84,4 @@ export function resetProgress(): void {
 }
 
 export const quizId = (chapter: number, set: string) => `ch${chapter}-${set.toLowerCase()}`;
+export const examId = (set: string) => `exam-${set.toLowerCase()}`;

@@ -1,0 +1,19 @@
+---
+/** Risk level from likelihood and impact. */
+import Figure from '../Figure.astro';
+const shades = [['#fbe3e9', '#f4b6c5', '#e33661'], ['#f4b6c5', '#e33661', '#b8234b'], ['#e33661', '#b8234b', '#2d2a2b']];
+const labels = ['Low', 'Medium', 'High'];
+---
+<Figure caption="Risk level combines likelihood and impact - the higher the level, the more important to treat (CTFL 5.2.1)">
+  <svg viewBox="0 0 820 330" role="img" aria-label="Risk matrix">
+    {[0, 1, 2].map((r) => [0, 1, 2].map((c) => (
+      <rect x={250 + c * 110} y={10 + (2 - r) * 90} width="104" height="84" rx="8" fill={shades[r][c]}/>
+    )))}
+    <text class="t-dark" x="302" y="232">Low risk</text>
+    <text class="t" x="522" y="52">High risk</text>
+    {labels.map((l, i) => <text class="t-sm" x={302 + i * 110} y="292">{l}</text>)}
+    {labels.map((l, i) => <text class="t-sm" x="210" y={232 - i * 90}>{l}</text>)}
+    <text class="t-lbl" x="415" y="322">IMPACT →</text>
+    <text class="t-lbl" x="150" y="140" transform="rotate(-90 150 140)">LIKELIHOOD →</text>
+  </svg>
+</Figure>

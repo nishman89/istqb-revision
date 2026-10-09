@@ -8,20 +8,42 @@ import { PASS_MARK, MINUTES_PER_K } from '../lib/site';
  * explaining why each option is right or wrong. Explanations are rendered at build
  * time and revealed by the client script after submission.
  */
-interface Props { questions: Question[]; quizId: string; }
-const { questions, quizId } = Astro.props;
+interface Props {
+  questions: Question[];
+  quizId: string;
+  /** Full mock exam: adds a start screen, an optional countdown and a per-chapter breakdown. */
+  examMode?: boolean;
+}
+const { questions, quizId, examMode = false } = Astro.props;
+const chapterTotals = Object.entries(
+  questions.reduce<Record<number, number>>((acc, q) => ({ ...acc, [q.chapter]: (acc[q.chapter] ?? 0) + 1 }), {}),
+);
 const total = questions.length;
 const passScore = Math.ceil(total * PASS_MARK);
 const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0));
 ---
-<section class="quiz" data-quiz-id={quizId} data-pass-mark={PASS_MARK}>
+<section class:list={['quiz', { 'is-exam': examMode }]} data-quiz-id={quizId} data-pass-mark={PASS_MARK} data-exam={examMode ? '' : undefined}>
   <div class="card quiz-intro no-print">
     <dl>
       <div><dt>Questions</dt><dd>{total}</dd></div>
       <div><dt>To pass</dt><dd>{passScore} / {total} (65%)</dd></div>
-      <div><dt>Suggested time</dt><dd>~{minutes} min</dd></div>
+      {examMode
+        ? <div><dt>Time allowed</dt><dd>60 min <small>(75 if not your native language)</small></dd></div>
+        : <div><dt>Suggested time</dt><dd>~{minutes} min</dd></div>}
     </dl>
     <p class="last-attempt" hidden data-last-attempt></p>
+    {examMode && (
+      <div class="start" data-start>
+        <label>Time limit
+          <select data-time-limit>
+            <option value="60">60 minutes - standard</option>
+            <option value="75">75 minutes - exam not in your native language</option>
+            <option value="0">No time limit</option>
+          </select>
+        </label>
+        <button class="btn" type="button" data-start-btn>Start exam</button>
+      </div>
+    )}
   </div>
 
   <div class="results card card--dark" hidden data-results tabindex="-1">
@@ -29,20 +51,33 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
       <span class="eyebrow" data-verdict-label></span>
       <p class="score__big"><span data-score></span><span class="score__of"> / {total}</span></p>
       <p class="score__pct" data-percent></p>
+      <p class="score__time" data-time-taken hidden></p>
     </div>
+    {examMode && (
+      <table class="breakdown" data-breakdown>
+        <caption class="visually-hidden">Score by chapter</caption>
+        <thead><tr><th scope="col">Chapter</th><th scope="col">Score</th><th scope="col"><span class="visually-hidden">Bar</span></th></tr></thead>
+        <tbody>
+          {chapterTotals.map(([ch, n]) => (
+            <tr data-chapter-row={ch}><th scope="row">Chapter {ch}</th><td data-chapter-score>0 / {n}</td><td><span class="mini"><span data-chapter-bar></span></span></td></tr>
+          ))}
+        </tbody>
+      </table>
+    )}
     <div class="results__actions no-print">
       <label class="toggle"><input type="checkbox" data-only-wrong /> Show only questions I got wrong</label>
       <button class="btn" type="button" data-retake>Retake quiz</button>
     </div>
   </div>
 
-  <form class="questions" data-form novalidate>
+  <form class="questions" data-form novalidate hidden={examMode}>
     <ol>
       {questions.map((q, i) => (
-        <li class="q card" data-question={q.id} data-answer={q.answer.join(',')} data-select={q.select}>
+        <li class="q card" data-question={q.id} data-answer={q.answer.join(',')} data-select={q.select} data-chapter={q.chapter}>
           <header class="q__head">
             <span class="q__num">Question {i + 1}<span class="muted"> of {total}</span></span>
             <span class="q__tags">
+              {examMode && <span class="pill">Chapter {q.chapter}</span>}
               <span class="pill">Section {q.ref}</span>
               <span class="pill pill--dark" title="Knowledge level">{q.k}</span>
             </span>
@@ -75,6 +110,7 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
 
     <div class="submit-bar no-print" data-submit-bar>
       <span><strong data-answered>0</strong> of {total} answered</span>
+      {examMode && <span class="timer" data-timer hidden aria-live="off"></span>}
       <button class="btn" type="submit">Submit answers</button>
     </div>
   </form>
@@ -138,7 +174,55 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
       return score;
     }
 
+    const isExam = quiz.hasAttribute('data-exam');
+    const timerEl = quiz.querySelector<HTMLElement>('[data-timer]');
+    let startedAt = Date.now();
+    let tick: number | undefined;
+    const fmt = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
+
+    function startExam() {
+      const limit = Number(quiz.querySelector<HTMLSelectElement>('[data-time-limit]')!.value) * 60;
+      quiz.querySelector<HTMLElement>('[data-start]')!.hidden = true;
+      form.hidden = false;
+      startedAt = Date.now();
+      if (limit && timerEl) {
+        timerEl.hidden = false;
+        const update = () => {
+          const left = limit - Math.floor((Date.now() - startedAt) / 1000);
+          timerEl.textContent = `⏱ ${fmt(Math.max(left, 0))} left`;
+          timerEl.classList.toggle('is-low', left <= 300);
+          if (left <= 0) { window.clearInterval(tick); submit(true); }
+        };
+        update();
+        tick = window.setInterval(update, 1000);
+      }
+      items[0]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    quiz.querySelector('[data-start-btn]')?.addEventListener('click', startExam);
+
+    function fillBreakdown(attempt: QuizAttempt) {
+      for (const row of quiz.querySelectorAll<HTMLElement>('[data-chapter-row]')) {
+        const ch = row.dataset.chapterRow!;
+        const qs = items.filter((i) => i.dataset.chapter === ch);
+        const right = qs.filter((i) => {
+          const correct = i.dataset.answer!.split(',');
+          const picked = attempt.answers[i.dataset.question!] ?? [];
+          return picked.length === correct.length && picked.every((k) => correct.includes(k));
+        }).length;
+        row.querySelector('[data-chapter-score]')!.textContent = `${right} / ${qs.length}`;
+        row.querySelector<HTMLElement>('[data-chapter-bar]')!.style.width = `${(right / qs.length) * 100}%`;
+      }
+    }
+
     function showResults(attempt: QuizAttempt) {
+      form.hidden = false;
+      const startEl = quiz.querySelector<HTMLElement>('[data-start]');
+      if (startEl) startEl.hidden = true;
+      if (timerEl) timerEl.hidden = true;
+      fillBreakdown(attempt);
+      const timeEl = quiz.querySelector<HTMLElement>('[data-time-taken]')!;
+      timeEl.hidden = !attempt.seconds;
+      if (attempt.seconds) timeEl.textContent = `Time taken: ${fmt(attempt.seconds)}`;
       quiz.classList.add('is-marked');
       quiz.querySelector('[data-submit-bar]')!.setAttribute('hidden', '');
       results.hidden = false;
@@ -150,19 +234,26 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
       results.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
+    function submit(timeUp = false) {
       const unanswered = items.filter((i) => !isAnswered(i)).length;
-      if (unanswered && !confirm(`You have ${unanswered} unanswered question(s). Submit anyway?`)) return;
+      if (!timeUp && unanswered && !confirm(`You have ${unanswered} unanswered question(s). Submit anyway?`)) return;
+      window.clearInterval(tick);
       const answers = Object.fromEntries(items.map((i) => [i.dataset.question!, chosen(i)]));
       const score = mark(answers);
       const percent = Math.round((score / items.length) * 100);
       const attempt: QuizAttempt = {
         score, total: items.length, percent, passed: score / items.length >= passMark,
         date: new Date().toISOString(), answers,
+        seconds: isExam ? Math.round((Date.now() - startedAt) / 1000) : undefined,
       };
       saveQuizAttempt(id, attempt);
       showResults(attempt);
+      if (timeUp) alert("Time's up - your exam has been marked.");
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      submit();
     });
 
     quiz.querySelector('[data-retake]')!.addEventListener('click', () => {
@@ -180,6 +271,10 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
         });
       }
       updateCount();
+      if (isExam) {
+        form.hidden = true;
+        quiz.querySelector<HTMLElement>('[data-start]')!.hidden = false;
+      }
       quiz.scrollIntoView({ behavior: 'smooth' });
     });
 
@@ -207,6 +302,7 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
   .quiz-intro dl { display: flex; flex-wrap: wrap; gap: 2rem; margin: 0; }
   .quiz-intro dt { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--pink); }
   .quiz-intro dd { margin: 0; font: 700 1.4rem var(--font-head); }
+  .quiz-intro dd small { font: 600 0.85rem var(--font-body); color: var(--grey); }
   .last-attempt { margin: 1rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); }
   .last-attempt :global(.link-btn) { background: none; border: 0; color: var(--pink-dark); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; margin-left: 0.5rem; }
 
@@ -218,6 +314,17 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
   .results__actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
   .toggle { display: flex; gap: 0.5rem; align-items: center; cursor: pointer; }
 
+  .start { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+  .start label { display: grid; gap: 0.3rem; font-weight: 700; font-size: 0.9rem; }
+  .start select { font: inherit; padding: 0.55rem 0.75rem; border-radius: 10px; border: 2px solid var(--line); }
+  .score__time { margin: 0.25rem 0 0; color: #ccc; }
+  .breakdown { width: auto; min-width: 18rem; flex: 1; max-width: 26rem; font-size: 0.9rem; }
+  .breakdown th, .breakdown td { border-color: #555; padding: 0.3rem 0.5rem; background: none; color: #fff; }
+  .breakdown thead th { color: var(--pink-soft); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .mini { display: block; width: 8rem; height: 0.6rem; background: #555; border-radius: 99px; overflow: hidden; }
+  .mini span { display: block; height: 100%; background: var(--pink); width: 0; }
+  .timer { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .timer.is-low { color: var(--pink-soft); }
   .questions ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; }
   .q { border-left: 6px solid transparent; }
   .q.is-right { border-left-color: var(--success); }
@@ -236,9 +343,9 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
   .opt__key { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--charcoal); color: #fff; font-weight: 700; }
   .opt__text { white-space: pre-line; }
   .is-marked .opt { cursor: default; }
-  .opt.is-correct { border-color: var(--success); background: var(--success-tint); }
+  .is-marked .opt.is-correct { border-color: var(--success); background: var(--success-tint); }
   .opt.is-correct .opt__flag::after { content: '✓ Correct answer'; color: var(--success); font-weight: 700; font-size: 0.85rem; }
-  .opt.is-picked-wrong { border-color: var(--pink); background: var(--pink-tint); }
+  .is-marked .opt.is-picked-wrong { border-color: var(--pink); background: var(--pink-tint); }
   .opt.is-picked-wrong .opt__flag::after { content: '✗ Your answer'; color: var(--pink-dark); font-weight: 700; font-size: 0.85rem; }
 
   .review { margin-top: 1rem; padding: 1rem 1.25rem; background: var(--bg); border-radius: 12px; }

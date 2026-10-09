@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHead from '../../components/PageHead.astro';
+import Quiz from '../../components/Quiz.astro';
+import { getExam } from '../../lib/data';
+import { url, MAIN_SET, PRACTICE_SETS } from '../../lib/site';
+import { examId } from '../../lib/progress';
+
+export function getStaticPaths() {
+  return [MAIN_SET, ...PRACTICE_SETS].map((set) => ({ params: { set: set.toLowerCase() }, props: { set } }));
+}
+
+const { set } = Astro.props;
+const exam = await getExam(set);
+---
+<BaseLayout title={`Sample Exam ${set} - full paper`}>
+  <PageHead eyebrow={`Past paper · ISTQB CTFL v4.0 sample exam v${exam.version}`} title={`Sample Exam ${set}`}>
+    <p class="back no-print"><a href={url('past-papers')}>← All past papers</a></p>
+  </PageHead>
+  <div class="container">
+    <Quiz questions={exam.questions} quizId={examId(set)} examMode />
+  </div>
+</BaseLayout>
+
+<style>
+  .back { margin: 1rem 0 0; font-weight: 700; }
+</style>
