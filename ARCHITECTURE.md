@@ -183,6 +183,7 @@ src/components/
 ├── BackToTop.astro       Floating back-to-top button
 ├── SyllabusText.astro    The collapsible "What the syllabus says" box
 ├── WatchOut.astro        "Watch out for…" exam traps at the end of each chapter (data: src/data/traps.ts)
+├── MythReality.astro     ✗ Myth → ✓ Reality rows for common misconceptions
 ├── IconCards.astro       Cards with an icon, title and points (e.g. product risks by characteristic)
 ├── WhenThen.astro        "When this happens → do this" rows (control directives, maintenance triggers)
 ├── Exercise.astro        A practice question in the notes, answer in a collapsible panel (slot="answer")

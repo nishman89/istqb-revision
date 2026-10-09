@@ -12,6 +12,7 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import MythReality from '../../components/MythReality.astro';
 import DebuggingFlow from '../../components/diagrams/DebuggingFlow.astro';
 import FiveWhys from '../../components/diagrams/FiveWhys.astro';
 import Hub from '../../components/diagrams/Hub.astro';
@@ -30,10 +31,12 @@ import TestProcess from '../../components/diagrams/TestProcess.astro';
 
 <SyllabusRef ref="1.1" />
 
-- **Software testing** is a set of activities to discover **defects** and evaluate the **quality** of software artifacts - known as **test objects** while being tested.
-- **Testing is just executing tests** - It includes many other activities, aligned with the SDLC (Ch. 2)
-- **Testing only verifies the test object** - Verification checks the system meets the specified requirements…
-- **Reality: Testing also involves validation** - …validation checks it meets users' and stakeholders' needs in operation
+**Software testing** is a set of activities to discover **defects** and evaluate the **quality** of software artifacts - known as **test objects** while being tested.
+
+<MythReality rows={[
+  { myth: 'Testing is just executing tests', reality: 'Testing includes many other activities - planning, analysis, design, reporting… - aligned with the SDLC (Chapter 2)' },
+  { myth: 'Testing only verifies the test object (does it meet the specified requirements?)', reality: 'Testing also involves validation - checking it meets users\' and stakeholders\' needs in its operational environment' },
+]} />
 
 <SyllabusText>
 

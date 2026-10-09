@@ -1,8 +1,8 @@
 ---
-/** Collapsible box holding the full syllabus wording behind a slide. */
+/** Collapsible box holding the official syllabus wording - styled neutrally, as a reference document. */
 ---
 <details class="syllabus">
-  <summary>What the syllabus says</summary>
+  <summary><span class="icon" aria-hidden="true">📘</span> What the syllabus says</summary>
   <div class="body">
     <slot />
     <p class="source">Source: <a href="https://istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0" target="_blank" rel="noopener">ISTQB® CTFL v4.0 syllabus</a> © ISTQB®</p>
@@ -10,9 +10,14 @@
 </details>
 
 <style>
-  .syllabus { margin: 1rem 0 0; border-left: 4px solid var(--pink); background: var(--pink-tint); border-radius: 0 10px 10px 0; }
-  summary { cursor: pointer; padding: 0.6rem 1rem; font-weight: 700; color: var(--pink-dark); }
-  .body { padding: 0 1rem 0.5rem; font-size: 0.95rem; }
-  .body :global(p) { margin: 0 0 0.6rem; }
-  .source { font-size: 0.8rem; color: var(--grey); margin-top: 0.5rem !important; }
+  .syllabus { margin: 1rem 0 0; border-left: 4px solid var(--charcoal); background: var(--surface); border-radius: 0 10px 10px 0; box-shadow: var(--shadow); }
+  summary { cursor: pointer; padding: 0.65rem 1rem; font-weight: 700; color: var(--charcoal); list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; margin-left: auto; font: 700 1.1rem/1 var(--font-body); color: var(--grey); }
+  .syllabus[open] summary::after { content: '−'; }
+  summary:hover { background: var(--bg); }
+  .icon { font-size: 1rem; }
+  .body { padding: 0.25rem 1rem 0.6rem; font-size: 0.95rem; border-top: 1px solid var(--line); }
+  .body :global(p) { margin: 0.6rem 0 0; }
+  .source { font-size: 0.8rem; color: var(--grey); margin-top: 0.75rem !important; }
 </style>
