@@ -50,8 +50,10 @@ export const GET: APIRoute = async () => {
   const pages: [string, string, string][] = [
     ['Introduction to the ISTQB', 'introduction', 'What the ISTQB is, the exam, how marks are granted, K-levels'],
     ['Exam tips', 'exam-tips', 'Exam technique, the 8 calculation topics, key words, question formats'],
-    ['Practise the 8 calculations', 'exam-tips/k3', 'All K3 questions grouped by skill'],
-    ['Past papers', 'past-papers', 'Full timed sample exams A, B, C and D'],
+    ['Practise K1 questions', 'practice/k1', 'All K1 (remember) questions from Sample Papers A-D'],
+    ['Practise K2 questions', 'practice/k2', 'All K2 (understand) questions from Sample Papers A-D'],
+    ['Practise K3 questions', 'practice/k3', 'All K3 (apply) calculation questions from Sample Papers A-D'],
+    ['Sample papers', 'past-papers', 'Full timed Sample Papers A, B, C and D, and practice by chapter or K-level'],
     ['Handouts', 'handouts', 'Download the chapter handouts and practice workbook (PDF)'],
   ];
   for (const [title, path, text] of pages) entries.push({ title, where: 'Page', path, text });

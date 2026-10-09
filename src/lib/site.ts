@@ -18,9 +18,9 @@ export function url(path = ''): string {
   return `${base}/${clean}${needsSlash ? '/' : ''}`;
 }
 
-/** "20 min", "3 h", "6.5 h" */
+/** "20 min", "3 h", "2 h 10 min" */
 export function formatMinutes(minutes: number): string {
-  if (minutes < 60) return `${minutes} min`;
-  const hours = Math.round((minutes / 60) * 10) / 10;
-  return `${hours} h`;
+  const h = Math.floor(minutes / 60), m = minutes % 60;
+  if (!h) return `${m} min`;
+  return m ? `${h} h ${m} min` : `${h} h`;
 }

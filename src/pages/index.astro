@@ -14,8 +14,7 @@ const chapters = await getChapters();
       <p class="hero__sub">for the ISTQB® Certified Tester Foundation Level (CTFL) v4.0</p>
       <div class="hero__actions">
         <a class="btn" href={url('introduction')}>Start with the introduction</a>
-        <a class="btn btn--ghost btn--light" href={url('chapters/1')}>Go to Chapter 1</a>
-        <a class="btn btn--ghost btn--light" href={url('past-papers')}>Sit a past paper</a>
+        <a class="btn btn--ghost btn--light" href={url('past-papers')}>Sit a sample paper</a>
         <a class="btn btn--ghost btn--light" href={url('handouts')}>Download handouts</a>
       </div>
     </div>
@@ -41,6 +40,7 @@ const chapters = await getChapters();
             <span class="pill">{QUESTIONS_PER_CHAPTER[data.number]} exam questions</span>
             <span class="pill pill--dark">{formatMinutes(data.minutes)} course time</span>
           </p>
+          <div class="chapter__progress" aria-hidden="true"><span data-bar></span></div>
           <p class="chapter__status" data-status></p>
           <div class="chapter__actions">
             <a class="btn btn--dark" href={url(`chapters/${data.number}`)}>Read notes</a>
@@ -52,11 +52,11 @@ const chapters = await getChapters();
     <section class="card card--dark papers-cta">
       <div>
         <span class="eyebrow">Ready for the real thing?</span>
-        <h2>Past papers</h2>
-        <p>Sit any of the four official ISTQB sample exams in full - 40 questions against the clock, with a score for every chapter.
+        <h2>Sample papers</h2>
+        <p>Sit any of the four official ISTQB sample papers in full - 40 questions against the clock, with a score for every chapter.
           Read the <a href={url('exam-tips')}>exam tips</a> first.</p>
       </div>
-      <a class="btn" href={url('past-papers')}>Go to past papers</a>
+      <a class="btn" href={url('past-papers')}>Go to sample papers</a>
     </section>
 
     <p class="reset no-print">
@@ -73,9 +73,13 @@ const chapters = await getChapters();
   for (const card of document.querySelectorAll<HTMLElement>('[data-chapter]')) {
     const read = progress.chaptersRead.includes(Number(card.dataset.chapter));
     const quiz = progress.quizzes[card.dataset.quiz!];
-    const parts = [read ? '✓ Notes read' : 'Notes not read yet'];
-    parts.push(quiz ? `Quiz best ${quiz.best.percent}% ${quiz.best.passed ? '✓ passed' : ''}` : 'Quiz not taken');
-    card.querySelector('[data-status]')!.textContent = parts.join(' · ');
+    const chip = (done: boolean, label: string) => `<span class="chip${done ? ' chip--done' : ''}">${done ? '✓' : '○'} ${label}</span>`;
+    card.querySelector('[data-status]')!.innerHTML =
+      chip(read, read ? 'Notes read' : 'Notes not read') +
+      chip(!!quiz?.best.passed, quiz ? `Quiz best ${quiz.best.percent}%` : 'Quiz not taken');
+    // progress: half for reading the notes, half for passing the quiz (partial credit for the best score)
+    const pct = (read ? 50 : 0) + (quiz ? Math.min(50, Math.round(quiz.best.percent / 65 * 50)) : 0);
+    card.querySelector<HTMLElement>('[data-bar]')!.style.width = `${pct}%`;
     card.classList.toggle('is-done', read && !!quiz?.best.passed);
   }
   const cont = document.querySelector<HTMLAnchorElement>('[data-continue]');
@@ -98,7 +102,7 @@ const chapters = await getChapters();
   .hero__badge { display: inline-block; padding: 0.3rem 0.9rem; border: 2px solid var(--pink-soft); border-radius: 999px; color: var(--pink-soft); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; }
   .hero__title { font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1.05; margin: 1rem 0 0.5rem; }
   .hero__dot { color: var(--pink); }
-  .hero__sub { font-size: clamp(1.1rem, 2.4vw, 1.4rem); color: #ddd; margin: 0; max-width: 40rem; }
+  .hero__sub { font-size: clamp(1.1rem, 2.4vw, 1.4rem); color: #ddd; margin: 0; max-width: 52rem; }
   .hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
   .btn--light { color: #fff; border-color: #fff; }
   .btn--light:hover { background: #fff; color: var(--charcoal); }
@@ -116,6 +120,17 @@ const chapters = await getChapters();
   .chapter h3 a { color: inherit; text-decoration: none; }
   .chapter h3 a:hover { color: var(--pink-dark); }
   .chapter__meta { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 0.25rem 0; }
+  .chapter__progress { height: 6px; border-radius: 99px; background: var(--bg); overflow: hidden; margin-top: 0.5rem; }
+  .chapter__progress span { display: block; height: 100%; width: 0; background: var(--success); border-radius: 99px; transition: width 0.3s; }
+  @media (max-width: 40rem) {
+    .chapter { padding: 1rem 1.1rem; }
+    .chapter > .muted, .chapter__meta { display: none; }
+    .chapter h3 { font-size: 1.1rem; margin: 0; }
+    .chapter__num { font-size: 1.8rem; top: 0.6rem; }
+    .chapter__actions { padding-top: 0.5rem; }
+  }
+  .chapter__status :global(.chip) { display: inline-block; margin: 0 0.35rem 0.35rem 0; padding: 0.15rem 0.6rem; border-radius: 999px; background: var(--bg); color: var(--grey); font-size: 0.8rem; font-weight: 700; }
+  .chapter__status :global(.chip--done) { background: var(--success-tint); color: var(--success); }
   .chapter__status { font-size: 0.9rem; font-weight: 600; color: var(--grey); min-height: 1.4em; }
   .chapter__actions { display: flex; gap: 0.5rem; margin-top: auto; padding-top: 0.75rem; flex-wrap: wrap; }
   .chapter__actions .btn { padding: 0.5rem 1rem; font-size: 0.95rem; }

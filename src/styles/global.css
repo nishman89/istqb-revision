@@ -126,6 +126,8 @@ thead th, tr:first-child th { background: var(--pink); color: #fff; }
 .diagram .b-red { fill: #c62828; }
 .diagram .b-green { fill: #1f7a50; }
 .diagram .b-yellow { fill: #f2c230; }
+.diagram .b-blue { fill: #1f5f99; }
+.diagram .b-purple { fill: #6b3fa0; }
 .diagram .b-white { fill: #fff; stroke: var(--line); stroke-width: 2; }
 .diagram .t { font-size: 15px; font-weight: 700; fill: #fff; text-anchor: middle; dominant-baseline: central; }
 .diagram .t-dark { font-size: 15px; font-weight: 700; fill: var(--charcoal); text-anchor: middle; dominant-baseline: central; }

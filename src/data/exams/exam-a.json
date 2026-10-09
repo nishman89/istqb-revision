@@ -635,7 +635,7 @@
       },
       {
        "marker": "4.",
-       "text": "Failures in not correctly implemented business rules "
+       "text": "Failures in not correctly implemented business rules"
       },
       {
        "marker": "A.",
@@ -2026,7 +2026,7 @@
       },
       {
        "marker": "4.",
-       "text": "Reliability testing "
+       "text": "Reliability testing"
       },
       {
        "marker": "A.",
@@ -2109,7 +2109,11 @@
       },
       {
        "marker": "•",
-       "text": "Response to risk: o  An independent test team performs performance efficiency testing during system testing o  A selected sample of end users performs alpha testing and beta testing before the release"
+       "text": "Response to risk:",
+       "sub": [
+        "An independent test team performs performance efficiency testing during system testing",
+        "A selected sample of end users performs alpha testing and beta testing before the release"
+       ]
       }
      ]
     },
@@ -2256,16 +2260,12 @@
      "text": "You received the following defect report from the developers stating that the anomaly described in this test report is not reproducible."
     },
     {
-     "t": "p",
-     "text": "Application hangs up"
-    },
-    {
-     "t": "p",
-     "text": "2022-May-03 – John Doe – Rejected"
-    },
-    {
-     "t": "p",
-     "text": "The application hangs up after entering “Test input: $ä” in the Name field on the new user creation screen. Tried to log off, log in with test_admin01 account, same issue. Tried with other test admin accounts, same issue. No error message received; log (see attached) contains fatal error notification. Based on the test case TC-1305, the application should accept the provided input and create the user. Please fix with high priority, this feature is related to REQ-0012, which is a critical new business requirement."
+     "t": "box",
+     "lines": [
+      "Application hangs up",
+      "2022-May-03 – John Doe – Rejected",
+      "The application hangs up after entering “Test input: $ä” in the Name field on the new user creation screen. Tried to log off, log in with test_admin01 account, same issue. Tried with other test admin accounts, same issue. No error message received; log (see attached) contains fatal error notification. Based on the test case TC-1305, the application should accept the provided input and create the user. Please fix with high priority, this feature is related to REQ-0012, which is a critical new business requirement."
+     ]
     },
     {
      "t": "p",

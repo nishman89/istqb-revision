@@ -1,0 +1,34 @@
+---
+/**
+ * Testing vs debugging, as on the Chapter 1 handout: a failure is found, debugging
+ * (reproduce, diagnose, fix) removes the defect, then confirmation and regression testing follow.
+ */
+import Figure from '../Figure.astro';
+---
+<Figure caption="Testing finds the failure; debugging (a development activity) reproduces, diagnoses and fixes it; testing then confirms the fix and checks for regressions. Static testing finds the defect directly, so only the fix is needed (CTFL 1.1.2)">
+  <svg viewBox="0 0 820 230" role="img" aria-label="Failure found, then debugging: reproduce, diagnose, fix; then confirmation testing and regression testing">
+    <defs><marker id="dbg-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5c5c5c"/></marker></defs>
+    <!-- failure found -->
+    <rect class="b-purple" x="10" y="80" width="110" height="64" rx="12"/>
+    <text class="t" x="65" y="104">Failure</text><text class="t" x="65" y="122">found</text>
+    <line class="ln" x1="122" y1="112" x2="152" y2="112" marker-end="url(#dbg-a)"/>
+    <!-- debugging box -->
+    <rect x="156" y="30" width="420" height="160" rx="16" fill="#fbe3e9" stroke="#d42a57" stroke-width="2" stroke-dasharray="7 6"/>
+    <text class="t-lbl" x="366" y="56" style="font-size:14px">DEBUGGING</text>
+    {[['Reproduce', 'the failure'], ['Diagnose', 'find the cause'], ['Fix', 'remove it']].map(([t, s], i) => (
+      <g>
+        <rect class="b-pink" x={172 + i * 134} y="80" width="118" height="64" rx="12"/>
+        <text class="t" x={231 + i * 134} y="104">{t}</text>
+        <text class="t-sm-w" x={231 + i * 134} y="124">{s}</text>
+        {i < 2 && <line class="ln" x1={292 + i * 134} y1="112" x2={304 + i * 134} y2="112" marker-end="url(#dbg-a)"/>}
+      </g>
+    ))}
+    <!-- branch to confirmation and regression testing -->
+    <line class="ln" x1="560" y1="112" x2="616" y2="62" marker-end="url(#dbg-a)"/>
+    <line class="ln" x1="560" y1="112" x2="616" y2="162" marker-end="url(#dbg-a)"/>
+    <rect class="b-deep" x="620" y="30" width="190" height="64" rx="12"/>
+    <text class="t" x="715" y="54">Confirmation testing</text><text class="t-sm-w" x="715" y="74">is it fixed?</text>
+    <rect class="b-dark" x="620" y="130" width="190" height="64" rx="12"/>
+    <text class="t" x="715" y="154">Regression testing</text><text class="t-sm-w" x="715" y="174">did anything else break?</text>
+  </svg>
+</Figure>

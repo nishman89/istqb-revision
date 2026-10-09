@@ -12,6 +12,8 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Compare from '../../components/diagrams/Compare.astro';
+import WhenThen from '../../components/WhenThen.astro';
 import Cycle from '../../components/diagrams/Cycle.astro';
 import UnifiedProcess from '../../components/diagrams/UnifiedProcess.astro';
 import Ripple from '../../components/diagrams/Ripple.astro';
@@ -98,7 +100,7 @@ Some activities within software development processes can also be described by m
 <SyllabusRef ref="2.1" />
 
 <Cycle center="Sprint 2-4 weeks" caption="A Scrum sprint: the team plans from the product backlog and delivers a working increment every sprint (CTFL 2.1)" steps={[
-  { title: 'Requirements' }, { title: 'Analysis' }, { title: 'Design' }, { title: 'Implementation' },
+  { title: 'Requirements', tone: 'pink' }, { title: 'Analysis', tone: 'purple' }, { title: 'Design', tone: 'blue' }, { title: 'Implementation', tone: 'green' },
 ]} />
 
 - **Scrum** - Sprints, backlog, daily stand-up, review and retrospective
@@ -207,11 +209,12 @@ TDD, ATDD and BDD are similar development approaches, where tests are defined as
 
 <SyllabusRef ref="2.1.4" />
 
-- Development
-(incl. testing)
-- Operations
-- Common goals, equal value - a cultural shift
-- Build, test and release high-quality code faster through a delivery pipeline
+<Compare middle="+" caption="DevOps brings development (including testing) and operations together - a cultural shift that values both equally (CTFL 2.1.4)" columns={[
+  { title: 'Development', sub: 'including testing', points: ['Build and test new features', 'Fast feedback on every change'] },
+  { title: 'Operations', sub: 'run the live system', points: ['Deploy and monitor', 'Keep the system stable'] },
+]} />
+
+The goal: **build, test and release high-quality code faster**, through a delivery pipeline.
 
 #### DevOps promotes
 
@@ -253,8 +256,8 @@ From a testing perspective, some of the benefits of DevOps are: fast feedback on
 
 <SyllabusRef ref="2.1.4" />
 
-- The delivery pipeline must be defined and established
-- CI/CD tools must be introduced and maintained
+- **The pipeline** - The delivery pipeline must be defined and established
+- **CI/CD tools** - must be introduced and maintained
 - **Test automation needs extra resources** - and may be difficult to establish and maintain
 - **Manual testing is still needed** - especially from the user's perspective
 
@@ -300,7 +303,7 @@ For the shift-left approach it is important that stakeholders are convinced and 
 <SyllabusRef ref="2.1.6" />
 
 <Cycle center="Retrospective" caption="A retrospective: held at the end of an iteration or project, at a release milestone, or as needed (CTFL 2.1.6)" steps={[
-  { title: 'What was successful?', sub: 'keep doing it' }, { title: "What wasn't?", sub: 'what to improve' }, { title: 'How do we move forward?', sub: 'agree actions' },
+  { title: 'What was successful?', sub: 'keep doing it', tone: 'green' }, { title: "What wasn't?", sub: 'what to improve', tone: 'red' }, { title: 'How do we move forward?', sub: 'agree actions', tone: 'blue' },
 ]} />
 
 - **The whole team takes part** - not just the testers
@@ -356,27 +359,24 @@ Test types are groups of test activities related to specific quality characteris
 
 <TestPyramid />
 
-- Does it integrate with the third-party payment system?
-- Do the basket, catalogue and checkout modules work together?
-- Do the methods calculating totals and shipping work?
+Using an online shop as the example:
 
-#### E-commerce example
-
-- Fewer, bigger, slower tests at the top - many small, fast tests at the base
-
-### Test Levels and the V-Model
-
-<SyllabusRef ref="2.2.1" />
-
+| Test level | Example question it answers |
+|---|---|
+| Component | Do the methods that calculate the basket total and add shipping work? |
+| Component integration | Do the basket, catalogue and checkout modules work together? |
+| System | Does the entire store work, end to end? |
+| System integration | Does it work with the third-party payment system? |
+| Acceptance | Does it meet the shop's business needs? |
 
 ### Component Testing
 
 <SyllabusRef ref="2.2.1" />
 
-- Testing components in isolation
+- **Focus** - Testing components in isolation
 - **Often needs specific support** - Unit test frameworks and test harnesses
 - **Normally done by developers** - in their development environment
-- **E-commerce example** Individual methods for calculating the total and adding shipping in the shopping basket
+- **E-commerce example** - Individual methods for calculating the total and adding shipping in the shopping basket
 
 ### Component Integration Testing
 
@@ -385,39 +385,39 @@ Test types are groups of test activities related to specific quality characteris
 - Interfaces and interactions between components
 - Also known as unit integration testing
 - **Heavily dependent on the integration strategy** - Bottom-up, top-down or big-bang
-- **E-commerce example** Integration of the shopping basket, catalogue and checkout modules
+- **E-commerce example** - Integration of the shopping basket, catalogue and checkout modules
 
 ### System Testing
 
 <SyllabusRef ref="2.2.1" />
 
-- Overall behaviour and capabilities of the entire system or product
+- **Focus** - Overall behaviour and capabilities of the entire system or product
 - **Functional testing** - of end-to-end tasks
 - **Non-functional testing** - of quality characteristics, e.g. usability
 - **Representative test environment** - for some tests; sub-systems may need simulating
 - **Often an independent test team** - related to the system specifications
-- **E-commerce example** Does the entire store work?
+- **E-commerce example** - Does the entire store work?
 
 ### System Integration Testing
 
 <SyllabusRef ref="2.2.1" />
 
-- Interfaces with other systems and external services
+- **Focus** - Interfaces with other systems and external services
 - **Needs suitable test environments** - preferably similar to the operational environment
 - **Real connections** - Systems simulated in system testing are now integrated for real
-- **E-commerce example** Does it integrate with the third-party payment system?
+- **E-commerce example** - Does it integrate with the third-party payment system?
 
 ### Acceptance Testing
 
 <SyllabusRef ref="2.2.1" />
 
-- Validation - and demonstrating readiness for deployment
+- **Focus** - Validation, and demonstrating readiness for deployment
 - **Does it fulfil the user's business need?** - Ideally performed by the intended users
 - User acceptance testing (UAT)
 - Operational acceptance testing
 - Contractual and regulatory acceptance testing
 - Alpha and beta testing
-- **E-commerce example** Does it satisfy the users' needs?
+- **E-commerce example** - Does it satisfy the users' needs?
 
 ### What Distinguishes Each Level?
 
@@ -572,10 +572,20 @@ Confirmation testing and/or regression testing for the test object are needed on
 
 <SyllabusRef ref="2.3" />
 
+Maintenance testing checks changes to a system that is **already in operation**.
+
+#### What triggers it?
+
+<WhenThen whenLabel="Trigger" thenLabel="What to test" rows={[
+  { when: 'Modification - planned enhancements, corrective changes, hot fixes', then: 'The change itself, plus regression testing of the unchanged parts' },
+  { when: 'Upgrade or migration - e.g. to a new platform or environment', then: 'The new environment and the changed software, plus data conversion' },
+  { when: 'Retirement - the application reaches end of life', then: 'Data archiving, and restore and retrieval after archiving' },
+]} />
+
 - **Categories of maintenance** - Corrective, adaptive to environment changes, or improving performance / maintainability (ISO/IEC 14764)
 - **Planned or unplanned** - Planned releases and deployments - or unplanned hot fixes
 - **Impact analysis** - Done before a change, to help decide whether to make it
-- **Testing in production** - Did the change work? And are there regressions in the unchanged parts - usually most of the system?
+- **Scope depends on** - The risk of the change, the size of the existing system and the size of the change
 
 <SyllabusText>
 

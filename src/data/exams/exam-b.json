@@ -1154,24 +1154,39 @@
      "text": "You designed the test cases with the following input data:"
     },
     {
-     "t": "p",
-     "text": "TC1: Cholesterol = 125 mg/dl Blood pressure = 141 mm Hg"
-    },
-    {
-     "t": "p",
-     "text": "TC2: Cholesterol = 200 mg/dl Blood pressure = 201 mm Hg"
-    },
-    {
-     "t": "p",
-     "text": "TC3: Cholesterol = 124 mg/dl Blood pressure = 201 mm Hg"
-    },
-    {
-     "t": "p",
-     "text": "TC4: Cholesterol = 109 mg/dl Blood pressure = 200 mm Hg"
-    },
-    {
-     "t": "p",
-     "text": "TC5: Cholesterol = 201 mg/dl Blood pressure = 140 mm Hg"
+     "t": "table",
+     "rows": [
+      [
+       "Test case",
+       "Cholesterol",
+       "Blood pressure"
+      ],
+      [
+       "TC1",
+       "125 mg/dl",
+       "141 mm Hg"
+      ],
+      [
+       "TC2",
+       "200 mg/dl",
+       "201 mm Hg"
+      ],
+      [
+       "TC3",
+       "124 mg/dl",
+       "201 mm Hg"
+      ],
+      [
+       "TC4",
+       "109 mg/dl",
+       "200 mm Hg"
+      ],
+      [
+       "TC5",
+       "201 mg/dl",
+       "140 mm Hg"
+      ]
+     ]
     },
     {
      "t": "p",
@@ -1476,20 +1491,13 @@
      "text": "Consider the following acceptance criteria for a user story written from the perspective of an online store owner."
     },
     {
-     "t": "p",
-     "text": "Given that the user is logged in and on the homepage,"
-    },
-    {
-     "t": "p",
-     "text": "When the user clicks on the \"Add Item\" button,"
-    },
-    {
-     "t": "p",
-     "text": "Then the \"Create Item\" form should appear,"
-    },
-    {
-     "t": "p",
-     "text": "And the user should be able to input a name and price for the new item."
+     "t": "box",
+     "lines": [
+      "Given that the user is logged in and on the homepage,",
+      "When the user clicks on the \"Add Item\" button,",
+      "Then the \"Create Item\" form should appear,",
+      "And the user should be able to input a name and price for the new item."
+     ]
     },
     {
      "t": "p",

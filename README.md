@@ -24,6 +24,7 @@ progress is saved in their own browser. It works on desktops, tablets and phones
 | **Exam tips** | Exam technique based on an analysis of all 160 sample-paper questions: the 8 calculation topics worth 20% of the exam (with a method for each), the K-level mix, key words and question formats. Includes a quiz of all 32 K3 questions. |
 | **Handouts** | Download the six chapter handouts and the practice workbook (PDF). Each chapter page also has a download button for its handout. |
 | **Glossary** (header link) | Opens the official ISTQB glossary at glossary.istqb.org in a new tab |
+| **Practice sets** | From the Sample Papers page: practise **by chapter** (1-6) or **by K-level** (K1, K2, K3), using every matching question from Papers A-D |
 | **Past papers** | Sit any of the four ISTQB sample exams in full: 40 questions with an optional 60- or 75-minute timer, then a score for each chapter. |
 
 ### How the quizzes work
@@ -297,7 +298,7 @@ Which set of input data exercises all the partitions?
 </Exercise>
 ```
 
-Use `kind="discuss"` for an open question with a suggested answer. Leave a blank line after the opening tag and
+Use `kind="discuss"` for an open question with a suggested answer, and `kind="example"` for a worked example (shown with a "Show the worked solution" panel). Leave a blank line after the opening tag and
 around the answer so the Markdown inside is formatted.
 
 ### Other things you might change

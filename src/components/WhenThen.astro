@@ -1,0 +1,34 @@
+---
+/**
+ * "If this happens → do this" rows. Good for directives, triggers and responses.
+ *
+ *   <WhenThen when="If…" then="Do…" rows={[{ when: 'A risk becomes an issue', then: 'Reprioritise tests' }]} />
+ */
+interface Row { when: string; then: string; }
+interface Props { rows: Row[]; whenLabel?: string; thenLabel?: string; }
+const { rows, whenLabel = 'When…', thenLabel = '…then' } = Astro.props;
+---
+<div class="when-then">
+  <div class="when-then__head" aria-hidden="true"><span>{whenLabel}</span><span></span><span>{thenLabel}</span></div>
+  {rows.map((r) => (
+    <div class="when-then__row">
+      <span class="when-then__when">{r.when}</span>
+      <span class="when-then__arrow" aria-hidden="true">→</span>
+      <span class="when-then__then">{r.then}</span>
+    </div>
+  ))}
+</div>
+
+<style>
+  .when-then { margin: 1rem 0; display: grid; gap: 0.6rem; }
+  .when-then__head, .when-then__row { display: grid; grid-template-columns: 1fr 2.5rem 1fr; align-items: center; }
+  .when-then__head span { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-dark); padding: 0 1rem; }
+  .when-then__when { background: var(--surface); box-shadow: var(--shadow); border-radius: 12px; padding: 0.75rem 1rem; color: var(--grey); }
+  .when-then__arrow { text-align: center; font-size: 1.4rem; font-weight: 700; color: var(--pink); }
+  .when-then__then { background: var(--charcoal); color: #fff; border-radius: 12px; padding: 0.75rem 1rem; font-weight: 700; }
+  @media (max-width: 40rem) {
+    .when-then__head { display: none; }
+    .when-then__row { grid-template-columns: 1fr; gap: 0.25rem; }
+    .when-then__arrow { transform: rotate(90deg); line-height: 1; }
+  }
+</style>

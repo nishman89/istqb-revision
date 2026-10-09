@@ -9,6 +9,8 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import IconCards from '../../components/IconCards.astro';
+import Tiles from '../../components/diagrams/Tiles.astro';
 import Partitions from '../../components/diagrams/Partitions.astro';
 import Exercise from '../../components/Exercise.astro';
 import Compare from '../../components/diagrams/Compare.astro';
@@ -225,7 +227,7 @@ Strictly, invalid partitions are best tested one at a time, but that goes beyond
 </div>
 </Exercise>
 
-<Exercise source="workbook" title="Worked example: age and membership">
+<Exercise source="workbook" kind="example" title="Worked example: age and membership">
 
 Applicants aged **18-65** are eligible. Membership is **Standard** or **Gold**.
 
@@ -459,11 +461,12 @@ In limited-entry decision tables all the values of the conditions and actions (e
 
 <SyllabusRef ref="4.2.3" />
 
-- **Full table** - every combination of conditions
-- **Delete** - infeasible columns
-- columns where some conditions don't affect the outcome
-- **COVERAGE ITEMS = FEASIBLE COLUMNS** - **Coverage  =** columns exercised**÷** feasible columns**× 100%**
-- Minimisation algorithms are out of scope of the syllabus.
+- **1. Build the full table** - every combination of conditions
+- **2. Delete infeasible columns** - combinations that can't happen
+- **3. Merge (minimise)** - columns where some conditions don't affect the outcome
+
+> **Coverage items = the feasible columns.** Coverage = columns exercised ÷ feasible columns × 100%.
+> Minimisation algorithms are out of scope of the syllabus.
 
 <SyllabusText>
 
@@ -486,7 +489,7 @@ The strength of decision table testing is that it provides a systematic approach
 
 </SyllabusText>
 
-<Exercise source="workbook" title="Worked example: cash machine">
+<Exercise source="workbook" kind="example" title="Worked example: cash machine">
 
 A cash machine checks: **card valid?** **PIN correct?** **sufficient funds?**
 
@@ -531,13 +534,10 @@ A state transition diagram models the behavior of a system by showing its possib
 
 <SyllabusRef ref="4.2.4" />
 
-- If the door is OPEN, you can close it
-- If it is CLOSED, "close door" isn't available
-- You can't close it again until you open it
-- **So a door has two states** - OPEN and CLOSED
+- **If the door is OPEN** - you can close it
+- **If the door is CLOSED** - "close door" isn't available until you open it again
 
-- Close door
-- Open door
+So a door has **two states**: OPEN and CLOSED, and two events that move between them: *close door* and *open door*.
 
 ### Door Example - 3 States
 
@@ -677,7 +677,7 @@ All states coverage is weaker than valid transitions coverage, because it can ty
 
 </SyllabusText>
 
-<Exercise source="workbook" title="Worked example: TV states">
+<Exercise source="workbook" kind="example" title="Worked example: TV states">
 
 A TV has three states. **Off:** TV button → Standby (Remote does nothing). **Standby:** TV button → Off, Remote → On.
 **On:** TV button → Off, Remote → Standby.
@@ -748,11 +748,11 @@ However, exercising a statement with a test case will not detect defects in all 
 
 <SyllabusRef ref="4.3.2" />
 
-- pink = conditional
-dark = unconditional
 - **Branch** - A transfer of control between two nodes in the control flow graph
-- **Conditional or unconditional** - A decision outcome - or straight-line code
+- **Conditional or unconditional** - A decision outcome (conditional) - or straight-line code (unconditional)
 - **Branch coverage** - Branches exercised ÷ total branches × 100%
+
+*In the control flow graphs on this page, pink arrows are conditional branches (decision outcomes) and grey ones unconditional.*
 
 <SyllabusText>
 
@@ -779,7 +779,7 @@ Branch coverage subsumes statement coverage. This means that any set of test cas
 
 </SyllabusText>
 
-<Exercise source="workbook" title="Worked example: statement vs branch coverage">
+<Exercise source="workbook" kind="example" title="Worked example: statement vs branch coverage">
 
 ```
 1  READ A, B
@@ -883,12 +883,14 @@ Fault attacks are a methodical approach to the implementation of error guessing.
 
 <SyllabusRef ref="4.4.1" />
 
-- Correct input not accepted; parameters wrong or missing
-- **Output** - Wrong format; wrong result
-- Missing cases; wrong operator
-- **Computation** - Wrong operand; wrong result
-- **Interfaces** - Parameter mismatch; incompatible types
-- Incorrect initialisation; wrong type
+<IconCards items={[
+  { icon: '⌨️', title: 'Input', points: ['Correct input not accepted', 'Parameters wrong or missing'] },
+  { icon: '🖨️', title: 'Output', points: ['Wrong format', 'Wrong result'] },
+  { icon: '🔀', title: 'Logic', points: ['Missing cases', 'Wrong operator'] },
+  { icon: '🧮', title: 'Computation', points: ['Wrong operand', 'Wrong result'] },
+  { icon: '🔌', title: 'Interfaces', points: ['Parameter mismatch', 'Incompatible types'] },
+  { icon: '🗃️', title: 'Data', points: ['Incorrect initialisation', 'Wrong type'] },
+]} />
 
 ### Exploratory Testing
 
@@ -968,8 +970,9 @@ In the absence of detailed test cases, checklist-based testing can provide guide
   { title: 'Card', sub: 'As a… I want… so that…' }, { title: 'Conversation', sub: 'how it will be used' }, { title: 'Confirmation', sub: 'the acceptance criteria' },
 ]} />
 
-- As a **[role]**, I want **[goal]**, so that I can **[business value]**
-- The medium - e.g. an index card or an entry on an electronic board
+> **The template:** As a **[role]**, I want **[goal]**, so that I can **[business value]**.
+
+- **Card** - The medium - e.g. an index card or an entry on an electronic board
 - **Conversation** - How the software will be used - documented or verbal
 - **Confirmation** - The acceptance criteria
 
@@ -985,10 +988,9 @@ The most common format for a user story is "As a [role], I want [goal to be acco
 
 <SyllabusRef ref="4.5.1" />
 
-- Business
-- Development
-- Testing
-- Three perspectives → a shared vision (via brainstorming, mind mapping)
+<Tiles cols={3} caption="Three perspectives create a shared vision - through brainstorming and mind mapping (CTFL 4.5.1)" tiles={[
+  { title: 'Business', sub: 'what is valuable' }, { title: 'Development', sub: 'what is feasible' }, { title: 'Testing', sub: 'how we will know it works' },
+]} />
 
 #### Good stories are INVEST
 
@@ -996,8 +998,10 @@ The most common format for a user story is "As a [role], I want [goal to be acco
 - Negotiable
 - Valuable
 - Estimable
+- Small
 - Testable
-- **If a stakeholder doesn't know how to test a story…** - it may not be clear enough, may not reflect something valuable to them - or they may just need help testing.
+
+> **If a stakeholder doesn't know how to test a story…** it may not be clear enough, may not reflect something valuable to them - or they may just need help testing.
 
 <SyllabusText>
 
@@ -1092,7 +1096,7 @@ When captured in a format supported by a test automation framework, the develope
 
 </SyllabusText>
 
-<Exercise source="workbook" title="Worked example: ATDD for a discount code">
+<Exercise source="workbook" kind="example" title="Worked example: ATDD for a discount code">
 
 **US-88 Apply a discount code** - *As a shopper, I want to apply a discount code so that I pay less.*
 Acceptance criteria: valid code → 10% off · expired code → error.

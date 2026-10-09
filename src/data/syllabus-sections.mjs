@@ -1,0 +1,21 @@
+/** CTFL v4.0 syllabus sub-section titles, used to group topics within long sections of the notes. */
+export const SECTION_TITLES = {
+  '1.1.1': 'Test Objectives', '1.1.2': 'Testing and Debugging',
+  '1.2.1': "Testing's Contributions to Success", '1.2.2': 'Testing and Quality Assurance', '1.2.3': 'Errors, Defects, Failures and Root Causes',
+  '1.4.1': 'Test Activities and Tasks', '1.4.2': 'Test Process in Context', '1.4.3': 'Testware', '1.4.4': 'Traceability', '1.4.5': 'Roles in Testing',
+  '1.5.1': 'Generic Skills Required for Testing', '1.5.2': 'Whole Team Approach', '1.5.3': 'Independence of Testing',
+  '2.1.1': 'Impact of the SDLC on Testing', '2.1.2': 'SDLC and Good Testing Practices', '2.1.3': 'Testing as a Driver for Development',
+  '2.1.4': 'DevOps and Testing', '2.1.5': 'Shift-Left Approach', '2.1.6': 'Retrospectives and Process Improvement',
+  '2.2.1': 'Test Levels', '2.2.2': 'Test Types', '2.2.3': 'Confirmation Testing and Regression Testing',
+  '3.1.1': 'Work Products Examinable by Static Testing', '3.1.2': 'Value of Static Testing', '3.1.3': 'Static vs Dynamic Testing',
+  '3.2.1': 'Early and Frequent Stakeholder Feedback', '3.2.2': 'Review Process Activities', '3.2.3': 'Roles and Responsibilities in Reviews',
+  '3.2.4': 'Review Types', '3.2.5': 'Success Factors for Reviews',
+  '4.2.1': 'Equivalence Partitioning', '4.2.2': 'Boundary Value Analysis', '4.2.3': 'Decision Table Testing', '4.2.4': 'State Transition Testing',
+  '4.3.1': 'Statement Testing and Coverage', '4.3.2': 'Branch Testing and Coverage', '4.3.3': 'The Value of White-Box Testing',
+  '4.4.1': 'Error Guessing', '4.4.2': 'Exploratory Testing', '4.4.3': 'Checklist-Based Testing',
+  '4.5.1': 'Collaborative User Story Writing', '4.5.2': 'Acceptance Criteria', '4.5.3': 'Acceptance Test-Driven Development (ATDD)',
+  '5.1.1': 'Purpose and Content of a Test Plan', '5.1.2': 'Contribution to Iteration and Release Planning', '5.1.3': 'Entry and Exit Criteria',
+  '5.1.4': 'Estimation Techniques', '5.1.5': 'Test Case Prioritisation', '5.1.6': 'Test Pyramid', '5.1.7': 'Testing Quadrants',
+  '5.2.1': 'Risk Definition and Risk Attributes', '5.2.2': 'Project Risks and Product Risks', '5.2.3': 'Product Risk Analysis', '5.2.4': 'Product Risk Control',
+  '5.3.1': 'Metrics Used in Testing', '5.3.2': 'Test Reports', '5.3.3': 'Communicating the Status of Testing',
+};

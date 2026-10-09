@@ -13,6 +13,20 @@ const pct = (n: number) => Math.round((n / total) * 100);
 const stemText = (q: (typeof qs)[number]) => q.blocks.map((b) => ('text' in b ? b.text : '')).join(' ');
 
 const kCount = (k: string) => qs.filter((q) => q.k === k).length;
+const perPaper = (k: string) => Math.round(kCount(k) / exams.length);
+const byChapter = (ch: number, k?: string) => {
+  const n = qs.filter((q) => q.chapter === ch && (!k || q.k === k)).length / exams.length;
+  return n ? Math.round(n * 10) / 10 : '-';
+};
+const CHAPTERS = (await getCollection('chapters')).sort((a, b) => a.data.number - b.data.number).map((c) => ({ n: c.data.number, title: c.data.title }));
+const LEVELS = [
+  { k: 'K1', name: 'Remember', time: '1 minute', what: 'Recall a term, fact or definition - e.g. which option is a typical test objective.',
+    how: 'You either know it or you don\'t - answer quickly and move on. Learn the key terms in each chapter.' },
+  { k: 'K2', name: 'Understand', time: '1-2 minutes', what: 'Explain, compare, classify or give an example - most of the exam.',
+    how: 'Read every option before choosing; several may sound right, so pick the one that best fits the exact wording.' },
+  { k: 'K3', name: 'Apply', time: '3 minutes', what: 'Use a technique on a scenario - partitions, boundaries, decision tables, estimates…',
+    how: 'Work it out on scratch paper first, then find your answer among the options. Never guess from the options alone.' },
+];
 const keywords = ['BEST', 'MOST', 'NOT', 'CORRECT', 'LEAST'].map((w) => ({
   word: w,
   n: qs.filter((q) => new RegExp(`\\b${w}\\b`).test(stemText(q))).length,
@@ -25,13 +39,59 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
   </PageHead>
 
   <div class="container tips">
+    <nav class="on-page no-print" aria-label="On this page">
+      <span class="eyebrow">On this page</span>
+      <ul>
+        <li><a href="#k-levels">The K-levels</a></li>
+        <li><a href="#k3">8 calculation skills</a></li>
+        <li><a href="#key-words">Key words</a></li>
+        <li><a href="#formats">Question formats</a></li>
+        <li><a href="#on-the-day">On the day</a></li>
+      </ul>
+    </nav>
     <section>
-      <h2 class="dot">1. Eight topics are worth 20% of the exam</h2>
+      <h2 class="dot" id="k-levels">1. Know the three K-levels</h2>
+      <p>Every question tests one learning objective at one <strong>knowledge level (K-level)</strong>. Each one needs a different approach -
+        and you can practise each on its own, using every question from Sample Papers A-D.</p>
+      <div class="grid klevels">
+        {LEVELS.map((l) => (
+          <article class="card klevel">
+            <span class="klevel__k">{l.k}</span>
+            <h3>{l.name}</h3>
+            <p class="klevel__share"><strong>{perPaper(l.k)}</strong> of 40 questions per paper · {pct(kCount(l.k))}%</p>
+            <p>{l.what}</p>
+            <p class="klevel__how"><strong>How to answer:</strong> {l.how}</p>
+            <p class="klevel__time">Allow about {l.time} per question</p>
+            <a class="btn" href={url(`practice/${l.k.toLowerCase()}`)}>Practise {kCount(l.k)} {l.k} questions</a>
+          </article>
+        ))}
+      </div>
+
+      <h3 class="sub">Where the K1 and K2 questions come from</h3>
+      <p class="muted">Average number of questions per paper, by chapter (Sample Papers A-D).</p>
+      <div class="table-wrap">
+        <table class="breakdown">
+          <thead><tr><th>Chapter</th><th>K1</th><th>K2</th><th>K3</th><th>Total</th></tr></thead>
+          <tbody>
+            {CHAPTERS.map((c) => (
+              <tr>
+                <td><a href={url(`chapters/${c.n}`)}>{c.n}. {c.title}</a></td>
+                <td>{byChapter(c.n, 'K1')}</td><td>{byChapter(c.n, 'K2')}</td><td>{byChapter(c.n, 'K3')}</td>
+                <td><strong>{byChapter(c.n)}</strong></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="dot" id="k3">2. Master the 8 calculation skills (K3)</h2>
       <div class="card card--dark highlight">
         <p class="big">{kCount('K3')} of {total}</p>
-        <p>K3 ("apply it") questions in the sample papers all come from the <strong>same 8 learning objectives</strong> -
+        <p>K3 questions in the sample papers all come from the <strong>same 8 learning objectives</strong> -
           and every paper has <strong>exactly one</strong> question on each. Master these 8 skills and you have 8 of the 40 marks.</p>
-        <a class="btn" href={url('exam-tips/k3')}>Practise all {kCount('K3')} K3 questions</a>
+        <a class="btn" href={url('practice/k3')}>Practise all {kCount('K3')} K3 questions</a>
       </div>
       <div class="grid k3">
         {K3_TOPICS.map((t, i) => (
@@ -47,20 +107,7 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
     </section>
 
     <section>
-      <h2 class="dot">2. Understanding beats memorising</h2>
-      <div class="kmix card">
-        {[['K1', 'Remember', 'b-dark'], ['K2', 'Understand', 'b-pink'], ['K3', 'Apply', 'b-dark']].map(([k, label, c]) => (
-          <div class:list={['kmix__bar', c]} style={`flex:${kCount(k)}`}>
-            <strong>{k} {pct(kCount(k))}%</strong><span>{label}</span>
-          </div>
-        ))}
-      </div>
-      <p>Most questions are <strong>K2</strong>: they ask you to explain, compare or pick the best description - not just recall a
-        definition. Learn <em>why</em>, and be able to tell similar terms apart (the "Watch out for…" box at the end of each chapter lists the usual mix-ups).</p>
-    </section>
-
-    <section>
-      <h2 class="dot">3. Read the key word twice</h2>
+      <h2 class="dot" id="key-words">3. Read the key word twice</h2>
       <p>{pct(withKeyword)}% of questions turn on a qualifier. Underline it in your head before you look at the options.</p>
       <ul class="words">
         {keywords.map(({ word, n }) => <li><span class="word">{word}</span><span class="muted">{n} questions</span></li>)}
@@ -85,7 +132,7 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
 
 
     <section>
-      <h2 class="dot">4. Know the question formats</h2>
+      <h2 class="dot" id="formats">4. Know the question formats</h2>
       <p>Every paper mixes in a few question formats that need a different approach:</p>
       <div class="grid formats">
         <div class="card"><h3>Matching</h3><p>Pair 1-4 with A-D. Find the pairings you're sure of, then rule out options that contradict them.</p></div>
@@ -96,22 +143,38 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
     </section>
 
     <section class="card card--tint">
-      <h2>5. On the day</h2>
+      <h2 id="on-the-day">5. On the day</h2>
       <ul class="day">
         <li><strong>60 minutes for 40 questions</strong> (75 if the exam isn't in your native language) - about 1½ minutes each.</li>
         <li><strong>Do a first pass</strong> answering everything you're sure of; flag the slow calculations and come back to them.</li>
         <li><strong>Allow ~1 minute for K1, 1-2 for K2 and 3 for K3</strong> - the 8 calculation questions deserve the extra time.</li>
         <li><strong>26 / 40 (65%) passes.</strong> You can drop 14 marks and still pass - don't panic over one hard question.</li>
       </ul>
-      <p class="muted">Statistics calculated from ISTQB® CTFL v4.0 Sample Exams A (v1.7), B (v1.7), C (v1.6) and D (v1.5). Timing guidance from ISTQB® Exam Structures and Rules v1.2.</p>
+      <p class="muted">Statistics calculated from ISTQB® CTFL v4.0 Sample Papers A (v1.7), B (v1.7), C (v1.6) and D (v1.5). Timing guidance from ISTQB® Exam Structures and Rules v1.2.</p>
     </section>
   </div>
 </BaseLayout>
 
 <style>
+  .on-page { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
+  .on-page ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .on-page a { display: block; padding: 0.35rem 0.85rem; border-radius: 999px; background: var(--surface); box-shadow: var(--shadow); font-weight: 700; text-decoration: none; color: var(--charcoal); font-size: 0.9rem; }
+  .on-page a:hover { background: var(--pink-tint); color: var(--pink-dark); }
   .lead { max-width: 46rem; font-size: 1.1rem; color: var(--grey); margin: 1rem 0 0; }
   .tips { display: grid; gap: 3rem; }
   .tips h2 { margin-bottom: 1rem; }
+  .klevel { display: flex; flex-direction: column; gap: 0.35rem; border-top: 5px solid var(--pink); }
+  .klevel:nth-child(2) { border-top-color: var(--charcoal); }
+  .klevel h3 { margin: 0; }
+  .klevel p { margin: 0; }
+  .klevel__k { font: 700 2.2rem/1 var(--font-head); color: var(--pink-dark); }
+  .klevel__share { color: var(--grey); }
+  .klevel__how { background: var(--bg); border-radius: 10px; padding: 0.6rem 0.75rem; font-size: 0.95rem; }
+  .klevel__time { font-size: 0.9rem; font-weight: 700; color: var(--pink-dark); }
+  .klevel .btn { margin-top: auto; align-self: flex-start; }
+  .klevels { margin-bottom: 2rem; }
+  .sub { margin: 1.5rem 0 0.25rem; }
+  .breakdown td:not(:first-child), .breakdown th:not(:first-child) { text-align: center; }
   .highlight { display: grid; gap: 0.5rem; border-left: 8px solid var(--pink); margin-bottom: 1.25rem; }
   .highlight p { margin: 0; color: #ddd; max-width: 50rem; }
   .highlight .btn { justify-self: start; margin-top: 0.5rem; }
@@ -124,13 +187,8 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
   .k3__card h3 { margin: 0.25rem 0 0; }
   .k3__card ol { padding-left: 1.2rem; margin: 0.25rem 0 0.5rem; font-size: 0.95rem; display: grid; gap: 0.35rem; }
   .k3__card a { margin-top: auto; font-weight: 700; }
-  .kmix { display: flex; gap: 4px; padding: 0.5rem; margin-bottom: 1rem; }
-  .kmix__bar { display: flex; flex-direction: column; justify-content: center; padding: 0.75rem 1rem; border-radius: 8px; color: #fff; min-width: 6rem; }
-  .kmix__bar.b-dark { background: var(--charcoal); }
-  .kmix__bar.b-pink { background: var(--pink); }
-  .kmix__bar strong { font: 700 1.3rem var(--font-head); }
   .words { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; }
-  .words li { display: flex; flex-direction: column; align-items: center; background: var(--surface); box-shadow: var(--shadow); border-radius: 12px; padding: 0.75rem 1.25rem; }
+  .words li { flex: 1 1 9rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: var(--surface); box-shadow: var(--shadow); border-radius: 12px; padding: 0.9rem 1rem; }
   .word { font: 700 1.4rem var(--font-head); color: var(--pink-dark); }
   .formats { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
   .formats .card { border-top: 5px solid var(--pink); }
@@ -140,5 +198,4 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
   .caveat { font-size: 0.9rem; color: var(--grey); border-left: 4px solid var(--line); padding-left: 0.75rem; margin-top: 0.5rem; }
   .day { display: grid; gap: 0.5rem; padding-left: 1.25rem; }
   .day li::marker { color: var(--pink); }
-  @media (max-width: 40rem) { .kmix { flex-direction: column; } .kmix__bar { flex: none !important; } }
 </style>

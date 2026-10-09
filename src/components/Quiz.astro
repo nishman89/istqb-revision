@@ -31,6 +31,7 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
         ? <div><dt>Time allowed</dt><dd>60 min <small>(75 if not your native language)</small></dd></div>
         : <div><dt>Suggested time</dt><dd>~{minutes} min</dd></div>}
     </dl>
+    <label class="paged-toggle no-print"><input type="checkbox" data-paged-toggle checked={total > 20} /> Show one question at a time</label>
     <p class="last-attempt" hidden data-last-attempt></p>
     {examMode && (
       <div class="start" data-start>
@@ -102,7 +103,7 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
                 <li data-explain={o.key}><strong>{o.key})</strong> {q.explanation.options[o.key]}</li>
               ))}
             </ul>
-            <p class="review__source muted">ISTQB Sample Exam {q.exam}, question {q.n} · {q.lo}</p>
+            <p class="review__source muted">ISTQB Sample Paper {q.exam}, question {q.n} · {q.lo}</p>
           </div>
         </li>
       ))}
@@ -110,6 +111,12 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
 
     <div class="submit-bar no-print" data-submit-bar>
       <span><strong data-answered>0</strong> of {total} answered</span>
+      <span class="pager-controls" data-pager>
+        <button type="button" class="pager-btn" data-prev aria-label="Previous question">←</button>
+        <span data-position></span>
+        <button type="button" class="pager-btn" data-next aria-label="Next question">→</button>
+      </span>
+      <button type="button" class="link-btn" data-jump>Jump to unanswered</button>
       {examMode && <span class="timer" data-timer hidden aria-live="off"></span>}
       <button class="btn" type="submit">Submit answers</button>
     </div>
@@ -134,7 +141,35 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
 
     const updateCount = () => {
       answeredEl.textContent = String(items.filter(isAnswered).length);
+      quiz.querySelector<HTMLElement>('[data-jump]')!.hidden = items.every(isAnswered);
     };
+
+    // ---- One question at a time
+    const pagedToggle = quiz.querySelector<HTMLInputElement>('[data-paged-toggle]')!;
+    const position = quiz.querySelector<HTMLElement>('[data-position]')!;
+    let current = 0;
+    function show(i: number, scroll = true) {
+      current = Math.max(0, Math.min(items.length - 1, i));
+      items.forEach((it, k) => it.classList.toggle('is-current', k === current));
+      position.textContent = `${current + 1} / ${items.length}`;
+      if (scroll && quiz.classList.contains('is-paged')) items[current].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    function setPaged(on: boolean) {
+      quiz.classList.toggle('is-paged', on);
+      show(current, false);
+    }
+    pagedToggle.addEventListener('change', () => setPaged(pagedToggle.checked));
+    quiz.querySelector('[data-prev]')!.addEventListener('click', () => show(current - 1));
+    quiz.querySelector('[data-next]')!.addEventListener('click', () => show(current + 1));
+    setPaged(pagedToggle.checked);
+
+    // ---- Jump to the first unanswered question
+    quiz.querySelector('[data-jump]')!.addEventListener('click', () => {
+      const i = items.findIndex((it) => !isAnswered(it));
+      if (i < 0) return;
+      if (quiz.classList.contains('is-paged')) show(i);
+      else items[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
 
     // "Select TWO" questions: stop a third box being ticked.
     form.addEventListener('change', (e) => {
@@ -359,6 +394,14 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
   .review__options li.is-picked:not(.is-correct) { border-left-color: var(--pink); }
   .review__source { font-size: 0.8rem; margin: 0.75rem 0 0; }
 
+  .paged-toggle { display: flex; gap: 0.5rem; align-items: center; margin-top: 1rem; font-weight: 700; font-size: 0.95rem; cursor: pointer; }
+  .paged-toggle input { accent-color: var(--pink); width: 1.1rem; height: 1.1rem; }
+  .is-paged:not(.is-marked) .q:not(.is-current) { display: none; }
+  .pager-controls { display: none; align-items: center; gap: 0.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .is-paged:not(.is-marked) .pager-controls { display: inline-flex; }
+  .pager-btn { width: 2.2rem; height: 2.2rem; border-radius: 50%; border: 2px solid #777; background: none; color: #fff; font-size: 1rem; cursor: pointer; }
+  .pager-btn:hover { border-color: var(--pink); background: var(--pink); }
+  .submit-bar .link-btn { background: none; border: 0; color: var(--pink-soft); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
   .submit-bar { position: sticky; bottom: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; background: var(--charcoal); color: #fff; padding: 0.75rem 0.75rem 0.75rem 1.5rem; border-radius: 999px; box-shadow: var(--shadow); margin-top: 1.25rem; }
   @media (max-width: 40rem) {
     .q { padding: 1.1rem; }
@@ -368,7 +411,8 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
     .breakdown { max-width: none; }
     .mini { width: 5rem; }
     .score__big { font-size: 2.75rem; }
-    .submit-bar { bottom: 0.5rem; padding: 0.5rem 0.5rem 0.5rem 1rem; font-size: 0.9rem; }
+    .submit-bar { bottom: 0.5rem; padding: 0.5rem 0.5rem 0.5rem 1rem; font-size: 0.9rem; flex-wrap: wrap; border-radius: 18px; row-gap: 0.4rem; }
+    .submit-bar .link-btn { order: 3; }
     .submit-bar .btn { padding: 0.55rem 1rem; }
     .start { flex-direction: column; align-items: stretch; }
     .start select { width: 100%; }

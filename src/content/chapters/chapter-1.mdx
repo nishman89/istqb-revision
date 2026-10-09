@@ -12,6 +12,7 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import DebuggingFlow from '../../components/diagrams/DebuggingFlow.astro';
 import FiveWhys from '../../components/diagrams/FiveWhys.astro';
 import Hub from '../../components/diagrams/Hub.astro';
 import Exercise from '../../components/Exercise.astro';
@@ -175,10 +176,7 @@ Validating whether the test object is complete and works as expected by the stak
 
 <SyllabusRef ref="1.1.2" />
 
-<Flow caption="Dynamic testing finds failures; debugging finds and fixes the defect; testing then confirms the fix and checks for regressions (CTFL 1.1.2)" steps={[
-  { title: 'Dynamic test', sub: 'triggers a failure' }, { title: 'Reproduce', sub: 'debugging' }, { title: 'Diagnose', sub: 'find the root cause' },
-  { title: 'Fix', sub: 'remove the defect' }, { title: 'Confirmation test', sub: 'is it fixed?' }, { title: 'Regression test', sub: 'anything else broken?' },
-]} />
+<DebuggingFlow />
 
 - **Debugging is not testing** - It's a development activity: finding, analysing and removing the cause of a failure
 - **Static testing finds the defect directly** - Nothing is run, so there's no failure to reproduce or diagnose - only the fix is needed
@@ -276,10 +274,12 @@ QA is a process-oriented, preventive approach that focuses on the implementation
 
 <DefectChain />
 
-- **aka mistake** - A human action that produces an incorrect result
-- **Defect** - aka fault, bug · An imperfection in a work product - docs, code or build files
-- **Failure** - The system does not do what it should, or does what it shouldn't
-- **Not every defect causes a failure** - and failures can also come from environmental conditions, e.g. radiation damaging firmware.
+- **Error** - Also called a *mistake* · A human action that produces an incorrect result
+- **Defect** - Also called a *fault* or *bug* · An imperfection in a work product - documentation, code or a build file
+- **Failure** - The system does not do what it should, or does something it shouldn't, when it runs
+
+> **Not every defect causes a failure** - and failures can also come from environmental conditions,
+> e.g. radiation or electromagnetic fields damaging firmware.
 
 <SyllabusText>
 
@@ -512,14 +512,14 @@ It is a fallacy (i.e., a misconception) to expect that software verification wil
 
 <TestProcess />
 
-- **Test Planning** Define test objectives and select an approach
+- **Test Planning** - Define test objectives and select an approach
 - **Test Analysis** - Identify WHAT to test
 - **Test Design** - Decide in detail HOW to test
 - **Test Implementation** - Set up the test environment
 - **Test Execution** - Run and report on the tests
 - **Test Completion** - Finalise and hand over at the end
-- **Test Monitoring & Control** Keep the project on track - runs throughout
-- Often iterative or in parallel - not a strict sequence
+- **Test Monitoring & Control** - Keep the project on track - runs throughout
+- These activities are often iterative or run in parallel - not a strict sequence.
 
 ### Test Activities - Key Tasks
 
@@ -539,15 +539,19 @@ It is a fallacy (i.e., a misconception) to expect that software verification wil
 
 <SyllabusRef ref="1.4.2" />
 
-- **How we test** - depends on…
-- Stakeholders
-- Team members
-- Business domain
-- Technical factors
-- Project constraints
-- Organisational factors
+Testing isn't done in isolation. It's part of the organisation's development process and is funded by stakeholders,
+so **how we test depends on the context**:
 
-#### These factors affect
+- **Stakeholders** - needs, expectations, requirements, willingness to cooperate
+- **Team members** - skills, knowledge, level of experience, availability, training needs
+- **Business domain** - criticality of the test object, identified risks, market needs, legal regulations
+- **Technical factors** - type of software, product architecture, technology used
+- **Project constraints** - scope, time, budget, resources
+- **Organisational factors** - organisational structure, existing policies, practices used
+- **SDLC** - engineering practices, development methods
+- **Tools** - availability, usability, compliance
+
+#### These factors shape
 
 - Test strategy
 - Test techniques
@@ -707,6 +711,29 @@ It is also possible for one person to take on the roles of testing and test mana
 
 <SyllabusRef ref="1.5.1" />
 
+<Compare middle="vs" caption="Different mindsets - both are needed, and the best teams combine them" columns={[
+  { title: 'Developer mindset', sub: 'build it', points: ['Focused on designing and building a solution', 'Asks: does it work as intended?', 'Close to the code - can be blind to their own mistakes'] },
+  { title: 'Tester mindset', sub: 'challenge it', points: ['Curious, sceptical, with an eye for detail', 'Asks: how could this fail?', 'Brings a different view - finds what the author missed'] },
+]} />
+
+<a class="video-link" href="https://www.youtube.com/watch?v=baY3SaIhfl0" target="_blank" rel="noopener">
+  <span class="video-link__play" aria-hidden="true">▶</span>
+  <span><strong>Watch: "Devs watching QA test the product"</strong><br />A short clip on how it feels to watch someone break your work (YouTube, opens in a new tab)</span>
+</a>
+
+<Exercise kind="discuss" title="Think about it">
+
+How does it feel to have your work "broken" by someone else? How might that affect the way a tester should report what they find?
+
+<div slot="answer">
+
+It can feel like personal criticism - even when it's the product, not the person, being judged. That's why testers need good
+communication skills: report defects and failures **factually and constructively**, focus on the product rather than the
+author, and remember everyone shares the same goal - a quality product.
+
+</div>
+</Exercise>
+
 ### Communication Skills
 
 <SyllabusRef ref="1.5.1" />
@@ -716,8 +743,10 @@ It is also possible for one person to take on the roles of testing and test mana
 - **Testers bring bad news** - …and people tend to blame the messenger
 - **Results feel like criticism** - of the product and of its author
 - **Confirmation bias** - makes conflicting information hard to accept
-- **"Testing is destructive"** - despite its big contribution to success
-- **THE RESPONSE** - Communicate information about defects and failures constructively.
+- **"Testing is destructive"** - despite its big contribution to project success
+
+> **The response:** communicate information about defects and failures **constructively** - stick to the facts,
+> focus on the product rather than the person, and keep the shared goal of quality in view.
 
 <SyllabusText>
 

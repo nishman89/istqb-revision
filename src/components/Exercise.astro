@@ -11,21 +11,23 @@ import { workbook, handoutUrl } from '../data/handouts';
  */
 interface Props {
   title: string;
-  /** "exercise" has a right answer; "discuss" is an open question with a suggested answer. */
-  kind?: 'exercise' | 'discuss';
+  /** "exercise" has a right answer; "discuss" is open; "example" is a worked example with a full solution. */
+  kind?: 'exercise' | 'discuss' | 'example';
   /** Optional multiple-choice options, shown as a), b), c)… */
   options?: string[];
   /** Set to "workbook" for exercises taken from the Sparta practice workbook PDF. */
   source?: 'workbook';
 }
 const { title, kind = 'exercise', options, source } = Astro.props;
-const label = kind === 'discuss' ? 'Discuss' : 'Exercise';
-const reveal = kind === 'discuss' ? 'Show suggested answer' : 'Show answer';
+const label = { exercise: 'Exercise', discuss: 'Discuss', example: 'Worked example' }[kind];
+const icon = { exercise: '?', discuss: '💬', example: '📘' }[kind];
+const reveal = { exercise: 'Show answer', discuss: 'Show suggested answer', example: 'Show the worked solution' }[kind];
+const heading = kind === 'example' ? title.replace(/^Worked example:\s*/i, '') : title;
 ---
 <aside class:list={['exercise', `exercise--${kind}`]} aria-label={`${label}: ${title}`}>
   <header class="exercise__head">
-    <span class="exercise__badge">{kind === 'discuss' ? '💬' : '?'} {label}</span>
-    <span class="exercise__title">{title}</span>
+    <span class="exercise__badge">{icon} {label}</span>
+    <span class="exercise__title">{heading}</span>
     {source === 'workbook' && <a class="exercise__source" href={handoutUrl(workbook)} target="_blank" rel="noopener">📄 Practice workbook</a>}
   </header>
   <div class="exercise__body">
@@ -67,6 +69,14 @@ const reveal = kind === 'discuss' ? 'Show suggested answer' : 'Show answer';
   .exercise__options { list-style: none; padding: 0; margin: 0.25rem 0 0.75rem; display: grid; gap: 0.5rem; }
   .exercise__options li { display: flex; gap: 0.75rem; align-items: center; padding: 0.55rem 0.85rem; border: 2px solid var(--line); border-radius: 10px; }
   .exercise__key { display: grid; place-items: center; flex: none; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--charcoal); color: #fff; font-weight: 700; }
+  /* Worked examples: charcoal header, numbered solution */
+  .exercise--example { border-color: var(--charcoal); }
+  .exercise--example .exercise__head { background: var(--charcoal); }
+  .exercise--example .exercise__title { color: #fff; }
+  .exercise--example .exercise__badge { background: #fff; color: var(--charcoal); }
+  .exercise--example .exercise__source { color: #ddd; }
+  .exercise--example .exercise__answer-body { border-left-color: var(--charcoal); background: var(--bg); }
+  .exercise--example .exercise__answer > summary { color: var(--charcoal); }
   .exercise__answer { border-top: 1px solid var(--line); }
   .exercise__answer > summary { cursor: pointer; list-style: none; padding: 0.8rem 1.25rem; font-weight: 700; color: var(--pink-dark); display: flex; gap: 0.5rem; align-items: center; }
   .exercise__answer > summary::-webkit-details-marker { display: none; }

@@ -48,8 +48,8 @@ src/pages/
 ├── past-papers/[set].astro        /past-papers/c/ …          A full 40-question timed paper
 ├── handouts.astro                 /handouts/                 Download the chapter handouts and practice workbook
 ├── search.json.ts                 /search.json               Build-time search index (one entry per topic)
-├── exam-tips/index.astro          /exam-tips/                Exam technique, with statistics calculated from the papers
-├── exam-tips/k3.astro             /exam-tips/k3/             All 32 K3 questions, grouped by skill
+├── exam-tips/index.astro          /exam-tips/                Exam technique: K-levels first, then K3 skills, key words, formats
+├── practice/[set].astro           /practice/k1/ … /chapter-6/ Practice sets pooled from Papers A-D (src/lib/practice.ts)
 └── 404.astro
 ```
 
@@ -183,6 +183,8 @@ src/components/
 ├── BackToTop.astro       Floating back-to-top button
 ├── SyllabusText.astro    The collapsible "What the syllabus says" box
 ├── WatchOut.astro        "Watch out for…" exam traps at the end of each chapter (data: src/data/traps.ts)
+├── IconCards.astro       Cards with an icon, title and points (e.g. product risks by characteristic)
+├── WhenThen.astro        "When this happens → do this" rows (control directives, maintenance triggers)
 ├── Exercise.astro        A practice question in the notes, answer in a collapsible panel (slot="answer")
 ├── ExamSplit.astro       Questions-per-chapter bar chart (Introduction page)
 ├── QuestionBody.astro    Renders a question's blocks (p / list / table / box / formula / img)
@@ -416,6 +418,7 @@ There is no server. Everything a visitor sees comes from the static files; the o
 | `src/lib/site.ts` | Constants (pass mark, main/practice sets, questions per chapter, K-level timings) and `url()` | - |
 | `src/lib/data.ts` | `getChapters()`, `getQuestions(set, chapter)`, `getExam(set)` | content collections |
 | `src/lib/progress.ts` | All localStorage access: load/save, chapters read, quiz attempts, last visit, reset | - |
+| `src/lib/practice.ts` | Builds the practice sets (by K-level and by chapter) from all four papers | content collections |
 | `src/lib/k3.ts` | The 8 K3 skills, their methods and links into the notes | - |
 | `src/lib/svg.ts` | `wrap()` text for SVG; shared fill classes | - |
 | `src/lib/rehype-tidy-lists.mjs` | List → cards / tags / paragraphs / versus / definition list | - |

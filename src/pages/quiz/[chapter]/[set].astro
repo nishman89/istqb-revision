@@ -3,44 +3,31 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHead from '../../../components/PageHead.astro';
 import Quiz from '../../../components/Quiz.astro';
 import { getChapters, getQuestions } from '../../../lib/data';
-import { url, MAIN_SET, PRACTICE_SETS } from '../../../lib/site';
+import { url, MAIN_SET } from '../../../lib/site';
 import { quizId } from '../../../lib/progress';
 
 export async function getStaticPaths() {
   const chapters = await getChapters();
-  const sets = [MAIN_SET, ...PRACTICE_SETS];
-  return chapters.flatMap(({ data }) =>
-    sets.map((set) => ({ params: { chapter: String(data.number), set: set.toLowerCase() }, props: { chapter: data, set } })),
-  );
+  // The chapter quiz uses the main paper only; wider practice lives in /practice/chapter-N/.
+  return chapters.map(({ data }) => ({ params: { chapter: String(data.number), set: MAIN_SET.toLowerCase() }, props: { chapter: data, set: MAIN_SET } }));
 }
 
 const { chapter, set } = Astro.props;
 const questions = await getQuestions(set, chapter.number);
-const isMain = set === MAIN_SET;
-const others = [MAIN_SET, ...PRACTICE_SETS].filter((s) => s !== set);
 ---
-<BaseLayout title={`Chapter ${chapter.number} quiz - Sample Exam ${set}`}>
-  <PageHead eyebrow={`Chapter ${chapter.number} · ${isMain ? 'Chapter quiz' : 'Extra practice'} · ISTQB Sample Exam ${set}`} title={chapter.title}>
+<BaseLayout title={`Chapter ${chapter.number} quiz`}>
+  <PageHead eyebrow={`Chapter ${chapter.number} · Chapter quiz · ISTQB Sample Paper ${set}`} title={chapter.title}>
     <p class="back no-print"><a href={url(`chapters/${chapter.number}`)}>← Back to the Chapter {chapter.number} notes</a></p>
   </PageHead>
 
   <div class="container">
-    <p class="explain card card--tint">
-      {isMain
-        ? <>This is the <strong>Chapter {chapter.number} quiz</strong>: the {questions.length} questions from <strong>ISTQB Sample Paper {set}</strong> that cover this chapter.
-            For more practice, try the Chapter {chapter.number} questions from Papers {PRACTICE_SETS.join(', ').replace(/, ([^,]*)$/, ' and $1')} below.</>
-        : <>These are the {questions.length} <strong>Chapter {chapter.number}</strong> questions from <strong>ISTQB Sample Paper {set}</strong> - extra practice
-            alongside the main chapter quiz (Paper {MAIN_SET}).</>}
-    </p>
+    <p class="explain card card--tint">This is the <strong>Chapter {chapter.number} quiz</strong>: the {questions.length} questions from
+      <strong>ISTQB Sample Paper {set}</strong> that cover this chapter - the same number the real exam asks on it.</p>
     <Quiz questions={questions} quizId={quizId(chapter.number, set)} />
 
-    <nav class="more card no-print" aria-label="Other question sets">
-      <span class="eyebrow">Other question sets for this chapter</span>
-      <ul>
-        {others.map((s) => (
-          <li><a href={url(`quiz/${chapter.number}/${s.toLowerCase()}`)}>Sample Exam {s}{s === MAIN_SET ? ' (chapter quiz)' : ''}</a></li>
-        ))}
-      </ul>
+    <nav class="more card no-print" aria-label="More practice">
+      <span class="eyebrow">Want more practice?</span>
+      <p><a class="btn btn--dark" href={url(`practice/chapter-${chapter.number}`)}>Practise all Chapter {chapter.number} questions from Sample Papers A-D</a></p>
     </nav>
   </div>
 </BaseLayout>
@@ -49,5 +36,5 @@ const others = [MAIN_SET, ...PRACTICE_SETS].filter((s) => s !== set);
   .back { margin: 1rem 0 0; font-weight: 700; }
   .explain { margin: 0 0 1.25rem; }
   .more { margin-top: 2rem; }
-  .more ul { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; list-style: none; padding: 0; margin: 0.5rem 0 0; font-weight: 700; }
+  .more p { margin: 0.5rem 0 0; }
 </style>

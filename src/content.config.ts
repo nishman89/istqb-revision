@@ -16,7 +16,7 @@ const chapters = defineCollection({
 const block = z.discriminatedUnion('t', [
   z.object({ t: z.literal('p'), text: z.string() }),
   z.object({ t: z.literal('formula'), text: z.string() }),
-  z.object({ t: z.literal('list'), items: z.array(z.object({ marker: z.string(), text: z.string() })) }),
+  z.object({ t: z.literal('list'), items: z.array(z.object({ marker: z.string(), text: z.string(), sub: z.array(z.string()).optional() })) }),
   z.object({ t: z.literal('table'), rows: z.array(z.array(z.string())) }),
   z.object({ t: z.literal('box'), lines: z.array(z.string()) }),
   z.object({ t: z.literal('img'), src: z.string() }),

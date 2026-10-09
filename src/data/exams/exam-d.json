@@ -1038,19 +1038,19 @@
      "items": [
       {
        "marker": "•",
-       "text": "If D < 0      then print the error message “birth year cannot be greater than current year”"
+       "text": "If D < 0 then print the error message “birth year cannot be greater than current year”"
       },
       {
        "marker": "•",
-       "text": "If 0 ≤ D < 18      then apply the student discount"
+       "text": "If 0 ≤ D < 18 then apply the student discount"
       },
       {
        "marker": "•",
-       "text": "If 18 ≤ D < 65      then apply no discount"
+       "text": "If 18 ≤ D < 65 then apply no discount"
       },
       {
        "marker": "•",
-       "text": "If D ≥ 65      then apply the pensioner discount"
+       "text": "If D ≥ 65 then apply the pensioner discount"
       }
      ]
     },
@@ -1063,11 +1063,11 @@
      "items": [
       {
        "marker": "•",
-       "text": "BY = 1990,   CY = 2020,   expected result: no discount"
+       "text": "BY = 1990, CY = 2020, expected result: no discount"
       },
       {
        "marker": "•",
-       "text": "BY = 2030,   CY = 2029,   expected result: print the error message"
+       "text": "BY = 2030, CY = 2029, expected result: print the error message"
       }
      ]
     },
@@ -1770,15 +1770,15 @@
      "items": [
       {
        "marker": "•",
-       "text": "Best-case scenario:     1 hour"
+       "text": "Best-case scenario: 1 hour"
       },
       {
        "marker": "•",
-       "text": "Worst-case scenario:     8 hours"
+       "text": "Worst-case scenario: 8 hours"
       },
       {
        "marker": "•",
-       "text": "Most likely scenario:     3 hours"
+       "text": "Most likely scenario: 3 hours"
       }
      ]
     },

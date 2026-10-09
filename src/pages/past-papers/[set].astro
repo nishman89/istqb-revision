@@ -13,9 +13,9 @@ export function getStaticPaths() {
 const { set } = Astro.props;
 const exam = await getExam(set);
 ---
-<BaseLayout title={`Sample Exam ${set} - full paper`}>
-  <PageHead eyebrow={`Past paper · ISTQB CTFL v4.0 sample exam v${exam.version}`} title={`Sample Exam ${set}`}>
-    <p class="back no-print"><a href={url('past-papers')}>← All past papers</a></p>
+<BaseLayout title={`Sample Paper ${set} - full paper`}>
+  <PageHead eyebrow={`Full sample paper · ISTQB CTFL v4.0 · v${exam.version}`} title={`Sample Paper ${set}`}>
+    <p class="back no-print"><a href={url('past-papers')}>← All sample papers</a></p>
   </PageHead>
   <div class="container">
     <Quiz questions={exam.questions} quizId={examId(set)} examMode />

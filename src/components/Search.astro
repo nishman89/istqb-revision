@@ -1,15 +1,17 @@
 ---
 import { url } from '../lib/site';
+interface Props { id?: string; }
+const { id = 'site-search' } = Astro.props;
 /**
  * Header search: loads /search.json on first focus, then filters topics as you type.
  * Keyboard: "/" focuses the box, ↑/↓ move through results, Enter opens, Esc closes.
  */
 ---
 <div class="search" data-search data-index={url('search.json')} data-base={url()}>
-  <label class="visually-hidden" for="site-search">Search the notes</label>
-  <input id="site-search" type="search" placeholder="Search topics…  ( / )" autocomplete="off"
-         role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list" />
-  <ul id="search-results" class="search__results" role="listbox" hidden></ul>
+  <label class="visually-hidden" for={id}>Search the notes</label>
+  <input id={id} type="search" placeholder="Search topics…  ( / )" autocomplete="off"
+         role="combobox" aria-expanded="false" aria-controls={`${id}-results`} aria-autocomplete="list" />
+  <ul id={`${id}-results`} class="search__results" role="listbox" hidden></ul>
 </div>
 
 <script>
@@ -29,6 +31,13 @@ import { url } from '../lib/site';
     const mark = (s: string, words: string[]) =>
       words.reduce((acc, w) => acc.replace(new RegExp(`(${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'ig'), '<mark>$1</mark>'), escape(s));
 
+    /** One letter: match topics with a word in the title starting with it (titles starting with it rank first). */
+    function scoreLetter(e: Entry, letter: string) {
+      const title = e.title.toLowerCase();
+      if (title.startsWith(letter)) return 10;
+      return title.split(/[^a-z0-9]+/).some((w) => w.startsWith(letter)) ? 5 : 0;
+    }
+
     function score(e: Entry, words: string[]) {
       const title = e.title.toLowerCase(), text = e.text.toLowerCase();
       let total = 0;
@@ -46,12 +55,12 @@ import { url } from '../lib/site';
 
     async function update() {
       const q = input.value.trim().toLowerCase();
-      if (q.length < 2) return close();
+      if (q.length < 1) return close();
       const words = q.split(/\s+/);
       const hits = (await load())
-        .map((e) => ({ e, s: score(e, words) }))
+        .map((e) => ({ e, s: q.length === 1 ? scoreLetter(e, q) : score(e, words) }))
         .filter((h) => h.s > 0)
-        .sort((a, b) => b.s - a.s)
+        .sort((a, b) => b.s - a.s || a.e.title.localeCompare(b.e.title))
         .slice(0, 8);
       list.innerHTML = hits.length
         ? hits.map(({ e }, i) => {

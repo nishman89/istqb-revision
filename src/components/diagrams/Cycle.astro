@@ -3,7 +3,7 @@
 import Figure from '../Figure.astro';
 import { wrap } from '../../lib/svg';
 
-interface Step { title: string; sub?: string; /** Optional colour, e.g. red/green/yellow for TDD. */ tone?: 'red' | 'green' | 'yellow'; }
+interface Step { title: string; sub?: string; /** Optional colour, e.g. red/green/yellow for TDD. */ tone?: 'red' | 'green' | 'yellow' | 'blue' | 'purple' | 'pink' | 'dark'; }
 interface Props { steps: Step[]; caption: string; center?: string; }
 const { steps, caption, center } = Astro.props;
 const n = steps.length, cx = 410, cy = 185, rx = 270, ry = 125, w = 190, h = 70;

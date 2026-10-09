@@ -12,6 +12,8 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import IconCards from '../../components/IconCards.astro';
+import WhenThen from '../../components/WhenThen.astro';
 import Cycle from '../../components/diagrams/Cycle.astro';
 import Baselines from '../../components/diagrams/Baselines.astro';
 import Exercise from '../../components/Exercise.astro';
@@ -185,14 +187,14 @@ In this metrics-based technique, figures are collected from previous projects wi
 
 <SyllabusRef ref="5.1.4" />
 
-- **Measure early** - in the current project
-- **Extrapolate** - the remaining effort, usually with a mathematical model
-- Ideal for iterative SDLCs
-- Iteration 1
-- Iteration 2
-- Iteration 3
-- average
-- Estimate for iteration 4
+- **Measure early** - Gather data in the current project
+- **Extrapolate** - Estimate the remaining effort, usually with a mathematical model
+- **Best for iterative SDLCs** - e.g. use the average effort of the last few iterations
+
+<Flow caption="Extrapolation: the average of the last three iterations becomes the estimate for the next one (CTFL 5.1.4)" steps={[
+  { title: 'Iteration 1', sub: 'measured' }, { title: 'Iteration 2', sub: 'measured' }, { title: 'Iteration 3', sub: 'measured' },
+  { title: 'Average', sub: 'of iterations 1-3' }, { title: 'Iteration 4', sub: 'the estimate' },
+]} />
 
 <SyllabusText>
 
@@ -204,18 +206,35 @@ In this metrics-based technique, measurements are made as early as possible in t
 
 <SyllabusRef ref="5.1.4" />
 
-- **Estimate alone** - each expert, in isolation
-- **Collect results** - check against agreed boundaries
-- **Discuss** - if estimates are out of range
-- **Re-estimate** - again in isolation
-- Repeat until consensus
-- **Planning Poker** - A Wideband Delphi variant common in Agile - estimates use cards with numbers representing effort size.
+An **expert-based** technique: experts estimate independently, then converge through discussion.
+
+<Cycle center="Until consensus" caption="Wideband Delphi: repeat until the estimates agree (CTFL 5.1.4)" steps={[
+  { title: 'Estimate alone', sub: 'each expert, in isolation', tone: 'purple' },
+  { title: 'Compare', sub: 'collect the results', tone: 'blue' },
+  { title: 'Discuss', sub: 'why do estimates differ?', tone: 'pink' },
+  { title: 'Re-estimate', sub: 'again, in isolation', tone: 'dark' },
+]} />
 
 <SyllabusText>
 
 In this iterative, expert-based technique, experts make experience-based estimations. Each expert, in isolation, estimates the effort. The results are collected and if there are deviations that are out of range of the agreed upon boundaries, the experts discuss their current estimates. Each expert is then asked to make a new estimation based on that feedback, again in isolation. This process is repeated until a consensus is reached. Planning Poker is a variant of Wideband Delphi, commonly used in Agile software development. In Planning Poker, estimates are usually made using cards with numbers that represent the effort size.
 
 </SyllabusText>
+
+### Planning Poker
+
+<SyllabusRef ref="5.1.4" />
+
+A **separate technique**, popular in Agile teams - a variant of Wideband Delphi.
+
+<Tiles cols={6} caption="Each estimator holds cards with effort values (often a Fibonacci-like sequence) and reveals one at the same time" tiles={[
+  { title: '1' }, { title: '2' }, { title: '3' }, { title: '5' }, { title: '8' }, { title: '13' },
+]} />
+
+- **Reveal together** - Everyone shows their card at once, so nobody anchors on someone else's number
+- **Discuss the extremes** - The highest and lowest estimators explain their reasoning
+- **Play again** - Repeat until the team agrees
+
 
 ### Three-Point Estimation
 
@@ -294,7 +313,7 @@ Ideally, test cases would be ordered to run based on their priority levels, usin
 
 </SyllabusText>
 
-<Exercise source="workbook" title="Worked example: prioritisation">
+<Exercise source="workbook" kind="example" title="Worked example: prioritisation">
 
 **TC1** (High, depends on TC3) · **TC2** (Medium) · **TC3** (Low) · **TC4** (High). In what order should they run?
 
@@ -344,20 +363,14 @@ The testing quadrants, defined by Brian Marick (Marick 2003, Crispin 2008), grou
 
 </SyllabusText>
 
-### Agile Testing Quadrants
-
-<SyllabusRef ref="5.1.7" />
-
-<Quadrants />
-
 ### The Four Quadrants
 
 <SyllabusRef ref="5.1.7" />
 
-- **Q1 - Technology, support the team** - Component and integration tests - automated and in the CI process
-- **Q2 - Business, support the team** - Functional tests, examples, user story tests, UX prototypes, API tests, simulations - check acceptance criteria; manual or automated
-- **Q3 - Business, critique the product** - Exploratory, usability, user acceptance testing - user-oriented, often manual
-- **Q4 - Technology, critique the product** - Smoke tests and non-functional tests (except usability) - often automated
+The testing quadrants group test **levels** with the right test **types**, activities, techniques and work products.
+They help make sure **all the important test types are covered** - and help explain testing to non-technical stakeholders.
+
+<Quadrants />
 
 <SyllabusText>
 
@@ -375,15 +388,17 @@ Quadrant Q4 (technology facing, critique the product) contains smoke tests and n
 
 <SyllabusRef ref="5.1.7" />
 
-- Functional tests, examples, user story tests, BDD, ATDD, UX prototypes, simulations
-- Automated & manual
-- Exploratory, usability, UAT, alpha / beta
-- Manual
-- Unit, component, integration and API tests
-- Automated
-- Performance, load, stress, security, portability, maintainability - "ility" testing
+Two questions place any test in a quadrant: **who is it for** (business or technology) and **what is it for**
+(supporting the team, or critiquing the product).
 
-- Left: mostly verification  ·  Right: mostly validation  ·  Top: mostly black-box  ·  Bottom: mostly white-box
+| Quadrant | Typical tests | Usually |
+|---|---|---|
+| **Q1** Technology · supports the team | Unit, component, integration and API tests | Automated |
+| **Q2** Business · supports the team | Functional tests, examples, story tests, BDD / ATDD, UX prototypes, simulations | Automated & manual |
+| **Q3** Business · critiques the product | Exploratory, usability, UAT, alpha / beta | Manual |
+| **Q4** Technology · critiques the product | Performance, load, stress, security, portability, maintainability - the "-ility" tests | Automated |
+
+> **Reading the axes:** left = mostly verification · right = mostly validation · top = mostly black-box · bottom = mostly white-box.
 
 ## 5.2 Risk Management
 
@@ -451,15 +466,16 @@ Project risks are related to the management and control of the project. Project 
 
 <SyllabusRef ref="5.2.2" />
 
-- **Product risks** relate to the product's quality characteristics (e.g. ISO 25010).
-- Missing or wrong functionality
-- Incorrect calculations
-- Runtime errors
-- Poor architecture
-- Inefficient algorithms
-- Inadequate response time
-- Poor user experience
-- Security vulnerabilities
+**Product risks** threaten the quality of the product - grouped here by the quality characteristic (ISO/IEC 25010) they affect:
+
+<IconCards items={[
+  { icon: '🎯', title: 'Functional suitability', points: ['Missing or wrong functionality', 'Incorrect calculations'] },
+  { icon: '💥', title: 'Reliability', points: ['Runtime errors'] },
+  { icon: '⚡', title: 'Performance efficiency', points: ['Inefficient algorithms', 'Inadequate response time'] },
+  { icon: '🏗️', title: 'Maintainability', points: ['Poor architecture'] },
+  { icon: '🙂', title: 'Usability', points: ['Poor user experience'] },
+  { icon: '🔒', title: 'Security', points: ['Security vulnerabilities'] },
+]} />
 
 <SyllabusText>
 
@@ -507,12 +523,20 @@ Product risk analysis consists of risk identification and risk assessment. Risk 
 
 <SyllabusRef ref="5.2.3" />
 
-- of the testing to be carried out
-- **Levels & types** - which test levels, and which test types
-- **Techniques & coverage** - which techniques, and what coverage
-- **Effort** - estimate the effort for each task
-- **Priority** - find critical defects as early as possible
-- **Beyond testing** - other activities that could reduce risk
+Once product risks are identified and assessed, the results decide **how much testing to do, and where**.
+
+<Flow caption="From risk analysis to a test approach (CTFL 5.2.3)" steps={[
+  { title: 'Identify risks', sub: 'what could go wrong?' }, { title: 'Assess risks', sub: 'likelihood × impact' }, { title: 'Shape the testing', sub: 'focus effort on the biggest risks' },
+]} />
+
+<IconCards items={[
+  { icon: '📏', title: 'Scope', text: 'What to test - and what not to' },
+  { icon: '🧱', title: 'Levels & types', text: 'Which test levels and test types to use' },
+  { icon: '🧰', title: 'Techniques & coverage', text: 'Which techniques, and how much coverage to aim for' },
+  { icon: '⏱️', title: 'Effort', text: 'How much effort each test task gets' },
+  { icon: '🥇', title: 'Priority', text: 'Test the biggest risks first, to find critical defects early' },
+  { icon: '🛡️', title: 'Beyond testing', text: 'Other activities that could reduce the risk' },
+]} />
 
 <SyllabusText>
 
@@ -564,7 +588,7 @@ With respect to product risk control, once a risk has been analyzed, several res
 <SyllabusRef ref="5.3" />
 
 <Cycle center="Compare with the plan" caption="Monitoring gathers metrics, control acts on them, and the plan is updated - completion wraps up each stage (CTFL 5.3)" steps={[
-  { title: 'Test plan' }, { title: 'Monitor', sub: 'gather metrics, report' }, { title: 'Control', sub: 'directives, corrective action' },
+  { title: 'Test plan', tone: 'purple' }, { title: 'Monitor', sub: 'gather metrics, report', tone: 'blue' }, { title: 'Control', sub: 'directives, corrective action', tone: 'pink' },
 ]} />
 
 - **Monitoring** - Gather information · Assess test progress · Check exit criteria are being met - e.g. coverage of risks, requirements, acceptance criteria
@@ -585,11 +609,14 @@ Test completion collects data from completed test activities to consolidate expe
 
 <SyllabusRef ref="5.3" />
 
-- Examples of control directives:
-- **Reprioritise tests** - when an identified risk becomes an issue
-- **Re-evaluate entry / exit criteria** - for a test item after rework
-- **Adjust the schedule** - e.g. for a late test environment
-- **Add resources** - when and where needed
+Test control turns monitoring information into action. Typical **control directives**:
+
+<WhenThen whenLabel="When…" thenLabel="…the directive" rows={[
+  { when: 'An identified risk becomes an actual issue', then: 'Reprioritise the tests' },
+  { when: 'A test item has been reworked', then: 'Re-evaluate its entry / exit criteria' },
+  { when: 'Something is late - e.g. the test environment', then: 'Adjust the test schedule' },
+  { when: 'Progress is behind where it matters', then: 'Add resources, when and where needed' },
+]} />
 
 ### When Test Completion Happens
 
@@ -616,9 +643,9 @@ Test completion activities occur at project milestones (e.g., when a test level 
 - **Test progress** - Implementation progress, run / not run, pass / fail, execution time
 - **Product quality** - Availability, response time, mean time to failure
 - **Defects** - Found / fixed and priorities, density, detection percentage
-- Residual risk level
+- **Risk** - Residual risk level
 - **Coverage** - Requirements coverage, code coverage
-- Cost of testing, organisational cost of quality
+- **Cost** - Cost of testing, organisational cost of quality
 
 <SyllabusText>
 
@@ -660,12 +687,12 @@ A test completion report is prepared during test completion, when a project, tes
 
 <SyllabusRef ref="5.3.2" />
 
-- Within the team
-- Frequent
-- Informal
-- Completed project
-- Set template
-- **ISO/IEC/IEEE 29119-3** has templates and examples for test status (progress) and test completion reports.
+<Compare caption="Choose the report - and the way you share it - for the audience (CTFL 5.3.2)" columns={[
+  { title: 'Test progress report', sub: 'during testing', points: ['For people within the team', 'Frequent', 'Informal - e.g. a dashboard or chat'] },
+  { title: 'Test completion report', sub: 'at the end', points: ['For a completed project or stage', 'Follows a set template', 'Formal'] },
+]} />
+
+> **ISO/IEC/IEEE 29119-3** has templates and examples for test progress and test completion reports.
 
 <SyllabusText>
 
@@ -736,14 +763,10 @@ Continuous integration, continuous delivery, continuous deployment and the assoc
   { title: 'Log', sub: 'the anomaly' }, { title: 'Analyse & classify', sub: 'real defect? severity?' }, { title: 'Decide', sub: 'fix, defer or reject' }, { title: 'Close', sub: 'after confirmation' },
 ]} />
 
-- **Finding defects is a major test objective** - so an established defect management process is essential.
-- the reported anomaly
-- Analyse & classify
-- **Decide a response** - fix it, or keep it as it is
-- the defect report
-- **Not always a defect** - Could be a false positive or a change request
-- **Everyone follows it** - The process applies to all stakeholders
-- **Static testing too** - Handle static analysis findings the same way
+Finding defects is a major test objective, so an established **defect management process** is essential:
+
+> **Not every anomaly is a defect** - it could be a false positive or a change request. The process applies to **all
+> stakeholders**, and static analysis findings are handled the same way.
 
 <SyllabusText>
 
@@ -822,19 +845,19 @@ A defect report logged during dynamic testing typically includes: unique identif
 
 <SyllabusRef ref="5.5" />
 
-- Unique ID
-- Tester's name
-- Assigned to
-- Summary of defect
-- Expected result
-- Actual result
-- Severity
-- Priority
-- Status
-- Defect description - enough information for the defect to be reproduced
-- Further comments - references, other areas that might be affected
+| Field | What it holds |
+|---|---|
+| **Unique ID** | So the defect can be referenced and tracked |
+| **Tester's name** / **Assigned to** | Who found it, and who will fix it |
+| **Summary** | A short, clear title |
+| **Expected result** / **Actual result** | What should have happened, and what did |
+| **Severity** | How big the impact is |
+| **Priority** | How urgently it should be fixed |
+| **Status** | e.g. open, deferred, fixed, closed |
+| **Description** | Enough detail to reproduce it - steps, environment, test data |
+| **Further comments** | References, and other areas that might be affected |
 
-<Exercise source="workbook" title="Worked example: a defect report">
+<Exercise source="workbook" kind="example" title="Worked example: a defect report">
 
 A discount code that expired on 31-08-2026 is still accepted at checkout. Fill in a defect report using the template above.
 
@@ -858,13 +881,15 @@ A discount code that expired on 31-08-2026 is still accepted at checkout. Fill i
 
 <SyllabusRef ref="1.4.4" />
 
-- Requirements
-- Test cases
-- Defects
-- Traceability enables effective impact analysis when:
-- Requirements change
-- **Checking requirements coverage** - for a set of tests
-- **A defect is found** - Trace it back to its requirement and report to the stakeholder
+<Flow caption="Two-way links between requirements, test cases and defects" steps={[
+  { title: 'Requirements' }, { title: 'Test cases' }, { title: 'Defects' },
+]} />
+
+<WhenThen whenLabel="When…" thenLabel="…traceability lets you" rows={[
+  { when: 'A requirement changes', then: 'See which tests and defects are affected (impact analysis)' },
+  { when: 'You need to check coverage', then: 'Measure requirements coverage for a set of tests' },
+  { when: 'A defect is found', then: 'Trace it back to its requirement and tell the right stakeholder' },
+]} />
 
 ### Types of Traceability Matrix
 

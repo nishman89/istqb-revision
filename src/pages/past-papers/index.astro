@@ -4,13 +4,17 @@ import PageHead from '../../components/PageHead.astro';
 import { getExam } from '../../lib/data';
 import { url, MAIN_SET, PRACTICE_SETS } from '../../lib/site';
 import { examId } from '../../lib/progress';
+import { getPracticeSets } from '../../lib/practice';
 
 const sets = await Promise.all([...PRACTICE_SETS.slice(0, 2), MAIN_SET, PRACTICE_SETS[2]].map((s) => getExam(s)));
+const practice = await getPracticeSets();
+const kSets = practice.filter((s) => s.slug.startsWith('k'));
+const chapterSets = practice.filter((s) => s.slug.startsWith('chapter'));
 const kMix = (qs: { k: string }[]) => ['K1', 'K2', 'K3'].map((k) => `${qs.filter((q) => q.k === k).length} ${k}`).join(' · ');
 ---
-<BaseLayout title="Past papers" description="Sit the official ISTQB CTFL v4.0 sample exams in full, timed, with a full review and a score by chapter.">
-  <PageHead eyebrow="Exam practice" title="Past papers">
-    <p class="lead">Sit a complete ISTQB sample exam under real conditions: 40 questions, 60 minutes, 26 to pass. At the end you'll see your score
+<BaseLayout title="Sample papers" description="Sit the official ISTQB CTFL v4.0 sample papers in full, timed, with a full review and a score by chapter.">
+  <PageHead eyebrow="Exam practice" title="Sample papers">
+    <p class="lead">Sit a complete ISTQB sample paper under real conditions: 40 questions, 60 minutes, 26 to pass. At the end you'll see your score
       for each chapter and an explanation for every answer.</p>
   </PageHead>
 
@@ -19,8 +23,8 @@ const kMix = (qs: { k: string }[]) => ['K1', 'K2', 'K3'].map((k) => `${qs.filter
       {sets.map((exam) => (
         <li class="card paper" data-exam-card={examId(exam.set)}>
           <span class="paper__letter">{exam.set}</span>
-          <span class="eyebrow">ISTQB sample exam · v{exam.version}</span>
-          <h2>Sample Exam {exam.set}</h2>
+          <span class="eyebrow">ISTQB sample paper · v{exam.version}</span>
+          <h2>Sample Paper {exam.set}</h2>
           <p class="muted">40 questions · 60 minutes · {kMix(exam.questions)}</p>
           {exam.set === MAIN_SET && <p class="note">These questions also appear in the end-of-chapter quizzes.</p>}
           <p class="paper__status" data-status>Not attempted yet</p>
@@ -28,6 +32,26 @@ const kMix = (qs: { k: string }[]) => ['K1', 'K2', 'K3'].map((k) => `${qs.filter
         </li>
       ))}
     </ol>
+
+    <section class="practice">
+      <h2 class="dot">Practise by chapter</h2>
+      <p class="muted">Every question on one chapter, pooled from Sample Papers A-D.</p>
+      <ul class="practice__list">
+        {chapterSets.map((s) => (
+          <li><a class="practice__item" href={url(`practice/${s.slug}`)}><span class="practice__title">{s.title}</span><span class="pill">{s.questions.length} questions</span></a></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2 class="dot">Practise by K-level</h2>
+      <p class="muted">Every question at one knowledge level, pooled from Sample Papers A-D. <a href={url('exam-tips')}>What are K-levels?</a></p>
+      <ul class="practice__list practice__list--k">
+        {kSets.map((s) => (
+          <li><a class="practice__item" href={url(`practice/${s.slug}`)}><span class="practice__title">{s.title}</span><span class="practice__blurb">{s.blurb}</span><span class="pill pill--dark">{s.questions.length} questions</span></a></li>
+        ))}
+      </ul>
+    </section>
 
     <section class="card card--tint tips">
       <h2>Exam technique</h2>
@@ -62,12 +86,21 @@ const kMix = (qs: { k: string }[]) => ['K1', 'K2', 'K3'].map((k) => `${qs.filter
   .papers { list-style: none; padding: 0; margin: 0 0 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); }
   .paper { position: relative; display: flex; flex-direction: column; gap: 0.25rem; border-top: 6px solid var(--charcoal); overflow: hidden; }
   .paper.is-passed { border-top-color: var(--success); }
-  .paper__letter { position: absolute; right: -0.5rem; top: -1.5rem; font: 700 7rem/1 var(--font-head); color: var(--pink-tint); z-index: 0; }
+  .paper__letter { position: absolute; right: 0.5rem; bottom: -1rem; font: 700 6rem/1 var(--font-head); color: var(--pink-tint); z-index: 0; pointer-events: none; }
   .paper > :not(.paper__letter) { position: relative; }
   .paper h2 { margin: 0.25rem 0; }
   .note { font-size: 0.9rem; color: var(--pink-dark); font-weight: 600; margin: 0; }
   .paper__status { font-weight: 700; color: var(--grey); font-size: 0.9rem; }
   .paper .btn { margin-top: auto; align-self: flex-start; }
+  .practice { margin: 0 0 2.5rem; }
+  .practice h2 { margin-bottom: 0.25rem; }
+  .practice__list { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+  .practice__item { display: flex; flex-direction: column; gap: 0.4rem; height: 100%; padding: 1rem 1.2rem; background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); border-left: 5px solid var(--pink); text-decoration: none; color: var(--charcoal); }
+  .practice__list li:nth-child(even) .practice__item { border-left-color: var(--charcoal); }
+  .practice__item:hover { background: var(--pink-tint); }
+  .practice__title { font: 700 1.05rem var(--font-head); }
+  .practice__blurb { color: var(--grey); font-size: 0.95rem; }
+  .practice__item .pill { align-self: flex-start; }
   .tips ul { display: grid; gap: 0.5rem; padding-left: 1.25rem; }
   .tips li::marker { color: var(--pink); }
 </style>

@@ -5,7 +5,7 @@
 
 <script>
   const btn = document.querySelector<HTMLButtonElement>('[data-to-top]');
-  if (btn) {
+  if (btn && !document.querySelector('[data-quiz-id]')) {
     const toggle = () => { btn.hidden = window.scrollY < 900; };
     window.addEventListener('scroll', toggle, { passive: true });
     toggle();

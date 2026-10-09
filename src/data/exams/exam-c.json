@@ -1028,11 +1028,11 @@
      "items": [
       {
        "marker": "•",
-       "text": "The partition “length correct”      - four-digit PINs"
+       "text": "The partition “length correct” - four-digit PINs"
       },
       {
        "marker": "•",
-       "text": "The partition “length incorrect”     - PINs with length other than 4"
+       "text": "The partition “length incorrect” - PINs with length other than 4"
       }
      ]
     },
@@ -1045,11 +1045,11 @@
      "items": [
       {
        "marker": "•",
-       "text": "The partition “number of different digits correct”  - PINs with at least two different digits"
+       "text": "The partition “number of different digits correct” - PINs with at least two different digits"
       },
       {
        "marker": "•",
-       "text": "The partition “number of different digits incorrect”  - PINs with all digits being the same"
+       "text": "The partition “number of different digits incorrect” - PINs with all digits being the same"
       }
      ]
     },
