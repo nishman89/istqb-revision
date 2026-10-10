@@ -1,0 +1,130 @@
+---
+/**
+ * Worked example of static analysis: a short Java method shown as a code editor, with the lines a tool
+ * such as SonarQube flags, and the report it produces - all without running the code.
+ */
+type Kind = 'kw' | 'type' | 'num' | 'var' | 'plain';
+type Tok = [Kind, string];
+const k = (t: string): Tok => ['kw', t];
+const ty = (t: string): Tok => ['type', t];
+const n = (t: string): Tok => ['num', t];
+const v = (t: string): Tok => ['var', t];
+const p = (t: string): Tok => ['plain', t];
+
+const lines: { toks: Tok[]; issue?: number }[] = [
+  { toks: [ty('int'), p(' calcAvg('), ty('List'), p('<'), ty('Integer'), p('> items) {')] },
+  { toks: [p('    '), ty('int'), p(' '), v('Total'), p(' = '), n('0'), p(';')], issue: 1 },
+  { toks: [p('    '), k('if'), p(' (items == '), k('null'), p(') '), k('return'), p(' '), n('0'), p(';')] },
+  { toks: [p('    '), k('for'), p(' ('), ty('int'), p(' i : items) '), v('Total'), p(' += i;')] },
+  { toks: [p('    '), k('return'), p(' '), v('Total'), p(' / items.size();')], issue: 2 },
+  { toks: [p('    '), v('Total'), p(' = '), n('0'), p(';')], issue: 3 },
+  { toks: [p('}')] },
+];
+
+// Build the editor markup as a string: <pre> keeps whitespace exactly, so it's simplest to render it in one go.
+const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const codeHtml = lines
+  .map((l, i) =>
+    `<span class="sa__line${l.issue ? ' sa__line--flag' : ''}"><span class="sa__no">${i + 1}</span>` +
+    l.toks.map(([kind, t]) => `<span class="sa__${kind}">${esc(t)}</span>`).join('') +
+    (l.issue ? `<span class="sa__marker">${l.issue}</span>` : '') + '</span>')
+  .join('');
+
+const issues = [
+  { n: 1, line: 2, type: 'Code smell', sev: 'Minor', title: 'Variable name "Total" breaks the naming convention',
+    why: 'Java variables should start with a lower-case letter (total). Harmless at run time, but it hurts readability and maintainability.' },
+  { n: 2, line: 5, type: 'Bug', sev: 'Major', title: 'Possible division by zero',
+    why: 'If the list is empty, items.size() is 0 and the method crashes. Line 3 only guards against null, not an empty list.' },
+  { n: 3, line: 6, type: 'Code smell', sev: 'Major', title: 'Unreachable code',
+    why: 'This line can never run because the method has already returned on line 5 - a sign of a logic mistake.' },
+];
+---
+<figure class="sa">
+  <ol class="sa__flow" aria-label="How static analysis works">
+    <li><span class="sa__step">1</span><strong>Source code</strong><span>The tool is given the code</span></li>
+    <li><span class="sa__step">2</span><strong>Static analysis tool</strong><span>Reads it and checks it against rules - <em>without running it</em></span></li>
+    <li><span class="sa__step">3</span><strong>Report</strong><span>Lists each issue, its line and severity</span></li>
+  </ol>
+
+  <div class="sa__grid">
+    <div class="sa__editor" role="img" aria-label="Java code with lines 2, 5 and 6 flagged">
+      <div class="sa__tab"><span class="sa__dots" aria-hidden="true"><i></i><i></i><i></i></span>Calculator.java</div>
+      <pre><code set:html={codeHtml} /></pre>
+    </div>
+
+    <div class="sa__report">
+      <div class="sa__report-head"><span>SonarQube report</span><span class="sa__count">3 issues · 0 tests run</span></div>
+      <ol>
+        {issues.map((x) => (
+          <li class:list={['sa__issue', x.type === 'Bug' ? 'sa__issue--bug' : 'sa__issue--smell']}>
+            <span class="sa__marker sa__marker--big">{x.n}</span>
+            <div>
+              <p class="sa__meta"><span class="sa__type">{x.type}</span> · {x.sev} · line {x.line}</p>
+              <p class="sa__title">{x.title}</p>
+              <p class="sa__why">{x.why}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+  <figcaption>The tool found a bug and two maintainability problems just by reading the code - no test cases, no test environment, nothing executed (CTFL 3.1)</figcaption>
+</figure>
+
+<style>
+  .sa { margin: 1rem 0 1.25rem; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem; }
+  .sa figcaption { margin-top: 0.9rem; font-size: 0.9rem; color: var(--grey); text-align: center; }
+
+  .sa__flow { list-style: none; margin: 0 0 1.1rem; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; counter-reset: none; }
+  .sa__flow li { position: relative; display: grid; align-content: start; gap: 0.15rem; padding: 0.7rem 0.9rem 0.7rem 2.9rem; background: var(--bg); border-radius: 12px; font-size: 0.9rem; color: var(--grey); }
+  .sa__flow li:nth-child(2) { background: var(--charcoal); color: #ddd; }
+  .sa__flow li:nth-child(2) strong { color: #fff; }
+  .sa__flow li:nth-child(2) em { color: var(--pink-soft); font-style: normal; font-weight: 700; }
+  .sa__flow strong { color: var(--charcoal); font-size: 0.98rem; }
+  .sa__step { position: absolute; left: 0.8rem; top: 0.75rem; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--pink); color: #fff; font-weight: 700; font-size: 0.85rem; }
+
+  .sa__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+
+  /* code editor */
+  .sa__editor { background: #1e1e24; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 18px rgb(0 0 0 / 0.18); }
+  .sa__tab { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.9rem; background: #2b2b33; color: #c9c9d1; font: 600 0.82rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .sa__dots { display: inline-flex; gap: 0.3rem; }
+  .sa__dots i { width: 0.65rem; height: 0.65rem; border-radius: 50%; background: #ff5f57; }
+  .sa__dots i:nth-child(2) { background: #febc2e; }
+  .sa__dots i:nth-child(3) { background: #28c840; }
+  .sa pre { margin: 0; padding: 0.6rem 0; overflow-x: auto; background: none; }
+  .sa code { display: block; font: 0.9rem/1.75 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; color: #e6e6eb; white-space: pre; }
+  .sa :global(.sa__line) { display: block; padding: 0 0.9rem 0 0; position: relative; }
+  .sa :global(.sa__line--flag) { background: rgb(227 54 97 / 0.18); box-shadow: inset 4px 0 0 #ff6b8f; }
+  .sa :global(.sa__no) { display: inline-block; width: 2.6rem; padding-right: 0.9rem; text-align: right; color: #7d7d8a; user-select: none; }
+  .sa :global(.sa__kw) { color: #ff8fb0; font-weight: 700; }
+  .sa :global(code .sa__type) { color: #7cc4ff; }
+  .sa :global(.sa__num) { color: #f5c26b; }
+  .sa :global(.sa__var) { color: #9ef0c5; }
+  .sa :global(.sa__plain) { color: #e6e6eb; }
+  .sa :global(.sa__marker) { display: inline-grid; place-items: center; width: 1.25rem; height: 1.25rem; margin-left: 0.6rem; border-radius: 50%; background: #ff6b8f; color: #1e1e24; font: 700 0.75rem/1 var(--font-body); vertical-align: 0.1em; }
+
+  /* report */
+  .sa__report { border: 2px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .sa__report-head { display: flex; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; padding: 0.55rem 0.9rem; background: var(--bg); font-weight: 700; font-size: 0.9rem; }
+  .sa__count { color: var(--pink-dark); }
+  .sa__report ol { list-style: none; margin: 0; padding: 0; }
+  .sa__issue { display: grid; grid-template-columns: auto 1fr; gap: 0.75rem; padding: 0.75rem 0.9rem; border-top: 1px solid var(--line); border-left: 4px solid #b58a00; }
+  .sa__issue--bug { border-left-color: #c62828; }
+  .sa__issue p { margin: 0; }
+  .sa .sa__marker--big { width: 1.6rem; height: 1.6rem; margin: 0.1rem 0 0; background: var(--pink); color: #fff; font-size: 0.85rem; }
+  .sa__meta { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--grey); }
+  .sa__issue--bug .sa__type { color: #c62828; }
+  .sa__issue--smell .sa__type { color: #8a6700; }
+  .sa__title { font-weight: 700; margin: 0.1rem 0 !important; }
+  .sa__why { font-size: 0.92rem; color: var(--grey); }
+
+  @media (max-width: 56rem) {
+    .sa__grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 40rem) {
+    .sa { padding: 0.9rem; }
+    .sa__flow { grid-template-columns: 1fr; }
+    .sa code { font-size: 0.8rem; }
+  }
+</style>

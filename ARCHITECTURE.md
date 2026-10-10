@@ -186,6 +186,7 @@ src/components/
 ├── MythReality.astro     ✗ Myth → ✓ Reality rows for common misconceptions
 ├── Resource.astro        A link card to an outside video / article / PDF / standard / docs (opens in a new tab)
 ├── ToolExamples.astro    Example tools per test tool category, each linking to its documentation
+├── StaticAnalysisDemo.astro  Chapter 3 worked example: a code editor view with flagged lines and a SonarQube-style report
 ├── IconCards.astro       Cards with an icon, title and points (e.g. product risks by characteristic)
 ├── WhenThen.astro        "When this happens → do this" rows (control directives, maintenance triggers)
 ├── Exercise.astro        A practice question in the notes, answer in a collapsible panel (slot="answer")

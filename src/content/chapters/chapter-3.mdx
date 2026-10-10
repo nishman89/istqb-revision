@@ -9,6 +9,7 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import StaticAnalysisDemo from '../../components/StaticAnalysisDemo.astro';
 import Exercise from '../../components/Exercise.astro';
 import Compare from '../../components/diagrams/Compare.astro';
 import Tiles from '../../components/diagrams/Tiles.astro';
@@ -113,12 +114,13 @@ Any work product that can be read and understood can be the subject of a review.
 
 <SyllabusRef ref="3.1" />
 
-- **SonarQube flags 3 issues - without running the code** - 1  int calcAvg(List&lt;Integer&gt; items) &#123; · 2      int Total = 0; · 3      if (items == null) return 0; · 4      for (int i : items) Total += i; · 5      return Total / items.size(); · 6      Total = 0; · 7  &#125;
-- Line 2: "Total" breaks the naming convention
-- Line 5: Possible divide by zero when the list is empty
-- Line 6: Unreachable code after return
-- **Works on** - Source code - checked against rules: standards, likely bugs, security, complexity
-- **How it helps** - Finds defects before any test runs - cheap, fast, and catches what dynamic testing can't
+**Static analysis** means a tool reads the code - or another work product with a formal structure - and checks it
+against a set of rules, **without running it**. Here is what a tool like SonarQube reports for a short Java method:
+
+<StaticAnalysisDemo />
+
+- **Works on** - Source code (and models) - checked against rules: coding standards, likely bugs, security, complexity
+- **How it helps** - Finds defects before any test runs - cheap, fast, and catches things dynamic testing can miss
 - **When it's used** - From the first line of code - long before component or system testing
 
 ### When Static Analysis Runs
