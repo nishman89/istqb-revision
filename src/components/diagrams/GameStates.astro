@@ -1,70 +1,49 @@
 ---
 /**
- * State transition diagram for a video game: main menu, playing, paused and game over,
- * with six valid transitions, one guard condition and two actions. Labels sit in tags on their arrows.
+ * State transition diagram for a video game, drawn in the plain style of the ISTQB sample papers:
+ * four identical circular states joined by smooth curved arrows with plain-English event labels.
  */
 import Figure from '../Figure.astro';
 // unique per copy, so the diagram can appear more than once on a page
 const id = `gs-${Math.random().toString(36).slice(2, 8)}`;
-
-/** A label tag centred on (x, y); width estimated from the text. */
-const tag = (x: number, y: number, lines: string[]) => {
-  const w = Math.max(...lines.map((l) => l.length)) * 7.4 + 22, h = lines.length * 18 + 10;
-  return { x: x - w / 2, y: y - h / 2, w, h, lines, cx: x, top: y - h / 2 };
-};
-const tags = [
-  tag(249, 178, ['start']),
-  tag(509, 144, ['pause']),
-  tag(509, 214, ['resume']),
-  tag(380, 90, ['quit / save progress']),
-  tag(492, 252, ['lose life [lives = 1]', '/ show final score']),
-  tag(208, 328, ['back to menu']),
-];
 const states = [
-  { x: 40, y: 150, label: 'MAIN MENU', icon: '🏠', cls: 'b-dark' },
-  { x: 300, y: 150, label: 'PLAYING', icon: '🎮', cls: 'b-pink' },
-  { x: 560, y: 150, label: 'PAUSED', icon: '⏸️', cls: 'b-blue' },
-  { x: 300, y: 300, label: 'GAME OVER', icon: '💀', cls: 'b-deep' },
+  { cx: 110, cy: 200, lines: ['Main', 'menu'] },
+  { cx: 340, cy: 110, lines: ['Game', 'running'] },
+  { cx: 570, cy: 200, lines: ['Game', 'paused'] },
+  { cx: 340, cy: 330, lines: ['Game', 'over'] },
+];
+const labels: { x: number; y: number; lines: string[]; anchor?: string }[] = [
+  { x: 176, y: 80, lines: ['Player clicks', '"Start"'] },
+  { x: 504, y: 80, lines: ['Player clicks', '"Pause"'] },
+  { x: 478, y: 236, lines: ['Player clicks', '"Resume"'] },
+  { x: 328, y: 204, lines: ['Player loses a life', '[lives = 1]'], anchor: 'end' },
+  { x: 214, y: 352, lines: ['Player clicks', '"Menu"'] },
+  { x: 340, y: 440, lines: ['Player clicks "Quit"'] },
 ];
 ---
-<Figure scroll caption="A video game modelled with four states and six valid transitions. Each label reads event [guard condition] / action (CTFL 4.2.4)">
-  <svg viewBox="0 0 740 380" role="img" aria-label="State transition diagram: main menu, playing, paused and game over">
+<Figure scroll caption="A video game modelled with four states and six valid transitions (CTFL 4.2.4)">
+  <svg viewBox="0 0 680 470" role="img" aria-label="State transition diagram: main menu, game running, game paused and game over">
     <defs>
-      <marker id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5c5c5c"/></marker>
+      <marker id={id} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="#2d2a2b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
     </defs>
-    <g fill="none" stroke="#5c5c5c" stroke-width="2.5" stroke-linecap="round">
-      <!-- initial state -->
-      <line x1="22" y1="178" x2="36" y2="178" marker-end={`url(#${id})`}/>
-      <!-- start -->
-      <line x1="202" y1="178" x2="294" y2="178" marker-end={`url(#${id})`}/>
-      <!-- pause / resume -->
-      <line x1="462" y1="166" x2="554" y2="166" marker-end={`url(#${id})`}/>
-      <line x1="556" y1="192" x2="466" y2="192" marker-end={`url(#${id})`}/>
-      <!-- quit / save progress: over the top -->
-      <path d="M640 148 C 640 62, 120 62, 120 144" marker-end={`url(#${id})`}/>
-      <!-- lose life -->
-      <line x1="380" y1="208" x2="380" y2="294" marker-end={`url(#${id})`}/>
-      <!-- back to menu -->
-      <path d="M296 328 H 120 V 212" marker-end={`url(#${id})`}/>
+    <g fill="none" stroke="#2d2a2b" stroke-width="1.6" stroke-linecap="round">
+      <path d="M146 166 Q 190 108 284 106" marker-end={`url(#${id})`}/>
+      <path d="M396 106 Q 490 108 534 166" marker-end={`url(#${id})`}/>
+      <path d="M520 214 Q 460 188 390 140" marker-end={`url(#${id})`}/>
+      <line x1="340" y1="164" x2="340" y2="272" marker-end={`url(#${id})`}/>
+      <path d="M288 336 Q 190 330 146 238" marker-end={`url(#${id})`}/>
+      <path d="M570 254 C 570 466, 110 466, 110 258" marker-end={`url(#${id})`}/>
     </g>
-    <circle cx="16" cy="178" r="8" fill="#2d2a2b"/>
-
     {states.map((s) => (
       <g>
-        <rect class={s.cls} x={s.x} y={s.y} width="160" height="56" rx="28"/>
-        <text x={s.x + 26} y={s.y + 29} style="font-size:18px" text-anchor="middle" dominant-baseline="central">{s.icon}</text>
-        <text class="t" x={s.x + 46} y={s.y + 28} style="font-size:15px;letter-spacing:0.03em;text-anchor:start">{s.label}</text>
+        <circle cx={s.cx} cy={s.cy} r="52" fill="#ffffff" stroke="#2d2a2b" stroke-width="1.8"/>
+        {s.lines.map((l, i) => <text x={s.cx} y={s.cy - 9 + i * 19} text-anchor="middle" dominant-baseline="central" style="font-size:15px;font-weight:700;fill:#2d2a2b">{l}</text>)}
       </g>
     ))}
-
-    {tags.map((t) => (
-      <g>
-        <rect x={t.x} y={t.y} width={t.w} height={t.h} rx="9" fill="#ffffff" stroke="#d42a57" stroke-width="1.5"/>
-        {t.lines.map((l, i) => (
-          <text x={t.cx} y={t.top + 14 + i * 18} text-anchor="middle" dominant-baseline="central"
-                style={`font-size:${i ? 12.5 : 14}px;font-weight:${i ? 600 : 700};fill:${i ? '#5c5c5c' : '#2d2a2b'}`}>{l}</text>
-        ))}
-      </g>
-    ))}
+    {labels.map((l) => l.lines.map((line, i) => (
+      <text x={l.x} y={l.y + i * 17} text-anchor={l.anchor ?? 'middle'} dominant-baseline="central" style="font-size:13.5px;font-weight:600;fill:#4a4a4a">{line}</text>
+    )))}
   </svg>
 </Figure>

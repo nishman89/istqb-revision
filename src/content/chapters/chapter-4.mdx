@@ -22,6 +22,7 @@ import BoilerPartitions from '../../components/diagrams/BoilerPartitions.astro';
 import BvaValues from '../../components/diagrams/BvaValues.astro';
 import ControlFlow from '../../components/diagrams/ControlFlow.astro';
 import GameStates from '../../components/diagrams/GameStates.astro';
+import TvStates from '../../components/diagrams/TvStates.astro';
 
 ## 4.1 Test Techniques Overview
 
@@ -503,14 +504,15 @@ transition is triggered by an **event**, may only happen if a **guard condition*
 
 #### Worked example: a video game
 
-A game can be in one of four states: on the **main menu**, **playing**, **paused** or **game over**. Pressing buttons
-(and losing lives) are the events that move it between them:
+A game can be in one of four states: on the **main menu**, **running**, **paused** or **over**. The player's actions
+are the events that move it from one state to another:
 
 <GameStates />
 
-Notice the transition from **playing** to **game over**. Its event is *lose life*, but it only happens if the
-**guard condition** `[lives = 1]` is true, and it triggers the **action** *show final score*. Losing a life with more
-lives left keeps you playing.
+Notice the arrow from **game running** to **game over**. Its event is *player loses a life*, but it only happens if
+the **guard condition** `[lives = 1]` is true: losing a life with more lives left keeps the game running. (If a
+transition also had an **action**, it would be written after a slash, for example *Player clicks "Quit" / save progress*.
+This example keeps things simple and has none.)
 
 The same model can be written as a **state table**: one row per state, one column per event. Filled cells are valid
 transitions; **empty cells are invalid transitions**, which the diagram doesn't show. For example, you can't *pause*
@@ -518,11 +520,11 @@ from the main menu:
 
 <div class="table-wrap">
 
-| State / event | Start | Pause | Resume | Quit | Lose life | Back to menu |
+| State / event | Start | Pause | Resume | Quit | Loses a life | Menu |
 |---|---|---|---|---|---|---|
-| **Main menu** | Playing | | | | | |
-| **Playing** | | Paused | | | Game over [lives = 1] | |
-| **Paused** | | | Playing | Main menu | | |
+| **Main menu** | Game running | | | | | |
+| **Game running** | | Game paused | | | Game over [lives = 1] | |
+| **Game paused** | | | Game running | Main menu | | |
 | **Game over** | | | | | | Main menu |
 
 </div>
@@ -582,14 +584,14 @@ How many test cases are needed to cover **all six valid transitions**? Try traci
 
 **Just one.** A single test case can take all six valid transitions in sequence, starting from the main menu:
 
-1. Main menu → *start* → Playing
-2. Playing → *pause* → Paused
-3. Paused → *resume* → Playing
-4. Playing → *pause* → Paused (repeated, to reach the next transition)
-5. Paused → *quit / save progress* → Main menu
-6. Main menu → *start* → Playing (repeated)
-7. Playing → *lose life [lives = 1]* → Game over
-8. Game over → *back to menu* → Main menu
+1. Main menu → *Player clicks "Start"* → Game running
+2. Game running → *Player clicks "Pause"* → Game paused
+3. Game paused → *Player clicks "Resume"* → Game running
+4. Game running → *Player clicks "Pause"* → Game paused (repeated, to reach the next transition)
+5. Game paused → *Player clicks "Quit"* → Main menu
+6. Main menu → *Player clicks "Start"* → Game running (repeated)
+7. Game running → *Player loses a life [lives = 1]* → Game over
+8. Game over → *Player clicks "Menu"* → Main menu
 
 That's 8 steps, but only **6 different** transitions, so one test case gives 100% valid transitions coverage.
 
@@ -614,7 +616,7 @@ needs a test case of its own: 1 + 3 = **4**.
 
 For the same video game, one test case runs:
 
-**Main menu** →*start* **Playing** →*pause* **Paused** →*resume* **Playing**
+**Main menu** → *Start* → **Game running** → *Pause* → **Game paused** → *Resume* → **Game running**
 
 What coverage does it achieve for **all states**, **valid transitions** and **all transitions**?
 
@@ -626,15 +628,17 @@ What coverage does it achieve for **all states**, **valid transitions** and **al
 | Valid transitions | **50%** | 3 of the 6 valid transitions are taken |
 | All transitions | **12.5%** | 3 of the 24 cells in the state table, and no invalid ones are attempted |
 
-To reach 100% valid transitions coverage, a test would also need to *quit*, *lose the last life* and go *back to menu*.
+To reach 100% valid transitions coverage, a test would also need to *quit*, *lose the last life* and click *Menu* on the game over screen.
 
 </div>
 </Exercise>
 
 <Exercise source="workbook" kind="example" title="Worked example: TV states">
 
-A TV has three states. **Off:** TV button → Standby (Remote does nothing). **Standby:** TV button → Off, Remote → On.
-**On:** TV button → Off, Remote → Standby.
+A TV has three states: **Off**, **Standby** and **On**. The TV button and the remote move it between them, and the
+remote does nothing when the TV is off:
+
+<TvStates />
 
 How many coverage items are there for **all states**, **valid transitions** and **all transitions**, and what tests cover them?
 
