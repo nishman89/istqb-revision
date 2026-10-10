@@ -100,9 +100,29 @@ Almost any work product can be examined using static testing, for example: requi
 
 <SyllabusRef ref="3.1.1" />
 
-- **Reviews** - Any work product that can be read and understood
-- **Static analysis** - Needs a structure to check against · e.g. models, code, or text with a formal syntax
-- **Not appropriate** - Hard for humans to interpret and shouldn't be analysed by tools · e.g. 3rd-party executable code, for legal reasons
+Static testing comes in **two forms**. Both examine a work product **without running it** - the difference is
+*who* (or what) does the examining, and *what* they can examine.
+
+<Compare middle="vs" caption="The two forms of static testing (CTFL 3.1.1)" columns={[
+  { title: 'Reviews', sub: 'done by people', points: [
+    'Works on any work product people can read and understand',
+    'e.g. requirements, user stories, designs, test plans, code, contracts',
+    'Finds ambiguities, gaps, contradictions, deviations from standards',
+  ] },
+  { title: 'Static analysis', sub: 'done by tools', points: [
+    'Needs a formal structure the tool can check against',
+    'e.g. source code, models, text with a formal syntax',
+    'Finds coding defects, rule violations, security issues, complexity',
+  ] },
+]} />
+
+<div class="callout callout--warn">
+
+**⚠ Not suitable for static testing at all:** work products that are hard for **people** to interpret **and** that
+shouldn't be analysed by **tools** - e.g. third-party executable code, which you may not be allowed to analyse for
+legal (licensing) reasons. This applies to static testing as a whole, not just to static analysis.
+
+</div>
 
 <SyllabusText>
 

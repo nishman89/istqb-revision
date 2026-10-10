@@ -39,7 +39,7 @@ const issues = [
     why: 'This line can never run because the method has already returned on line 5 - a sign of a logic mistake.' },
 ];
 ---
-<figure class="sa">
+<figure class="sa" data-sa>
   <ol class="sa__flow" aria-label="How static analysis works">
     <li><span class="sa__step">1</span><strong>Source code</strong><span>The tool is given the code</span></li>
     <li><span class="sa__step">2</span><strong>Static analysis tool</strong><span>Reads it and checks it against rules - <em>without running it</em></span></li>
@@ -52,7 +52,15 @@ const issues = [
       <pre><code set:html={codeHtml} /></pre>
     </div>
 
-    <div class="sa__report">
+    <div class="sa__try" data-sa-try>
+      <p class="sa__try-title">Your turn first</p>
+      <p>This method compiles and looks fine at a glance. Read it carefully - <strong>can you spot the 3 problems</strong>
+        a static analysis tool would flag?</p>
+      <p class="sa__try-hint">Hint: think about naming, an empty list, and what happens after <code>return</code>.</p>
+      <button type="button" class="btn" data-sa-run>▶ Run static analysis</button>
+    </div>
+
+    <div class="sa__report" data-sa-report>
       <div class="sa__report-head"><span>SonarQube report</span><span class="sa__count">3 issues · 0 tests run</span></div>
       <ol>
         {issues.map((x) => (
@@ -68,8 +76,22 @@ const issues = [
       </ol>
     </div>
   </div>
+  <p class="sa__again"><button type="button" class="sa__reset" data-sa-reset>↺ Hide the results and try again</button></p>
   <figcaption>The tool found a bug and two maintainability problems just by reading the code - no test cases, no test environment, nothing executed (CTFL 3.1)</figcaption>
 </figure>
+
+<script>
+  // Progressive enhancement: with JavaScript the results start hidden until "Run static analysis" is pressed;
+  // without it, everything is simply shown.
+  document.querySelectorAll<HTMLElement>('[data-sa]').forEach((demo) => {
+    demo.classList.add('is-interactive');
+    demo.querySelector('[data-sa-run]')?.addEventListener('click', () => {
+      demo.classList.add('is-run');
+      demo.querySelector<HTMLElement>('[data-sa-report]')?.focus?.();
+    });
+    demo.querySelector('[data-sa-reset]')?.addEventListener('click', () => demo.classList.remove('is-run'));
+  });
+</script>
 
 <style>
   .sa { margin: 1rem 0 1.25rem; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem; }
@@ -93,7 +115,7 @@ const issues = [
   .sa__dots i:nth-child(2) { background: #febc2e; }
   .sa__dots i:nth-child(3) { background: #28c840; }
   .sa pre { margin: 0; padding: 0.6rem 0; overflow-x: auto; background: none; }
-  .sa code { display: block; font: 0.9rem/1.75 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; color: #e6e6eb; white-space: pre; }
+  .sa pre code { display: block; font: 0.9rem/1.75 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; color: #e6e6eb; white-space: pre; }
   .sa :global(.sa__line) { display: block; padding: 0 0.9rem 0 0; position: relative; }
   .sa :global(.sa__line--flag) { background: rgb(227 54 97 / 0.18); box-shadow: inset 4px 0 0 #ff6b8f; }
   .sa :global(.sa__no) { display: inline-block; width: 2.6rem; padding-right: 0.9rem; text-align: right; color: #7d7d8a; user-select: none; }
@@ -119,12 +141,36 @@ const issues = [
   .sa__title { font-weight: 700; margin: 0.1rem 0 !important; }
   .sa__why { font-size: 0.92rem; color: var(--grey); }
 
+  /* "Your turn first" panel, shown before the analysis is run */
+  .sa__try { display: none; border: 2px dashed var(--pink); border-radius: 12px; padding: 1rem 1.1rem; background: var(--pink-tint); }
+  .sa__try p { margin: 0 0 0.6rem; }
+  .sa__try-title { font: 700 1.1rem var(--font-head); }
+  .sa__try-hint { font-size: 0.92rem; color: var(--grey); }
+  .sa__try code { background: var(--surface); padding: 0 0.3rem; border-radius: 4px; }
+  .sa__again { display: none; margin: 0.75rem 0 0; text-align: right; }
+  .sa__reset { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; color: var(--pink-dark); text-decoration: underline; cursor: pointer; }
+
+  /* before the run: plain code, no flags, prompt instead of report */
+  .sa.is-interactive:not(.is-run) .sa__try { display: block; }
+  .sa.is-interactive:not(.is-run) .sa__report { display: none; }
+  .sa.is-interactive:not(.is-run) :global(.sa__line--flag) { background: none; box-shadow: none; }
+  .sa.is-interactive:not(.is-run) :global(.sa__marker) { display: none; }
+  .sa.is-interactive.is-run .sa__again { display: block; }
+  .sa.is-run .sa__report { animation: sa-in 0.35s ease-out; }
+  .sa.is-run :global(.sa__line--flag) { animation: sa-flag 0.6s ease-out; }
+  @keyframes sa-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes sa-flag { from { background: rgb(227 54 97 / 0.55); } }
+  @media (prefers-reduced-motion: reduce) { .sa.is-run .sa__report, .sa.is-run :global(.sa__line--flag) { animation: none; } }
+
+  /* keep the code in view beside a long report */
+  @media (min-width: 56.01rem) { .sa__editor { position: sticky; top: 6rem; } }
+
   @media (max-width: 56rem) {
     .sa__grid { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 40rem) {
     .sa { padding: 0.9rem; }
     .sa__flow { grid-template-columns: 1fr; }
-    .sa code { font-size: 0.8rem; }
+    .sa pre code { font-size: 0.8rem; }
   }
 </style>
