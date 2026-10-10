@@ -1,0 +1,39 @@
+---
+/**
+ * A link to an outside resource (video, article, PDF, standard or documentation), opened in a new tab.
+ *   <Resource kind="video" href="https://…" title="Devs watching QA test the product" text="A short clip…" />
+ */
+interface Props { href: string; title: string; text?: string; kind?: 'video' | 'article' | 'pdf' | 'standard' | 'docs'; source?: string; }
+const { href, title, text, kind = 'article', source } = Astro.props;
+const meta = {
+  video: { icon: '▶', label: 'Watch' }, article: { icon: '📰', label: 'Read' }, pdf: { icon: '📄', label: 'Download' },
+  standard: { icon: '📏', label: 'Standard' }, docs: { icon: '📚', label: 'Docs' },
+}[kind];
+const host = source ?? new URL(href).hostname.replace(/^www\./, '');
+---
+<a class:list={['resource', `resource--${kind}`]} href={href} target="_blank" rel="noopener">
+  <span class="resource__icon" aria-hidden="true">{meta.icon}</span>
+  <span class="resource__body">
+    <span class="resource__label">{meta.label} · {host}</span>
+    <strong>{title}</strong>
+    {text && <span class="resource__text">{text}</span>}
+  </span>
+  <span class="resource__go" aria-hidden="true">↗</span>
+  <span class="visually-hidden">(opens in a new tab)</span>
+</a>
+
+<style>
+  .resource { display: flex; gap: 1rem; align-items: center; margin: 1rem 0; padding: 0.85rem 1.1rem; background: var(--surface); color: var(--charcoal); border-radius: 14px; box-shadow: var(--shadow); border-left: 5px solid var(--charcoal); text-decoration: none; }
+  .resource:hover { background: var(--pink-tint); }
+  .resource--video { background: var(--charcoal); color: #fff; }
+  .resource--video:hover { background: #3a3637; }
+  .resource__icon { flex: none; display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); font-size: 1.1rem; }
+  .resource--video .resource__icon { background: var(--pink); color: #fff; }
+  .resource__body { display: grid; gap: 0.1rem; }
+  .resource__label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pink-dark); }
+  .resource--video .resource__label { color: var(--pink-soft); }
+  .resource__text { font-size: 0.95rem; color: var(--grey); }
+  .resource--video .resource__text { color: #ddd; }
+  .resource__go { margin-left: auto; font-weight: 700; color: var(--pink-dark); }
+  .resource--video .resource__go { color: var(--pink-soft); }
+</style>

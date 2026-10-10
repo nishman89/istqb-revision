@@ -94,6 +94,28 @@ const kLevels = [
       <ExamSplit />
     </section>
 
+    <section class="card numbering">
+      <h2>How the notes follow the syllabus</h2>
+      <p>The notes are organised exactly like the official <a href={ISTQB_CTFL} target="_blank" rel="noopener">ISTQB CTFL v4.0 syllabus</a>,
+        using the same numbers - so you always know which part of the curriculum you're revising.</p>
+      <div class="tree" aria-label="Example of the syllabus numbering">
+        <div class="tree__row tree__row--1"><span class="tree__no">1</span><span><strong>Chapter</strong> · Fundamentals of Testing</span></div>
+        <div class="tree__row tree__row--2"><span class="tree__no">1.1</span><span><strong>Section</strong> · What is Testing?</span></div>
+        <div class="tree__row tree__row--3"><span class="tree__no">1.1.1</span><span><strong>Sub-section</strong> · Test Objectives</span></div>
+        <div class="tree__row tree__row--3"><span class="tree__no">1.1.2</span><span><strong>Sub-section</strong> · Testing and Debugging</span></div>
+        <div class="tree__row tree__row--2"><span class="tree__no">1.2</span><span><strong>Section</strong> · Why is Testing Necessary?</span></div>
+      </div>
+      <p>Every learning objective in the syllabus belongs to one of these sections, and the exam questions are written against them.</p>
+      <h3>Where you'll see the numbers</h3>
+      <ul class="where">
+        <li><span class="demo demo--section">1.1 What is Testing?</span> <span>Each <strong>section</strong> of a chapter is a dark bar - open it to see its topics.</span></li>
+        <li><span class="demo demo--chip">1.1.1</span> <span>Each <strong>topic</strong> shows the syllabus section it covers, so you can look it up in the syllabus.</span></li>
+        <li><span class="demo demo--badge"><b>Syllabus</b> CTFL v4.0 · Section 1.1.1</span> <span>The badge at the top of each topic gives the full reference.</span></li>
+        <li><span class="demo demo--syl">📘 What the syllabus says</span> <span>Opens the official syllabus wording for that topic.</span></li>
+        <li><span class="demo demo--chip">Section 4.2.1</span> <span>Every quiz question shows the section it tests - handy for revising what you got wrong.</span></li>
+      </ul>
+    </section>
+
     <section class="card card--tint">
       <h2>How to use this site</h2>
       <ol class="steps">
@@ -107,6 +129,13 @@ const kLevels = [
           questions from <strong>Sample Papers A-D</strong>.</li>
         <li><strong>Sit a full sample paper.</strong> When you've covered all six chapters, try a complete 40-question paper
           against the clock in <a href={url('past-papers')}>Sample papers</a>.</li>
+        <li><strong>Use the Resources menu.</strong> It holds everything that supports the notes:
+          <ul class="res-list">
+            <li><a href={url('handouts')}>Handouts</a> - a one-page summary for each chapter, plus the practice workbook with worked examples and exercises (PDF).</li>
+            <li><a href="https://glossary.istqb.org/" target="_blank" rel="noopener">ISTQB glossary</a> - the official definitions of every testing term. Keywords are examinable, so look up any you're unsure of.</li>
+            <li><a href="https://istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf" target="_blank" rel="noopener">ISTQB syllabus (PDF)</a> - the official CTFL v4.0.1 syllabus the exam is written against.</li>
+          </ul>
+        </li>
         <li><strong>Track your progress.</strong> Scores and completed chapters are saved in your browser on this device.</li>
       </ol>
     </section>
@@ -129,6 +158,30 @@ const kLevels = [
   .rules { display: grid; gap: 0.75rem; padding-left: 1.25rem; margin: 0; }
   .rules li::marker { color: var(--pink); }
   .klevel__k { font: 700 2rem var(--font-head); color: var(--pink); }
+  .numbering { border-left: 8px solid var(--charcoal); }
+  .tree { display: grid; gap: 0.35rem; margin: 1rem 0; padding: 1rem; background: var(--bg); border-radius: 12px; }
+  .tree__row { display: flex; align-items: center; gap: 0.75rem; }
+  .tree__row--2 { margin-left: 1.5rem; }
+  .tree__row--3 { margin-left: 3rem; }
+  .tree__no { flex: none; min-width: 3.2rem; text-align: center; padding: 0.15rem 0.5rem; border-radius: 999px; font-weight: 700; font-size: 0.85rem; }
+  .tree__row--1 .tree__no { background: var(--charcoal); color: #fff; }
+  .tree__row--2 .tree__no { background: var(--pink); color: #fff; }
+  .tree__row--3 .tree__no { background: var(--surface); color: var(--pink-dark); border: 2px solid var(--pink-tint); }
+  .numbering h3 { margin: 1.25rem 0 0.5rem; }
+  .where { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.6rem; }
+  .where li { display: grid; grid-template-columns: minmax(10rem, 15rem) 1fr; gap: 1rem; align-items: center; }
+  .demo { justify-self: start; font-size: 0.85rem; font-weight: 700; border-radius: 8px; padding: 0.3rem 0.7rem; }
+  .demo--section { background: var(--charcoal); color: #fff; border-left: 5px solid var(--pink); font-family: var(--font-head); }
+  .demo--chip { background: var(--bg); color: var(--grey); border-radius: 999px; }
+  .demo--badge { color: var(--grey); padding-left: 0; }
+  .demo--badge b { background: var(--pink); color: #fff; padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; margin-right: 0.35rem; }
+  .demo--syl { background: var(--surface); color: var(--charcoal); border-left: 4px solid var(--charcoal); box-shadow: var(--shadow); }
+  @media (max-width: 40rem) {
+    .where li { grid-template-columns: 1fr; gap: 0.3rem; }
+    .tree__row--2 { margin-left: 0.75rem; }
+    .tree__row--3 { margin-left: 1.5rem; }
+  }
+  .res-list { margin: 0.4rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.3rem; font-size: 0.95rem; }
   .steps { display: grid; gap: 0.6rem; padding-left: 1.25rem; }
   .source { font-size: 0.85rem; }
 </style>

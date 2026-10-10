@@ -12,6 +12,7 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Resource from '../../components/Resource.astro';
 import MythReality from '../../components/MythReality.astro';
 import DebuggingFlow from '../../components/diagrams/DebuggingFlow.astro';
 import FiveWhys from '../../components/diagrams/FiveWhys.astro';
@@ -103,6 +104,31 @@ Validation: Confirmation by examination that a work product matches a stakeholde
 
 </SyllabusText>
 
+<Exercise title="Verification or validation?">
+
+Is each activity mainly **verification** (does it meet the specification?) or **validation** (does it meet users' needs)?
+
+1. Checking the login page against the requirements specification
+2. Real users try the new checkout in a beta release
+3. Reviewing code against the team's coding standards
+4. Shop staff run user acceptance tests in their normal daily workflow
+5. Measuring that pages load within the specified 2 seconds
+6. The product owner checks that a demo actually solves the business problem
+
+<div slot="answer">
+
+| # | Answer |
+|---|---|
+| 1 | **Verification** - checked against the specification |
+| 2 | **Validation** - does it work for real users? |
+| 3 | **Verification** - checked against defined standards |
+| 4 | **Validation** - fit for purpose in the real environment |
+| 5 | **Verification** - checked against a specified requirement |
+| 6 | **Validation** - meets the stakeholder's actual need |
+
+</div>
+</Exercise>
+
 ### More Than Running Tests
 
 <SyllabusRef ref="1.1" />
@@ -113,6 +139,8 @@ Validation: Confirmation by examination that a work product matches a stakeholde
 - **Planned & managed** - Estimated, monitored and controlled
 - **Tool supported** - Tools help, but testing is still…
 - **…largely an intellectual activity** - Specialised knowledge, analytical skills, critical thinking and systems thinking
+
+<Resource kind="standard" href="https://www.iso.org/standard/81291.html" title="ISO/IEC/IEEE 29119 - the international software testing standard" text="The standard behind many of the test process terms used in the syllabus" />
 
 <SyllabusText>
 
@@ -297,6 +325,29 @@ If a defect in code is executed, the system may fail to do what it should do, or
 Errors and defects are not the only cause of failures. Failures can also be caused by environmental conditions, such as when radiation or electromagnetic fields cause defects in firmware.
 
 </SyllabusText>
+
+<Exercise title="Error, defect or failure?">
+
+Classify each one as an **error**, a **defect** or a **failure**:
+
+1. A developer misreads the requirement for the over-65 discount.
+2. The code says `if (age > 65)` instead of `if (age >= 65)`.
+3. A 65-year-old customer is charged full price at checkout.
+4. The requirements document states the wrong VAT rate.
+5. A tester, rushing, types the wrong expected result into a test case.
+
+<div slot="answer">
+
+| # | Answer | Why |
+|---|---|---|
+| 1 | **Error** | A human mistake |
+| 2 | **Defect** | A fault in the code - the result of the error |
+| 3 | **Failure** | Wrong behaviour seen when the code runs |
+| 4 | **Defect** | Defects can be in documents too, not just code |
+| 5 | **Error** | A human mistake - which puts a defect in the test case |
+
+</div>
+</Exercise>
 
 ### Root Causes
 
@@ -577,6 +628,33 @@ so **how we test depends on the context**:
 | Test Execution | Test logs, defect reports |
 | Test Completion | Test completion report, action items for improvement, lessons learnt, change requests |
 
+<Exercise title="What does each activity produce?">
+
+Match each test activity to the testware it typically produces:
+
+1. Test planning
+2. Test monitoring and control
+3. Test analysis
+4. Test design
+5. Test implementation
+6. Test execution
+7. Test completion
+
+<div slot="answer">
+
+| Activity | Typical testware |
+|---|---|
+| Test planning | Test plan, schedule, risk register, entry and exit criteria |
+| Monitoring and control | Test progress reports, control directives, risk information |
+| Test analysis | Prioritised test conditions, defect reports on the test basis |
+| Test design | Test cases, test charters, coverage items, test data and environment requirements |
+| Test implementation | Test procedures, scripts, suites, test data, execution schedule, test environment |
+| Test execution | Test logs, defect reports |
+| Test completion | Test completion report, improvement actions, change requests, archived testware |
+
+</div>
+</Exercise>
+
 ### Traceability
 
 <SyllabusRef ref="1.4.4" />
@@ -719,10 +797,7 @@ It is also possible for one person to take on the roles of testing and test mana
   { title: 'Tester mindset', sub: 'challenge it', points: ['Curious, sceptical, with an eye for detail', 'Asks: how could this fail?', 'Brings a different view - finds what the author missed'] },
 ]} />
 
-<a class="video-link" href="https://www.youtube.com/watch?v=baY3SaIhfl0" target="_blank" rel="noopener">
-  <span class="video-link__play" aria-hidden="true">▶</span>
-  <span><strong>Watch: "Devs watching QA test the product"</strong><br />A short clip on how it feels to watch someone break your work (YouTube, opens in a new tab)</span>
-</a>
+<Resource kind="video" href="https://www.youtube.com/watch?v=baY3SaIhfl0" source="YouTube" title="Devs watching QA test the product" text="A short clip on how it feels to watch someone break your work" />
 
 <Exercise kind="discuss" title="Think about it">
 

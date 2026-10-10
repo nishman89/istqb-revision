@@ -62,7 +62,7 @@ const heading = kind === 'example' ? title.replace(/^Worked example:\s*/i, '') :
   .exercise :global(ul), .exercise :global(ul.cards) { display: block; background: none; box-shadow: none; padding: 0 0 0 1.25rem; margin: 0 0 0.75rem; }
   .exercise :global(.card-item) { display: list-item; background: none; box-shadow: none; border: 0; padding: 0; margin: 0.25rem 0; }
   .exercise :global(.card-item__title) { font: 700 1rem var(--font-body); }
-  .exercise :global(.card-item__title)::after { content: ' - '; font-weight: 400; }
+  .exercise :global(ul.cards .card-item__title)::after { content: ' - '; font-weight: 400; }
   .exercise :global(.card-item__body) { display: inline; font-size: 1rem; color: inherit; }
   .exercise :global(ul.tags) { display: flex; padding: 0; }
   .exercise :global(p.lead-in) { font-size: 1rem; }

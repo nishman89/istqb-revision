@@ -1,0 +1,38 @@
+---
+/**
+ * Example tools for each test tool category, each with what it does and a link to its documentation.
+ * Tools are illustrative, not endorsements - the exam only asks about the categories.
+ */
+interface Tool { name: string; what: string; href: string; }
+interface Category { icon: string; category: string; tools: Tool[]; }
+interface Props { categories: Category[]; }
+const { categories } = Astro.props;
+---
+<div class="tools">
+  {categories.map((c, i) => (
+    <section class:list={['tools__cat', { 'tools__cat--dark': i % 2 === 1 }]}>
+      <h4><span aria-hidden="true">{c.icon}</span> {c.category}</h4>
+      <ul>
+        {c.tools.map((t) => (
+          <li>
+            <a href={t.href} target="_blank" rel="noopener">{t.name} <span aria-hidden="true">↗</span><span class="visually-hidden"> (documentation, opens in a new tab)</span></a>
+            <span>{t.what}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</div>
+
+<style>
+  .tools { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); margin: 1rem 0; }
+  .tools__cat { background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); border-top: 5px solid var(--pink); padding: 0.9rem 1.1rem; }
+  .tools__cat--dark { border-top-color: var(--charcoal); }
+  .tools h4 { margin: 0 0 0.5rem; font: 700 1.05rem var(--font-head); color: var(--charcoal); text-transform: none; letter-spacing: 0; }
+  .tools ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.55rem; background: none; box-shadow: none; }
+  .tools li { display: grid; gap: 0.05rem; margin: 0; }
+  .tools li::marker { content: none; }
+  .tools a { font-weight: 700; color: var(--pink-dark); text-decoration: none; }
+  .tools a:hover { text-decoration: underline; }
+  .tools li span:not([aria-hidden]):not(.visually-hidden) { font-size: 0.92rem; color: var(--grey); }
+</style>

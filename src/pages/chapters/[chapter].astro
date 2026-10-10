@@ -28,7 +28,10 @@ const groups = headings.reduce<Group[]>((acc, h) => {
   if (h.depth === 2) acc.push({ text: h.text, slug: h.slug, topics: [] });
   else if (h.depth === 3) {
     if (!acc.length) acc.push({ text: 'Introduction', slug: h.slug, topics: [] });
-    acc[acc.length - 1].topics.push({ text: h.text, slug: h.slug });
+    const group = acc[acc.length - 1];
+    const norm = (t: string) => t.toLowerCase().replace(/&/g, 'and').replace(/^[\d.]+\s*/, '').replace(/[^a-z0-9]/g, '');
+    // a first topic named like its section is the section's introduction (see rehype-collapsible-sections.mjs)
+    if (!(group.topics.length === 0 && norm(h.text) === norm(group.text))) group.topics.push({ text: h.text, slug: h.slug });
   }
   return acc;
 }, []);
@@ -55,7 +58,6 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
       <a class="btn btn--dark" href={handoutUrl(chapterHandout(data.number))} download>
         <span aria-hidden="true">⬇</span> Chapter {data.number} handout (PDF)
       </a>
-      <a class="btn btn--ghost" href={url('handouts')}>All handouts &amp; practice workbook</a>
     </p>
   </PageHead>
 
@@ -232,6 +234,7 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
   .prose :global(details.chapter-section[open] > summary::after) { content: '−'; }
   .prose :global(details.chapter-section > summary h2) { margin: 0; font-size: 1.4rem; color: #fff; }
   .prose :global(details.chapter-section > summary:hover) { background: #3a3637; }
+  .prose :global(.section-intro) { margin: 0.25rem 0 1.25rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--line); }
   .prose :global(.chapter-section__body) { padding: 0.5rem 0.25rem 1rem; }
 
   /* Topics inside a section */
@@ -268,12 +271,6 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
   .prose :global(blockquote) { margin: 1rem 0; padding: 0.9rem 1.25rem; background: var(--success-tint); border-left: 6px solid var(--success); border-radius: 0 12px 12px 0; }
   .prose :global(blockquote p) { margin: 0; }
 
-  /* Link to a video */
-  .prose :global(.video-link) { display: flex; gap: 1rem; align-items: center; margin: 1rem 0; padding: 0.9rem 1.1rem; background: var(--charcoal); color: #fff; border-radius: 14px; text-decoration: none; }
-  .prose :global(.video-link:hover) { background: #3a3637; }
-  .prose :global(.video-link__play) { flex: none; display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--pink); font-size: 1rem; }
-  .prose :global(.video-link span) { color: #ddd; font-size: 0.95rem; }
-  .prose :global(.video-link strong) { color: #fff; }
 
   /* Component lists keep their own styling (not the generic white list box) */
   .prose :global(ul.icon-cards), .prose :global(.icon-card ul) { background: none; box-shadow: none; border-radius: 0; }

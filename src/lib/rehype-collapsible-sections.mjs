@@ -72,14 +72,36 @@ function decorateTopics(sectionNo, topics) {
   return result;
 }
 
+/** "1.3 The Seven Testing Principles" and "The Seven Testing Principles" compare equal. */
+const sameTitle = (a, b) => {
+  const norm = (t) => t.toLowerCase().replace(/&/g, 'and').replace(/^[\d.]+\s*/, '').replace(/[^a-z0-9]/g, '');
+  return norm(a) === norm(b);
+};
+
+/**
+ * If a section's first topic has the same title as the section (e.g. "1.3 The Seven Testing Principles"
+ * → "The Seven Testing Principles"), its content is the section's introduction: show it as soon as the
+ * section opens, not in a collapsible topic of its own. The heading stays (visually hidden) so links still work.
+ */
+function promoteIntro(sectionTitle, nodes) {
+  const first = nodes.find((n) => n.type === 'element' && n.tagName === 'details');
+  if (!first || !(first.properties.className ?? []).includes('chapter-topic')) return nodes;
+  const heading = first.children[0].children.find((n) => n.tagName === 'h3');
+  if (!heading || !sameTitle(textOf(heading), sectionTitle)) return nodes;
+  heading.properties = { ...heading.properties, className: ['visually-hidden'] };
+  const intro = el('div', { className: ['section-intro'] }, [heading, ...first.children[1].children]);
+  return nodes.map((n) => (n === first ? intro : n));
+}
+
 export default function collapsibleSections() {
   return (tree) => {
     tree.children = wrap(tree.children, 'h2', 'chapter-section');
     for (const section of tree.children) {
       if (section.tagName !== 'details') continue;
       const body = section.children[1];
-      const sectionNo = textOf(section.children[0]).trim().split(/\s+/)[0];
-      body.children = decorateTopics(sectionNo, wrap(body.children, 'h3', 'chapter-topic'));
+      const sectionTitle = textOf(section.children[0]).trim();
+      const sectionNo = sectionTitle.split(/\s+/)[0];
+      body.children = promoteIntro(sectionTitle, decorateTopics(sectionNo, wrap(body.children, 'h3', 'chapter-topic')));
     }
   };
 }

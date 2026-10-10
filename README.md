@@ -392,6 +392,66 @@ edited directly in the files above.
 
 ---
 
+## To do: planned features
+
+These features need a **back end**: a server-side database and user accounts. Today the site is fully static and
+progress lives only in each learner's browser, so none of the items below can be built on GitHub Pages alone.
+See [Implementation notes](#implementation-notes) for a suggested approach.
+
+### 1. Trainee accounts and sign-in
+- [ ] Trainees can **sign up and sign in** (e.g. with their Sparta Global email).
+- [ ] Each trainee's **profile** stores:
+  - [ ] Name and email
+  - [ ] **Stream**, e.g. `TECH 615`
+  - [ ] **Course type**, chosen from a dropdown, e.g.:
+    - Java Test Automation Engineering
+    - Manual Test
+    - *(other course types as needed - keep the list in one place so it's easy to update)*
+- [ ] Progress (chapters read, quiz and paper scores) is saved to the account, not just the browser, so it follows
+      the trainee across devices.
+
+### 2. ISTQB exam booking
+- [ ] An **Account page** where trainees can enter, and later update, the **date they've booked their ISTQB exam**.
+- [ ] Optionally show a countdown on the home page ("Your exam is in 12 days").
+
+### 3. History of marks
+- [ ] Keep a **full history of every attempt** at any test in the **Sample papers** section (Papers A-D,
+      the practice sets by chapter and by K-level, and the chapter quizzes): date, score, percentage, pass/fail,
+      time taken, and the score per chapter.
+- [ ] Show the history on the trainee's Account page, e.g. as a list and a simple trend chart.
+
+### 4. Trainer dashboard
+- [ ] A **trainer-only dashboard** (separate trainer role) to see trainees' progress, filterable by **stream**
+      (e.g. TECH 615) and **course type**:
+  - [ ] Chapters read, latest and best scores, and sample paper attempts per trainee
+  - [ ] Weakest chapters / K-levels across the stream
+  - [ ] Each trainee's booked ISTQB exam date
+  - [ ] Each trainee's actual ISTQB result, once entered (see 5)
+
+### 5. Post-exam reminder and real result
+- [ ] The **day after** a trainee's booked ISTQB exam date, send an **email reminder** asking them to enter the mark
+      they got in the real exam.
+- [ ] A form on the Account page to record the **actual ISTQB mark** (out of 40) and pass/fail.
+- [ ] The actual result is shown on the trainer dashboard alongside the trainee's practice scores.
+
+### Implementation notes
+- **Back end:** a hosted service such as **Supabase** (Postgres database, authentication and row-level security) fits
+  well. The site can stay on GitHub Pages and talk to Supabase from the browser. Firebase is an alternative.
+- **Suggested tables:**
+  - `profiles` (user id, name, email, stream, course type, role: trainee / trainer, ISTQB exam date, actual mark)
+  - `attempts` (user id, quiz id, date, score, total, percent, passed, seconds, per-chapter scores)
+  - `course_types` (the dropdown values)
+- **Security:** row-level security so trainees can only read and write their own data, and only trainers can read
+  everyone's data.
+- **Email reminders:** a daily scheduled job (e.g. a Supabase Edge Function on a cron schedule) finds trainees whose
+  exam date was yesterday and who haven't entered a mark, and emails them through a provider such as Resend or
+  SendGrid.
+- **Existing code to build on:** `src/lib/progress.ts` already records chapters read and quiz attempts (including
+  per-chapter scores and time taken). Swapping its `localStorage` calls for database calls, and keeping
+  `localStorage` as an offline fallback, is the natural starting point.
+- **Privacy:** this means storing personal data (names, emails, results). Check it against Sparta Global's data
+  protection policy, and tell trainees what's stored and why.
+
 ## Copyright
 
 The sample exam questions, answers and explanations, and the syllabus extracts, are © International Software Testing

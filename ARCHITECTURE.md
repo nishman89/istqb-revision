@@ -160,7 +160,7 @@ integrations: [mdx({ rehypePlugins: [tidyLists, collapsibleSections] })]
 | Plugin | File | What it does |
 |---|---|---|
 | **tidyLists** | `src/lib/rehype-tidy-lists.mjs` | Reshapes bullet lists so the notes aren't a wall of bullets. Key points (`- **Title** - description`) become a grid of **cards**, with ` · ` becoming a new line. Full sentences become ordinary **paragraphs**. Lists of short items (e.g. "Test strategy", "Level of coverage") become a row of **tags**. Numbered lists are left alone. Card grids pick a column count that keeps them symmetrical (4 cards → 2×2, 5 → 3 + 2 centred); a pair titled Pros/Cons (or Benefits/Drawbacks…) becomes a green-and-pink side-by-side comparison; 7 or more points become a compact two-column list. A bold phrase that starts a sentence ("**Software testing** is…") stays a paragraph. |
-| **collapsibleSections** | `src/lib/rehype-collapsible-sections.mjs` | Makes the notes collapsible at two levels: each `##` section becomes a `<details>` (closed by default), and each `###` topic inside it another `<details>` (also closed by default). Links into the notes open every collapsed block around their target. |
+| **collapsibleSections** | `src/lib/rehype-collapsible-sections.mjs` | Makes the notes collapsible at two levels: each `##` section becomes a `<details>` (closed by default), and each `###` topic inside it another `<details>` (also closed by default). Links into the notes open every collapsed block around their target. If a section's first topic has the **same title as the section** (e.g. "1.3 The Seven Testing Principles" → "The Seven Testing Principles"), that topic becomes the section's **introduction**: shown as soon as the section opens, and left out of the contents menu. |
 
 The chapter page (`src/pages/chapters/[chapter].astro`) then:
 
@@ -184,6 +184,8 @@ src/components/
 ├── SyllabusText.astro    The collapsible "What the syllabus says" box
 ├── WatchOut.astro        "Watch out for…" exam traps at the end of each chapter (data: src/data/traps.ts)
 ├── MythReality.astro     ✗ Myth → ✓ Reality rows for common misconceptions
+├── Resource.astro        A link card to an outside video / article / PDF / standard / docs (opens in a new tab)
+├── ToolExamples.astro    Example tools per test tool category, each linking to its documentation
 ├── IconCards.astro       Cards with an icon, title and points (e.g. product risks by characteristic)
 ├── WhenThen.astro        "When this happens → do this" rows (control directives, maintenance triggers)
 ├── Exercise.astro        A practice question in the notes, answer in a collapsible panel (slot="answer")

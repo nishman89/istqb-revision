@@ -9,6 +9,7 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import ToolExamples from '../../components/ToolExamples.astro';
 import Hub from '../../components/diagrams/Hub.astro';
 import Balance from '../../components/diagrams/Balance.astro';
 import Exercise from '../../components/Exercise.astro';
@@ -107,21 +108,79 @@ Any other tool that assists in testing (e.g., a spreadsheet is a test tool in th
 
 <Exercise source="workbook" kind="discuss" title="Exercise 4: match tools to test activities">
 
-For each tool type, write the test activities it mainly supports, what it does, and an example you know.
-*(Example: **Management** - planning, monitoring & control, completion · manages requirements, tests, defects · e.g. Jira + Xray.)*
+Review **section 6.1 of the syllabus**, then for each tool category below write down: the **test activities** it mainly supports,
+**what it does**, and **an example tool** you know.
+
+<ul>
+  <li>Management <em>(worked example: planning, monitoring & control, completion · manages requirements, tests, defects · e.g. Jira + Xray)</em></li>
+  <li>Static testing</li>
+  <li>Test design & implementation</li>
+  <li>Test execution & coverage</li>
+  <li>Non-functional testing</li>
+  <li>DevOps</li>
+  <li>Collaboration</li>
+  <li>Scalability & deployment</li>
+</ul>
 
 <div slot="answer">
 
-- **Static testing** - reviews and static analysis
-- **Test design & implementation** - test cases, test data, test procedures
-- **Test execution & coverage** - automated test runs and coverage measurement
-- **Non-functional** - performance, security, etc.
-- **DevOps** - the delivery pipeline, CI/CD
-- **Collaboration** - all activities
-- **Scalability & deployment** - test environments (VMs, containers)
+- **Management** - Planning, monitoring & control, completion · manages requirements, tests, defects and configuration
+- **Static testing** - Reviews and static analysis
+- **Test design & implementation** - Creating test cases, test data and test procedures
+- **Test execution & coverage** - Automated test runs and coverage measurement
+- **Non-functional testing** - Performance, security and other tests that are hard to do manually
+- **DevOps** - The delivery pipeline, builds, CI/CD and workflow tracking
+- **Collaboration** - Communication - supports all activities
+- **Scalability & deployment** - Test environments, e.g. virtual machines and containers
 
 </div>
 </Exercise>
+
+### Example Tools in Each Category
+
+<SyllabusRef ref="6.1" />
+
+A few well-known examples of each category, with what they do. **The exam only asks about the categories** -
+you won't be asked about specific products - but knowing real examples makes the categories easier to remember.
+
+<ToolExamples categories={[
+  { icon: '🗂️', category: 'Management', tools: [
+    { name: 'Jira', what: 'Tracks requirements, tasks and defects through a workflow', href: 'https://support.atlassian.com/jira-software-cloud/' },
+    { name: 'TestRail', what: 'Organises test cases, runs and results, with progress reports', href: 'https://support.testrail.com/' },
+  ] },
+  { icon: '🔍', category: 'Static testing', tools: [
+    { name: 'SonarQube', what: 'Static analysis: finds bugs, code smells and security issues without running the code', href: 'https://docs.sonarsource.com/sonarqube-server/' },
+    { name: 'ESLint', what: 'Checks JavaScript code against coding rules and standards', href: 'https://eslint.org/docs/latest/' },
+  ] },
+  { icon: '🧪', category: 'Test design & implementation', tools: [
+    { name: 'Cucumber', what: 'Turns Given / When / Then scenarios into executable tests (BDD)', href: 'https://cucumber.io/docs/' },
+    { name: 'Postman', what: 'Designs and organises API test requests and test data', href: 'https://learning.postman.com/docs/' },
+  ] },
+  { icon: '▶️', category: 'Test execution & coverage', tools: [
+    { name: 'Selenium', what: 'Automates web browsers to run UI tests', href: 'https://www.selenium.dev/documentation/' },
+    { name: 'Playwright', what: 'Runs automated end-to-end tests across browsers', href: 'https://playwright.dev/docs/intro' },
+    { name: 'JaCoCo', what: 'Measures code coverage of Java tests', href: 'https://www.jacoco.org/jacoco/trunk/doc/' },
+  ] },
+  { icon: '⚡', category: 'Non-functional testing', tools: [
+    { name: 'Apache JMeter', what: 'Load and performance testing', href: 'https://jmeter.apache.org/usermanual/index.html' },
+    { name: 'OWASP ZAP', what: 'Scans web applications for security vulnerabilities', href: 'https://www.zaproxy.org/docs/' },
+  ] },
+  { icon: '🔁', category: 'DevOps', tools: [
+    { name: 'Jenkins', what: 'Builds, tests and deploys code automatically in a pipeline', href: 'https://www.jenkins.io/doc/' },
+    { name: 'GitHub Actions', what: 'Runs CI/CD workflows straight from a GitHub repository', href: 'https://docs.github.com/en/actions' },
+  ] },
+  { icon: '💬', category: 'Collaboration', tools: [
+    { name: 'Confluence', what: 'Shared documentation such as test plans and reports', href: 'https://support.atlassian.com/confluence-cloud/' },
+    { name: 'Slack / Microsoft Teams', what: 'Team chat and alerts, e.g. from the build pipeline', href: 'https://slack.com/help' },
+  ] },
+  { icon: '📦', category: 'Scalability & deployment', tools: [
+    { name: 'Docker', what: 'Packages software into containers for consistent test environments', href: 'https://docs.docker.com/' },
+    { name: 'Kubernetes', what: 'Runs and scales containers, e.g. for test environments', href: 'https://kubernetes.io/docs/home/' },
+  ] },
+]} />
+
+*Links go to each tool's official documentation and open in a new tab.*
+
 
 ## 6.2 Benefits and Risks of Test Automation
 
@@ -175,3 +234,28 @@ Potential benefits of using test automation include: time saved by reducing repe
 Potential risks of using test automation include: unrealistic expectations about the benefits of a tool (including functionality and ease of use); inaccurate estimations of time, costs, effort required to introduce a tool, maintain test scripts and change the existing manual test process; using a test tool when manual testing is more appropriate; relying on a tool too much, e.g., ignoring the need of human critical thinking; the dependency on the tool vendor which may go out of business, retire the tool, sell the tool to a different vendor or provide poor support (e.g., responses to queries, upgrades, and fixes to defects); using an open-source software which may be abandoned, meaning that no further updates are available, or its internal components may require quite frequent updates as a further development; the automation tool is not compatible with the development platform; choosing an unsuitable tool that did not comply with the regulatory requirements and/or safety standards.
 
 </SyllabusText>
+
+<Exercise title="Benefit or risk?">
+
+Is each statement about test automation a **benefit** or a **risk**?
+
+1. Less time spent on repetitive regression testing
+2. The team expects the tool to find every defect
+3. Coverage can be measured objectively
+4. The tool's vendor goes out of business
+5. Faster feedback from tests in the pipeline
+6. The effort to maintain the test scripts is underestimated
+7. Testers stop thinking critically about the results
+8. Tests run the same way every time
+
+<div slot="answer">
+
+| Benefits | Risks |
+|---|---|
+| 1 - less repetitive manual work | 2 - unrealistic expectations |
+| 3 - objective measures | 4 - vendor dependency |
+| 5 - faster feedback | 6 - underestimated effort |
+| 8 - consistency and repeatability | 7 - over-reliance on the tool |
+
+</div>
+</Exercise>

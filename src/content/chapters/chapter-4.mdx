@@ -9,6 +9,7 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Resource from '../../components/Resource.astro';
 import IconCards from '../../components/IconCards.astro';
 import Tiles from '../../components/diagrams/Tiles.astro';
 import Partitions from '../../components/diagrams/Partitions.astro';
@@ -879,6 +880,26 @@ Fault attacks are a methodical approach to the implementation of error guessing.
 
 </SyllabusText>
 
+<Exercise title="Error guessing: a login form">
+
+A login form has a **username** field, a **password** field and a **Log in** button. Using your experience, list the defects and failures you'd try to provoke.
+
+<div slot="answer">
+
+For example:
+
+- **Empty fields** - submit with one or both blank, or only spaces
+- **Very long input** - thousands of characters in each field
+- **Special characters** - quotes, `<script>`, SQL such as `' OR '1'='1`, emoji and accented letters
+- **Case and spaces** - "User" vs "user", leading or trailing spaces
+- **Repeated failures** - does the account lock after several wrong passwords? Does it ever unlock?
+- **Password handling** - is it hidden as you type? Can it be seen in the URL?
+- **Double-clicking Log in** - two sessions or two requests?
+- **After logging out** - can the browser Back button show protected pages?
+
+</div>
+</Exercise>
+
 ### Where Errors Hide
 
 <SyllabusRef ref="4.4.1" />
@@ -933,6 +954,8 @@ Exploratory testing is useful when there are few or inadequate specifications or
 - **Design, implement and execute tests** to cover test conditions from a checklist.
 - **Good checklist items** - Often phrased as a question · Each can be checked separately and directly · Built from experience, user priorities, or how software fails · Functional or non-functional - e.g. Nielsen's 10 usability heuristics
 - **Leave out** - Items that can be checked automatically · Items better suited as entry / exit criteria · Items that are too general
+
+<Resource kind="pdf" href="https://media.nngroup.com/media/articles/attachments/Heuristic_Summary1_A4_compressed.pdf" source="Nielsen Norman Group" title="Example checklist: the 10 usability heuristics" text="A widely used usability checklist - the kind of list a tester can work through in checklist-based testing" />
 
 <SyllabusText>
 
@@ -1011,6 +1034,24 @@ Good user stories should be: Independent, Negotiable, Valuable, Estimable, Small
 
 </SyllabusText>
 
+<Exercise title="Spot the bad user story">
+
+Which INVEST qualities does this story break, and how would you improve it?
+
+> *As a user, I want the system to be fast and to have all the reporting features, and to integrate with the finance system.*
+
+<div slot="answer">
+
+- **Not Small or Estimable** - it bundles at least three pieces of work (speed, reporting, finance integration)
+- **Not Testable** - "fast" and "all the reporting features" have no measurable acceptance criteria
+- **Value unclear** - "a user" is vague and there's no "so that…", so the benefit isn't stated
+- **Not Independent** - the parts depend on each other and can't be delivered separately
+
+**Better:** split it, for example *"As a finance manager, I want to export monthly sales as CSV, so that I can reconcile them with the finance system"* - with criteria such as "the export completes within 10 seconds for 12 months of data".
+
+</div>
+</Exercise>
+
 ### Acceptance Criteria
 
 <SyllabusRef ref="4.5.2" />
@@ -1037,6 +1078,24 @@ There are several ways to write acceptance criteria for a user story. The two mo
 - **Cover both sides** - positive and negative scenarios
 - **Basis for acceptance tests** - of the user story
 - **Enable planning** - accurate planning and estimation
+
+<Exercise title="Write the acceptance criteria">
+
+Write two acceptance criteria - one positive, one negative - in **Given / When / Then** form for this story:
+
+> *As a registered customer, I want to reset my password, so that I can get back into my account if I forget it.*
+
+<div slot="answer">
+
+There are many good answers. For example:
+
+- **Positive:** *Given* I am a registered customer, *When* I request a password reset for my email address, *Then* I receive an email with a reset link that works for 24 hours.
+- **Negative:** *Given* an email address that isn't registered, *When* I request a password reset, *Then* I see the same confirmation message (so the site doesn't reveal which emails are registered) and no email is sent.
+
+Good criteria are clear, testable, and cover both what should and shouldn't happen.
+
+</div>
+</Exercise>
 
 ### ATDD
 

@@ -12,6 +12,8 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Exercise from '../../components/Exercise.astro';
+import Resource from '../../components/Resource.astro';
 import Compare from '../../components/diagrams/Compare.astro';
 import WhenThen from '../../components/WhenThen.astro';
 import Cycle from '../../components/diagrams/Cycle.astro';
@@ -111,12 +113,10 @@ Some activities within software development processes can also be described by m
 - **Lean** - Define value, map the stream, create flow, establish pull
 - **BDD** - Behaviour described in plain-language scenarios
 
-### Agile - Pros and Cons
+#### Pros and cons
 
-<SyllabusRef ref="2.1" />
-
-- **Fast deployment** - Small, frequent improvements following feedback · Team skill improvement
-- **Light documentation** - Formal records of change may not be created · Regression testing may get out of control
+- **Pros** - Fast deployment · Small, frequent improvements following feedback · Team skills improve
+- **Cons** - Light documentation - formal records of change may not be created · Regression testing may get out of control
 
 ### Impact of the SDLC on Testing
 
@@ -234,6 +234,8 @@ DevOps is an organizational approach aiming to create synergy by getting develop
 <SyllabusRef ref="2.1.4" />
 
 <DevOpsPipeline />
+
+<Resource href="https://www.digitalocean.com/community/tutorials/an-introduction-to-continuous-integration-delivery-and-deployment" title="An introduction to continuous integration, delivery and deployment" text="How CI, continuous delivery and continuous deployment fit together in a pipeline" />
 
 ### DevOps Benefits for Testing
 
@@ -419,6 +421,27 @@ Using an online shop as the example:
 - Alpha and beta testing
 - **E-commerce example** - Does it satisfy the users' needs?
 
+<Exercise title="Which test level?">
+
+For an online shop, which **test level** is each test at?
+
+1. A unit test of the `calculateBasketTotal()` function
+2. Checking the basket module passes items correctly to the checkout module
+3. Running a full purchase, end to end, in the test environment
+4. Checking an order is sent to the third-party payment provider and the confirmation comes back
+5. Shop staff confirm they can process returns as part of their daily work
+
+<div slot="answer">
+
+1. **Component** - one unit, in isolation
+2. **Component integration** - the interface between two components
+3. **System** - the whole system's behaviour
+4. **System integration** - the interface with an external system
+5. **Acceptance** - validation by the intended users
+
+</div>
+</Exercise>
+
 ### What Distinguishes Each Level?
 
 <SyllabusRef ref="2.2.1" />
@@ -485,6 +508,8 @@ Non-functional testing evaluates attributes other than functional characteristic
 
 *Safety was added in the 2023 edition of ISO/IEC 25010, so it appears on the Chapter 2 handout alongside the seven characteristics in the syllabus.*
 
+<Resource href="https://www.perforce.com/blog/qac/what-is-iso-25010" title="What is ISO 25010?" text="A plain-English guide to the software quality characteristics" />
+
 <SyllabusText>
 
 The ISO/IEC 25010 standard provides the following classification of the non-functional software quality characteristics: performance efficiency, compatibility, usability, reliability, security, maintainability, portability.
@@ -505,6 +530,31 @@ The ISO/IEC 25010 standard provides the following classification of the non-func
 It is sometimes appropriate for non-functional testing to start early in the lifecycle (e.g., as part of reviews and component testing or system testing). Many non-functional tests are derived from functional tests as they use the same functional tests, but check that while performing the function, a non-functional constraint is satisfied (e.g., checking that a function performs within a specified time, or a function can be ported to a new platform). The late discovery of non-functional defects can pose a serious threat to the success of a project. Non-functional testing sometimes needs a very specific test environment, such as a usability lab for usability testing.
 
 </SyllabusText>
+
+<Exercise title="Functional or non-functional?">
+
+Is each test **functional** (what it does) or **non-functional** (how well it does it)?
+
+1. A discount code reduces the total by 10%
+2. Pages load within 2 seconds with 500 users online
+3. A password-reset email is sent when requested
+4. The site can be used with a screen reader
+5. Searching returns the matching products
+6. The system recovers after a server restart without losing data
+7. The order history shows the last 12 months of orders
+8. The app works on Chrome, Firefox and Safari
+
+<div slot="answer">
+
+| Functional | Non-functional |
+|---|---|
+| 1 - discount calculation | 2 - performance efficiency |
+| 3 - password reset | 4 - usability (accessibility) |
+| 5 - search | 6 - reliability (recoverability) |
+| 7 - order history | 8 - compatibility / portability |
+
+</div>
+</Exercise>
 
 ### Black-Box vs White-Box
 
@@ -549,6 +599,25 @@ Regression testing confirms that no adverse consequences have been caused by a c
 
 </SyllabusText>
 
+<Exercise title="Confirmation or regression?">
+
+A defect in the login page has just been fixed. Which kind of testing is each of these?
+
+1. Re-running the test that failed because of the login defect
+2. Re-running the full automated checkout suite
+3. Running the steps that reproduced the original failure, to check it no longer happens
+4. Running the existing tests for the account and profile pages
+
+<div slot="answer">
+
+1. **Confirmation** - was the defect fixed?
+2. **Regression** - did the change break anything else?
+3. **Confirmation** - the quickest form, when time is short
+4. **Regression** - unchanged areas that the fix could have affected
+
+</div>
+</Exercise>
+
 ### Automating Regression Tests
 
 <SyllabusRef ref="2.2.3" />
@@ -586,6 +655,8 @@ Maintenance testing checks changes to a system that is **already in operation**.
 - **Planned or unplanned** - Planned releases and deployments - or unplanned hot fixes
 - **Impact analysis** - Done before a change, to help decide whether to make it
 - **Scope depends on** - The risk of the change, the size of the existing system and the size of the change
+
+<Resource href="https://cpl.thalesgroup.com/software-monetization/four-types-of-software-maintenance" title="The four types of software maintenance" text="Corrective, adaptive, perfective and preventive maintenance explained" />
 
 <SyllabusText>
 
@@ -630,3 +701,24 @@ Upgrades or migrations of the operational environment, such as from one platform
 Retirement, such as when an application reaches the end of its life. When a system is retired, this can require testing of data archiving if long data-retention periods are required. Testing of restore and retrieval procedures after archiving may also be needed in the event that certain data is required during the archiving period.
 
 </SyllabusText>
+
+<Exercise title="Which maintenance trigger?">
+
+Which trigger - **modification**, **upgrade / migration** or **retirement** - leads to each piece of maintenance testing?
+
+1. An urgent hot fix for a security vulnerability in the live system
+2. Moving the application from on-premise servers to the cloud
+3. Upgrading the database to a new version
+4. Switching off an old application, with its data archived for seven years
+5. A planned release adding a new sales report
+
+<div slot="answer">
+
+1. **Modification** - an unplanned hot fix
+2. **Upgrade / migration** - a new environment
+3. **Upgrade / migration** - a change to the operational environment
+4. **Retirement** - test the data archiving, and restore and retrieval
+5. **Modification** - a planned enhancement
+
+</div>
+</Exercise>

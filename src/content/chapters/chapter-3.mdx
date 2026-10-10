@@ -183,6 +183,28 @@ Stakeholders can verify that the documented requirements describe their actual n
 | Applies to | Non-executable work products too | Executable work products only |
 | Quality characteristics | Not dependent on execution (e.g. maintainability) | Dependent on execution (e.g. performance efficiency) |
 
+<Exercise title="Review a requirement">
+
+You're reviewing this requirement before any code is written. List as many anomalies as you can.
+
+> **REQ-12 Product search.** The system shall respond quickly when users search. Search results shall be sorted by price.
+> Users can filter by category. Search results shall be sorted by relevance. The search box should accept up to 50 characters
+> and must reject inputs over 40 characters. If no results are found, the system displays an appropriate message.
+
+<div slot="answer">
+
+- **Ambiguous / untestable:** "respond quickly" - how quickly? Under what load?
+- **Contradiction:** results sorted by **price** and also by **relevance**
+- **Contradiction:** accepts up to **50** characters but rejects over **40**
+- **Vague:** "an appropriate message" - what should it say?
+- **Gaps:** what happens with an empty search? Is search case-sensitive? Can users filter by more than one category?
+- **Inconsistent wording:** "shall", "should" and "can" mix mandatory and optional requirements
+
+Finding these now, with static testing, is far cheaper than finding them after the code is built.
+
+</div>
+</Exercise>
+
 ### Defects Easier to Find Statically
 
 <SyllabusRef ref="3.1.3" />
@@ -240,6 +262,27 @@ The size of many work products makes them too large to be covered by a single re
 
 </SyllabusText>
 
+<Exercise title="Put the review process in order">
+
+Put these review activities in the right order:
+
+- Individual review
+- Planning
+- Fixing and reporting
+- Review initiation
+- Communication and analysis
+
+<div slot="answer">
+
+1. **Planning** - scope, purpose, quality characteristics, exit criteria
+2. **Review initiation** - everyone has access, understands their role and is ready
+3. **Individual review** - each reviewer checks the work product and logs anomalies
+4. **Communication and analysis** - discuss the anomalies and decide what happens to each
+5. **Fixing and reporting** - defect reports, fixes, and acceptance once exit criteria are met
+
+</div>
+</Exercise>
+
 ### Review Activities in Detail
 
 <SyllabusRef ref="3.2.2" />
@@ -267,6 +310,37 @@ The size of many work products makes them too large to be covered by a single re
 - **Scribe (recorder)** - Collates anomalies; records decisions and new anomalies in the meeting
 - **Reviewer** - Performs reviews - a project member, subject matter expert or other stakeholder
 - **Review leader** - Overall responsibility - who is involved, when and where it happens
+
+<Exercise title="Who does what in a review?">
+
+Match each **role** to its **responsibility**.
+
+**Roles:** Manager · Author · Moderator (facilitator) · Scribe (recorder) · Reviewer · Review leader
+
+**Responsibilities:**
+
+1. Creates the work product and fixes it
+2. Runs the review meetings and keeps them safe and effective
+3. Takes overall responsibility, and organises who, when and where
+4. Decides what is reviewed and provides resources such as staff and time
+5. Records anomalies and decisions from the meetings
+6. Performs the review and identifies anomalies
+
+<div slot="answer">
+
+| # | Role |
+|---|---|
+| 1 | **Author** |
+| 2 | **Moderator (facilitator)** |
+| 3 | **Review leader** |
+| 4 | **Manager** |
+| 5 | **Scribe (recorder)** |
+| 6 | **Reviewer** |
+
+Watch out: the **review leader** organises the review; the **moderator** runs the meeting.
+
+</div>
+</Exercise>
 
 ### Review Types
 

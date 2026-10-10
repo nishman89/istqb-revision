@@ -17,7 +17,10 @@ const links = [
   ['exam-tips', 'Exam tips'],
 ] as const;
 /** External links, opened in a new tab. */
-const external = [['https://glossary.istqb.org/', 'Glossary', 'The official ISTQB glossary of testing terms (opens in a new tab)']] as const;
+const external = [
+  ['https://glossary.istqb.org/', 'ISTQB glossary', 'The official ISTQB glossary of testing terms (opens in a new tab)'],
+  ['https://istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf', 'ISTQB syllabus (PDF)', 'The official ISTQB CTFL v4.0.1 syllabus (PDF, opens in a new tab)'],
+] as const;
 const path = Astro.url.pathname;
 const isActive = (href: string) => (href === url() ? path === href : path.startsWith(href));
 ---
@@ -45,7 +48,7 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
             <ul class="menu">
               <li><a href={url('handouts')}>Handouts &amp; practice workbook <small>PDF</small></a></li>
               {external.map(([href, label, title]) => (
-                <li><a href={href} target="_blank" rel="noopener" title={title}>ISTQB {label}<span class="ext" aria-hidden="true">↗</span></a></li>
+                <li><a href={href} target="_blank" rel="noopener" title={title}>{label}<span class="ext" aria-hidden="true">↗</span></a></li>
               ))}
             </ul>
           </details>
