@@ -8,7 +8,6 @@
  * Each topic's collapsed bar shows its syllabus section number, and exercise topics are flagged.
  */
 import { SECTION_TITLES } from '../data/syllabus-sections.mjs';
-import { LEARNING_OBJECTIVES, K_MEANING } from '../data/learning-objectives.mjs';
 
 const el = (tagName, props, children) => ({ type: 'element', tagName, properties: props, children });
 const text = (value) => ({ type: 'text', value });
@@ -111,21 +110,6 @@ function addTestIds(tree) {
   });
 }
 
-/** "In this section you'll learn to…" box listing the section's learning objectives and their K-levels. */
-function goalsBox(sectionNo) {
-  const los = LEARNING_OBJECTIVES[sectionNo];
-  if (!los) return null;
-  const t = (value) => ({ type: 'text', value });
-  return el('div', { className: ['section-goals'] }, [
-    el('p', { className: ['section-goals__title'] }, [t("In this section you'll learn to")]),
-    el('ul', { className: ['section-goals__list'] }, los.map(([ref, k, text]) =>
-      el('li', {}, [
-        el('span', { className: ['section-goals__k', `section-goals__k--${k.toLowerCase()}`], title: `${k}: ${K_MEANING[k]}` }, [t(k)]),
-        el('span', {}, [t(text + ' '), el('span', { className: ['section-goals__ref'] }, [t(ref)])]),
-      ]))),
-  ]);
-}
-
 export default function collapsibleSections() {
   return (tree) => {
     tree.children = wrap(tree.children, 'h2', 'chapter-section');
@@ -135,8 +119,6 @@ export default function collapsibleSections() {
       const sectionTitle = textOf(section.children[0]).trim();
       const sectionNo = sectionTitle.split(/\s+/)[0];
       body.children = promoteIntro(sectionTitle, decorateTopics(sectionNo, wrap(body.children, 'h3', 'chapter-topic')));
-      const goals = goalsBox(sectionNo);
-      if (goals) body.children.unshift(goals);
     }
     addTestIds(tree);
   };
