@@ -572,23 +572,33 @@ All states coverage is weaker than valid transitions coverage, because it can ty
 
 <Exercise title="How many test cases?">
 
-How many test cases are needed to cover **all six valid transitions** in the video game diagram?
+Here is the video game from the State Transition Testing topic:
+
+<GameStates />
+
+How many test cases are needed to cover **all six valid transitions**? Try tracing a route through the diagram first.
 
 <div slot="answer">
 
-**Just one.** A single test case can visit every state and take all six valid transitions in sequence:
+**Just one.** A single test case can take all six valid transitions in sequence, starting from the main menu:
 
-**Main menu** →*start* **Playing** →*pause* **Paused** →*resume* **Playing** →*pause* **Paused** →*quit* **Main menu**
-→*start* **Playing** →*lose life [lives = 1]* **Game over** →*back to menu* **Main menu**
+1. Main menu → *start* → Playing
+2. Playing → *pause* → Paused
+3. Paused → *resume* → Playing
+4. Playing → *pause* → Paused (repeated, to reach the next transition)
+5. Paused → *quit / save progress* → Main menu
+6. Main menu → *start* → Playing (repeated)
+7. Playing → *lose life [lives = 1]* → Game over
+8. Game over → *back to menu* → Main menu
 
-<GameStates />
+That's 8 steps, but only **6 different** transitions, so one test case gives 100% valid transitions coverage.
 
 </div>
 </Exercise>
 
 <Exercise title="Adding a crashed state">
 
-Now the game can also **crash** from any of its four states, and a crashed game can't do anything else.
+Using the same game, suppose it can also **crash** from any of its four states, and a crashed game can't do anything else.
 How many test cases are needed to cover all the valid transitions now?
 
 <div slot="answer">
@@ -602,7 +612,7 @@ needs a test case of its own: 1 + 3 = **4**.
 
 <Exercise title="State transition coverage">
 
-For the video game, one test case runs:
+For the same video game, one test case runs:
 
 **Main menu** →*start* **Playing** →*pause* **Paused** →*resume* **Playing**
 

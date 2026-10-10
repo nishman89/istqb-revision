@@ -1,50 +1,70 @@
 ---
 /**
  * State transition diagram for a video game: main menu, playing, paused and game over,
- * with six valid transitions, one guard condition and two actions.
+ * with six valid transitions, one guard condition and two actions. Labels sit in tags on their arrows.
  */
 import Figure from '../Figure.astro';
 // unique per copy, so the diagram can appear more than once on a page
 const id = `gs-${Math.random().toString(36).slice(2, 8)}`;
+
+/** A label tag centred on (x, y); width estimated from the text. */
+const tag = (x: number, y: number, lines: string[]) => {
+  const w = Math.max(...lines.map((l) => l.length)) * 7.4 + 22, h = lines.length * 18 + 10;
+  return { x: x - w / 2, y: y - h / 2, w, h, lines, cx: x, top: y - h / 2 };
+};
+const tags = [
+  tag(249, 178, ['start']),
+  tag(509, 144, ['pause']),
+  tag(509, 214, ['resume']),
+  tag(380, 90, ['quit / save progress']),
+  tag(492, 252, ['lose life [lives = 1]', '/ show final score']),
+  tag(208, 328, ['back to menu']),
+];
+const states = [
+  { x: 40, y: 150, label: 'MAIN MENU', icon: '🏠', cls: 'b-dark' },
+  { x: 300, y: 150, label: 'PLAYING', icon: '🎮', cls: 'b-pink' },
+  { x: 560, y: 150, label: 'PAUSED', icon: '⏸️', cls: 'b-blue' },
+  { x: 300, y: 300, label: 'GAME OVER', icon: '💀', cls: 'b-deep' },
+];
 ---
-<Figure scroll caption="A video game modelled with four states and six valid transitions. The label format is event [guard condition] / action (CTFL 4.2.4)">
-  <svg viewBox="0 0 720 430" role="img" aria-label="State transition diagram: main menu, playing, paused and game over">
+<Figure scroll caption="A video game modelled with four states and six valid transitions. Each label reads event [guard condition] / action (CTFL 4.2.4)">
+  <svg viewBox="0 0 740 380" role="img" aria-label="State transition diagram: main menu, playing, paused and game over">
     <defs>
-      <marker id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d42a57"/></marker>
+      <marker id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5c5c5c"/></marker>
     </defs>
+    <g fill="none" stroke="#5c5c5c" stroke-width="2.5" stroke-linecap="round">
+      <!-- initial state -->
+      <line x1="22" y1="178" x2="36" y2="178" marker-end={`url(#${id})`}/>
+      <!-- start -->
+      <line x1="202" y1="178" x2="294" y2="178" marker-end={`url(#${id})`}/>
+      <!-- pause / resume -->
+      <line x1="462" y1="166" x2="554" y2="166" marker-end={`url(#${id})`}/>
+      <line x1="556" y1="192" x2="466" y2="192" marker-end={`url(#${id})`}/>
+      <!-- quit / save progress: over the top -->
+      <path d="M640 148 C 640 62, 120 62, 120 144" marker-end={`url(#${id})`}/>
+      <!-- lose life -->
+      <line x1="380" y1="208" x2="380" y2="294" marker-end={`url(#${id})`}/>
+      <!-- back to menu -->
+      <path d="M296 328 H 120 V 212" marker-end={`url(#${id})`}/>
+    </g>
+    <circle cx="16" cy="178" r="8" fill="#2d2a2b"/>
 
-    <!-- initial state -->
-    <circle cx="16" cy="222" r="9" fill="#2d2a2b"/>
-    <line x1="26" y1="222" x2="48" y2="222" stroke="#2d2a2b" stroke-width="2.5" marker-end={`url(#${id})`}/>
+    {states.map((s) => (
+      <g>
+        <rect class={s.cls} x={s.x} y={s.y} width="160" height="56" rx="28"/>
+        <text x={s.x + 26} y={s.y + 29} style="font-size:18px" text-anchor="middle" dominant-baseline="central">{s.icon}</text>
+        <text class="t" x={s.x + 46} y={s.y + 28} style="font-size:15px;letter-spacing:0.03em;text-anchor:start">{s.label}</text>
+      </g>
+    ))}
 
-    <!-- states -->
-    <rect class="b-dark" x="52" y="196" width="150" height="52" rx="26"/><text class="t" x="127" y="222" style="font-size:16px">MAIN MENU</text>
-    <rect class="b-pink" x="290" y="196" width="150" height="52" rx="26"/><text class="t" x="365" y="222" style="font-size:16px">PLAYING</text>
-    <rect class="b-dark" x="546" y="86" width="150" height="52" rx="26"/><text class="t" x="621" y="112" style="font-size:16px">PAUSED</text>
-    <rect class="b-deep" x="546" y="306" width="150" height="52" rx="26"/><text class="t" x="621" y="332" style="font-size:16px">GAME OVER</text>
-
-    <!-- main menu -> playing : start -->
-    <line class="ln-pink" x1="204" y1="222" x2="286" y2="222" marker-end={`url(#${id})`}/>
-    <text class="t-dark" x="245" y="208" style="font-size:15px">start</text>
-
-    <!-- playing -> paused : pause -->
-    <path class="ln-pink" d="M405 194 Q 430 108 542 104" marker-end={`url(#${id})`}/>
-    <text class="t-dark" x="440" y="116" style="font-size:15px">pause</text>
-    <!-- paused -> playing : resume -->
-    <path class="ln-pink" d="M590 142 Q 560 222 444 224" marker-end={`url(#${id})`}/>
-    <text class="t-dark" x="560" y="214" style="font-size:15px">resume</text>
-
-    <!-- paused -> main menu : quit / save progress (over the top) -->
-    <path class="ln-pink" d="M590 82 Q 330 -10 140 192" marker-end={`url(#${id})`}/>
-    <text class="t-dark" x="320" y="58" style="font-size:15px">quit / save progress</text>
-
-    <!-- playing -> game over : lose life [lives = 1] / show final score -->
-    <path class="ln-pink" d="M365 250 V 332 H 542" marker-end={`url(#${id})`}/>
-    <text class="t-dark" x="375" y="282" style="font-size:15px;text-anchor:start">lose life [lives = 1]</text>
-    <text class="t-sm" x="375" y="302" style="font-size:14px;text-anchor:start">/ show final score</text>
-
-    <!-- game over -> main menu : back to menu (under the bottom) -->
-    <path class="ln-pink" d="M600 362 Q 300 450 135 252" marker-end={`url(#${id})`}/>
-    <text class="t-dark" x="235" y="400" style="font-size:15px">back to menu</text>
+    {tags.map((t) => (
+      <g>
+        <rect x={t.x} y={t.y} width={t.w} height={t.h} rx="9" fill="#ffffff" stroke="#d42a57" stroke-width="1.5"/>
+        {t.lines.map((l, i) => (
+          <text x={t.cx} y={t.top + 14 + i * 18} text-anchor="middle" dominant-baseline="central"
+                style={`font-size:${i ? 12.5 : 14}px;font-weight:${i ? 600 : 700};fill:${i ? '#5c5c5c' : '#2d2a2b'}`}>{l}</text>
+        ))}
+      </g>
+    ))}
   </svg>
 </Figure>
