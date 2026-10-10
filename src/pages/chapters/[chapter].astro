@@ -267,6 +267,14 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
   .prose :global(ul) { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1rem 1.25rem 1rem 2.25rem; margin: 0.5rem 0; }
   .prose :global(li) { margin: 0.3rem 0; }
 
+  /* Coverage formula: <div class="formula"> label / expression / note </div> */
+  .prose :global(.formula) { display: grid; gap: 0.2rem; margin: 0.75rem 0; padding: 0.8rem 1.1rem; background: var(--charcoal); color: #fff; border-radius: 12px; border-left: 6px solid var(--pink); }
+  .prose :global(.formula__label) { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-soft); }
+  .prose :global(.formula__expr) { font: 700 1.1rem var(--font-head); }
+  .prose :global(.formula__note) { font-size: 0.9rem; color: #ddd; }
+  .prose :global(.label-syntax) { margin: 0.5rem 0 1rem; }
+  .prose :global(.label-syntax code) { font-size: 1.05rem; padding: 0.35rem 0.75rem; border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); color: var(--pink-dark); }
+
   /* Warning callout: <div class="callout callout--warn"> … </div> */
   .prose :global(.callout) { margin: 1rem 0; padding: 0.9rem 1.25rem; border-radius: 0 12px 12px 0; }
   .prose :global(.callout p) { margin: 0; }

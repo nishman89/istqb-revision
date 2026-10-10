@@ -21,17 +21,17 @@ export const K3_TOPICS: K3Topic[] = [
     '2-value: each boundary + its closest neighbour in the next partition. 3-value: each boundary + both neighbours.',
     'Coverage = coverage items tested ÷ coverage items identified. Tick off the given test values one by one.',
   ] },
-  { lo: 'FL-4.2.3', title: 'Decision table testing', notes: 'chapters/4/#decision-tables', method: [
+  { lo: 'FL-4.2.3', title: 'Decision table testing', notes: 'chapters/4/#decision-table-testing', method: [
     'Coverage items are the feasible columns (rules). Ignore infeasible ones.',
     'For each test, find the one column it matches — "-" means the condition doesn\'t matter.',
     'Coverage = distinct columns hit ÷ feasible columns. Two tests hitting the same column count once.',
   ] },
-  { lo: 'FL-4.2.4', title: 'State transition testing', notes: 'chapters/4/#state-transition-diagrams', method: [
+  { lo: 'FL-4.2.4', title: 'State transition testing', notes: 'chapters/4/#state-transition-testing', method: [
     'Write each test as a path of states and events, starting from the stated start state.',
     'Count distinct valid transitions exercised. Stop a path if it hits an event that isn\'t valid from that state.',
     'Know the three criteria: all states < valid transitions < all transitions (valid + invalid).',
   ] },
-  { lo: 'FL-4.5.3', title: 'ATDD test cases', notes: 'chapters/4/#atdd', method: [
+  { lo: 'FL-4.5.3', title: 'ATDD test cases', notes: 'chapters/4/#acceptance-test-driven-development-atdd', method: [
     'Map each option to an acceptance criterion — the right test checks exactly what the criterion says.',
     'Reject tests that go beyond the user story, or test something no criterion mentions.',
     'Positive tests first, then negative, then non-functional.',

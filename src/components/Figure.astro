@@ -1,9 +1,10 @@
 ---
 /** Wraps a diagram with a caption. */
-interface Props { caption: string; wide?: boolean; }
-const { caption, wide = false } = Astro.props;
+interface Props { caption: string; wide?: boolean; /** keep the diagram readable on phones by letting it scroll sideways */ scroll?: boolean; }
+const { caption, wide = false, scroll = false } = Astro.props;
 ---
-<figure class:list={['diagram', { 'diagram--wide': wide }]}>
+<figure class:list={['diagram', { 'diagram--wide': wide, 'diagram--scroll': scroll }]}>
+  {scroll && <p class="diagram__hint" aria-hidden="true">↔ Swipe to see the whole diagram</p>}
   <slot />
   <figcaption>{caption}</figcaption>
 </figure>

@@ -1,0 +1,26 @@
+---
+/**
+ * Brief overview of a test technique before the details: what it is, when to use it, and why it helps.
+ *   <AtAGlance what="…" when="…" why="…" />
+ */
+interface Props { what: string; when: string; why: string; }
+const { what, when, why } = Astro.props;
+---
+<div class="glance" data-testid="at-a-glance">
+  <p class="glance__title">At a glance</p>
+  <dl>
+    <div><dt><span aria-hidden="true">💡</span> What it is</dt><dd>{what}</dd></div>
+    <div><dt><span aria-hidden="true">🎯</span> Use it when</dt><dd>{when}</dd></div>
+    <div><dt><span aria-hidden="true">✅</span> Why it helps</dt><dd>{why}</dd></div>
+  </dl>
+</div>
+
+<style>
+  .glance { margin: 0.25rem 0 1.25rem; padding: 0.9rem 1.1rem; background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); border-top: 5px solid var(--charcoal); }
+  .glance__title { margin: 0 0 0.5rem; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-dark); }
+  .glance dl { margin: 0; display: grid; gap: 0.5rem; }
+  .glance dl > div { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0.75rem; align-items: baseline; }
+  .glance dt { font-weight: 700; color: var(--charcoal); }
+  .glance dd { margin: 0; }
+  @media (max-width: 40rem) { .glance dl > div { grid-template-columns: 1fr; gap: 0.1rem; } }
+</style>

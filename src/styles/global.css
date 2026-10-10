@@ -116,6 +116,12 @@ thead th, tr:first-child th { background: var(--pink); color: #fff; }
 /* ---------- Diagrams (inline SVG) ---------- */
 .diagram { margin: 1rem 0 1.25rem; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem; }
 .diagram svg { display: block; width: 100%; height: auto; max-height: 30rem; margin-inline: auto; font-family: var(--font-body); }
+.diagram__hint { display: none; margin: 0 0 0.4rem; font-size: 0.8rem; font-weight: 700; color: var(--grey); text-align: center; }
+@media (max-width: 40rem) {
+  .diagram--scroll { overflow-x: auto; }
+  .diagram--scroll svg { min-width: 34rem; }
+  .diagram--scroll .diagram__hint { display: block; position: sticky; left: 0; }
+}
 .diagram figcaption { margin-top: 0.75rem; font-size: 0.9rem; color: var(--grey); text-align: center; }
 .diagram .b-dark { fill: var(--charcoal); }
 .diagram .b-pink { fill: var(--pink); }

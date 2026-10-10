@@ -9,6 +9,7 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import AtAGlance from '../../components/AtAGlance.astro';
 import Resource from '../../components/Resource.astro';
 import IconCards from '../../components/IconCards.astro';
 import Tiles from '../../components/diagrams/Tiles.astro';
@@ -20,23 +21,20 @@ import Flow from '../../components/diagrams/Flow.astro';
 import BoilerPartitions from '../../components/diagrams/BoilerPartitions.astro';
 import BvaValues from '../../components/diagrams/BvaValues.astro';
 import ControlFlow from '../../components/diagrams/ControlFlow.astro';
-import DoorStates from '../../components/diagrams/DoorStates.astro';
+import GameStates from '../../components/diagrams/GameStates.astro';
 
 ## 4.1 Test Techniques Overview
 
-### What Do Test Techniques Do?
+### Test Techniques Overview
 
 <SyllabusRef ref="4.1" />
 
-- **Support analysis & design** - WHAT to test (analysis) and HOW to test (design)
-- **A small but sufficient set** - of test cases, built systematically
-- **Define the building blocks** - Test conditions, coverage items and test data
+A **test technique** is a systematic way of deciding **what to test** and **how to test it**. Instead of picking tests
+at random, a technique helps you find a small but sufficient set of test cases that is likely to find defects.
 
-#### Three families in this syllabus
-
-- Black-box
-- White-box
-- Experience-based
+- **Test analysis** - Techniques help decide *what* to test: the test conditions
+- **Test design** - Techniques help decide *how* to test: the test cases
+- **Building blocks** - Each technique defines its test conditions, coverage items and test data
 
 <SyllabusText>
 
@@ -48,9 +46,11 @@ In this syllabus, test techniques are classified as black-box, white-box, and ex
 
 </SyllabusText>
 
-### Three Families of Techniques
+### The Three Families of Techniques
 
 <SyllabusRef ref="4.1" />
+
+The syllabus groups test techniques into three families. Each one starts from a different source of information:
 
 <Compare caption="Three families of test technique (CTFL 4.1)" columns={[
   { title: 'Black-box', sub: 'specification-based', points: ['Equivalence partitioning', 'Boundary value analysis', 'Decision tables', 'State transitions'] },
@@ -58,48 +58,85 @@ In this syllabus, test techniques are classified as black-box, white-box, and ex
   { title: 'Experience-based', sub: 'knowledge and skill', points: ['Error guessing', 'Exploratory testing', 'Checklist-based testing'] },
 ]} />
 
-- **Black-box** - Specification-based · Based on the specified behaviour, without reference to internal structure · Test cases are independent of the implementation · Still useful if the code changes but the behaviour stays the same
-- **White-box** - Structure-based · Based on the test object's internal structure and processing · Can only be created after design or implementation
-- **Experience-based** - Knowledge and skill · Uses testers' knowledge and experience · Effectiveness depends heavily on the tester · Finds defects the others may miss — complementary
+> **How do you choose?** Use **black-box** techniques when you have a specification, **white-box** techniques when you can
+> see the code, and **experience-based** techniques alongside both, to catch what the formal techniques miss.
 
 ## 4.2 Black-box Test Techniques
+
+### Black-box Test Techniques
+
+<SyllabusRef ref="4.2" />
+
+**Black-box** techniques design tests from **what the software should do** (its specification), without looking at the
+code. The syllabus covers four, and each is examined at **K3**, so you need to be able to *use* them on a scenario:
+
+<IconCards items={[
+  { icon: '🧩', title: 'Equivalence partitioning', text: 'Group values that behave the same way, and test one from each group' },
+  { icon: '📏', title: 'Boundary value analysis', text: 'Test the values at the edges of each group' },
+  { icon: '🔢', title: 'Decision table testing', text: 'Test every combination of conditions in a business rule' },
+  { icon: '🔀', title: 'State transition testing', text: 'Test how the system moves between states' },
+]} />
 
 ### Equivalence Partitioning
 
 <SyllabusRef ref="4.2.1" />
 
-- **Divide the data** - into equivalence partitions
-- **Same treatment** - every value in a partition is processed the same way
-- **One test each** - one value per partition is enough
+<AtAGlance what="Split the possible values into groups (partitions) that the system should treat the same way, then test one value from each group." when="An input or output has a range or set of values that are handled alike, such as ages, prices or categories." why="Far fewer tests, while still covering every kind of value, including the invalid ones." />
+
+#### How it works
+
+1. **Pick a data element** to test. It can be an input, an output, a configuration value, an internal value, a time
+   value or an interface parameter.
+2. **Divide its values into partitions.** Every value in a partition should be processed the same way by the software.
+3. **Mark each partition valid or invalid.** Valid values should be processed; invalid values should be ignored or rejected.
+4. **Choose one test value from each partition.** If one value in a partition works, the others should too.
 
 <Partitions caption="Example: a greeting chosen by the hour of the day — two partitions, so two tests (CTFL 4.2.1)" rows={[
   { label: 'Hour', segments: [{ text: '00:00 — 11:59  "Good morning"', pick: '09:00' }, { text: '12:00 — 23:59  "Good afternoon"', kind: 'valid', pick: '15:00' }] },
 ]} />
 
+- **No overlaps, no gaps** - Partitions must not overlap, and none can be empty
+- **Many shapes** - Partitions can be continuous or discrete, ordered or unordered, finite or infinite
+- **Agree the definitions** - What counts as "valid" can vary between teams, so agree it up front
+
 <SyllabusText>
 
 Equivalence Partitioning (EP) divides data into partitions (known as equivalence partitions) based on the expectation that all the elements of a given partition are to be processed in the same way by the test object. The theory behind this technique is that if a test case, that tests one value from an equivalence partition, detects a defect, this defect should also be detected by test cases that test any other value from the same partition. Therefore, one test for each partition is sufficient.
 
+Equivalence partitions can be identified for any data element related to the test object, including inputs, outputs, configuration items, internal values, time-related values, and interface parameters. The partitions may be continuous or discrete, ordered or unordered, finite or infinite. The partitions must not overlap and must be non-empty sets. For simple test objects EP can be easy, but in practice, understanding how the test object will treat different values is often complicated. Therefore, partitioning should be done with care.
+
+A partition containing valid values is called a valid partition. A partition containing invalid values is called an invalid partition. The definitions of valid and invalid values may vary among teams and organizations. For example, valid values may be interpreted as those that should be processed by the test object or as those for which the specification defines their processing. Invalid values may be interpreted as those that should be ignored or rejected by the test object or as those for which no processing is defined in the test object specification.
+
 </SyllabusText>
 
-### Identifying Partitions
+### Equivalence Partitioning Coverage
 
 <SyllabusRef ref="4.2.1" />
 
-- **Any data element** - Inputs, outputs, configuration items, internal values, time-related values, interface parameters
-- **Many shapes** - Continuous or discrete, ordered or unordered, finite or infinite
-- **No overlaps, no empties** - Partitions must not overlap and must be non-empty
-- **Partition with care** - Simple in theory — often complicated in practice
+In equivalence partitioning, the **coverage items are the partitions**, including the invalid ones.
+
+<div class="formula"><span class="formula__label">EP coverage</span><span class="formula__expr">partitions exercised ÷ total partitions × 100%</span><span class="formula__note">100% means every partition, valid and invalid, has at least one test</span></div>
+
+**More than one input?** Each test case can cover a partition from several sets at once. The simplest criterion is
+**Each Choice coverage**: every partition from every set is exercised at least once. It does not try every
+*combination* of partitions.
+
+> **Watch out for:** partitions that are easy to miss, such as values below the minimum, above the maximum, or a range
+> that wraps around midnight. Sketching the partitions on a line before you choose values helps.
 
 <SyllabusText>
 
-Equivalence partitions can be identified for any data element related to the test object, including inputs, outputs, configuration items, internal values, time-related values, and interface parameters. The partitions may be continuous or discrete, ordered or unordered, finite or infinite. The partitions must not overlap and must be non-empty sets. For simple test objects EP can be easy, but in practice, understanding how the test object will treat different values is often complicated. Therefore, partitioning should be done with care.
+In EP, the coverage items are the equivalence partitions. To achieve 100% coverage with this technique, test cases must exercise all identified partitions (including invalid partitions) by covering each partition at least once. Coverage is measured as the number of partitions exercised by at least one test case, divided by the total number of identified partitions, and is expressed as a percentage.
+
+Many test objects include multiple sets of partitions (e.g., test objects with more than one input parameter), which means that a test case will cover partitions from different sets of partitions. The simplest coverage criterion in the case of multiple sets of partitions is called Each Choice coverage (Ammann 2016). Each Choice coverage requires test cases to exercise each partition from each set of partitions at least once. Each Choice coverage does not take into account combinations of partitions.
 
 </SyllabusText>
 
-### Exercise: UV Index
+### Practise: Equivalence Partitioning
 
 <SyllabusRef ref="4.2.1" />
+
+Try these in order. Each one builds on the one before.
 
 <Exercise title="UV index partitions" options={['1, 2, 5, 9, 11', '1, 3, 4, 5, 8', '1, 5, 7, 9, 11', '3, 6, 7, 8, 11']}>
 
@@ -128,38 +165,6 @@ The Met Office categorises UV exposure like this:
 </div>
 </Exercise>
 
-### Valid and Invalid Partitions
-
-<SyllabusRef ref="4.2.1" />
-
-- **Valid partition** - Contains valid values · Values the test object should process · or values whose processing the specification defines
-- **Invalid partition** - Contains invalid values · Values that should be ignored or rejected · or values with no processing defined in the specification
-- **Definitions vary** between teams and organisations — agree them up front.
-
-<SyllabusText>
-
-A partition containing valid values is called a valid partition. A partition containing invalid values is called an invalid partition. The definitions of valid and invalid values may vary among teams and organizations. For example, valid values may be interpreted as those that should be processed by the test object or as those for which the specification defines their processing. Invalid values may be interpreted as those that should be ignored or rejected by the test object or as those for which no processing is defined in the test object specification.
-
-</SyllabusText>
-
-### EP Coverage
-
-<SyllabusRef ref="4.2.1" />
-
-- **COVERAGE ITEMS = THE PARTITIONS** - **EP coverage  =** partitions exercised by at least one test**÷** total partitions identified**× 100%**
-- **100% coverage** - Every identified partition — including invalid ones — is exercised at least once
-- What coverage does each answer to the UV question give?
-
-<SyllabusText>
-
-In EP, the coverage items are the equivalence partitions. To achieve 100% coverage with this technique, test cases must exercise all identified partitions (including invalid partitions) by covering each partition at least once. Coverage is measured as the number of partitions exercised by at least one test case, divided by the total number of identified partitions, and is expressed as a percentage.
-
-</SyllabusText>
-
-### Exercise: Boiler Timer
-
-<SyllabusRef ref="4.2.1" />
-
 <Exercise title="Boiler timer partitions" options={['05:59, 06:00, 08:00, 18:30', '00:01, 06:00, 12:00, 18:30, 23:59', '00:01, 05:59, 18:30, 19:01, 23:59', '05:59, 12:00, 18:30, 23:59']}>
 
 A boiler can operate between 00:00 and 23:59. The timer turns it **on at 06:00** and **off at 08:00**.
@@ -179,24 +184,6 @@ Which is a correct set of equivalence partition values? *Tip: sketch the partiti
 
 </div>
 </Exercise>
-
-### Multiple Sets of Partitions
-
-<SyllabusRef ref="4.2.1" />
-
-- **More than one input?** Then each test case covers partitions from several sets at once.
-- **Each Choice Coverage: Every partition from every set is exercised at least once.** - The simplest criterion for multiple sets of partitions (Ammann 2016).
-- **But:** Each Choice coverage does not consider combinations of partitions.
-
-<SyllabusText>
-
-Many test objects include multiple sets of partitions (e.g., test objects with more than one input parameter), which means that a test case will cover partitions from different sets of partitions. The simplest coverage criterion in the case of multiple sets of partitions is called Each Choice coverage (Ammann 2016). Each Choice coverage requires test cases to exercise each partition from each set of partitions at least once. Each Choice coverage does not take into account combinations of partitions.
-
-</SyllabusText>
-
-### Exercise: Multiple Partitions
-
-<SyllabusRef ref="4.2.1" />
 
 <Exercise title="Temperature and visibility">
 
@@ -254,31 +241,26 @@ for example **(10, Standard), (40, Gold), (70, Standard)**.
 
 <SyllabusRef ref="4.2.2" />
 
-- Partition A
-- Partition B
-- Partition C
-- **Ordered partitions only** - Boundaries are the minimum and maximum values of a partition
-- **Developers slip at the edges** - Errors are more likely at boundary values
-- **Typical defects** - Boundaries implemented too high, too low, or missing altogether
+<AtAGlance what="Test the values at the edges of ordered partitions, where developers most often make mistakes. It builds on equivalence partitioning." when="Values have a natural order, such as numbers, dates, lengths or times." why="Catches off-by-one mistakes, like writing < instead of <=, that one value per partition can miss." />
+
+#### How it works
+
+Boundary value analysis (BVA) only works for **ordered** partitions, such as numbers or dates. The **boundary values**
+are the smallest and largest values in each partition. Developers are more likely to make mistakes at these edges, so a
+boundary can end up implemented too high, too low, or not at all.
+
+There are two versions, which differ in how many values you test around each boundary:
+
+<BvaValues />
+
+- **2-value BVA** - Test each boundary value and its closest neighbour in the next partition
+- **3-value BVA** - Test each boundary value and *both* of its neighbours, so it is more thorough
 
 <SyllabusText>
 
 Boundary Value Analysis (BVA) is a technique based on exercising the boundaries of equivalence partitions. Therefore, BVA can only be used for ordered partitions. The minimum and maximum values of a partition are its boundary values. In the case of BVA, if two elements belong to the same partition, all elements between them must also belong to that partition.
 
 BVA focuses on the boundary values of the partitions because developers are more likely to make errors with these boundary values. Typical defects found by BVA are located where implemented boundaries are misplaced to positions above or below their intended positions or are omitted altogether.
-
-</SyllabusText>
-
-### 2-Value vs 3-Value BVA
-
-<SyllabusRef ref="4.2.2" />
-
-<BvaValues />
-
-- **2-value coverage** - Boundary values exercised ÷ total boundary values × 100%
-- **3-value coverage** - Boundaries and neighbours exercised ÷ total boundaries and neighbours × 100%
-
-<SyllabusText>
 
 This syllabus covers two versions of BVA: 2-value and 3-value BVA. They differ in terms of coverage items per boundary that need to be exercised to achieve 100% coverage.
 
@@ -288,7 +270,31 @@ In 3-value BVA (Koomen 2006, O'Regan 2019), for each boundary value there are th
 
 </SyllabusText>
 
-### Exercise: 2-Value BVA on the Boiler
+### Boundary Value Analysis Coverage
+
+<SyllabusRef ref="4.2.2" />
+
+In BVA, the **coverage items are the boundary values** (and, for 3-value BVA, their neighbours too).
+
+<div class="formula"><span class="formula__label">2-value BVA coverage</span><span class="formula__expr">boundary values exercised ÷ total boundary values × 100%</span></div>
+<div class="formula"><span class="formula__label">3-value BVA coverage</span><span class="formula__expr">boundaries and neighbours exercised ÷ total boundaries and neighbours × 100%</span></div>
+
+#### Why 3-value BVA finds more
+
+Suppose a rule should say `if (x <= 10)`, but the developer wrote `if (x == 10)`:
+
+| Test values | What happens | Result |
+|---|---|---|
+| 2-value BVA: **10** and **11** | Both behave correctly | Defect missed |
+| 3-value BVA: **9**, **10** and **11** | 9 is now handled wrongly | **Defect found** |
+
+<SyllabusText>
+
+3-value BVA is more rigorous than 2-value BVA as it may detect defects overlooked by 2-value BVA. For example, if the decision "if (x ≤ 10) …" is incorrectly implemented as "if (x == 10) …", no test data derived from the 2-value BVA (x = 10, x = 11) can detect the defect. However, x = 9, derived from the 3-value BVA, is likely to detect it.
+
+</SyllabusText>
+
+### Practise: Boundary Value Analysis
 
 <SyllabusRef ref="4.2.2" />
 
@@ -318,10 +324,6 @@ Each partition has a lowest and highest value. In 2-value BVA you test each **bo
 
 </div>
 </Exercise>
-
-### Exercise: 3-Value BVA on the Boiler
-
-<SyllabusRef ref="4.2.2" />
 
 <Exercise title="3-value boundary value coverage">
 
@@ -370,14 +372,6 @@ A password must be **8 to 20 characters long** (inclusive).
 </div>
 </Exercise>
 
-### Why 3-Value BVA is More Rigorous
-
-<SyllabusRef ref="4.2.2" />
-
-- **INTENDED** - if (x &lt;= 10)
-- **IMPLEMENTED (DEFECT)** - if (x == 10)
-- **2-Value Tests: x = 10, x = 11** - Both behave correctly — defect missed
-- **3-VALUE ADDS** - Behaves wrongly — defect found
 <Exercise kind="discuss" title="Spot the defect">
 
 In the UV index example, what coding error would 3-value BVA catch but 2-value BVA miss?
@@ -390,55 +384,33 @@ The 2-value tests (7 and 8) both behave correctly, but 3-value BVA adds **9**, w
 </div>
 </Exercise>
 
-<SyllabusText>
-
-3-value BVA is more rigorous than 2-value BVA as it may detect defects overlooked by 2-value BVA. For example, if the decision "if (x ≤ 10) …" is incorrectly implemented as "if (x == 10) …", no test data derived from the 2-value BVA (x = 10, x = 11) can detect the defect. However, x = 9, derived from the 3-value BVA, is likely to detect it.
-
-</SyllabusText>
-
-### Decision Tables
+### Decision Table Testing
 
 <SyllabusRef ref="4.2.3" />
 
-- **Decision tables** record complex logic such as business rules — how combinations of conditions lead to different outcomes.
+<AtAGlance what="List the combinations of conditions and the action each combination should trigger, in a table." when="A business rule depends on several conditions in combination, such as discounts, eligibility or approvals." why="Covers every combination systematically, and exposes gaps or contradictions in the requirements." />
 
-|   |   | Rule 1 | Rule 2 | Rule 3 |
-|---|---|---|---|---|
-| Conditions | Condition A | T | T | F |
-|   | Condition B | T | F | — |
-| Actions | Action X | X |   |   |
-|   | Action Y |   | X | X |
+#### How it works
 
-- Conditions, then the resulting actions
-- **Columns** - Each is a decision rule — a unique combination of conditions
-- **Limited-entry** - Values are true / false
-- **Extended-entry** - Values can be ranges, partitions or discrete values
+A decision table lists the **conditions** at the top and the resulting **actions** underneath. Each **column** is one
+**rule**: a unique combination of conditions, and the actions it should lead to.
 
-<SyllabusText>
+| Symbol | Meaning |
+|---|---|
+| **T** / **F** | The condition is true / false |
+| **–** | The condition doesn't matter for this rule |
+| **N/A** | This combination is impossible (infeasible) |
+| **X** | The action should happen |
+| *blank* | The action should not happen |
 
-Decision tables are used for testing the implementation of system requirements that specify how different combinations of conditions result in different outcomes. Decision tables are an effective way of recording complex logic, such as business rules.
+Conditions are usually true or false (a **limited-entry** table), but they can also be ranges or partitions
+(an **extended-entry** table).
 
-When creating decision tables, the conditions and the resulting actions of the system are defined. These form the rows of the table. Each column corresponds to a decision rule that defines a unique combination of conditions, along with the associated actions.
+#### Worked example: a printer troubleshooter
 
-In limited-entry decision tables all the values of the conditions and actions (except for irrelevant or infeasible ones; see below) are shown as Boolean values (true or false). Alternatively, in extended-entry decision tables some or all the conditions and actions may also take on multiple values (e.g., ranges of numbers, equivalence partitions, discrete values).
+A support team diagnoses printer problems from three symptoms the customer describes. The table tells the adviser what to check:
 
-</SyllabusText>
-
-### Example — Printer Troubleshooter
-
-<SyllabusRef ref="4.2.3" />
-
-- **A technical support company uses a decision table to diagnose printer problems from symptoms clients describe over the phone.** - The program uses the decision table to find the correct actions to perform.
-
-#### The adviser can select one or more symptoms
-
-- Printer does not print
-- A red light is flashing
-- Printer is unrecognised
-
-### Printer Decision Table
-
-<SyllabusRef ref="4.2.3" />
+<div class="table-wrap">
 
 |   | Conditions / actions | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 |---|---|---|---|---|---|---|---|---|---|
@@ -451,23 +423,32 @@ In limited-entry decision tables all the values of the conditions and actions (e
 |   | Check / replace ink | X | X |   |   | X | X |   |   |
 |   | Check for paper jam |   | X |   | X |   |   |   |   |
 
-### Decision Table Notation
+</div>
 
-<SyllabusRef ref="4.2.3" />
+<SyllabusText>
 
-- **Conditions** - True — the condition is satisfied · False — the condition is not satisfied · Irrelevant to the action outcome · Infeasible for this rule
-- **Actions** - The action should occur · The action should not occur
+Decision tables are used for testing the implementation of system requirements that specify how different combinations of conditions result in different outcomes. Decision tables are an effective way of recording complex logic, such as business rules.
+
+When creating decision tables, the conditions and the resulting actions of the system are defined. These form the rows of the table. Each column corresponds to a decision rule that defines a unique combination of conditions, along with the associated actions.
+
+In limited-entry decision tables all the values of the conditions and actions (except for irrelevant or infeasible ones; see below) are shown as Boolean values (true or false). Alternatively, in extended-entry decision tables some or all the conditions and actions may also take on multiple values (e.g., ranges of numbers, equivalence partitions, discrete values).
+
+</SyllabusText>
 
 ### Decision Table Coverage
 
 <SyllabusRef ref="4.2.3" />
 
-- **1. Build the full table** - every combination of conditions
-- **2. Delete infeasible columns** - combinations that can't happen
-- **3. Merge (minimise)** - columns where some conditions don't affect the outcome
+In decision table testing, the **coverage items are the feasible columns** (rules). To get there:
 
-> **Coverage items = the feasible columns.** Coverage = columns exercised ÷ feasible columns × 100%.
-> Minimisation algorithms are out of scope of the syllabus.
+1. **Build the full table**, with every combination of conditions.
+2. **Remove infeasible columns**, the combinations that can't happen.
+3. **Minimise** by merging columns where some conditions don't affect the outcome. (Minimisation methods are outside the syllabus.)
+
+<div class="formula"><span class="formula__label">Decision table coverage</span><span class="formula__expr">columns exercised ÷ feasible columns × 100%</span></div>
+
+- **Strengths** - Finds every combination of conditions systematically, including easily overlooked ones · Exposes gaps and contradictions in the requirements
+- **Limitations** - The number of rules grows exponentially with the number of conditions · Reduce it with a minimised table or a risk-based approach
 
 <SyllabusText>
 
@@ -475,20 +456,13 @@ A full decision table has enough columns to cover every combination of condition
 
 In decision table testing, the coverage items are the columns containing feasible combinations of conditions. To achieve 100% coverage with this technique, test cases must exercise all these columns. Coverage is measured as the number of exercised columns, divided by the total number of feasible columns, and is expressed as a percentage.
 
-</SyllabusText>
-
-### Strengths and Limitations
-
-<SyllabusRef ref="4.2.3" />
-
-- **Strengths** - Systematically identifies every combination of conditions — including ones that might be overlooked · Finds gaps or contradictions in the requirements
-- **Limitations** - Rules grow exponentially with the number of conditions — can be time consuming · Reduce with a minimised table or a risk-based approach
-
-<SyllabusText>
-
 The strength of decision table testing is that it provides a systematic approach to identify all the combinations of conditions, some of which might otherwise be overlooked. It also helps to find any gaps or contradictions in the requirements. If there are many conditions, exercising all the decision rules may be time consuming, since the number of rules grows exponentially with the number of conditions. In such a case, to reduce the number of rules that need to be exercised, a minimized decision table or a risk-based approach may be used.
 
 </SyllabusText>
+
+### Practise: Decision Table Testing
+
+<SyllabusRef ref="4.2.3" />
 
 <Exercise source="workbook" kind="example" title="Worked example: cash machine">
 
@@ -514,141 +488,123 @@ Merging those gives a minimised table of **4 rules → 4 test cases**:
 </div>
 </Exercise>
 
-### State Transition Diagrams
+### State Transition Testing
 
 <SyllabusRef ref="4.2.4" />
 
-- **TRANSITION LABEL SYNTAX** - **event[guard condition]/ action**
-- **States** - The possible states the system can be in
-- **Transitions** - Valid moves between states — assumed instantaneous
-- Triggers a transition
-- **Guard condition** - Optional extra condition on the event
-- **Action** - What the software does — optional
+<AtAGlance what="Model the system as states and the events that move it from one state to another, then test those transitions." when="Behaviour depends on what happened before, such as logins, orders, devices or workflows." why="Tests realistic sequences of events, including events that should not be allowed in a given state." />
+
+#### How it works
+
+A **state transition diagram** shows the **states** a system can be in, and the **transitions** between them. A
+transition is triggered by an **event**, may only happen if a **guard condition** is true, and may cause an **action**:
+
+<p class="label-syntax"><code>event [guard condition] / action</code></p>
+
+#### Worked example: a video game
+
+A game can be in one of four states: on the **main menu**, **playing**, **paused** or **game over**. Pressing buttons
+(and losing lives) are the events that move it between them:
+
+<GameStates />
+
+Notice the transition from **playing** to **game over**. Its event is *lose life*, but it only happens if the
+**guard condition** `[lives = 1]` is true, and it triggers the **action** *show final score*. Losing a life with more
+lives left keeps you playing.
+
+The same model can be written as a **state table**: one row per state, one column per event. Filled cells are valid
+transitions; **empty cells are invalid transitions**, which the diagram doesn't show. For example, you can't *pause*
+from the main menu:
+
+<div class="table-wrap">
+
+| State / event | Start | Pause | Resume | Quit | Lose life | Back to menu |
+|---|---|---|---|---|---|---|
+| **Main menu** | Playing | | | | | |
+| **Playing** | | Paused | | | Game over [lives = 1] | |
+| **Paused** | | | Playing | Main menu | | |
+| **Game over** | | | | | | Main menu |
+
+</div>
+
+That gives **6 valid** transitions and **18 invalid** ones: 24 in total (4 states × 6 events). A **test case** is a
+sequence of events, so one test case usually covers several transitions.
 
 <SyllabusText>
 
 A state transition diagram models the behavior of a system by showing its possible states and valid state transitions. A transition is initiated by an event, which may be additionally qualified by a guard condition. The transitions are assumed to be instantaneous and may sometimes result in the software taking action. The common transition labeling syntax is as follows: "event [guard condition] / action". Guard conditions and actions can be omitted if they do not exist or are irrelevant for the tester.
 
-</SyllabusText>
-
-### Example — A Door
-
-<SyllabusRef ref="4.2.4" />
-
-- **If the door is OPEN** - you can close it
-- **If the door is CLOSED** - "close door" isn't available until you open it again
-
-So a door has **two states**: OPEN and CLOSED, and two events that move between them: *close door* and *open door*.
-
-### Door Example — 3 States
-
-<SyllabusRef ref="4.2.4" />
-
-<DoorStates />
-
-- Extend the example: a closed door can be LOCKED or UNLOCKED.
-
-### State Tables
-
-<SyllabusRef ref="4.2.4" />
-
-- **Equivalent model** - A state table holds the same information as the diagram
-- **Rows = states** - Columns = events (plus guard conditions)
-- **Cells = transitions** - Target state, plus any resulting action
-- **Invalid transitions shown** - Empty cells — the diagram doesn't show these
-
-<SyllabusText>
-
 A state table is a model equivalent to a state transition diagram. Its rows represent states, and its columns represent events (together with guard conditions if they exist). Table entries (cells) represent transitions, and contain the target state, as well as the resulting actions, if defined. In contrast to the state transition diagram, the state table explicitly shows invalid transitions, which are represented by empty cells.
-
-</SyllabusText>
-
-### State Table — Door Example
-
-<SyllabusRef ref="4.2.4" />
-
-| State / event | Open door | Close door |
-|---|---|---|
-| OPEN |   | CLOSED |
-| CLOSED | OPEN [door is unlocked] |   |
-
-- Empty cells = invalid transitions
-
-### State Table — 3 States
-
-<SyllabusRef ref="4.2.4" />
-
-| State / event | Open door | Close door | Lock door | Unlock door |
-|---|---|---|---|---|
-| OPEN |   | CLOSED UNLOCKED |   |   |
-| CLOSED UNLOCKED | OPEN |   | CLOSED LOCKED |   |
-| CLOSED LOCKED |   |   |   | CLOSED UNLOCKED |
-
-- **4 valid transitions** - the filled cells
-- **8 invalid transitions** - the empty cells — 12 in total
-
-### Test Cases from State Models
-
-<SyllabusRef ref="4.2.4" />
-
-- **A sequence of events** - …producing a sequence of state changes (and actions)
-- **Several transitions per test** - One test case usually covers many transitions
-
-<SyllabusText>
 
 A test case based on a state transition diagram or state table is usually represented as a sequence of events, which results in a sequence of state changes (and actions, if needed). One test case may, and usually will, cover several transitions between states.
 
 </SyllabusText>
 
+### State Transition Coverage
+
+<SyllabusRef ref="4.2.4" />
+
+There are three coverage criteria for state transition testing, from weakest to strongest:
+
+| Criterion | Coverage items | 100% means |
+|---|---|---|
+| **All states** | States | Every state is visited |
+| **Valid transitions** (0-switch) | Valid transitions | Every valid transition is exercised |
+| **All transitions** | Every cell in the state table | Every valid transition is exercised *and* every invalid one is attempted |
+
+<div class="formula"><span class="formula__label">Coverage</span><span class="formula__expr">items exercised ÷ total items × 100%</span><span class="formula__note">for all transitions: (valid exercised + invalid attempted) ÷ all transitions</span></div>
+
+- **All states** - The weakest: it can be achieved without exercising every transition
+- **Valid transitions** - The most widely used · 100% guarantees 100% all-states coverage
+- **All transitions** - The strongest · The minimum for mission and safety-critical software
+
+> **Watch out for defect masking:** attempt only **one invalid transition per test case**, so one defect can't hide another.
+
+<SyllabusText>
+
+All states coverage is weaker than valid transitions coverage, because it can typically be achieved without exercising all the transitions. Valid transitions coverage is the most widely used coverage criterion. Achieving full valid transitions coverage guarantees full all states coverage. Achieving full all transitions coverage guarantees both full all states coverage and full valid transitions coverage and should be a minimum requirement for mission and safety-critical software.
+
+</SyllabusText>
+
+### Practise: State Transition Testing
+
+<SyllabusRef ref="4.2.4" />
+
 <Exercise title="How many test cases?">
 
-How many test cases are needed to cover **all valid transitions** in the 3-state door diagram (OPEN, CLOSED UNLOCKED, CLOSED LOCKED)?
+How many test cases are needed to cover **all six valid transitions** in the video game diagram?
 
 <div slot="answer">
 
-**Just one.** A single test case can visit every state and exercise all four valid transitions:
+**Just one.** A single test case can visit every state and take all six valid transitions in sequence:
 
-**OPEN** → *close door* → **CLOSED UNLOCKED** → *lock door* → **CLOSED LOCKED** → *unlock door* → **CLOSED UNLOCKED** → *open door* → **OPEN**
+**Main menu** →*start* **Playing** →*pause* **Paused** →*resume* **Playing** →*pause* **Paused** →*quit* **Main menu**
+→*start* **Playing** →*lose life [lives = 1]* **Game over** →*back to menu* **Main menu**
 
-<DoorStates />
+<GameStates />
 
 </div>
 </Exercise>
 
-<Exercise title="Adding a broken state">
+<Exercise title="Adding a crashed state">
 
-Now a door can also become **BROKEN** from any of its three states. How many test cases are needed to cover all valid transitions?
+Now the game can also **crash** from any of its four states, and a crashed game can't do anything else.
+How many test cases are needed to cover all the valid transitions now?
 
 <div slot="answer">
 
-**Three.** Use the test case above to cover OPEN, CLOSED UNLOCKED and CLOSED LOCKED, then finish by breaking the door. BROKEN is an end state, so the other two "break" transitions each need a test case of their own.
+**Four.** The test case from the last exercise covers the original six transitions, and can end by crashing. But
+**crashed** is an end state: once a test reaches it, it can't continue. So each of the other three "crash" transitions
+needs a test case of its own: 1 + 3 = **4**.
 
 </div>
 </Exercise>
-
-### Coverage Criteria
-
-<SyllabusRef ref="4.2.4" />
-
-For state transition testing, the coverage criterion decides which items your tests must exercise. There are three, from weakest to strongest:
-
-| Criterion | Coverage items | 100% coverage means… | Coverage = (× 100%) |
-|---|---|---|---|
-| All states | States | Visit all states | States visited ÷ total states |
-| Valid transitions (0-switch) | Single valid transitions | Exercise all valid transitions | Valid transitions exercised ÷ total valid transitions |
-| All transitions | All transitions in the state table | Exercise all valid transitions and attempt all invalid ones | (Valid exercised + invalid attempted) ÷ total transitions |
-
-- **Defect masking** - Try only one invalid transition per test case, so one defect can't hide another
-
-### Exercise: Calculate the Coverage
-
-<SyllabusRef ref="4.2.4" />
 
 <Exercise title="State transition coverage">
 
-For the 3-state door, one test case runs:
+For the video game, one test case runs:
 
-**OPEN → CLOSED UNLOCKED → CLOSED LOCKED → CLOSED UNLOCKED → OPEN**
+**Main menu** →*start* **Playing** →*pause* **Paused** →*resume* **Playing**
 
 What coverage does it achieve for **all states**, **valid transitions** and **all transitions**?
 
@@ -656,29 +612,14 @@ What coverage does it achieve for **all states**, **valid transitions** and **al
 
 | Criterion | Coverage | Why |
 |---|---|---|
-| All states | **100%** | all 3 states are visited |
-| Valid transitions | **100%** | all 4 valid transitions are exercised |
-| All transitions | **33%** | 4 of the 12 transitions in the state table (3 states × 4 events); none of the 8 invalid ones are attempted |
+| All states | **75%** | 3 of the 4 states are visited (never game over) |
+| Valid transitions | **50%** | 3 of the 6 valid transitions are taken |
+| All transitions | **12.5%** | 3 of the 24 cells in the state table, and no invalid ones are attempted |
 
-To reach 100% all transitions coverage you'd need to attempt every invalid transition too, which usually means up to 8 more test cases, because the behaviour after an invalid event is undefined.
+To reach 100% valid transitions coverage, a test would also need to *quit*, *lose the last life* and go *back to menu*.
 
 </div>
 </Exercise>
-
-### Comparing the Criteria
-
-<SyllabusRef ref="4.2.4" />
-
-- **All states** - Weakest — can be achieved without exercising every transition
-- **Valid transitions** - Most widely used. 100% guarantees 100% all states
-- **All transitions** - Strongest. 100% guarantees both others — the minimum for mission and safety-critical software
-- Stronger coverage
-
-<SyllabusText>
-
-All states coverage is weaker than valid transitions coverage, because it can typically be achieved without exercising all the transitions. Valid transitions coverage is the most widely used coverage criterion. Achieving full valid transitions coverage guarantees full all states coverage. Achieving full all transitions coverage guarantees both full all states coverage and full valid transitions coverage and should be a minimum requirement for mission and safety-critical software.
-
-</SyllabusText>
 
 <Exercise source="workbook" kind="example" title="Worked example: TV states">
 
@@ -698,18 +639,13 @@ How many coverage items are there for **all states**, **valid transitions** and 
 
 ## 4.3 White-box Test Techniques
 
-### White-box Techniques
+### White-box Test Techniques
 
 <SyllabusRef ref="4.3" />
 
-- **Statement testing** - Section 4.3.1
-- **Branch testing** - Section 4.3.2
-
-#### Out of scope of this syllabus
-
-- **More rigorous techniques** - for safety-critical, mission-critical or high-integrity work
-- **Higher test levels** - e.g. API testing
-- **Non-code coverage** - e.g. neuron coverage in neural networks
+**White-box** techniques design tests from the **internal structure** of the code. The syllabus covers two, both based on
+the code's control flow: **statement testing** and **branch testing**. More rigorous techniques exist, for example for
+safety-critical systems, but they are outside the syllabus.
 
 <SyllabusText>
 
@@ -721,27 +657,22 @@ Because of their popularity and simplicity, this section focuses on two code-rel
 
 <SyllabusRef ref="4.3.1" />
 
-- **COVERAGE ITEMS = EXECUTABLE STATEMENTS** - **Statement coverage  =** statements exercised**÷** executable statements**× 100%**
-- **The aim** - Design tests that exercise statements until coverage is acceptable
-- **At 100%** - Every executable statement runs at least once — so any statement with a defect is executed
+<AtAGlance what="A white-box technique: design tests so that every executable statement in the code runs at least once." when="The code is available, typically at the component (unit) level." why="Gives an objective measure of how much of the code has been exercised, and shows which code was never run." />
+
+#### How it works
+
+The **coverage items are the executable statements** in the code. You design tests until enough of them have been run.
+
+<div class="formula"><span class="formula__label">Statement coverage</span><span class="formula__expr">statements exercised ÷ executable statements × 100%</span><span class="formula__note">100% means every executable statement has run at least once</span></div>
+
+> **Watch out for:** running a statement doesn't guarantee its defect is found. A division by zero only fails when the
+> divisor *is* zero, and 100% statement coverage may still leave some decision outcomes untested.
 
 <SyllabusText>
 
 In statement testing, the coverage items are executable statements. The aim is to design test cases that exercise statements in the code until an acceptable level of coverage is achieved. Coverage is measured as the number of statements exercised by the test cases divided by the total number of executable statements in the code, and is expressed as a percentage.
 
 When 100% statement coverage is achieved, it ensures that all executable statements in the code have been exercised at least once. In particular, this means that each statement with a defect will be executed, which may cause a failure demonstrating the presence of the defect.
-
-</SyllabusText>
-
-### Limits of Statement Coverage
-
-<SyllabusRef ref="4.3.1" />
-
-- **Executing a statement** doesn't guarantee its defect is detected.
-- **Data-dependent defects** - e.g. division by zero only fails when the denominator is zero · The statement runs — but with the "wrong" data the defect stays hidden
-- **Untested decision logic** - 100% statement coverage may not exercise every branch · More on this in branch testing (4.3.2)
-
-<SyllabusText>
 
 However, exercising a statement with a test case will not detect defects in all cases. For example, it may not detect defects that are data dependent (e.g., a division by zero that only fails when a denominator is set to zero). Also, 100% statement coverage does not ensure that all the decision logic has been tested as, for instance, it may not exercise all the branches (see chapter 4.3.2) in the code.
 
@@ -751,36 +682,35 @@ However, exercising a statement with a test case will not detect defects in all 
 
 <SyllabusRef ref="4.3.2" />
 
-- **Branch** - A transfer of control between two nodes in the control flow graph
-- **Conditional or unconditional** - A decision outcome (conditional) — or straight-line code (unconditional)
-- **Branch coverage** - Branches exercised ÷ total branches × 100%
+<AtAGlance what="A white-box technique: design tests so that every branch in the code is taken, including both outcomes of every decision." when="The code contains decisions, such as if-statements, loops and switch statements." why="Stronger than statement testing: 100% branch coverage always gives 100% statement coverage." />
 
-*In the control flow graphs on this page, pink arrows are conditional branches (decision outcomes) and grey ones unconditional.*
+#### How it works
+
+A **branch** is a transfer of control between two points in the code's control flow graph. Branches are either
+**conditional** (the outcome of a decision, such as each side of an `if`) or **unconditional** (straight-line code).
+The **coverage items are the branches**.
+
+<div class="formula"><span class="formula__label">Branch coverage</span><span class="formula__expr">branches exercised ÷ total branches × 100%</span><span class="formula__note">100% means every branch, conditional and unconditional, has been taken</span></div>
+
+<ControlFlow />
+
+<CoverageNest />
+
+> **Watch out for:** 100% branch coverage still can't catch defects that only appear on one particular *path* through the code.
 
 <SyllabusText>
 
 A branch is a transfer of control between two nodes in the control flow graph, which shows the possible sequences in which source code statements are executed in the test object. Each transfer of control can be either unconditional (i.e., straight-line code) or conditional (i.e., a decision outcome). In branch testing the coverage items are branches and the aim is to design test cases to exercise branches in the code until an acceptable level of coverage is achieved. Coverage is measured as the number of branches exercised by the test cases divided by the total number of branches, and is expressed as a percentage.
-
-</SyllabusText>
-
-### Branch Coverage
-
-<SyllabusRef ref="4.3.2" />
-
-<CoverageNest />
-
-- **At 100%** - Every branch — conditional and unconditional — is exercised
-- **Conditional branches** - if/then outcomes, switch/case outcomes, loop exit or continue
-- **Subsumes statement coverage** - 100% branch → 100% statement (but not vice versa)
-- **Still has limits** - May miss defects that need a specific path
-
-<SyllabusText>
 
 When 100% branch coverage is achieved, all branches in the code, unconditional and conditional, are exercised by test cases. Conditional branches typically correspond to a true or false outcome from an "if...then" decision, an outcome from a switch/case statement, or a decision to exit or continue in a loop. However, exercising a branch with a test case will not detect defects in all cases. For example, it may not detect defects requiring the execution of a specific path in a code.
 
 Branch coverage subsumes statement coverage. This means that any set of test cases achieving 100% branch coverage also achieves 100% statement coverage (but not vice versa).
 
 </SyllabusText>
+
+### Practise: Statement and Branch Testing
+
+<SyllabusRef ref="4.3.2" />
 
 <Exercise source="workbook" kind="example" title="Worked example: statement vs branch coverage">
 
@@ -801,14 +731,6 @@ Adding test 2 (**A = 1, B = 3**) takes the false branch → **100% branch covera
 
 </div>
 </Exercise>
-
-### Control Flow Patterns
-
-<SyllabusRef ref="4.3.2" />
-
-<ControlFlow />
-
-- Circles are nodes (chunks of code). Pink arrows are decision outcomes — make sure tests take every one.
 
 <Exercise source="workbook" title="Exercise 2: minimum tests for 100% coverage">
 
@@ -847,10 +769,10 @@ How many tests are needed for 100% statement coverage and for 100% branch covera
 
 <SyllabusRef ref="4.3.3" />
 
-- **Strength** - The whole implementation is considered — finds defects even when specs are vague, outdated or incomplete
-- **Weakness** - Can miss defects of omission — requirements that were never implemented
-- **Works statically too** - Dry runs of code not yet ready to run, pseudocode, and top-down logic
-- **Objective measurement** - Real code coverage — which black-box testing alone can't give — guiding extra tests
+Why bother looking inside the code, when black-box testing already checks the behaviour?
+
+- **Strengths** - Considers the whole implementation, so it finds defects even when specifications are vague, outdated or incomplete · Gives an objective measure of code coverage, which black-box testing can't · Can be used statically, e.g. dry runs of code or pseudocode
+- **Limitations** - Can't find defects of omission: requirements that were never implemented
 
 <SyllabusText>
 
@@ -864,15 +786,40 @@ Performing only black-box testing does not provide a measure of actual code cove
 
 ## 4.4 Experience-based Test Techniques
 
+### Experience-based Test Techniques
+
+<SyllabusRef ref="4.4" />
+
+**Experience-based** techniques rely on the **tester's knowledge, skills and intuition**. They find defects that the
+formal black-box and white-box techniques can miss, so they work best **alongside** them. The syllabus covers three:
+**error guessing**, **exploratory testing** and **checklist-based testing**.
+
 ### Error Guessing
 
 <SyllabusRef ref="4.4.1" />
 
-- Anticipate errors, defects and failures using the tester's knowledge of:
-- **The past** - How the application has worked before
-- **Developers' habits** - The errors they tend to make — and the defects that follow
-- **Similar applications** - Failures that have happened elsewhere
-- **FAULT ATTACKS** - A methodical form of error guessing: build a list of possible errors, defects and failures (from experience, defect data or common knowledge) — then design tests to expose them.
+<AtAGlance what="Use knowledge and experience to anticipate likely errors, defects and failures, then design tests to expose them." when="Alongside the formal techniques, especially when the tester knows the product, the team or similar systems well." why="Finds defects that formal techniques can miss, quickly and cheaply." />
+
+#### How it works
+
+The tester anticipates the errors, defects and failures that are likely, based on what they know about:
+
+- **The past** - How this application, or ones like it, have failed before
+- **The developers** - The kinds of errors they tend to make
+- **Similar systems** - Failures that have happened elsewhere
+
+A methodical version is a **fault attack**: build a list of likely errors, defects and failures, then design tests to expose each one.
+
+Common places to look:
+
+<IconCards items={[
+  { icon: '⌨️', title: 'Input', points: ['Correct input not accepted', 'Parameters wrong or missing'] },
+  { icon: '🖨️', title: 'Output', points: ['Wrong format', 'Wrong result'] },
+  { icon: '🔀', title: 'Logic', points: ['Missing cases', 'Wrong operator'] },
+  { icon: '🧮', title: 'Computation', points: ['Wrong operand', 'Wrong result'] },
+  { icon: '🔌', title: 'Interfaces', points: ['Parameter mismatch', 'Incompatible types'] },
+  { icon: '🗃️', title: 'Data', points: ['Incorrect initialisation', 'Wrong type'] },
+]} />
 
 <SyllabusText>
 
@@ -902,48 +849,30 @@ For example:
 </div>
 </Exercise>
 
-### Where Errors Hide
-
-<SyllabusRef ref="4.4.1" />
-
-<IconCards items={[
-  { icon: '⌨️', title: 'Input', points: ['Correct input not accepted', 'Parameters wrong or missing'] },
-  { icon: '🖨️', title: 'Output', points: ['Wrong format', 'Wrong result'] },
-  { icon: '🔀', title: 'Logic', points: ['Missing cases', 'Wrong operator'] },
-  { icon: '🧮', title: 'Computation', points: ['Wrong operand', 'Wrong result'] },
-  { icon: '🔌', title: 'Interfaces', points: ['Parameter mismatch', 'Incompatible types'] },
-  { icon: '🗃️', title: 'Data', points: ['Incorrect initialisation', 'Wrong type'] },
-]} />
-
 ### Exploratory Testing
 
 <SyllabusRef ref="4.4.2" />
+
+<AtAGlance what="Design, run and evaluate tests at the same time, while learning about the product, often in time-boxed sessions." when="Specifications are few or poor, time is short, or you want to complement the formal techniques." why="Fast feedback, and it finds unexpected problems that scripted tests would not look for." />
+
+#### How it works
+
+In exploratory testing, you **design, run and evaluate tests at the same time**, learning about the product as you go.
+It is often organised as **session-based** testing:
 
 <Flow caption="Session-based exploratory testing (CTFL 4.4.2)" steps={[
   { title: 'Test charter', sub: 'objectives to guide the session' }, { title: 'Time-boxed session', sub: 'design, run and learn at once' },
   { title: 'Session sheet', sub: 'steps and discoveries' }, { title: 'Debrief', sub: 'share results with stakeholders' },
 ]} />
 
-- **Design, execute and evaluate tests at the same time** - while learning about the test object.
-
-- **Coverage** - test objectives act as high-level test conditions; coverage items are identified and exercised during the session
+- **Useful when** - Specifications are few or poor · Time is short · You want to complement the formal techniques
+- **Works best when the tester** - Is experienced and knows the domain · Is curious, creative and analytical · Can bring in other techniques, such as equivalence partitioning
 
 <SyllabusText>
 
 In exploratory testing, tests are simultaneously designed, executed, and evaluated while the tester learns about the test object. The testing is used to learn more about the test object, to explore it more deeply with focused tests, and to create tests for untested areas.
 
 Exploratory testing is sometimes conducted using session-based testing to structure the testing. In a session-based approach, exploratory testing is conducted within a defined time-box. The tester uses a test charter containing test objectives to guide the testing. The test session is usually followed by a debriefing that involves a discussion between the tester and stakeholders interested in the test results of the test session. In this approach test objectives may be treated as high-level test conditions. Coverage items are identified and exercised during the test session. The tester may use test session sheets to document the steps followed and the discoveries made.
-
-</SyllabusText>
-
-### When to Explore
-
-<SyllabusRef ref="4.4.2" />
-
-- **Useful when…** - Specifications are few or inadequate · There is significant time pressure · You want to complement more formal techniques
-- **Works best when the tester…** - Is experienced and has domain knowledge · Has analytical skills, curiosity and creativity · Can bring in other techniques, e.g. equivalence partitioning
-
-<SyllabusText>
 
 Exploratory testing is useful when there are few or inadequate specifications or there is significant time pressure on the testing. Exploratory testing is also useful to complement other more formal test techniques. Exploratory testing will be more effective if the tester is experienced, has domain knowledge and has a high degree of essential skills, like analytical skills, curiosity and creativeness (see section 1.5.1). Exploratory testing can incorporate the use of other test techniques (e.g., equivalence partitioning).
 
@@ -953,31 +882,24 @@ Exploratory testing is useful when there are few or inadequate specifications or
 
 <SyllabusRef ref="4.4.3" />
 
-- **Design, implement and execute tests** to cover test conditions from a checklist.
-- **Good checklist items** - Often phrased as a question · Each can be checked separately and directly · Built from experience, user priorities, or how software fails · Functional or non-functional — e.g. Nielsen's 10 usability heuristics
-- **Leave out** - Items that can be checked automatically · Items better suited as entry / exit criteria · Items that are too general
+<AtAGlance what="Design and run tests to cover the items on a checklist, built from experience, standards or common failures." when="The same kinds of check need repeating, such as usability, security or coding standards." why="Consistent coverage of known risks, and the checklist can be reused and improved over time." />
+
+#### How it works
+
+The tester designs and runs tests to cover the items on a **checklist**. Checklists are built from experience, from
+knowledge of what matters to users, and from common failures. Items are often phrased as questions, and each should be
+checkable on its own.
 
 <Resource kind="pdf" href="https://media.nngroup.com/media/articles/attachments/Heuristic_Summary1_A4_compressed.pdf" source="Nielsen Norman Group" title="Example checklist: the 10 usability heuristics" text="A widely used usability checklist — the kind of list a tester can work through in checklist-based testing" />
+
+- **Keep checklists current** - Developers learn to avoid the errors on a checklist, so items wear out · Add new items as new defects are found
+- **Keep them focused** - Long checklists get skipped, so keep them short and relevant
 
 <SyllabusText>
 
 In checklist-based testing, a tester designs, implements, and executes tests to cover test conditions from a checklist. Checklists can be built based on experience, knowledge about what is important for the user, or an understanding of why and how software fails. Checklists should not contain items that can be checked automatically, items better suited as entry/exit criteria, or items that are too general (Brykczynski 1999).
 
 Checklist items are often phrased in the form of a question. It should be possible to check each item separately and directly. These items may refer to requirements, graphical interface properties, quality characteristics or other forms of test conditions. Checklists can be created to support various test types, including functional and non-functional testing (e.g., 10 heuristics for usability testing (Nielsen 1994)).
-
-</SyllabusText>
-
-### Keeping Checklists Useful
-
-<SyllabusRef ref="4.4.3" />
-
-- **Entries wear out** - Developers learn to avoid the same errors
-- **Add new entries** - for newly found high-severity defects
-- **Update regularly** - based on defect analysis — but don't let it get too long
-- **Consistency** - Gives guidelines when there are no detailed test cases
-- **High-level trade-off** - More variability: potentially greater coverage, less repeatability
-
-<SyllabusText>
 
 Some checklist entries may gradually become less effective over time because the developers will learn to avoid making the same errors. New entries may also need to be added to reflect newly found high severity defects. Therefore, checklists should be regularly updated based on defect analysis. However, care should be taken to avoid letting the checklist become too long (Gawande 2009).
 
@@ -987,37 +909,34 @@ In the absence of detailed test cases, checklist-based testing can provide guide
 
 ## 4.5 Collaboration-based Test Approaches
 
-### User Stories — the 3 Cs
+### Collaboration-based Test Approaches
+
+<SyllabusRef ref="4.5" />
+
+The techniques so far focus on **finding** defects. Collaboration-based approaches also focus on **avoiding** them, by
+getting business representatives, developers and testers to agree what is needed **before** it is built. The syllabus
+covers **collaborative user story writing**, **acceptance criteria** and **acceptance test-driven development (ATDD)**.
+
+### Collaborative User Story Writing
 
 <SyllabusRef ref="4.5.1" />
+
+<AtAGlance what="Business representatives, developers and testers write user stories together, so everyone shares the same picture of what is needed." when="Planning features in iterative and Agile development." why="Misunderstandings are caught before any code is written, which is the cheapest time to fix them." />
+
+#### How it works
+
+A **user story** describes a feature from the user's point of view, using the template
+*As a* **[role]**, *I want* **[goal]**, *so that* **[business value]**. Every story has three parts, the **3 Cs**:
 
 <Flow caption="The 3 Cs of a user story (CTFL 4.5.1)" steps={[
   { title: 'Card', sub: 'As a… I want… so that…' }, { title: 'Conversation', sub: 'how it will be used' }, { title: 'Confirmation', sub: 'the acceptance criteria' },
 ]} />
 
-> **The template:** As a **[role]**, I want **[goal]**, so that I can **[business value]**.
-
-- **Card** - The medium — e.g. an index card or an entry on an electronic board
-- **Conversation** - How the software will be used — documented or verbal
-- **Confirmation** - The acceptance criteria
-
-<SyllabusText>
-
-A user story represents a feature that will be valuable to either a user or purchaser of a system or software. User stories have three critical aspects (Jeffries 2000), called together the "3 C's": Card — the medium describing a user story (e.g., an index card, an entry in an electronic board); Conversation — explains how the software will be used (can be documented or verbal); Confirmation — the acceptance criteria.
-
-The most common format for a user story is "As a [role], I want [goal to be accomplished], so that I can [resulting business value for the role]", followed by the acceptance criteria.
-
-</SyllabusText>
-
-### Writing Stories Together
-
-<SyllabusRef ref="4.5.1" />
-
 <Tiles cols={3} caption="Three perspectives create a shared vision — through brainstorming and mind mapping (CTFL 4.5.1)" tiles={[
   { title: 'Business', sub: 'what is valuable' }, { title: 'Development', sub: 'what is feasible' }, { title: 'Testing', sub: 'how we will know it works' },
 ]} />
 
-#### Good stories are INVEST
+A good story is **INVEST**:
 
 - Independent
 - Negotiable
@@ -1026,9 +945,11 @@ The most common format for a user story is "As a [role], I want [goal to be acco
 - Small
 - Testable
 
-> **If a stakeholder doesn't know how to test a story…** it may not be clear enough, may not reflect something valuable to them — or they may just need help testing.
-
 <SyllabusText>
+
+A user story represents a feature that will be valuable to either a user or purchaser of a system or software. User stories have three critical aspects (Jeffries 2000), called together the "3 C's": Card — the medium describing a user story (e.g., an index card, an entry in an electronic board); Conversation — explains how the software will be used (can be documented or verbal); Confirmation — the acceptance criteria.
+
+The most common format for a user story is "As a [role], I want [goal to be accomplished], so that I can [resulting business value for the role]", followed by the acceptance criteria.
 
 Collaborative authorship of the user story can use techniques such as brainstorming and mind mapping. The collaboration allows the team to obtain a shared vision of what should be delivered, by taking into account three perspectives: business, development and testing.
 
@@ -1058,10 +979,19 @@ Which INVEST qualities does this story break, and how would you improve it?
 
 <SyllabusRef ref="4.5.2" />
 
-- **The conditions a story must meet to be accepted** - in effect, test conditions. Usually a result of the Conversation.
-- **Scenario-oriented** - e.g. Given / When / Then (BDD) · Given the user is logged in · When they click "Add Item" · Then the "Create Item" form appears
-- **Rule-oriented** - e.g. a verification list or table · Bullet-point verification list · Tabulated input-output mapping
-- A custom format is fine — as long as the criteria are well-defined and unambiguous.
+<AtAGlance what="The conditions a user story must meet to be accepted by the stakeholders." when="Writing or refining a user story, before it is built." why="They define the scope, give testers their test conditions, and make the story testable." />
+
+#### What they are used for
+
+- **Define the scope** - of the user story
+- **Build consensus** - among the stakeholders
+- **Describe scenarios** - both positive and negative
+- **Plan and estimate** - as a basis for acceptance testing and estimation
+
+#### Two common formats
+
+- **Scenario-oriented** - Written as *Given / When / Then*, as used in BDD
+- **Rule-oriented** - A bullet-point verification list, or a table of inputs and outputs
 
 <SyllabusText>
 
@@ -1070,16 +1000,6 @@ Acceptance criteria for a user story are the conditions that an implementation o
 There are several ways to write acceptance criteria for a user story. The two most common formats are: scenario-oriented (e.g., Given/When/Then format used in BDD, see section 2.1.3) and rule-oriented (e.g., bullet point verification list, or tabulated form of input-output mapping). Most acceptance criteria can be documented in one of these two formats. However, the team may use another, custom format, as long as the acceptance criteria are well-defined and unambiguous.
 
 </SyllabusText>
-
-### What Acceptance Criteria Do
-
-<SyllabusRef ref="4.5.2" />
-
-- **Define scope** - of the user story
-- **Build consensus** - among the stakeholders
-- **Cover both sides** - positive and negative scenarios
-- **Basis for acceptance tests** - of the user story
-- **Enable planning** - accurate planning and estimation
 
 <Exercise title="Write the acceptance criteria">
 
@@ -1099,20 +1019,31 @@ Good criteria are clear, testable, and cover both what should and shouldn't happ
 </div>
 </Exercise>
 
-### ATDD
+### Acceptance Test-Driven Development (ATDD)
 
 <SyllabusRef ref="4.5.3" />
+
+<AtAGlance what="Acceptance test-driven development: the team writes acceptance tests from the acceptance criteria before the code is written." when="Development is based on user stories with acceptance criteria." why="Builds a shared understanding of the requirement, and the tests become executable requirements." />
+
+#### How it works
+
+ATDD is a **test-first** approach: the test cases are written **before** the user story is implemented, by the team
+together.
 
 <Flow caption="Acceptance test-driven development — tests come before the code (CTFL 4.5.3)" steps={[
   { title: 'Specification workshop', sub: 'story and acceptance criteria' }, { title: 'Write test cases', sub: 'positive, negative, non-functional' },
   { title: 'Automate', sub: 'executable requirements' }, { title: 'Implement', sub: 'code until the tests pass' },
 ]} />
 
-- **A test-first approach:** test cases are created before the user story is implemented — by customers, developers and testers together.
-- **Specification workshop** - Analyse and write the story and acceptance criteria; resolve gaps and ambiguities
-- **Create test cases** - By the team or the tester — examples of how the software works
-- **Implement** - Tests guide the team to build the story correctly
-- Tests can be executed manually or automated.
+Write the test cases in this order:
+
+1. **Positive tests:** confirm the correct behaviour, with no exceptions or errors
+2. **Negative tests:** check what happens with invalid input or behaviour
+3. **Non-functional tests:** for example performance or usability
+
+- **Cover the whole story** - Every characteristic of the user story
+- **Don't go beyond it** - Test only what the acceptance criteria describe
+- **Use any technique** - The black-box techniques from 4.2 can help design the test cases
 
 <SyllabusText>
 
@@ -1120,36 +1051,9 @@ ATDD is a test-first approach (see section 2.1.3). Test cases are created prior 
 
 The first step is a specification workshop where the user story and (if not yet defined) its acceptance criteria are analyzed, discussed, and written by the team members. Incompleteness, ambiguities, or defects in the user story are resolved during this process. The next step is to create the test cases. This can be done by the team as a whole or by the tester individually. The test cases are based on the acceptance criteria and can be seen as examples of how the software works. This will help the team implement the user story correctly.
 
-</SyllabusText>
-
-### Designing ATDD Test Cases
-
-<SyllabusRef ref="4.5.3" />
-
-- Examples and tests are the same thing — and any technique from 4.2-4.4 can help. Work in this order:
-- **1. Positive tests** - correct behaviour, no exceptions — the "happy path"
-- **2. Negative tests** - after the positives are done
-- **3. Non-functional** - e.g. performance efficiency, usability
-- **Write for stakeholders:** natural language with preconditions (if any), inputs and postconditions.
-
-<SyllabusText>
-
 Since examples and tests are the same, these terms are often used interchangeably. During the test design the test techniques described in sections 4.2, 4.3 and 4.4 may be applied.
 
 Typically, the first test cases are positive, confirming the correct behavior without exceptions or error conditions, and comprising the sequence of activities executed if everything goes as expected. After the positive test cases are done, the team should perform negative testing. Finally, the team should cover non-functional quality characteristics as well (e.g., performance efficiency, usability). Test cases should be expressed in a way that is understandable for the stakeholders. Typically, test cases contain sentences in natural language involving the necessary preconditions (if any), the inputs, and the postconditions.
-
-</SyllabusText>
-
-### Good ATDD Test Cases
-
-<SyllabusRef ref="4.5.3" />
-
-- **Cover the whole story** - every characteristic of the user story
-- **…and nothing beyond it** - acceptance criteria may add detail, though
-- **No duplicates** - no two tests describe the same characteristic
-- **Executable requirements** - automated in a framework as the feature is built
-
-<SyllabusText>
 
 The test cases must cover all the characteristics of the user story and should not go beyond the story. However, the acceptance criteria may detail some of the issues described in the user story. In addition, no two test cases should describe the same characteristics of the user story.
 

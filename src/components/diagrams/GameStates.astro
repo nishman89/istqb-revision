@@ -1,0 +1,50 @@
+---
+/**
+ * State transition diagram for a video game: main menu, playing, paused and game over,
+ * with six valid transitions, one guard condition and two actions.
+ */
+import Figure from '../Figure.astro';
+// unique per copy, so the diagram can appear more than once on a page
+const id = `gs-${Math.random().toString(36).slice(2, 8)}`;
+---
+<Figure scroll caption="A video game modelled with four states and six valid transitions. The label format is event [guard condition] / action (CTFL 4.2.4)">
+  <svg viewBox="0 0 720 430" role="img" aria-label="State transition diagram: main menu, playing, paused and game over">
+    <defs>
+      <marker id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d42a57"/></marker>
+    </defs>
+
+    <!-- initial state -->
+    <circle cx="16" cy="222" r="9" fill="#2d2a2b"/>
+    <line x1="26" y1="222" x2="48" y2="222" stroke="#2d2a2b" stroke-width="2.5" marker-end={`url(#${id})`}/>
+
+    <!-- states -->
+    <rect class="b-dark" x="52" y="196" width="150" height="52" rx="26"/><text class="t" x="127" y="222" style="font-size:16px">MAIN MENU</text>
+    <rect class="b-pink" x="290" y="196" width="150" height="52" rx="26"/><text class="t" x="365" y="222" style="font-size:16px">PLAYING</text>
+    <rect class="b-dark" x="546" y="86" width="150" height="52" rx="26"/><text class="t" x="621" y="112" style="font-size:16px">PAUSED</text>
+    <rect class="b-deep" x="546" y="306" width="150" height="52" rx="26"/><text class="t" x="621" y="332" style="font-size:16px">GAME OVER</text>
+
+    <!-- main menu -> playing : start -->
+    <line class="ln-pink" x1="204" y1="222" x2="286" y2="222" marker-end={`url(#${id})`}/>
+    <text class="t-dark" x="245" y="208" style="font-size:15px">start</text>
+
+    <!-- playing -> paused : pause -->
+    <path class="ln-pink" d="M405 194 Q 430 108 542 104" marker-end={`url(#${id})`}/>
+    <text class="t-dark" x="440" y="116" style="font-size:15px">pause</text>
+    <!-- paused -> playing : resume -->
+    <path class="ln-pink" d="M590 142 Q 560 222 444 224" marker-end={`url(#${id})`}/>
+    <text class="t-dark" x="560" y="214" style="font-size:15px">resume</text>
+
+    <!-- paused -> main menu : quit / save progress (over the top) -->
+    <path class="ln-pink" d="M590 82 Q 330 -10 140 192" marker-end={`url(#${id})`}/>
+    <text class="t-dark" x="320" y="58" style="font-size:15px">quit / save progress</text>
+
+    <!-- playing -> game over : lose life [lives = 1] / show final score -->
+    <path class="ln-pink" d="M365 250 V 332 H 542" marker-end={`url(#${id})`}/>
+    <text class="t-dark" x="375" y="282" style="font-size:15px;text-anchor:start">lose life [lives = 1]</text>
+    <text class="t-sm" x="375" y="302" style="font-size:14px;text-anchor:start">/ show final score</text>
+
+    <!-- game over -> main menu : back to menu (under the bottom) -->
+    <path class="ln-pink" d="M600 362 Q 300 450 135 252" marker-end={`url(#${id})`}/>
+    <text class="t-dark" x="235" y="400" style="font-size:15px">back to menu</text>
+  </svg>
+</Figure>
