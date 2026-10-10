@@ -22,85 +22,85 @@ const total = questions.length;
 const passScore = Math.ceil(total * PASS_MARK);
 const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0));
 ---
-<section class:list={['quiz', { 'is-exam': examMode }]} data-quiz-id={quizId} data-pass-mark={PASS_MARK} data-exam={examMode ? '' : undefined}>
+<section id="quiz" data-testid="quiz" class:list={['quiz', { 'is-exam': examMode }]} data-quiz-id={quizId} data-pass-mark={PASS_MARK} data-exam={examMode ? '' : undefined}>
   <div class="card quiz-intro no-print">
     <dl>
-      <div><dt>Questions</dt><dd>{total}</dd></div>
-      <div><dt>To pass</dt><dd>{passScore} / {total} (65%)</dd></div>
+      <div><dt>Questions</dt><dd id="question-count" data-testid="question-count">{total}</dd></div>
+      <div><dt>To pass</dt><dd id="pass-mark" data-testid="pass-mark">{passScore} / {total} (65%)</dd></div>
       {examMode
         ? <div><dt>Time allowed</dt><dd>60 min <small>(75 if not your native language)</small></dd></div>
         : <div><dt>Suggested time</dt><dd>~{minutes} min</dd></div>}
     </dl>
-    <label class="paged-toggle no-print"><input type="checkbox" data-paged-toggle checked={total > 20} /> Show one question at a time</label>
-    <p class="last-attempt" hidden data-last-attempt></p>
+    <label class="paged-toggle no-print"><input type="checkbox" id="one-at-a-time" name="one-at-a-time" data-testid="one-at-a-time-toggle" data-paged-toggle checked={total > 20} /> Show one question at a time</label>
+    <p class="last-attempt" id="last-attempt" data-testid="last-attempt" hidden data-last-attempt></p>
     {examMode && (
-      <div class="start" data-start>
-        <label>Time limit
-          <select data-time-limit>
+      <div class="start" id="exam-start" data-testid="exam-start" data-start>
+        <label for="time-limit">Time limit
+          <select id="time-limit" name="time-limit" data-testid="time-limit" data-time-limit>
             <option value="60">60 minutes - standard</option>
             <option value="75">75 minutes - exam not in your native language</option>
             <option value="0">No time limit</option>
           </select>
         </label>
-        <button class="btn" type="button" data-start-btn>Start exam</button>
+        <button class="btn" type="button" id="start-exam" data-testid="start-exam" data-start-btn>Start exam</button>
       </div>
     )}
   </div>
 
-  <div class="results card card--dark" hidden data-results tabindex="-1">
+  <div class="results card card--dark" id="results" data-testid="results" hidden data-results tabindex="-1">
     <div class="score">
-      <span class="eyebrow" data-verdict-label></span>
-      <p class="score__big"><span data-score></span><span class="score__of"> / {total}</span></p>
-      <p class="score__pct" data-percent></p>
-      <p class="score__time" data-time-taken hidden></p>
+      <span class="eyebrow" id="verdict" data-testid="verdict" data-verdict-label></span>
+      <p class="score__big"><span id="score" data-testid="score" data-score></span><span class="score__of" data-testid="score-total"> / {total}</span></p>
+      <p class="score__pct" id="score-percent" data-testid="score-percent" data-percent></p>
+      <p class="score__time" id="time-taken" data-testid="time-taken" data-time-taken hidden></p>
     </div>
     {examMode && (
-      <table class="breakdown" data-breakdown>
+      <table class="breakdown" id="chapter-breakdown" data-testid="chapter-breakdown" data-breakdown>
         <caption class="visually-hidden">Score by chapter</caption>
         <thead><tr><th scope="col">Chapter</th><th scope="col">Score</th><th scope="col"><span class="visually-hidden">Bar</span></th></tr></thead>
         <tbody>
           {chapterTotals.map(([ch, n]) => (
-            <tr data-chapter-row={ch}><th scope="row">Chapter {ch}</th><td data-chapter-score>0 / {n}</td><td><span class="mini"><span data-chapter-bar></span></span></td></tr>
+            <tr data-testid={`breakdown-chapter-${ch}`} data-chapter-row={ch}><th scope="row">Chapter {ch}</th><td data-testid={`breakdown-chapter-${ch}-score`} data-chapter-score>0 / {n}</td><td><span class="mini"><span data-chapter-bar></span></span></td></tr>
           ))}
         </tbody>
       </table>
     )}
     <div class="results__actions no-print">
-      <label class="toggle"><input type="checkbox" data-only-wrong /> Show only questions I got wrong</label>
-      <button class="btn" type="button" data-retake>Retake quiz</button>
+      <label class="toggle"><input type="checkbox" id="only-wrong" name="only-wrong" data-testid="only-wrong-toggle" data-only-wrong /> Show only questions I got wrong</label>
+      <button class="btn" type="button" id="retake" data-testid="retake" data-retake>Retake quiz</button>
     </div>
   </div>
 
-  <form class="questions" data-form novalidate hidden={examMode}>
+  <form class="questions" id="quiz-form" name="quiz" data-testid="quiz-form" data-form novalidate hidden={examMode}>
     <ol>
       {questions.map((q, i) => (
-        <li class="q card" data-question={q.id} data-answer={q.answer.join(',')} data-select={q.select} data-chapter={q.chapter}>
+        <li class="q card" id={`question-${q.id}`} data-testid={`question-${i + 1}`} data-question={q.id} data-answer={q.answer.join(',')} data-select={q.select} data-chapter={q.chapter}>
           <header class="q__head">
-            <span class="q__num">Question {i + 1}<span class="muted"> of {total}</span></span>
+            <span class="q__num" data-testid={`question-${i + 1}-number`}>Question {i + 1}<span class="muted"> of {total}</span></span>
             <span class="q__tags">
               {examMode && <span class="pill">Chapter {q.chapter}</span>}
-              <span class="pill">Section {q.ref}</span>
-              <span class="pill pill--dark" title="Knowledge level">{q.k}</span>
+              <span class="pill" data-testid={`question-${i + 1}-section`}>Section {q.ref}</span>
+              <span class="pill pill--dark" title="Knowledge level" data-testid={`question-${i + 1}-k-level`}>{q.k}</span>
             </span>
           </header>
           <QuestionBody blocks={q.blocks} label={`question ${i + 1}`} />
           <fieldset>
-            <legend class="q__instruction">Select {q.select === 2 ? 'TWO options' : 'ONE option'}</legend>
+            <legend class="q__instruction" data-testid={`question-${i + 1}-instruction`}>Select {q.select === 2 ? 'TWO options' : 'ONE option'}</legend>
             {q.options.map((o) => (
-              <label class="opt" data-option={o.key}>
-                <input type={q.select === 2 ? 'checkbox' : 'radio'} name={q.id} value={o.key} />
+              <label class="opt" for={`question-${q.id}-option-${o.key}`} data-testid={`question-${i + 1}-option-${o.key}`} data-option={o.key}>
+                <input type={q.select === 2 ? 'checkbox' : 'radio'} id={`question-${q.id}-option-${o.key}`} name={`question-${q.id}`} value={o.key} data-testid={`question-${i + 1}-option-${o.key}-input`} />
                 <span class="opt__key">{o.key}</span>
                 <span class="opt__text">{o.text}</span>
                 <span class="opt__flag" aria-hidden="true"></span>
               </label>
             ))}
           </fieldset>
-          <div class="review" hidden data-review>
-            <p class="review__verdict" data-verdict></p>
+          <div class="review" hidden data-testid={`question-${i + 1}-review`} data-review>
+            <p class="review__verdict" data-testid={`question-${i + 1}-verdict`} data-verdict></p>
             {q.explanation.intro && <p class="review__intro">{q.explanation.intro}</p>}
             <ul class="review__options">
               {q.options.map((o) => q.explanation.options[o.key] && (
-                <li data-explain={o.key}><strong>{o.key})</strong> {q.explanation.options[o.key]}</li>
+                <li data-testid={`question-${i + 1}-explanation-${o.key}`} data-explain={o.key}><strong>{o.key})</strong> {q.explanation.options[o.key]}</li>
               ))}
             </ul>
             <p class="review__source muted">ISTQB Sample Paper {q.exam}, question {q.n} · {q.lo}</p>
@@ -109,16 +109,16 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
       ))}
     </ol>
 
-    <div class="submit-bar no-print" data-submit-bar>
-      <span><strong data-answered>0</strong> of {total} answered</span>
+    <div class="submit-bar no-print" id="submit-bar" data-testid="submit-bar" data-submit-bar>
+      <span><strong id="answered-count" data-testid="answered-count" data-answered>0</strong> of {total} answered</span>
       <span class="pager-controls" data-pager>
-        <button type="button" class="pager-btn" data-prev aria-label="Previous question">←</button>
-        <span data-position></span>
-        <button type="button" class="pager-btn" data-next aria-label="Next question">→</button>
+        <button type="button" class="pager-btn" id="previous-question" data-testid="previous-question" data-prev aria-label="Previous question">←</button>
+        <span id="question-position" data-testid="question-position" data-position></span>
+        <button type="button" class="pager-btn" id="next-question" data-testid="next-question" data-next aria-label="Next question">→</button>
       </span>
-      <button type="button" class="link-btn" data-jump>Jump to unanswered</button>
-      {examMode && <span class="timer" data-timer hidden aria-live="off"></span>}
-      <button class="btn" type="submit">Submit answers</button>
+      <button type="button" class="link-btn" id="jump-to-unanswered" data-testid="jump-to-unanswered" data-jump>Jump to unanswered</button>
+      {examMode && <span class="timer" id="timer" data-testid="timer" data-timer hidden aria-live="off"></span>}
+      <button class="btn" type="submit" id="submit-answers" data-testid="submit-answers">Submit answers</button>
     </div>
   </form>
 </section>
@@ -322,7 +322,7 @@ const minutes = Math.ceil(questions.reduce((m, q) => m + MINUTES_PER_K[q.k], 0))
       const { last, best } = record;
       const when = new Date(last.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
       lastEl.hidden = false;
-      lastEl.innerHTML = `Last attempt: <strong>${last.percent}%</strong> on ${when} · Best: <strong>${best.percent}%</strong> · ${record.attempts} attempt(s) <button type="button" class="link-btn">Review last attempt</button>`;
+      lastEl.innerHTML = `Last attempt: <strong>${last.percent}%</strong> on ${when} · Best: <strong>${best.percent}%</strong> · ${record.attempts} attempt(s) <button type="button" class="link-btn" id="review-last-attempt" data-testid="review-last-attempt">Review last attempt</button>`;
       lastEl.querySelector('button')!.addEventListener('click', () => {
         mark(last.answers);
         showResults(last);

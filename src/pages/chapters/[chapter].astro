@@ -63,7 +63,7 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
 
   <div class="container layout">
     <aside class="toc no-print" aria-label="In this chapter">
-      <details class="card toc__panel" open data-toc>
+      <details class="card toc__panel" id="chapter-contents" data-testid="chapter-contents" open data-toc>
         <summary class="eyebrow">In this chapter</summary>
         <ul class="toc__groups">
           {groups.map((g) => (
@@ -80,7 +80,7 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
             </li>
           ))}
         </ul>
-        <a class="btn quiz-btn" href={url(`quiz/${data.number}/${MAIN_SET.toLowerCase()}`)}>Chapter quiz →</a>
+        <a class="btn quiz-btn" href={url(`quiz/${data.number}/${MAIN_SET.toLowerCase()}`)} data-testid="contents-chapter-quiz">Chapter quiz →</a>
       </details>
     </aside>
 
@@ -91,21 +91,21 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
       </section>
 
       <div class="section-controls no-print">
-        <button type="button" class="link" data-expand="open">Expand all sections</button>
-        <button type="button" class="link" data-expand="close">Collapse all</button>
+        <button type="button" class="link" id="expand-all" data-testid="expand-all" data-expand="open">Expand all sections</button>
+        <button type="button" class="link" id="collapse-all" data-testid="collapse-all" data-expand="close">Collapse all</button>
       </div>
-      <div class="prose"><Content /></div>
+      <div class="prose" id="chapter-notes" data-testid="chapter-notes"><Content /></div>
 
       <WatchOut chapter={data.number} />
 
-      <section class="card card--dark finish no-print" id="finish">
+      <section class="card card--dark finish no-print" id="finish" data-testid="finish">
         <h2>Finished the notes? Test yourself.</h2>
         <p>The <strong>chapter quiz</strong> uses the questions from <strong>ISTQB Sample Paper {MAIN_SET}</strong> that cover
           Chapter {data.number}: {mainCount} question{mainCount === 1 ? '' : 's'}, the same number
           the real exam asks on this chapter. Every answer is explained when you submit.</p>
         <div class="finish__actions">
-          <button class="btn btn--ghost btn--light" type="button" data-mark-read={data.number}>Mark notes as read</button>
-          <a class="btn" href={url(`quiz/${data.number}/${MAIN_SET.toLowerCase()}`)}>Take the chapter quiz</a>
+          <button class="btn btn--ghost btn--light" type="button" id="mark-read" data-testid="mark-read" data-mark-read={data.number}>Mark notes as read</button>
+          <a class="btn" href={url(`quiz/${data.number}/${MAIN_SET.toLowerCase()}`)} data-testid="take-chapter-quiz">Take the chapter quiz</a>
         </div>
         <div class="practice">
           <p>Want more practice? Answer every Chapter {data.number} question from <strong>Sample Papers A-D</strong>.</p>
@@ -270,6 +270,7 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
   /* Warning callout: <div class="callout callout--warn"> … </div> */
   .prose :global(.callout) { margin: 1rem 0; padding: 0.9rem 1.25rem; border-radius: 0 12px 12px 0; }
   .prose :global(.callout p) { margin: 0; }
+  .prose :global(.callout--remember) { background: var(--pink-tint); border-left: 6px solid var(--pink); }
   .prose :global(.callout--warn) { background: #fff4d6; border-left: 6px solid #b58a00; }
 
   /* Callouts written as Markdown blockquotes ("> **The response:** …") */

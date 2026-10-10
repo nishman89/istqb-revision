@@ -57,10 +57,10 @@ const issues = [
       <p>This method compiles and looks fine at a glance. Read it carefully - <strong>can you spot the 3 problems</strong>
         a static analysis tool would flag?</p>
       <p class="sa__try-hint">Hint: think about naming, an empty list, and what happens after <code>return</code>.</p>
-      <button type="button" class="btn" data-sa-run>▶ Run static analysis</button>
+      <button type="button" class="btn" id="run-static-analysis" data-testid="run-static-analysis" data-sa-run>▶ Run static analysis</button>
     </div>
 
-    <div class="sa__report" data-sa-report>
+    <div class="sa__report" id="static-analysis-report" data-testid="static-analysis-report" data-sa-report>
       <div class="sa__report-head"><span>SonarQube report</span><span class="sa__count">3 issues · 0 tests run</span></div>
       <ol>
         {issues.map((x) => (
@@ -76,7 +76,7 @@ const issues = [
       </ol>
     </div>
   </div>
-  <p class="sa__again"><button type="button" class="sa__reset" data-sa-reset>↺ Hide the results and try again</button></p>
+  <p class="sa__again"><button type="button" class="sa__reset" id="reset-static-analysis" data-testid="reset-static-analysis" data-sa-reset>↺ Hide the results and try again</button></p>
   <figcaption>The tool found a bug and two maintainability problems just by reading the code - no test cases, no test environment, nothing executed (CTFL 3.1)</figcaption>
 </figure>
 

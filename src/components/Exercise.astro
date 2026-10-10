@@ -17,14 +17,17 @@ interface Props {
   options?: string[];
   /** Set to "workbook" for exercises taken from the Sparta practice workbook PDF. */
   source?: 'workbook';
+  /** Optional unique id, for exercises that share a title (used for the data-testid). */
+  id?: string;
 }
-const { title, kind = 'exercise', options, source } = Astro.props;
+const { title, kind = 'exercise', options, source, id } = Astro.props;
 const label = { exercise: 'Exercise', discuss: 'Discuss', example: 'Worked example' }[kind];
 const icon = { exercise: '?', discuss: '💬', example: '📘' }[kind];
 const reveal = { exercise: 'Show answer', discuss: 'Show suggested answer', example: 'Show the worked solution' }[kind];
+const testId = id ? `exercise-${id}` : `exercise-${title.toLowerCase().replace(/^worked example:\s*/, 'example-').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 const heading = kind === 'example' ? title.replace(/^Worked example:\s*/i, '') : title;
 ---
-<aside class:list={['exercise', `exercise--${kind}`]} aria-label={`${label}: ${title}`}>
+<aside data-testid={testId} class:list={['exercise', `exercise--${kind}`]} aria-label={`${label}: ${title}`}>
   <header class="exercise__head">
     <span class="exercise__badge">{icon} {label}</span>
     <span class="exercise__title">{heading}</span>
@@ -39,7 +42,7 @@ const heading = kind === 'example' ? title.replace(/^Worked example:\s*/i, '') :
     )}
   </div>
   {Astro.slots.has('answer') && (
-    <details class="exercise__answer">
+    <details class="exercise__answer" data-testid={`${testId}-answer`}>
       <summary>{reveal}</summary>
       <div class="exercise__answer-body"><slot name="answer" /></div>
     </details>

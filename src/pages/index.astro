@@ -21,7 +21,7 @@ const chapters = await getChapters();
   </section>
 
   <div class="container">
-    <a class="card continue no-print" data-continue data-base={url()} hidden href="#">
+    <a class="card continue no-print" id="continue-reading" data-testid="continue-reading" data-continue data-base={url()} hidden href="#">
       <span class="eyebrow">Continue where you left off</span>
       <span class="continue__title" data-continue-title></span>
       <span class="continue__arrow" aria-hidden="true">→</span>
@@ -32,7 +32,7 @@ const chapters = await getChapters();
     <h2 class="dot">Chapters</h2>
     <ol class="grid">
       {chapters.map(({ data }) => (
-        <li class="card chapter" data-chapter={data.number} data-quiz={quizId(data.number, MAIN_SET)}>
+        <li class="card chapter" id={`chapter-card-${data.number}`} data-testid={`chapter-card-${data.number}`} data-chapter={data.number} data-quiz={quizId(data.number, MAIN_SET)}>
           <span class="chapter__num">{data.number}</span>
           <h3><a href={url(`chapters/${data.number}`)}>{data.title}</a></h3>
           <p class="muted">{data.summary}</p>
@@ -41,10 +41,10 @@ const chapters = await getChapters();
             <span class="pill pill--dark">{formatMinutes(data.minutes)} course time</span>
           </p>
           <div class="chapter__progress" aria-hidden="true"><span data-bar></span></div>
-          <p class="chapter__status" data-status></p>
+          <p class="chapter__status" data-testid={`chapter-status-${data.number}`} data-status></p>
           <div class="chapter__actions">
-            <a class="btn btn--dark" href={url(`chapters/${data.number}`)}>Read notes</a>
-            <a class="btn btn--ghost" href={url(`quiz/${data.number}/${MAIN_SET.toLowerCase()}`)}>Take quiz</a>
+            <a class="btn btn--dark" href={url(`chapters/${data.number}`)} data-testid={`read-notes-${data.number}`}>Read notes</a>
+            <a class="btn btn--ghost" href={url(`quiz/${data.number}/${MAIN_SET.toLowerCase()}`)} data-testid={`take-quiz-${data.number}`}>Take quiz</a>
           </div>
         </li>
       ))}
@@ -61,7 +61,7 @@ const chapters = await getChapters();
 
     <p class="reset no-print">
       Your progress is saved in this browser only.
-      <button type="button" class="link" data-reset>Reset my progress</button>
+      <button type="button" class="link" id="reset-progress" data-testid="reset-progress" data-reset>Reset my progress</button>
     </p>
   </section>
 </BaseLayout>

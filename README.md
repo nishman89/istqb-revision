@@ -392,6 +392,106 @@ edited directly in the files above.
 
 ---
 
+## Testing this site (for trainees)
+
+The site is built to be tested with automated web test frameworks such as **Selenium**, **Playwright** or **Cypress**.
+Every important element has a stable hook:
+
+- **`data-testid`** on everything you'd interact with or check. Prefer these: they don't change when the styling or
+  text changes. (Selenium: `By.cssSelector("[data-testid='score']")` · Playwright: `page.getByTestId('score')`)
+- **`id`** on elements that appear once per page (e.g. `#submit-answers`, `#score`, `#timer`)
+- **`name`** on every form control (answer options, the time-limit picker, search)
+
+### Hook reference
+
+| Page / area | Hooks |
+|---|---|
+| **Header** (every page) | `site-header` · `home-logo` · `main-nav` · `nav-home` · `nav-introduction` · `nav-sample-papers` · `nav-exam-tips` · `nav-resources` · `nav-handouts` · `nav-istqb-glossary` · `nav-istqb-syllabus-pdf` · `nav-chapters` · `nav-chapter-1` … `nav-chapter-6` · `search-toggle` · `back-to-top` |
+| **Header on phones** | `mobile-menu` · `mobile-search-button` · the same nav hooks prefixed `mobile-` (e.g. `mobile-nav-home`) |
+| **Search** | input `#site-search-input` (`name="search"`) · `site-search-results` · each result `search-result` · on phones `site-search-mobile-input` |
+| **Home** | `chapter-card-1` … `chapter-card-6` · `read-notes-N` · `take-quiz-N` · `chapter-status-N` · `continue-reading` · `reset-progress` |
+| **Chapter page** | `chapter-contents` (side menu) · `contents-chapter-quiz` · `expand-all` · `collapse-all` · `chapter-notes` · sections `section-1-2` (section 1.2) · a section's intro `section-1-3-intro` · topics `topic-1-2-4` (4th topic in section 1.2) · `syllabus-text` (each "What the syllabus says" box) · `watch-out` · `finish` · `mark-read` · `take-chapter-quiz` |
+| **Exercises** | `exercise-<title>` and `exercise-<title>-answer`, e.g. `exercise-error-defect-or-failure` / `exercise-error-defect-or-failure-answer` · worked examples `exercise-example-<title>` · discussion questions `exercise-discuss-<topic>`, e.g. `exercise-discuss-principle-5-tests-wear-out` |
+| **Static analysis demo** (Ch. 3) | `run-static-analysis` · `static-analysis-report` · `reset-static-analysis` |
+| **Any quiz or paper** | `quiz` · `question-count` · `pass-mark` · `one-at-a-time-toggle` · `last-attempt` · `review-last-attempt` · `quiz-form` |
+| **Each question** (N = 1, 2, 3…) | `question-N` · `question-N-number` · `question-N-section` · `question-N-k-level` · `question-N-instruction` ("Select ONE / TWO") · options `question-N-option-a` (the label) and `question-N-option-a-input` (the radio / checkbox) · after submitting: `question-N-review` · `question-N-verdict` · `question-N-explanation-a` |
+| **Submit bar** | `submit-bar` · `answered-count` · `previous-question` · `question-position` · `next-question` · `jump-to-unanswered` · `timer` · `submit-answers` |
+| **Results** | `results` · `verdict` · `score` · `score-total` · `score-percent` · `time-taken` · `chapter-breakdown` · `breakdown-chapter-N` / `breakdown-chapter-N-score` · `only-wrong-toggle` · `retake` |
+| **Sample paper (exam mode)** | `exam-start` · `time-limit` (`<select name="time-limit">`: `60`, `75`, `0`) · `start-exam` |
+| **Sample papers page** | `paper-a` … `paper-d` · `sit-paper-a` … `sit-paper-d` · `practice-chapter-1` … `practice-chapter-6` · `practice-k1` · `practice-k2` · `practice-k3` |
+| **Handouts** | `download-chapter-1` … `download-chapter-6` · `download-workbook` |
+
+Answer options also have a `name` per question - `question-<paper>-<number>`, e.g. `name="question-a-01"` - and an
+`id` of `question-<paper>-<number>-option-<letter>`, e.g. `#question-a-01-option-b`.
+
+### Things worth knowing when you write tests
+- **Sections and topics start collapsed.** Click the `<summary>` inside `section-…` / `topic-…` first (or use
+  `expand-all`), otherwise their content isn't visible.
+- **"Select TWO" questions** only count as answered once two options are ticked, and a third tick is blocked - a good
+  thing to test.
+- **Submitting with unanswered questions** opens a browser `confirm()` dialog - your test must accept or dismiss it.
+- **Progress is saved in `localStorage`** under the key `sparta-ctfl-progress`. Clear it (or click `reset-progress`)
+  between tests so they start from a clean state.
+- **The correct answers are in the page** as `data-answer` on each `question-N` element - handy for writing a test
+  that scores 100%.
+- **Quizzes with more than 20 questions** show one question at a time; use `next-question` / `previous-question`, or
+  untick `one-at-a-time-toggle` to see them all.
+
+### Example: Selenium (Java)
+
+```java
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import static org.junit.jupiter.api.Assertions.*;
+
+class ChapterOneQuizTest {
+    WebDriver driver;
+
+    static By testId(String id) {
+        return By.cssSelector("[data-testid='" + id + "']");
+    }
+
+    @BeforeEach void setUp()    { driver = new ChromeDriver(); }
+    @AfterEach  void tearDown() { driver.quit(); }
+
+    @Test
+    void scoresFullMarksWhenEveryCorrectAnswerIsChosen() {
+        driver.get("https://nishman89.github.io/istqb-revision/quiz/1/c/");
+
+        int total = Integer.parseInt(driver.findElement(testId("question-count")).getText());
+        for (int i = 1; i <= total; i++) {
+            String answers = driver.findElement(testId("question-" + i)).getAttribute("data-answer");  // e.g. "b" or "a,d"
+            for (String key : answers.split(",")) {
+                driver.findElement(testId("question-" + i + "-option-" + key)).click();
+            }
+        }
+        assertEquals(String.valueOf(total), driver.findElement(By.id("answered-count")).getText());
+
+        driver.findElement(By.id("submit-answers")).click();   // all answered, so no confirm() dialog
+
+        assertEquals(String.valueOf(total), driver.findElement(By.id("score")).getText());
+        assertTrue(driver.findElement(testId("score-percent")).getText().startsWith("100%"));
+    }
+}
+```
+
+### Example: Playwright (TypeScript)
+
+```ts
+test('scores 100% when every correct answer is chosen', async ({ page }) => {
+  await page.goto('https://nishman89.github.io/istqb-revision/quiz/1/c/');
+  const questions = page.locator('[data-testid^="question-"][data-answer]');
+  for (const q of await questions.all()) {
+    for (const key of (await q.getAttribute('data-answer'))!.split(',')) {
+      await q.locator(`[data-option="${key}"]`).click();
+    }
+  }
+  await page.getByTestId('submit-answers').click();
+  await expect(page.getByTestId('score-percent')).toContainText('100%');
+});
+```
+
 ## To do: planned features
 
 These features need a **back end**: a server-side database and user accounts. Today the site is fully static and

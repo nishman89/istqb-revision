@@ -58,7 +58,7 @@ Actually: testing also involves validation - checking whether the system meets u
 Testing assesses software quality and helps reduce the risk of software failure in operation. When software does fail,
 the consequences can be catastrophic: loss of money, time and business reputation - even injury or death.
 
-<Exercise kind="discuss" title="Think about it">
+<Exercise kind="discuss" title="Think about it" id="discuss-when-software-fails">
 
 When have you experienced software that did not work as expected? What were the consequences?
 
@@ -208,6 +208,15 @@ Validating whether the test object is complete and works as expected by the stak
 <SyllabusRef ref="1.1.2" />
 
 <DebuggingFlow />
+
+<div class="callout callout--remember">
+
+**❗ Remember:** **Testing finds** defects - it's mainly done by **testers** (though anyone can test).
+**Debugging fixes** them - it's done by **developers**. Defects themselves can be introduced by *anyone* who makes an
+error: analysts, developers, even testers. After the fix, the **tester** runs confirmation testing - ideally the same
+person who ran the original test.
+
+</div>
 
 - **Debugging is not testing** - It's a development activity: finding, analysing and removing the cause of a failure
 - **Static testing finds the defect directly** - Nothing is run, so there's no failure to reproduce or diagnose - only the fix is needed
@@ -401,9 +410,9 @@ The earlier we do this in the development process, the better.
 
 <SyllabusRef ref="1.3" />
 
-- Testing shows the presence, not the absence, of defects
-- **IN A NUTSHELL** - Testing can show that defects are present, but cannot prove there are none. It reduces the chance of undiscovered defects remaining.
-<Exercise kind="discuss" title="Think about it">
+> **In a nutshell:** Testing can show that defects are present, but cannot prove there are none. It reduces the chance of undiscovered defects remaining.
+
+<Exercise kind="discuss" title="Think about it" id="discuss-principle-1-testing-shows-the-presence-not-the-absence-of-defects">
 
 If no defects are found, does that mean the software is correct?
 
@@ -424,9 +433,9 @@ Testing can show that defects are present in the test object, but cannot prove t
 
 <SyllabusRef ref="1.3" />
 
-- Exhaustive testing is impossible
-- **IN A NUTSHELL** - Testing everything isn't feasible except in trivial cases. Use test techniques, prioritisation and risk-based testing to focus effort.
-<Exercise kind="discuss" title="Think about it">
+> **In a nutshell:** Testing everything isn't feasible except in trivial cases. Use test techniques, prioritisation and risk-based testing to focus effort.
+
+<Exercise kind="discuss" title="Think about it" id="discuss-principle-2-exhaustive-testing-is-impossible">
 
 How many tests would a "Good morning / Good afternoon" greeting need?
 
@@ -447,9 +456,9 @@ Testing everything is not feasible except in trivial cases (Manna 1978). Rather 
 
 <SyllabusRef ref="1.3" />
 
-- Early testing saves time and money
-- **IN A NUTSHELL** - Defects removed early don't cause further defects in derived work products, so fewer failures occur later in the SDLC.
-<Exercise kind="discuss" title="Think about it">
+> **In a nutshell:** Defects removed early don't cause further defects in derived work products, so fewer failures occur later in the SDLC.
+
+<Exercise kind="discuss" title="Think about it" id="discuss-principle-3-early-testing-saves-time-and-money">
 
 On a new project, what could we test before any code exists?
 
@@ -470,9 +479,9 @@ Defects that are removed early in the process will not cause subsequent defects 
 
 <SyllabusRef ref="1.3" />
 
-- Defects cluster together
-- **IN A NUTSHELL** - A small number of components usually contain most of the defects or cause most failures - an example of the Pareto principle.
-<Exercise kind="discuss" title="Think about it">
+> **In a nutshell:** A small number of components usually contain most of the defects or cause most failures - an example of the Pareto principle.
+
+<Exercise kind="discuss" title="Think about it" id="discuss-principle-4-defects-cluster-together">
 
 Why do you think defects cluster together?
 
@@ -493,9 +502,9 @@ A small number of system components usually contain most of the defects discover
 
 <SyllabusRef ref="1.3" />
 
-- Tests wear out
-- **IN A NUTSHELL** - Repeating the same tests makes them less effective at finding new defects - also known as the pesticide paradox.
-<Exercise kind="discuss" title="Think about it">
+> **In a nutshell:** Repeating the same tests makes them less effective at finding new defects - also known as the pesticide paradox.
+
+<Exercise kind="discuss" title="Think about it" id="discuss-principle-5-tests-wear-out">
 
 Why does this happen? And when is repeating tests actually useful?
 
@@ -516,9 +525,9 @@ If the same tests are repeated many times, they become increasingly ineffective 
 
 <SyllabusRef ref="1.3" />
 
-- Testing is context dependent
-- **IN A NUTSHELL** - There is no single universally applicable approach to testing - it is done differently in different contexts.
-<Exercise kind="discuss" title="Think about it">
+> **In a nutshell:** There is no single universally applicable approach to testing - it is done differently in different contexts.
+
+<Exercise kind="discuss" title="Think about it" id="discuss-principle-6-testing-is-context-dependent">
 
 How would testing a games console differ from testing a space shuttle?
 
@@ -539,9 +548,9 @@ There is no single universally applicable approach to testing. Testing is done d
 
 <SyllabusRef ref="1.3" />
 
-- Absence-of-defects fallacy
-- **IN A NUTSHELL** - Fixing every defect against the specified requirements can still give a system that doesn't meet users' needs. Verification alone isn't enough - validate too.
-<Exercise kind="discuss" title="Think about it">
+> **In a nutshell:** Fixing every defect against the specified requirements can still give a system that doesn't meet users' needs. Verification alone isn't enough - validate too.
+
+<Exercise kind="discuss" title="Think about it" id="discuss-principle-7-absence-of-defects-fallacy">
 
 What do you think this means?
 
@@ -799,7 +808,7 @@ It is also possible for one person to take on the roles of testing and test mana
 
 <Resource kind="video" href="https://www.youtube.com/watch?v=baY3SaIhfl0" source="YouTube" title="Devs watching QA test the product" text="A short clip on how it feels to watch someone break your work" />
 
-<Exercise kind="discuss" title="Think about it">
+<Exercise kind="discuss" title="Think about it" id="discuss-developer-vs-tester-mindset">
 
 How does it feel to have your work "broken" by someone else? How might that affect the way a tester should report what they find?
 

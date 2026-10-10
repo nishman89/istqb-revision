@@ -93,6 +93,23 @@ function promoteIntro(sectionTitle, nodes) {
   return nodes.map((n) => (n === first ? intro : n));
 }
 
+/** Stable test hooks: data-testid="section-1-2" / "topic-1-2-3" (section n, topic m) on each <details>. */
+function addTestIds(tree) {
+  tree.children.filter((n) => n.tagName === 'details').forEach((section, si) => {
+    const no = textOf(section.children[0]).trim().split(/\s+/)[0].replace(/\./g, '-');
+    section.properties = { ...section.properties, dataTestid: `section-${no}` };
+    let t = 0;
+    for (const n of section.children[1].children) {
+      if (n.type === 'element' && n.tagName === 'details') {
+        t += 1;
+        n.properties = { ...n.properties, dataTestid: `topic-${no}-${t}` };
+      } else if (n.type === 'element' && (n.properties?.className ?? []).includes('section-intro')) {
+        n.properties = { ...n.properties, dataTestid: `section-${no}-intro` };
+      }
+    }
+  });
+}
+
 export default function collapsibleSections() {
   return (tree) => {
     tree.children = wrap(tree.children, 'h2', 'chapter-section');
@@ -103,5 +120,6 @@ export default function collapsibleSections() {
       const sectionNo = sectionTitle.split(/\s+/)[0];
       body.children = promoteIntro(sectionTitle, decorateTopics(sectionNo, wrap(body.children, 'h3', 'chapter-topic')));
     }
+    addTestIds(tree);
   };
 }

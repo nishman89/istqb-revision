@@ -288,6 +288,18 @@ examId(set)                    // "exam-c" - full past papers
   from the Sparta slide template. Headings use Zilla Slab (a free slab font close to Sparta's Bw Glenn Slab) and the
   body uses Source Sans 3, both from Google Fonts.
 
+### Test hooks (`data-testid`, `id`, `name`)
+
+The site doubles as practice material for automated testing, so interactive and checkable elements carry stable
+hooks (see "Testing this site" in the README for the full list). When you add or change markup:
+
+- give anything a test would click or check a **`data-testid`** in kebab-case (`submit-answers`, `question-3-option-b`)
+- use an **`id`** only for elements that appear once per page, and a **`name`** on every form control
+- elements that repeat (questions, options, chapter cards) get a number or key in the test id - never duplicate one
+- phone-menu copies of desktop elements are prefixed `mobile-`
+- sections and topics in the notes get `section-x-y` / `topic-x-y-n` automatically from `rehype-collapsible-sections.mjs`;
+  exercises get `exercise-<title>` (pass `id="…"` when two exercises share a title)
+
 ### Accessible colour
 
 All text meets WCAG AA contrast (4.5:1, or 3:1 for large text). Small pink labels use `--pink-dark` on light backgrounds

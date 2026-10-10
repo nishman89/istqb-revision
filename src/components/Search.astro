@@ -1,5 +1,6 @@
 ---
 import { url } from '../lib/site';
+/** The header renders two search boxes (desktop and mobile), so each gets its own id. */
 interface Props { id?: string; }
 const { id = 'site-search' } = Astro.props;
 /**
@@ -7,11 +8,11 @@ const { id = 'site-search' } = Astro.props;
  * Keyboard: "/" focuses the box, ↑/↓ move through results, Enter opens, Esc closes.
  */
 ---
-<div class="search" data-search data-index={url('search.json')} data-base={url()}>
-  <label class="visually-hidden" for={id}>Search the notes</label>
-  <input id={id} type="search" placeholder="Search topics…  ( / )" autocomplete="off"
+<div class="search" data-search data-search-id={id} data-testid={id} data-index={url('search.json')} data-base={url()}>
+  <label class="visually-hidden" for={`${id}-input`}>Search the notes</label>
+  <input id={`${id}-input`} name="search" data-testid={`${id}-input`} type="search" placeholder="Search topics…  ( / )" autocomplete="off"
          role="combobox" aria-expanded="false" aria-controls={`${id}-results`} aria-autocomplete="list" />
-  <ul id={`${id}-results`} class="search__results" role="listbox" hidden></ul>
+  <ul id={`${id}-results`} data-testid={`${id}-results`} class="search__results" role="listbox" hidden></ul>
 </div>
 
 <script>
@@ -65,7 +66,7 @@ const { id = 'site-search' } = Astro.props;
       list.innerHTML = hits.length
         ? hits.map(({ e }, i) => {
             const snippet = e.text.slice(0, 110) + (e.text.length > 110 ? '…' : '');
-            return `<li role="option" id="sr-${i}"><a href="${root.dataset.base}${e.path}">
+            return `<li role="option" id="${root.dataset.searchId}-result-${i}" data-testid="search-result"><a href="${root.dataset.base}${e.path}">
               <span class="search__title">${mark(e.title, words)}</span>
               <span class="search__where">${escape(e.where)}</span>
               ${snippet ? `<span class="search__text">${mark(snippet, words)}</span>` : ''}</a></li>`;

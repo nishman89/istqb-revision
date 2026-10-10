@@ -24,40 +24,40 @@ const external = [
 const path = Astro.url.pathname;
 const isActive = (href: string) => (href === url() ? path === href : path.startsWith(href));
 ---
-<header class="site-header">
+<header class="site-header" id="site-header" data-testid="site-header">
   <div class="container bar">
-    <a class="brand" href={url()} aria-label="Sparta Global ISTQB home">
+    <a class="brand" href={url()} aria-label="Sparta Global ISTQB home" id="home-logo" data-testid="home-logo">
       <img src={url('sparta-logo.png')} alt="Sparta Global" width="120" height="47" />
       <span class="brand__label">ISTQB CTFL</span>
     </a>
 
-    <details class="search-desktop">
+    <details class="search-desktop" id="search-toggle" data-testid="search-toggle">
       <summary aria-label="Search the notes" title="Search the notes ( / )"><span aria-hidden="true">🔍</span></summary>
-      <div class="search-panel"><Search /></div>
+      <div class="search-panel"><Search id="site-search" /></div>
     </details>
 
     <!-- Desktop navigation -->
-    <nav class="nav-desktop" aria-label="Main">
+    <nav class="nav-desktop" id="main-nav" data-testid="main-nav" aria-label="Main">
       <ul>
         {links.map(([href, label]) => (
-          <li><a href={url(href)} aria-current={isActive(url(href)) ? 'page' : undefined}>{label}</a></li>
+          <li><a href={url(href)} data-testid={`nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} aria-current={isActive(url(href)) ? 'page' : undefined}>{label}</a></li>
         ))}
         <li class="has-menu">
           <details>
-            <summary class:list={{ 'is-active': isActive(url('handouts')) }}>Resources</summary>
+            <summary data-testid="nav-resources" class:list={{ 'is-active': isActive(url('handouts')) }}>Resources</summary>
             <ul class="menu">
-              <li><a href={url('handouts')}>Handouts &amp; practice workbook <small>PDF</small></a></li>
+              <li><a href={url('handouts')} data-testid="nav-handouts">Handouts &amp; practice workbook <small>PDF</small></a></li>
               {external.map(([href, label, title]) => (
-                <li><a href={href} target="_blank" rel="noopener" title={title}>{label}<span class="ext" aria-hidden="true">↗</span></a></li>
+                <li><a href={href} target="_blank" rel="noopener" title={title} data-testid={`nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')}`}>{label}<span class="ext" aria-hidden="true">↗</span></a></li>
               ))}
             </ul>
           </details>
         </li>
         <li class="has-menu">
           <details>
-            <summary>Chapters</summary>
+            <summary data-testid="nav-chapters">Chapters</summary>
             <ul class="menu">
-              {chapters.map(([n, title]) => <li><a href={url(`chapters/${n}`)}><span>{n}</span>{title}</a></li>)}
+              {chapters.map(([n, title]) => <li><a href={url(`chapters/${n}`)} data-testid={`nav-chapter-${n}`}><span>{n}</span>{title}</a></li>)}
             </ul>
           </details>
         </li>
@@ -65,25 +65,25 @@ const isActive = (href: string) => (href === url() ? path === href : path.starts
     </nav>
 
     <!-- Phones: a search button next to Menu -->
-    <button type="button" class="search-mobile-btn" data-mobile-search aria-label="Search the notes">🔍</button>
+    <button type="button" class="search-mobile-btn" id="mobile-search-button" data-testid="mobile-search-button" data-mobile-search aria-label="Search the notes">🔍</button>
 
     <!-- Mobile navigation: one "Menu" button that opens a full-width panel -->
-    <details class="nav-mobile">
+    <details class="nav-mobile" id="mobile-menu" data-testid="mobile-menu">
       <summary aria-label="Open menu"><span class="burger" aria-hidden="true"></span>Menu</summary>
       <nav aria-label="Main (mobile)">
         <div class="search-mobile"><Search id="site-search-mobile" /></div>
         <ul>
           {links.map(([href, label]) => (
-            <li><a href={url(href)} aria-current={isActive(url(href)) ? 'page' : undefined}>{label}</a></li>
+            <li><a href={url(href)} data-testid={`mobile-nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} aria-current={isActive(url(href)) ? 'page' : undefined}>{label}</a></li>
           ))}
           <li><a href={url('handouts')} aria-current={isActive(url('handouts')) ? 'page' : undefined}>Handouts</a></li>
           {external.map(([href, label, title]) => (
-            <li><a href={href} target="_blank" rel="noopener" title={title}>{label}<span class="ext" aria-hidden="true">↗</span></a></li>
+            <li><a href={href} target="_blank" rel="noopener" title={title} data-testid={`mobile-nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')}`}>{label}<span class="ext" aria-hidden="true">↗</span></a></li>
           ))}
         </ul>
         <span class="eyebrow">Chapters</span>
         <ul class="chapters">
-          {chapters.map(([n, title]) => <li><a href={url(`chapters/${n}`)}><span>{n}</span>{title}</a></li>)}
+          {chapters.map(([n, title]) => <li><a href={url(`chapters/${n}`)} data-testid={`mobile-nav-chapter-${n}`}><span>{n}</span>{title}</a></li>)}
         </ul>
       </nav>
     </details>

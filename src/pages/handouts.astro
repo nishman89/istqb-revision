@@ -19,7 +19,7 @@ import { url } from '../lib/site';
           <h2>{h.title}</h2>
           {!h.chapter && <p class="muted">Worked examples, exercises and answers for the calculation topics.</p>}
           <div class="actions">
-            <a class="btn" href={handoutUrl(h)} download>Download PDF</a>
+            <a class="btn" href={handoutUrl(h)} download data-testid={`download-${h.chapter ? `chapter-${h.chapter}` : "workbook"}`}>Download PDF</a>
             <a class="btn btn--ghost" href={handoutUrl(h)} target="_blank" rel="noopener">Open</a>
             {h.chapter && <a class="notes" href={url(`chapters/${h.chapter}`)}>Notes →</a>}
           </div>

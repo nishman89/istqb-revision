@@ -6,7 +6,7 @@ interface Props { chapter: number; }
 const traps = TRAPS[Astro.props.chapter] ?? [];
 ---
 {traps.length > 0 && (
-  <details class="watch card">
+  <details class="watch card" id="watch-out" data-testid="watch-out">
     <summary>
       <span class="eyebrow">Exam tips</span>
       <span class="watch__heading">Watch out for… <span class="watch__count">{traps.length} common traps</span></span>

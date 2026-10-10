@@ -21,14 +21,14 @@ const kMix = (qs: { k: string }[]) => ['K1', 'K2', 'K3'].map((k) => `${qs.filter
   <div class="container">
     <ol class="grid papers">
       {sets.map((exam) => (
-        <li class="card paper" data-exam-card={examId(exam.set)}>
+        <li class="card paper" id={`paper-${exam.set.toLowerCase()}`} data-testid={`paper-${exam.set.toLowerCase()}`} data-exam-card={examId(exam.set)}>
           <span class="paper__letter">{exam.set}</span>
           <span class="eyebrow">ISTQB sample paper · v{exam.version}</span>
           <h2>Sample Paper {exam.set}</h2>
           <p class="muted">40 questions · 60 minutes · {kMix(exam.questions)}</p>
           {exam.set === MAIN_SET && <p class="note">These questions also appear in the end-of-chapter quizzes.</p>}
           <p class="paper__status" data-status>Not attempted yet</p>
-          <a class="btn" href={url(`past-papers/${exam.set.toLowerCase()}`)}>Sit this paper</a>
+          <a class="btn" href={url(`past-papers/${exam.set.toLowerCase()}`)} data-testid={`sit-paper-${exam.set.toLowerCase()}`}>Sit this paper</a>
         </li>
       ))}
     </ol>
@@ -38,7 +38,7 @@ const kMix = (qs: { k: string }[]) => ['K1', 'K2', 'K3'].map((k) => `${qs.filter
       <p class="muted">Every question on one chapter, pooled from Sample Papers A-D.</p>
       <ul class="practice__list">
         {chapterSets.map((s) => (
-          <li><a class="practice__item" href={url(`practice/${s.slug}`)}><span class="practice__title">{s.title}</span><span class="pill">{s.questions.length} questions</span></a></li>
+          <li><a class="practice__item" href={url(`practice/${s.slug}`)} data-testid={`practice-${s.slug}`}><span class="practice__title">{s.title}</span><span class="pill">{s.questions.length} questions</span></a></li>
         ))}
       </ul>
     </section>
@@ -48,7 +48,7 @@ const kMix = (qs: { k: string }[]) => ['K1', 'K2', 'K3'].map((k) => `${qs.filter
       <p class="muted">Every question at one knowledge level, pooled from Sample Papers A-D. <a href={url('exam-tips')}>What are K-levels?</a></p>
       <ul class="practice__list practice__list--k">
         {kSets.map((s) => (
-          <li><a class="practice__item" href={url(`practice/${s.slug}`)}><span class="practice__title">{s.title}</span><span class="practice__blurb">{s.blurb}</span><span class="pill pill--dark">{s.questions.length} questions</span></a></li>
+          <li><a class="practice__item" href={url(`practice/${s.slug}`)} data-testid={`practice-${s.slug}`}><span class="practice__title">{s.title}</span><span class="practice__blurb">{s.blurb}</span><span class="pill pill--dark">{s.questions.length} questions</span></a></li>
         ))}
       </ul>
     </section>
