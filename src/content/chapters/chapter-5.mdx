@@ -27,7 +27,7 @@ import RiskMatrix from '../../components/diagrams/RiskMatrix.astro';
 import TestProcess from '../../components/diagrams/TestProcess.astro';
 import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 
-### Recap - The Test Process
+### Recap — The Test Process
 
 <SyllabusRef ref="1.4.1" />
 
@@ -118,10 +118,10 @@ Sort these into **entry** criteria (can we start?) and **exit** criteria (are we
 
 | Entry criteria | Exit criteria |
 |---|---|
-| 1 - environment ready | 2 - coverage reached |
-| 3 - initial quality (smoke test) | 4 - defects at an acceptable level |
-| 5 - test data available | 6 - planned tests executed |
-| | 7 - running out of time or budget can be a valid exit criterion if stakeholders accept the risk |
+| 1 — environment ready | 2 — coverage reached |
+| 3 — initial quality (smoke test) | 4 — defects at an acceptable level |
+| 5 — test data available | 6 — planned tests executed |
+| | 7 — running out of time or budget can be a valid exit criterion if stakeholders accept the risk |
 
 </div>
 </Exercise>
@@ -157,12 +157,12 @@ Typical exit criteria include measures of thoroughness (e.g., achieved level of 
 
 <SyllabusRef ref="5.1.3" />
 
-- **Out of time or budget?** - That can be a valid exit criterion - if stakeholders have reviewed and accepted the risk of going live without further testing.
+- **Out of time or budget?** - That can be a valid exit criterion — if stakeholders have reviewed and accepted the risk of going live without further testing.
 
 #### In agile
 
 - **Definition of Ready** - Entry criteria a user story must meet before development and/or testing starts
-- **Definition of Done** - Exit criteria - the team's objective metrics for a releasable item
+- **Definition of Done** - Exit criteria — the team's objective metrics for a releasable item
 
 <SyllabusText>
 
@@ -181,7 +181,7 @@ In Agile software development, exit criteria are often called Definition of Done
   { title: 'Expert-based', sub: 'uses judgement', points: ['Wideband Delphi and Planning Poker', 'Three-point estimation'] },
 ]} />
 
-- **Estimates rest on assumptions** and always carry error. Small tasks estimate better - so break big tasks down.
+- **Estimates rest on assumptions** and always carry error. Small tasks estimate better — so break big tasks down.
 
 <SyllabusText>
 
@@ -249,7 +249,7 @@ In this iterative, expert-based technique, experts make experience-based estimat
 
 <SyllabusRef ref="5.1.4" />
 
-A **separate technique**, popular in Agile teams - a variant of Wideband Delphi.
+A **separate technique**, popular in Agile teams — a variant of Wideband Delphi.
 
 <Tiles cols={6} caption="Each estimator holds cards with effort values (often a Fibonacci-like sequence) and reveals one at the same time" tiles={[
   { title: '1' }, { title: '2' }, { title: '3' }, { title: '5' }, { title: '8' }, { title: '13' },
@@ -267,7 +267,7 @@ A **separate technique**, popular in Agile teams - a variant of Wideband Delphi.
 <ThreePoint />
 
 - **ESTIMATE** - E = (a + 4m + b) / 6
-- **MEASUREMENT ERROR** - SD = (b - a) / 6
+- **MEASUREMENT ERROR** - SD = (b — a) / 6
 <Exercise title="Three-point estimate">
 
 The experts' estimates are: optimistic **a = 6**, most likely **m = 9**, pessimistic **b = 18** person-hours.
@@ -285,7 +285,7 @@ So the estimate is **10 ± 2 person-hours** (between 8 and 12). You need to reme
 
 <SyllabusText>
 
-In this expert-based technique, three estimations are made by the experts: the most optimistic estimation (a), the most likely estimation (m) and the most pessimistic estimation (b). The final estimate (E) is their weighted arithmetic mean. In the most popular version of this technique, the estimate is calculated as E = (a + 4*m + b) / 6. The advantage of this technique is that it allows the experts to calculate the measurement error: SD = (b - a) / 6.
+In this expert-based technique, three estimations are made by the experts: the most optimistic estimation (a), the most likely estimation (m) and the most pessimistic estimation (b). The final estimate (E) is their weighted arithmetic mean. In the most popular version of this technique, the estimate is calculated as E = (a + 4*m + b) / 6. The advantage of this technique is that it allows the experts to calculate the measurement error: SD = (b — a) / 6.
 
 </SyllabusText>
 
@@ -309,7 +309,7 @@ In this expert-based technique, three estimations are made by the experts: the m
 <SyllabusRef ref="5.1.5" />
 
 - **Risk-based** - Order based on the results of risk analysis (5.2.3) · Tests covering the most important risks run first
-- **Coverage-based** - Highest coverage (e.g. statement) runs first · Variant: additional coverage - each next test adds the most new coverage
+- **Coverage-based** - Highest coverage (e.g. statement) runs first · Variant: additional coverage — each next test adds the most new coverage
 - **Requirements-based** - Priorities of requirements, set by stakeholders, traced to tests · Tests for the most important requirements run first
 
 <SyllabusText>
@@ -355,8 +355,8 @@ Run high-priority tests as early as possible, but **TC3 must run before TC1**. O
 
 <TestPyramid />
 
-- **Top layers** - Complex, end-to-end, slower - just a few needed
-- **Bottom layers** - Small, isolated, fast - many needed
+- **Top layers** - Complex, end-to-end, slower — just a few needed
+- **Bottom layers** - Small, isolated, fast — many needed
 - **Guides automation** - and how test effort is allocated
 
 <SyllabusText>
@@ -392,7 +392,7 @@ The testing quadrants, defined by Brian Marick (Marick 2003, Crispin 2008), grou
 <SyllabusRef ref="5.1.7" />
 
 The testing quadrants group test **levels** with the right test **types**, activities, techniques and work products.
-They help make sure **all the important test types are covered** - and help explain testing to non-technical stakeholders.
+They help make sure **all the important test types are covered**, and help explain testing to non-technical stakeholders.
 
 <Quadrants />
 
@@ -420,7 +420,7 @@ Two questions place any test in a quadrant: **who is it for** (business or techn
 | **Q1** Technology · supports the team | Unit, component, integration and API tests | Automated |
 | **Q2** Business · supports the team | Functional tests, examples, story tests, BDD / ATDD, UX prototypes, simulations | Automated & manual |
 | **Q3** Business · critiques the product | Exploratory, usability, UAT, alpha / beta | Manual |
-| **Q4** Technology · critiques the product | Performance, load, stress, security, portability, maintainability - the "-ility" tests | Automated |
+| **Q4** Technology · critiques the product | Performance, load, stress, security, portability, maintainability — the "-ility" tests | Automated |
 
 > **Reading the axes:** left = mostly verification · right = mostly validation · top = mostly black-box · bottom = mostly white-box.
 
@@ -455,7 +455,7 @@ Place each test in the right testing quadrant (Q1-Q4):
 
 <SyllabusRef ref="5.2" />
 
-<Flow loop="KEEP MONITORING - NEW RISKS EMERGE" caption="Risk management: analysis then control (CTFL 5.2)" steps={[
+<Flow loop="KEEP MONITORING — NEW RISKS EMERGE" caption="Risk management: analysis then control (CTFL 5.2)" steps={[
   { title: 'Identify', sub: 'brainstorm, interview, workshops' }, { title: 'Assess', sub: 'likelihood × impact' }, { title: 'Mitigate', sub: 'e.g. by testing' }, { title: 'Monitor', sub: 'is it working?' },
 ]} />
 
@@ -485,13 +485,13 @@ The test approach, in which test activities are selected, prioritized, and manag
 <RiskMatrix />
 
 - A potential event, hazard, threat or situation whose occurrence causes an adverse effect.
-- **Likelihood** - Probability of occurrence - between 0 and 1
+- **Likelihood** - Probability of occurrence — between 0 and 1
 - **Impact (harm)** - The consequences if it occurs
 - **Likelihood + impact = risk level.** - The higher the level, the more important to treat.
 
 <SyllabusText>
 
-Risk is a potential event, hazard, threat, or situation whose occurrence causes an adverse effect. A risk can be characterized by two factors: risk likelihood - the probability of the risk occurrence (greater than zero and less than one); and risk impact (harm) - the consequences of this occurrence. These two factors express the risk level, which is a measure for the risk. The higher the risk level, the more important is its treatment.
+Risk is a potential event, hazard, threat, or situation whose occurrence causes an adverse effect. A risk can be characterized by two factors: risk likelihood — the probability of the risk occurrence (greater than zero and less than one); and risk impact (harm) — the consequences of this occurrence. These two factors express the risk level, which is a measure for the risk. The higher the risk level, the more important is its treatment.
 
 </SyllabusText>
 
@@ -499,7 +499,7 @@ Risk is a potential event, hazard, threat, or situation whose occurrence causes 
 
 <SyllabusRef ref="5.2.2" />
 
-- **Project risks** relate to managing and controlling the project - they hit schedule, budget or scope.
+- **Project risks** relate to managing and controlling the project — they hit schedule, budget or scope.
 - **Organisational** - Late deliveries, inaccurate estimates, cost-cutting
 - **People** - Insufficient skills, conflicts, communication problems, staff shortages
 - **Technical** - Scope creep, poor tool support
@@ -515,7 +515,7 @@ Project risks are related to the management and control of the project. Project 
 
 <SyllabusRef ref="5.2.2" />
 
-**Product risks** threaten the quality of the product - grouped here by the quality characteristic (ISO/IEC 25010) they affect:
+**Product risks** threaten the quality of the product — grouped here by the quality characteristic (ISO/IEC 25010) they affect:
 
 <IconCards items={[
   { icon: '🎯', title: 'Functional suitability', points: ['Missing or wrong functionality', 'Incorrect calculations'] },
@@ -549,10 +549,10 @@ Classify each risk as a **product** risk (the quality of the software) or a **pr
 
 | Product risks | Project risks |
 |---|---|
-| 2 - incorrect calculation | 1 - people (staff shortage) |
-| 4 - poor performance | 3 - supplier |
-| 6 - security | 5 - organisational (cost-cutting) |
-| 8 - reliability / compatibility | 7 - technical (scope creep) |
+| 2 — incorrect calculation | 1 — people (staff shortage) |
+| 4 — poor performance | 3 — supplier |
+| 6 — security | 5 — organisational (cost-cutting) |
+| 8 — reliability / compatibility | 7 — technical (scope creep) |
 
 </div>
 </Exercise>
@@ -599,21 +599,21 @@ Using **risk level = likelihood × impact** (each scored 1-5), calculate the lev
 
 | Risk | Likelihood | Impact |
 |---|---|---|
-| A - Customers are charged twice for one payment | 2 | 5 |
-| B - A typo on the About page | 4 | 1 |
-| C - Login fails under peak load | 3 | 4 |
-| D - Report export is slow | 3 | 2 |
+| A — Customers are charged twice for one payment | 2 | 5 |
+| B — A typo on the About page | 4 | 1 |
+| C — Login fails under peak load | 3 | 4 |
+| D — Report export is slow | 3 | 2 |
 
 <div slot="answer">
 
 | Risk | Level | Priority |
 |---|---|---|
-| C - Login fails under peak load | 3 × 4 = **12** | 1st |
-| A - Double charging | 2 × 5 = **10** | 2nd |
-| D - Slow report export | 3 × 2 = **6** | 3rd |
-| B - Typo | 4 × 1 = **4** | 4th |
+| C — Login fails under peak load | 3 × 4 = **12** | 1st |
+| A — Double charging | 2 × 5 = **10** | 2nd |
+| D — Slow report export | 3 × 2 = **6** | 3rd |
+| B — Typo | 4 × 1 = **4** | 4th |
 
-Test the highest-level risks first and most thoroughly. Note that A has the highest impact - some teams treat any impact-5 risk as high priority whatever its score.
+Test the highest-level risks first and most thoroughly. Note that A has the highest impact — some teams treat any impact-5 risk as high priority whatever its score.
 
 </div>
 </Exercise>
@@ -629,7 +629,7 @@ Once product risks are identified and assessed, the results decide **how much te
 ]} />
 
 <IconCards items={[
-  { icon: '📏', title: 'Scope', text: 'What to test - and what not to' },
+  { icon: '📏', title: 'Scope', text: 'What to test — and what not to' },
   { icon: '🧱', title: 'Levels & types', text: 'Which test levels and test types to use' },
   { icon: '🧰', title: 'Techniques & coverage', text: 'Which techniques, and how much coverage to aim for' },
   { icon: '⏱️', title: 'Effort', text: 'How much effort each test task gets' },
@@ -686,12 +686,12 @@ With respect to product risk control, once a risk has been analyzed, several res
 
 <SyllabusRef ref="5.3" />
 
-<Cycle center="Compare with the plan" caption="Monitoring gathers metrics, control acts on them, and the plan is updated - completion wraps up each stage (CTFL 5.3)" steps={[
+<Cycle center="Compare with the plan" caption="Monitoring gathers metrics, control acts on them, and the plan is updated — completion wraps up each stage (CTFL 5.3)" steps={[
   { title: 'Test plan', tone: 'purple' }, { title: 'Monitor', sub: 'gather metrics, report', tone: 'blue' }, { title: 'Control', sub: 'directives, corrective action', tone: 'pink' },
 ]} />
 
-- **Monitoring** - Gather information · Assess test progress · Check exit criteria are being met - e.g. coverage of risks, requirements, acceptance criteria
-- **Control** - Use monitoring information · Issue control directives - guidance and corrective actions
+- **Monitoring** - Gather information · Assess test progress · Check exit criteria are being met — e.g. coverage of risks, requirements, acceptance criteria
+- **Control** - Use monitoring information · Issue control directives — guidance and corrective actions
 - **Completion** - Collect data from completed activities · Consolidate experience, testware and other information
 
 <SyllabusText>
@@ -713,7 +713,7 @@ Test control turns monitoring information into action. Typical **control directi
 <WhenThen whenLabel="When…" thenLabel="…the directive" rows={[
   { when: 'An identified risk becomes an actual issue', then: 'Reprioritise the tests' },
   { when: 'A test item has been reworked', then: 'Re-evaluate its entry / exit criteria' },
-  { when: 'Something is late - e.g. the test environment', then: 'Adjust the test schedule' },
+  { when: 'Something is late — e.g. the test environment', then: 'Adjust the test schedule' },
   { when: 'Progress is behind where it matters', then: 'Add resources, when and where needed' },
 ]} />
 
@@ -758,7 +758,7 @@ Common test metrics include: project progress metrics (e.g., task completion, re
 
 <SyllabusRef ref="5.3.2" />
 
-- **Test progress report** - During testing · Supports ongoing test control · Enough information to change the schedule, resources or plan when needed · Regular - e.g. daily or weekly
+- **Test progress report** - During testing · Supports ongoing test control · Enough information to change the schedule, resources or plan when needed · Regular — e.g. daily or weekly
 - **Test completion report** - After a stage of testing · Summarises a test level, cycle or iteration · Informs subsequent testing · Ideally when exit criteria are met
 
 <SyllabusText>
@@ -786,8 +786,8 @@ A test completion report is prepared during test completion, when a project, tes
 
 <SyllabusRef ref="5.3.2" />
 
-<Compare caption="Choose the report - and the way you share it - for the audience (CTFL 5.3.2)" columns={[
-  { title: 'Test progress report', sub: 'during testing', points: ['For people within the team', 'Frequent', 'Informal - e.g. a dashboard or chat'] },
+<Compare caption="Choose the report — and the way you share it — for the audience (CTFL 5.3.2)" columns={[
+  { title: 'Test progress report', sub: 'during testing', points: ['For people within the team', 'Frequent', 'Informal — e.g. a dashboard or chat'] },
   { title: 'Test completion report', sub: 'at the end', points: ['For a completed project or stage', 'Follows a set template', 'Formal'] },
 ]} />
 
@@ -826,7 +826,7 @@ One or more of these options can be used. More formal communication may be more 
 
 <SyllabusRef ref="5.4" />
 
-CM identifies, controls and tracks work products - plans, conditions, cases, scripts, results, logs, reports - as **configuration items**.
+CM identifies, controls and tracks work products — plans, conditions, cases, scripts, results, logs, reports — as **configuration items**.
 
 <Baselines />
 
@@ -840,7 +840,7 @@ In testing, configuration management (CM) provides a discipline for identifying,
 
 <SyllabusRef ref="5.4" />
 
-- **Every item is controlled** - Uniquely identified, version controlled, tracked for changes, related to other items - so traceability is kept
+- **Every item is controlled** - Uniquely identified, version controlled, tracked for changes, related to other items — so traceability is kept
 - **Unambiguous references** - All documentation and software items are referenced clearly in test documentation
 - **Automated in DevOps** - CI / CD pipelines normally include automated CM
 
@@ -864,12 +864,12 @@ Continuous integration, continuous delivery, continuous deployment and the assoc
 
 Finding defects is a major test objective, so an established **defect management process** is essential:
 
-> **Not every anomaly is a defect** - it could be a false positive or a change request. The process applies to **all
+> **Not every anomaly is a defect.** It could be a false positive or a change request. The process applies to **all
 > stakeholders**, and static analysis findings are handled the same way.
 
 <SyllabusText>
 
-Since one of the major test objectives is to find defects, an established defect management process is essential. Although we refer to "defects" here, the reported anomalies may turn out to be real defects or something else (e.g., false positive, change request) - this is resolved during the process of dealing with the defect reports. Anomalies may be reported during any phase of the SDLC and the form depends on the SDLC.
+Since one of the major test objectives is to find defects, an established defect management process is essential. Although we refer to "defects" here, the reported anomalies may turn out to be real defects or something else (e.g., false positive, change request) — this is resolved during the process of dealing with the defect reports. Anomalies may be reported during any phase of the SDLC and the form depends on the SDLC.
 
 At a minimum, the defect management process includes a workflow for handling individual anomalies from their discovery to their closure and rules for their classification. The workflow typically comprises activities to log the reported anomalies, analyze and classify them, decide on a suitable response such as to fix or keep it as it is, and finally to close the defect report. The process must be followed by all involved stakeholders. It is advisable to handle defects from static testing (especially static analysis) in a similar way.
 
@@ -893,14 +893,14 @@ At a minimum, the defect management process includes a workflow for handling ind
 <SyllabusRef beyond />
 
 - **Priority** - "the level of (business) importance assigned to an item" (ISTQB glossary).
-- **P1 - Urgent** - Must be fixed immediately, in the next build
-- **P2 - High** - Fix in an upcoming build - must be in the release
-- **P3 - Medium** - May be fixed after the release, or in the next one
-- **P4 - Low** - May or may not be fixed at all
+- **P1 — Urgent** - Must be fixed immediately, in the next build
+- **P2 — High** - Fix in an upcoming build — must be in the release
+- **P3 — Medium** - May be fixed after the release, or in the next one
+- **P4 — Low** - May or may not be fixed at all
 
 <SyllabusText>
 
-ISTQB glossary - Priority: the level of (business) importance assigned to an item.
+ISTQB glossary — Priority: the level of (business) importance assigned to an item.
 
 </SyllabusText>
 
@@ -908,10 +908,10 @@ ISTQB glossary - Priority: the level of (business) importance assigned to an ite
 
 <SyllabusRef beyond />
 
-- **High priority · Low severity** - Low impact but very visible or unfriendly - e.g. someone else's logo, a missing minor feature
-- **High priority · High severity** - Fix now - e.g. data loss, missing key feature, security violation
+- **High priority · Low severity** - Low impact but very visible or unfriendly — e.g. someone else's logo, a missing minor feature
+- **High priority · High severity** - Fix now — e.g. data loss, missing key feature, security violation
 - **Low priority · Low severity** - Cosmetic errors, spelling mistakes
-- **Low priority · High severity** - Big impact on minor or unreleased areas - users can still work
+- **Low priority · High severity** - Big impact on minor or unreleased areas — users can still work
 
 ### Defect Lifecycle
 
@@ -931,8 +931,8 @@ ISTQB glossary - Priority: the level of (business) importance assigned to an ite
 
 <SyllabusRef ref="5.5" />
 
-- **Identify it** - Unique identifier · Title - a short summary · Date, organisation, author and role · Test object and test environment · Context - test case, activity, SDLC phase, technique or data used
-- **Describe it** - Steps to reproduce, plus logs, dumps, screenshots or recordings · Expected vs actual results · Severity and priority · Status (open, deferred, duplicate…) · References - e.g. to the test case
+- **Identify it** - Unique identifier · Title — a short summary · Date, organisation, author and role · Test object and test environment · Context — test case, activity, SDLC phase, technique or data used
+- **Describe it** - Steps to reproduce, plus logs, dumps, screenshots or recordings · Expected vs actual results · Severity and priority · Status (open, deferred, duplicate…) · References — e.g. to the test case
 
 <SyllabusText>
 
@@ -953,7 +953,7 @@ A defect report logged during dynamic testing typically includes: unique identif
 | **Severity** | How big the impact is |
 | **Priority** | How urgently it should be fixed |
 | **Status** | e.g. open, deferred, fixed, closed |
-| **Description** | Enough detail to reproduce it - steps, environment, test data |
+| **Description** | Enough detail to reproduce it — steps, environment, test data |
 | **Further comments** | References, and other areas that might be affected |
 
 <Exercise source="workbook" kind="example" title="Worked example: a defect report">
@@ -996,7 +996,7 @@ A discount code that expired on 31-08-2026 is still accepted at checkout. Fill i
 
 - A traceability matrix maps requirements to test cases and discovered defects.
 - **Forward** - Requirements → test cases · Every requirement is tested thoroughly
-- **Backward** - Test cases → requirements · Controls scope creep - no unnecessary features
+- **Backward** - Test cases → requirements · Controls scope creep — no unnecessary features
 - **Bidirectional** - Both directions · Every requirement has related tests · Analyses the impact of changes and defects
 
 ### Traceability Matrix

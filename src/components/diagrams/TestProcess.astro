@@ -6,11 +6,11 @@ const steps = [
   ['Test execution', 'Run & report'], ['Test completion', 'Wrap up'],
 ];
 ---
-<Figure caption="The test process - planning and monitoring & control run alongside the five core activities (CTFL 1.4.1)">
+<Figure caption="The test process — planning and monitoring & control run alongside the five core activities (CTFL 1.4.1)">
   <svg viewBox="0 0 820 300" role="img" aria-label="Test process diagram">
     <defs><marker id="tp-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5c5c5c"/></marker></defs>
     <rect class="b-dark" x="10" y="10" width="800" height="56" rx="12"/>
-    <text class="t" x="410" y="38">Test planning - objectives and approach</text>
+    <text class="t" x="410" y="38">Test planning — objectives and approach</text>
     {steps.map(([h, s], i) => (
       <g>
         <rect class={i === 4 ? 'b-deep' : 'b-pink'} x={10 + i * 164} y="96" width="144" height="108" rx="12"/>
@@ -21,6 +21,6 @@ const steps = [
       </g>
     ))}
     <rect class="b-dark" x="10" y="234" width="800" height="56" rx="12"/>
-    <text class="t" x="410" y="262">Test monitoring &amp; control - keep it on track, throughout</text>
+    <text class="t" x="410" y="262">Test monitoring &amp; control — keep it on track, throughout</text>
   </svg>
 </Figure>

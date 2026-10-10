@@ -6,7 +6,7 @@ const ticks = [[0, '00:00'], [6, '06:00'], [8, '08:00'], [18, '18:00'], [19, '19
 const picks = [[0.5, '00:01'], [7, '06:00'], [13, '12:00'], [18.5, '18:30'], [23.5, '23:59']] as const;
 const X = (h: number) => 20 + (h / 24) * 780;
 ---
-<Figure caption="Boiler timer: five partitions (two of them overnight) and one value from each - 100% EP coverage (CTFL 4.2.1)">
+<Figure caption="Boiler timer: five partitions (two of them overnight) and one value from each — 100% EP coverage (CTFL 4.2.1)">
   <svg viewBox="0 0 820 190" role="img" aria-label="Boiler timer partitions">
     {segs.map(([n, a, b]) => (
       <g>

@@ -7,9 +7,9 @@ import { url } from '../lib/site';
 const ISTQB_CTFL = 'https://istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0';
 
 const kLevels = [
-  { k: 'K1', name: 'Remember', desc: 'Recall a term or fact - e.g. "Which of the following is a typical test objective?"', mins: '1 min' },
-  { k: 'K2', name: 'Understand', desc: 'Explain, compare or classify - e.g. pick the best description of a concept.', mins: '1-2 min' },
-  { k: 'K3', name: 'Apply', desc: 'Use a technique on a scenario - e.g. work out boundary values or decision table coverage.', mins: '3 min' },
+  { k: 'K1', name: 'Remember', desc: 'Recall a term or fact — e.g. "Which of the following is a typical test objective?"', mins: '1 min' },
+  { k: 'K2', name: 'Understand', desc: 'Explain, compare or classify — e.g. pick the best description of a concept.', mins: '1-2 min' },
+  { k: 'K3', name: 'Apply', desc: 'Use a technique on a scenario — e.g. work out boundary values or decision table coverage.', mins: '3 min' },
 ];
 ---
 <BaseLayout title="Introduction to the ISTQB" description="What the ISTQB is, the Foundation Level certificate, and how the exam is structured and marked.">
@@ -38,7 +38,7 @@ const kLevels = [
         <div class="card">
           <span class="eyebrow">Who it's for</span>
           <h3>Anyone in testing</h3>
-          <p>Testers, test automation engineers, developers, business analysts and managers - anyone who needs a
+          <p>Testers, test automation engineers, developers, business analysts and managers — anyone who needs a
             shared vocabulary and a solid grounding in how testing works.</p>
         </div>
         <div class="card">
@@ -54,8 +54,8 @@ const kLevels = [
       <h2 class="dot">The exam at a glance</h2>
       <div class="facts">
         <div class="fact card card--dark"><span class="fact__big">40</span><span>multiple-choice questions</span></div>
-        <div class="fact card card--dark"><span class="fact__big">60</span><span>minutes - or 75 (+25%) if the exam isn't in your native language</span></div>
-        <div class="fact card fact--pink"><span class="fact__big">26/40</span><span>to pass - a score of 65%</span></div>
+        <div class="fact card card--dark"><span class="fact__big">60</span><span>minutes, or 75 (+25%) if the exam isn't in your native language</span></div>
+        <div class="fact card fact--pink"><span class="fact__big">26/40</span><span>to pass — a score of 65%</span></div>
         <div class="fact card card--dark"><span class="fact__big">1</span><span>point per question, whatever its difficulty</span></div>
       </div>
     </section>
@@ -66,7 +66,7 @@ const kLevels = [
         <li><strong>One point per question.</strong> At Foundation Level every question is worth exactly one point, so
           a hard K3 calculation counts the same as a K1 definition. Wrong or blank answers simply score zero.</li>
         <li><strong>"Select ONE" or "Select TWO".</strong> Most questions have one correct option out of four. Some ask
-          you to choose two out of five - you must get both right to earn the point.</li>
+          you to choose two out of five — you must get both right to earn the point.</li>
         <li><strong>65% to pass.</strong> You need at least 26 of the 40 points. There is no grading beyond pass or fail.</li>
         <li><strong>Everything in the syllabus is examinable.</strong> Every learning objective can be tested, and every
           keyword can be asked about at K2 (understanding its definition). A question may draw on more than one section.</li>
@@ -77,7 +77,7 @@ const kLevels = [
 
     <section>
       <h2 class="dot">Knowledge levels (K-levels)</h2>
-      <p class="muted">Every learning objective - and so every question - has a K-level. ISTQB gives a guide time for each.</p>
+      <p class="muted">Every learning objective — and so every question — has a K-level. ISTQB gives a guide time for each.</p>
       <div class="grid">
         {kLevels.map((l) => (
           <div class="card klevel">
@@ -97,7 +97,7 @@ const kLevels = [
     <section class="card numbering">
       <h2>How the notes follow the syllabus</h2>
       <p>The notes are organised exactly like the official <a href={ISTQB_CTFL} target="_blank" rel="noopener">ISTQB CTFL v4.0 syllabus</a>,
-        using the same numbers - so you always know which part of the curriculum you're revising.</p>
+        using the same numbers — so you always know which part of the curriculum you're revising.</p>
       <div class="tree" aria-label="Example of the syllabus numbering">
         <div class="tree__row tree__row--1"><span class="tree__no">1</span><span><strong>Chapter</strong> · Fundamentals of Testing</span></div>
         <div class="tree__row tree__row--2"><span class="tree__no">1.1</span><span><strong>Section</strong> · What is Testing?</span></div>
@@ -108,11 +108,11 @@ const kLevels = [
       <p>Every learning objective in the syllabus belongs to one of these sections, and the exam questions are written against them.</p>
       <h3>Where you'll see the numbers</h3>
       <ul class="where">
-        <li><span class="demo demo--section">1.1 What is Testing?</span> <span>Each <strong>section</strong> of a chapter is a dark bar - open it to see its topics.</span></li>
+        <li><span class="demo demo--section">1.1 What is Testing?</span> <span>Each <strong>section</strong> of a chapter is a dark bar — open it to see its topics.</span></li>
         <li><span class="demo demo--chip">1.1.1</span> <span>Each <strong>topic</strong> shows the syllabus section it covers, so you can look it up in the syllabus.</span></li>
         <li><span class="demo demo--badge"><b>Syllabus</b> CTFL v4.0 · Section 1.1.1</span> <span>The badge at the top of each topic gives the full reference.</span></li>
         <li><span class="demo demo--syl">📘 What the syllabus says</span> <span>Opens the official syllabus wording for that topic.</span></li>
-        <li><span class="demo demo--chip">Section 4.2.1</span> <span>Every quiz question shows the section it tests - handy for revising what you got wrong.</span></li>
+        <li><span class="demo demo--chip">Section 4.2.1</span> <span>Every quiz question shows the section it tests — handy for revising what you got wrong.</span></li>
       </ul>
     </section>
 
@@ -120,7 +120,7 @@ const kLevels = [
       <h2>How to use this site</h2>
       <ol class="steps">
         <li><strong>Read the chapter notes.</strong> Each topic shows the syllabus section it covers. Where a topic has a <strong>"What the syllabus says"</strong> box, it opens the wording taken
-          directly from the official <a href={ISTQB_CTFL} target="_blank" rel="noopener">ISTQB CTFL v4.0 syllabus</a> - the
+          directly from the official <a href={ISTQB_CTFL} target="_blank" rel="noopener">ISTQB CTFL v4.0 syllabus</a>. The
           exam is set against this text, so it's worth reading.</li>
         <li><strong>Take the end-of-chapter quiz.</strong> Each chapter's quiz uses the questions from <strong>ISTQB Sample Paper C</strong>
           that cover that chapter, so you answer the same number of questions the real exam asks on it. Answer them all, then
@@ -131,9 +131,9 @@ const kLevels = [
           against the clock in <a href={url('past-papers')}>Sample papers</a>.</li>
         <li><strong>Use the Resources menu.</strong> It holds everything that supports the notes:
           <ul class="res-list">
-            <li><a href={url('handouts')}>Handouts</a> - a one-page summary for each chapter, plus the practice workbook with worked examples and exercises (PDF).</li>
-            <li><a href="https://glossary.istqb.org/" target="_blank" rel="noopener">ISTQB glossary</a> - the official definitions of every testing term. Keywords are examinable, so look up any you're unsure of.</li>
-            <li><a href="https://istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf" target="_blank" rel="noopener">ISTQB syllabus (PDF)</a> - the official CTFL v4.0.1 syllabus the exam is written against.</li>
+            <li><a href={url('handouts')}>Handouts</a>: a one-page summary for each chapter, plus the practice workbook with worked examples and exercises (PDF).</li>
+            <li><a href="https://glossary.istqb.org/" target="_blank" rel="noopener">ISTQB glossary</a>: the official definitions of every testing term. Keywords are examinable, so look up any you're unsure of.</li>
+            <li><a href="https://istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf" target="_blank" rel="noopener">ISTQB syllabus (PDF)</a>: the official CTFL v4.0.1 syllabus the exam is written against.</li>
           </ul>
         </li>
         <li><strong>Track your progress.</strong> Scores and completed chapters are saved in your browser on this device.</li>

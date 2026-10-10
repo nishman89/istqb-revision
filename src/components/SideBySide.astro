@@ -1,0 +1,39 @@
+---
+/**
+ * Two ideas side by side, each with a key question, points and a memory aid.
+ *   <SideBySide left={{ title, question, points: [...], tip }} right={{ ... }} />
+ */
+interface Side { title: string; question: string; points: string[]; tip?: string; }
+interface Props { left: Side; right: Side; joiner?: string; }
+const { left, right, joiner = 'vs' } = Astro.props;
+---
+<div class="sbs">
+  {[left, right].map((s, i) => (
+    <section class:list={['sbs__side', i ? 'sbs__side--dark' : 'sbs__side--pink']}>
+      <h4 class="sbs__title">{s.title}</h4>
+      <p class="sbs__q">“{s.question}”</p>
+      <ul>{s.points.map((p) => <li>{p}</li>)}</ul>
+      {s.tip && <p class="sbs__tip"><span aria-hidden="true">💡</span> <span set:html={s.tip} /></p>}
+    </section>
+  ))}
+  <span class="sbs__vs" aria-hidden="true">{joiner}</span>
+</div>
+
+<style>
+  .sbs { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 1rem 0; }
+  .sbs__side { background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+  .sbs .sbs__title { margin: 0; padding: 0.8rem 1.1rem; font: 700 1.25rem var(--font-head); color: #fff; text-transform: none; letter-spacing: 0; }
+  .sbs__side--pink .sbs__title { background: var(--pink); }
+  .sbs__side--dark .sbs__title { background: var(--charcoal); }
+  .sbs__q { margin: 0; padding: 0.8rem 1.1rem 0.2rem; font: 700 1.05rem var(--font-head); color: var(--charcoal); }
+  .sbs ul { margin: 0.4rem 0 0.8rem; padding: 0 1.1rem 0 2.2rem; display: grid; gap: 0.35rem; background: none; box-shadow: none; }
+  .sbs li { margin: 0; }
+  .sbs li::marker { color: var(--pink); }
+  .sbs__tip { margin: auto 0 0; padding: 0.7rem 1.1rem; background: var(--bg); font-size: 0.95rem; border-top: 1px solid var(--line); }
+  .sbs__vs { position: absolute; left: 50%; top: 1.4rem; transform: translateX(-50%); display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; background: var(--surface); box-shadow: var(--shadow); font-weight: 700; color: var(--pink-dark); }
+  @media (max-width: 40rem) {
+    .sbs { grid-template-columns: 1fr; }
+    .sbs__vs { position: static; transform: none; justify-self: center; order: 1; }
+    .sbs__side:last-of-type { order: 2; }
+  }
+</style>

@@ -4,7 +4,7 @@ interface Props { ref?: string; beyond?: boolean; }
 const { ref, beyond = false } = Astro.props;
 ---
 {beyond
-  ? <p class="ref ref--beyond"><span>Beyond the syllabus</span> Useful background - not examined</p>
+  ? <p class="ref ref--beyond"><span>Beyond the syllabus</span> Useful background — not examined</p>
   : <p class="ref"><span>Syllabus</span> CTFL v4.0 · Section {ref}</p>}
 
 <style>

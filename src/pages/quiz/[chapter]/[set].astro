@@ -22,7 +22,7 @@ const questions = await getQuestions(set, chapter.number);
 
   <div class="container">
     <p class="explain card card--tint">This is the <strong>Chapter {chapter.number} quiz</strong>: the {questions.length} questions from
-      <strong>ISTQB Sample Paper {set}</strong> that cover this chapter - the same number the real exam asks on it.</p>
+      <strong>ISTQB Sample Paper {set}</strong> that cover this chapter — the same number the real exam asks on it.</p>
     <Quiz questions={questions} quizId={quizId(chapter.number, set)} />
 
     <nav class="more card no-print" aria-label="More practice">

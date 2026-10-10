@@ -20,11 +20,11 @@ const byChapter = (ch: number, k?: string) => {
 };
 const CHAPTERS = (await getCollection('chapters')).sort((a, b) => a.data.number - b.data.number).map((c) => ({ n: c.data.number, title: c.data.title }));
 const LEVELS = [
-  { k: 'K1', name: 'Remember', time: '1 minute', what: 'Recall a term, fact or definition - e.g. which option is a typical test objective.',
-    how: 'You either know it or you don\'t - answer quickly and move on. Learn the key terms in each chapter.' },
-  { k: 'K2', name: 'Understand', time: '1-2 minutes', what: 'Explain, compare, classify or give an example - most of the exam.',
+  { k: 'K1', name: 'Remember', time: '1 minute', what: 'Recall a term, fact or definition — e.g. which option is a typical test objective.',
+    how: 'You either know it or you don\'t, so answer quickly and move on. Learn the key terms in each chapter.' },
+  { k: 'K2', name: 'Understand', time: '1-2 minutes', what: 'Explain, compare, classify or give an example — most of the exam.',
     how: 'Read every option before choosing; several may sound right, so pick the one that best fits the exact wording.' },
-  { k: 'K3', name: 'Apply', time: '3 minutes', what: 'Use a technique on a scenario - partitions, boundaries, decision tables, estimates…',
+  { k: 'K3', name: 'Apply', time: '3 minutes', what: 'Use a technique on a scenario — partitions, boundaries, decision tables, estimates…',
     how: 'Work it out on scratch paper first, then find your answer among the options. Never guess from the options alone.' },
 ];
 const keywords = ['BEST', 'MOST', 'NOT', 'CORRECT', 'LEAST'].map((w) => ({
@@ -35,7 +35,8 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
 ---
 <BaseLayout title="Exam tips" description="Exam technique for ISTQB CTFL v4.0, based on an analysis of the four official sample papers.">
   <PageHead eyebrow="Exam technique" title="Exam tips">
-    <p class="lead">What {total} questions from ISTQB Sample Papers A-D tell us about the real exam - and how to pick up the marks that are easiest to gain.</p>
+    <p class="lead">What {total} questions from ISTQB Sample Papers A-D tell us about the real exam*, and how to pick up the marks that are easiest to gain.</p>
+    <p class="footnote">* Statistics calculated from ISTQB® CTFL v4.0 Sample Papers A (v1.7), B (v1.7), C (v1.6) and D (v1.5). Timing guidance from ISTQB® Exam Structures and Rules v1.2.</p>
   </PageHead>
 
   <div class="container tips">
@@ -116,16 +117,16 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
         <table class="kw">
           <thead><tr><th>Key word</th><th>What it means</th><th>How to answer</th></tr></thead>
           <tbody>
-            <tr><td><strong>BEST</strong> / <strong>MOST</strong></td><td>Several options may be partly true - one is the strongest fit.</td><td>Don't stop at the first true-sounding option. Compare them all against the exact situation in the question.</td></tr>
-            <tr><td><strong>CORRECT</strong> / <strong>TRUE</strong></td><td>Exactly one option is fully true; the others contain an error.</td><td>Look for the small detail that makes each wrong option false - a swapped term, a wrong order, a reversed cause and effect.</td></tr>
+            <tr><td><strong>BEST</strong> / <strong>MOST</strong></td><td>Several options may be partly true — one is the strongest fit.</td><td>Don't stop at the first true-sounding option. Compare them all against the exact situation in the question.</td></tr>
+            <tr><td><strong>CORRECT</strong> / <strong>TRUE</strong></td><td>Exactly one option is fully true; the others contain an error.</td><td>Look for the small detail that makes each wrong option false — a swapped term, a wrong order, a reversed cause and effect.</td></tr>
             <tr><td><strong>NOT</strong> / <strong>LEAST</strong></td><td>The question is flipped: three options are true or likely.</td><td>You're hunting for the odd one out. Tick off the three that fit, and what's left is the answer.</td></tr>
           </tbody>
         </table>
       </div>
       <p><strong>Also watch the wording inside the options.</strong> Words like <em>always</em>, <em>never</em>, <em>only</em>, <em>all</em> and <em>guarantees</em>
-        make a statement absolute - it must be true in every case, so check whether the syllabus really says that
+        make a statement absolute — it must be true in every case, so check whether the syllabus really says that
         (for example, testing can never <em>guarantee</em> there are no defects). Words like <em>typically</em>, <em>may</em> and <em>can</em> are softer and
-        easier to be true. Neither is a reliable clue on its own - read what the statement actually claims.</p>
+        easier to be true. Neither is a reliable clue on its own — read what the statement actually claims.</p>
       <p class="caveat">These counts come from the 160 questions in ISTQB Sample Papers A-D. The real exam is written to the same
         rules, but its exact mix of key words will vary.</p>
     </section>
@@ -145,12 +146,11 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
     <section class="card card--tint">
       <h2 id="on-the-day">5. On the day</h2>
       <ul class="day">
-        <li><strong>60 minutes for 40 questions</strong> (75 if the exam isn't in your native language) - about 1½ minutes each.</li>
+        <li><strong>60 minutes for 40 questions</strong> (75 if the exam isn't in your native language) — about 1½ minutes each.</li>
         <li><strong>Do a first pass</strong> answering everything you're sure of; flag the slow calculations and come back to them.</li>
-        <li><strong>Allow ~1 minute for K1, 1-2 for K2 and 3 for K3</strong> - the 8 calculation questions deserve the extra time.</li>
-        <li><strong>26 / 40 (65%) passes.</strong> You can drop 14 marks and still pass - don't panic over one hard question.</li>
+        <li><strong>Allow ~1 minute for K1, 1-2 for K2 and 3 for K3</strong>, because the 8 calculation questions deserve the extra time.</li>
+        <li><strong>26 / 40 (65%) passes.</strong> You can drop 14 marks and still pass — don't panic over one hard question.</li>
       </ul>
-      <p class="muted">Statistics calculated from ISTQB® CTFL v4.0 Sample Papers A (v1.7), B (v1.7), C (v1.6) and D (v1.5). Timing guidance from ISTQB® Exam Structures and Rules v1.2.</p>
     </section>
   </div>
 </BaseLayout>
@@ -160,6 +160,7 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
   .on-page ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .on-page a { display: block; padding: 0.35rem 0.85rem; border-radius: 999px; background: var(--surface); box-shadow: var(--shadow); font-weight: 700; text-decoration: none; color: var(--charcoal); font-size: 0.9rem; }
   .on-page a:hover { background: var(--pink-tint); color: var(--pink-dark); }
+  .footnote { margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--grey); max-width: 46rem; }
   .lead { max-width: 46rem; font-size: 1.1rem; color: var(--grey); margin: 1rem 0 0; }
   .tips { display: grid; gap: 3rem; }
   .tips h2 { margin-bottom: 1rem; }

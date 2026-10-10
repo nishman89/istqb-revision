@@ -12,6 +12,8 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import SideBySide from '../../components/SideBySide.astro';
+import IconCards from '../../components/IconCards.astro';
 import Resource from '../../components/Resource.astro';
 import MythReality from '../../components/MythReality.astro';
 import DebuggingFlow from '../../components/diagrams/DebuggingFlow.astro';
@@ -32,11 +34,11 @@ import TestProcess from '../../components/diagrams/TestProcess.astro';
 
 <SyllabusRef ref="1.1" />
 
-**Software testing** is a set of activities to discover **defects** and evaluate the **quality** of software artifacts - known as **test objects** while being tested.
+**Software testing** is a set of activities to discover **defects** and evaluate the **quality** of software artifacts — known as **test objects** while being tested.
 
 <MythReality rows={[
-  { myth: 'Testing is just executing tests', reality: 'Testing includes many other activities - planning, analysis, design, reporting… - aligned with the SDLC (Chapter 2)' },
-  { myth: 'Testing only verifies the test object (does it meet the specified requirements?)', reality: 'Testing also involves validation - checking it meets users\' and stakeholders\' needs in its operational environment' },
+  { myth: 'Testing is just executing tests', reality: 'Testing includes many other activities — planning, analysis, design, reporting… — aligned with the SDLC (Chapter 2)' },
+  { myth: 'Testing only verifies the test object (does it meet the specified requirements?)', reality: 'Testing also involves validation — checking it meets users\' and stakeholders\' needs in its operational environment' },
 ]} />
 
 <SyllabusText>
@@ -47,7 +49,7 @@ Misconception: testing only consists of executing tests. Testing includes many o
 
 Misconception: testing focuses entirely on verifying the test object (checking whether the system meets the specified requirements).
 
-Actually: testing also involves validation - checking whether the system meets users' and other stakeholders' needs in its operational environment.
+Actually: testing also involves validation — checking whether the system meets users' and other stakeholders' needs in its operational environment.
 
 </SyllabusText>
 
@@ -56,7 +58,7 @@ Actually: testing also involves validation - checking whether the system meets u
 <SyllabusRef ref="1.1" />
 
 Testing assesses software quality and helps reduce the risk of software failure in operation. When software does fail,
-the consequences can be catastrophic: loss of money, time and business reputation - even injury or death.
+the consequences can be catastrophic: loss of money, time and business reputation — even injury or death.
 
 <Exercise kind="discuss" title="Think about it" id="discuss-when-software-fails">
 
@@ -69,7 +71,7 @@ When have you experienced software that did not work as expected? What were the 
 The Post Office's accounting software, **Horizon**, had faults that made branch accounts show money that was missing
 when it wasn't. The Post Office trusted the system over its staff, and **hundreds of subpostmasters were falsely accused
 of theft, fraud and false accounting**. Many were prosecuted, made to repay "shortfalls" from their own savings,
-or lost their businesses - ruining careers and lives. Convictions were later overturned once the system's defects
+or lost their businesses — ruining careers and lives. Convictions were later overturned once the system's defects
 came to light. [Read more on Wikipedia](https://en.wikipedia.org/wiki/British_Post_Office_scandal).
 
 - **What failed** - accounting software reporting shortfalls that didn't exist
@@ -82,19 +84,18 @@ A failure in MCAS contributed to **two fatal crashes in which 346 people died**.
 and Boeing faced around **$20 billion** in fines and legal fees.
 
 - **What failed** - flight-control software acting on bad data, which pilots struggled to override
-- **The lesson** - in safety-critical systems, failures can cost lives - so the testing must be rigorous and independent
+- **The lesson** - in safety-critical systems, failures can cost lives — so the testing must be rigorous and independent
 
 ### Verification vs Validation
 
 <SyllabusRef ref="1.1" />
 
-<Compare caption="Verification and validation - both are part of testing (CTFL 1.1)" columns={[
-  { title: 'Verification', sub: 'Are we building the product right?', points: ['Checks the specified requirements have been met', 'Objective evidence against the spec', 'VeRification - Requirements'] },
-  { title: 'Validation', sub: 'Are we building the right product?', points: ["Checks it meets users' and stakeholders' needs", 'In its operational environment', 'VALidation - VALuable to the user'] },
-]} />
+Testing checks a product in two different ways. Both are part of testing, and the exam expects you to tell them apart.
 
-- What is the difference between verification and validation?
-- **Memory aid** - **VeR**ification checks against **R**equirements · **VAL**idation checks it is **VAL**uable to the user
+<SideBySide
+  left={{ title: 'Verification', question: 'Are we building the product right?', points: ['Checks that the specified requirements have been met', 'Compares the product with its specification', 'Gives objective evidence against what was written down'], tip: '<b>VeR</b>ification checks against <b>R</b>equirements' }}
+  right={{ title: 'Validation', question: 'Are we building the right product?', points: ["Checks that it meets users' and stakeholders' needs", 'Happens in, or close to, the real operational environment', 'A product can pass verification and still fail validation'], tip: '<b>VAL</b>idation checks it is <b>VAL</b>uable to the user' }}
+/>
 
 <SyllabusText>
 
@@ -119,12 +120,12 @@ Is each activity mainly **verification** (does it meet the specification?) or **
 
 | # | Answer |
 |---|---|
-| 1 | **Verification** - checked against the specification |
-| 2 | **Validation** - does it work for real users? |
-| 3 | **Verification** - checked against defined standards |
-| 4 | **Validation** - fit for purpose in the real environment |
-| 5 | **Verification** - checked against a specified requirement |
-| 6 | **Validation** - meets the stakeholder's actual need |
+| 1 | **Verification** — checked against the specification |
+| 2 | **Validation** — does it work for real users? |
+| 3 | **Verification** — checked against defined standards |
+| 4 | **Validation** — fit for purpose in the real environment |
+| 5 | **Verification** — checked against a specified requirement |
+| 6 | **Validation** — meets the stakeholder's actual need |
 
 </div>
 </Exercise>
@@ -133,14 +134,15 @@ Is each activity mainly **verification** (does it meet the specification?) or **
 
 <SyllabusRef ref="1.1" />
 
-- **Aligned with the SDLC** - Many activities, fitted to the lifecycle
-- **Static testing** - Reviews and static analysis - no execution
-- **Dynamic testing** - Executes software; techniques derive test cases
-- **Planned & managed** - Estimated, monitored and controlled
-- **Tool supported** - Tools help, but testing is still…
-- **…largely an intellectual activity** - Specialised knowledge, analytical skills, critical thinking and systems thinking
+Testing is **much more than running tests**. It is a whole set of activities that runs alongside development, and it
+should be **aligned with the software development lifecycle (SDLC)** you're using. Chapter 2 covers this in detail.
 
-<Resource kind="standard" href="https://www.iso.org/standard/81291.html" title="ISO/IEC/IEEE 29119 - the international software testing standard" text="The standard behind many of the test process terms used in the syllabus" />
+- **Static testing** - Reviews and static analysis · The software is not run
+- **Dynamic testing** - The software is run · Test techniques are used to design the test cases
+- **Planned and managed** - Like any project work, testing is estimated, monitored and controlled
+- **Supported by tools, led by people** - Tools help, but testing relies on specialist knowledge, analytical skills, critical thinking and systems thinking
+
+<Resource kind="standard" href="https://www.iso.org/standard/81291.html" title="ISO/IEC/IEEE 29119 — the international software testing standard" text="The standard behind many of the test process terms used in the syllabus" />
 
 <SyllabusText>
 
@@ -164,15 +166,20 @@ The ISO/IEC/IEEE 29119-1 standard provides further information about software te
 
 <SyllabusRef ref="1.1.1" />
 
-- **Evaluate work products** - Requirements, user stories, designs, code
-- Trigger failures & find defects
-- **Ensure required coverage** - of the test object
-- **Reduce risk** - of inadequate software quality
-- **Verify requirements** - have been fulfilled
-- **Verify compliance** - Contractual, legal, regulatory
-- **Inform stakeholders** - so they can make decisions
-- **Build confidence** - in the test object
-- **Validate** - Complete and works as stakeholders expect
+Why do we test at all? The syllabus lists these **typical test objectives**. A project won't pursue all of them
+equally; which ones matter most depends on the context, covered in the next topic.
+
+<IconCards items={[
+  { icon: '📄', title: 'Evaluate work products', text: 'Check requirements, user stories, designs and code for problems' },
+  { icon: '🐞', title: 'Trigger failures and find defects', text: 'Make the software go wrong, so the cause can be found and fixed' },
+  { icon: '🎯', title: 'Ensure the required coverage', text: 'Make sure the test object is tested as thoroughly as needed' },
+  { icon: '🛡️', title: 'Reduce risk', text: 'Lower the risk of the software being of poor quality' },
+  { icon: '✅', title: 'Verify requirements', text: 'Check that the specified requirements have been met' },
+  { icon: '⚖️', title: 'Verify compliance', text: 'Check it meets contractual, legal and regulatory requirements' },
+  { icon: '📊', title: 'Inform stakeholders', text: 'Give them the information they need to make decisions' },
+  { icon: '💪', title: 'Build confidence', text: 'Show that the test object is of good enough quality' },
+  { icon: '👥', title: 'Validate', text: 'Check it is complete and works as stakeholders expect' },
+]} />
 
 <SyllabusText>
 
@@ -200,8 +207,16 @@ Validating whether the test object is complete and works as expected by the stak
 
 <SyllabusRef ref="1.1.1" />
 
-- **Technical context** - The work product being tested · The test level · Risks · The SDLC being followed
-- **Business context** - Corporate structure · Competitive considerations · Time to market
+Test objectives are not fixed. **Which ones matter most depends on the context** of the project, which the syllabus
+splits into two kinds:
+
+<IconCards items={[
+  { icon: '⚙️', title: 'Technical context', points: ['The work product being tested', 'The test level', 'The risks', 'The SDLC being followed'] },
+  { icon: '🏢', title: 'Business context', points: ['The corporate structure', 'Competitive considerations', 'Time to market'] },
+]} />
+
+> **For example:** testing a medical device puts reducing risk and verifying compliance first. A start-up racing a
+> competitor to market may care most about building confidence quickly.
 
 ### Testing vs Debugging
 
@@ -211,15 +226,15 @@ Validating whether the test object is complete and works as expected by the stak
 
 <div class="callout callout--remember">
 
-**❗ Remember:** **Testing finds** defects - it's mainly done by **testers** (though anyone can test).
-**Debugging fixes** them - it's done by **developers**. Defects themselves can be introduced by *anyone* who makes an
-error: analysts, developers, even testers. After the fix, the **tester** runs confirmation testing - ideally the same
+**❗ Remember:** **Testing finds** defects — it's mainly done by **testers** (though anyone can test).
+**Debugging fixes** them — it's done by **developers**. Defects themselves can be introduced by *anyone* who makes an
+error: analysts, developers, even testers. After the fix, the **tester** runs confirmation testing — ideally the same
 person who ran the original test.
 
 </div>
 
 - **Debugging is not testing** - It's a development activity: finding, analysing and removing the cause of a failure
-- **Static testing finds the defect directly** - Nothing is run, so there's no failure to reproduce or diagnose - only the fix is needed
+- **Static testing finds the defect directly** - Nothing is run, so there's no failure to reproduce or diagnose — only the fix is needed
 - **Confirmation testing** - Ideally run by the person who ran the original test
 
 <SyllabusText>
@@ -260,7 +275,7 @@ Testing components, systems, and associated documentation helps to identify defe
 
 <SyllabusRef ref="1.2.1" />
 
-- **Cost-effective defect detection** - Defects are then removed by debugging - indirectly raising quality
+- **Cost-effective defect detection** - Defects are then removed by debugging — indirectly raising quality
 - **Evaluates quality at each stage** - Measurements feed decisions such as moving to the next stage or releasing
 - **Represents the users** - Makes sure their needs are considered throughout the lifecycle
 - **Meets obligations** - Contractual or legal requirements, and regulatory standards
@@ -315,10 +330,10 @@ QA is a process-oriented, preventive approach that focuses on the implementation
 <DefectChain />
 
 - **Error** - Also called a *mistake* · A human action that produces an incorrect result
-- **Defect** - Also called a *fault* or *bug* · An imperfection in a work product - documentation, code or a build file
+- **Defect** - Also called a *fault* or *bug* · An imperfection in a work product — documentation, code or a build file
 - **Failure** - The system does not do what it should, or does something it shouldn't, when it runs
 
-> **Not every defect causes a failure** - and failures can also come from environmental conditions,
+> **Not every defect causes a failure.** Failures can also come from environmental conditions,
 > e.g. radiation or electromagnetic fields damaging firmware.
 
 <SyllabusText>
@@ -350,10 +365,10 @@ Classify each one as an **error**, a **defect** or a **failure**:
 | # | Answer | Why |
 |---|---|---|
 | 1 | **Error** | A human mistake |
-| 2 | **Defect** | A fault in the code - the result of the error |
+| 2 | **Defect** | A fault in the code — the result of the error |
 | 3 | **Failure** | Wrong behaviour seen when the code runs |
 | 4 | **Defect** | Defects can be in documents too, not just code |
-| 5 | **Error** | A human mistake - which puts a defect in the test case |
+| 5 | **Error** | A human mistake — which puts a defect in the test case |
 
 </div>
 </Exercise>
@@ -362,11 +377,11 @@ Classify each one as an **error**, a **defect** or a **failure**:
 
 <SyllabusRef ref="1.2.3" />
 
-- Root cause analysis finds why a defect happened - not just where it is.
+- Root cause analysis finds why a defect happened — not just where it is.
 - **ISTQB definition: Root cause** - A source of a defect such that if it is removed, the occurrence of the defect type is decreased or removed
 - **ISTQB definition: Root cause analysis** - An analysis technique aimed at identifying the root causes of defects
 
-### Root Cause Analysis - 5 Whys
+### Root Cause Analysis — 5 Whys
 
 <SyllabusRef ref="1.2.3" />
 
@@ -418,7 +433,7 @@ If no defects are found, does that mean the software is correct?
 
 <div slot="answer">
 
-No. Testing can show that defects are present, but it can't prove there are none. If you didn't find any, it may mean the tests weren't good enough - you never know how many defects remain unfound.
+No. Testing can show that defects are present, but it can't prove there are none. If you didn't find any, it may mean the tests weren't good enough — you never know how many defects remain unfound.
 
 </div>
 </Exercise>
@@ -441,7 +456,7 @@ How many tests would a "Good morning / Good afternoon" greeting need?
 
 <div slot="answer">
 
-At least two - one before noon and one after. But do you test every second between 00:00:01 and 23:59:59? Fractions of seconds? Different time formats? The switch to and from daylight saving time? Testing everything is impossible, so we use techniques, priorities and risk to choose.
+At least two — one before noon and one after. But do you test every second between 00:00:01 and 23:59:59? Fractions of seconds? Different time formats? The switch to and from daylight saving time? Testing everything is impossible, so we use techniques, priorities and risk to choose.
 
 </div>
 </Exercise>
@@ -479,7 +494,7 @@ Defects that are removed early in the process will not cause subsequent defects 
 
 <SyllabusRef ref="1.3" />
 
-> **In a nutshell:** A small number of components usually contain most of the defects or cause most failures - an example of the Pareto principle.
+> **In a nutshell:** A small number of components usually contain most of the defects or cause most failures — an example of the Pareto principle.
 
 <Exercise kind="discuss" title="Think about it" id="discuss-principle-4-defects-cluster-together">
 
@@ -487,7 +502,7 @@ Why do you think defects cluster together?
 
 <div slot="answer">
 
-Often they share a root cause - less experienced developers, rushed code, too little unit testing, or an unfamiliar library or design. A few early defects can also have knock-on effects. It's an observation (the Pareto principle), not a law.
+Often they share a root cause — less experienced developers, rushed code, too little unit testing, or an unfamiliar library or design. A few early defects can also have knock-on effects. It's an observation (the Pareto principle), not a law.
 
 </div>
 </Exercise>
@@ -502,7 +517,7 @@ A small number of system components usually contain most of the defects discover
 
 <SyllabusRef ref="1.3" />
 
-> **In a nutshell:** Repeating the same tests makes them less effective at finding new defects - also known as the pesticide paradox.
+> **In a nutshell:** Repeating the same tests makes them less effective at finding new defects — also known as the pesticide paradox.
 
 <Exercise kind="discuss" title="Think about it" id="discuss-principle-5-tests-wear-out">
 
@@ -510,7 +525,7 @@ Why does this happen? And when is repeating tests actually useful?
 
 <div slot="answer">
 
-The defects those tests can find have already been found and fixed - like spraying pesticide on bugs that are already dead. To find new defects, change the tests and data, or test less-explored areas. Repeating tests is still valuable as automated regression testing, to catch new defects as soon as they're introduced.
+The defects those tests can find have already been found and fixed — like spraying pesticide on bugs that are already dead. To find new defects, change the tests and data, or test less-explored areas. Repeating tests is still valuable as automated regression testing, to catch new defects as soon as they're introduced.
 
 </div>
 </Exercise>
@@ -525,7 +540,7 @@ If the same tests are repeated many times, they become increasingly ineffective 
 
 <SyllabusRef ref="1.3" />
 
-> **In a nutshell:** There is no single universally applicable approach to testing - it is done differently in different contexts.
+> **In a nutshell:** There is no single universally applicable approach to testing — it is done differently in different contexts.
 
 <Exercise kind="discuss" title="Think about it" id="discuss-principle-6-testing-is-context-dependent">
 
@@ -548,7 +563,7 @@ There is no single universally applicable approach to testing. Testing is done d
 
 <SyllabusRef ref="1.3" />
 
-> **In a nutshell:** Fixing every defect against the specified requirements can still give a system that doesn't meet users' needs. Verification alone isn't enough - validate too.
+> **In a nutshell:** Fixing every defect against the specified requirements can still give a system that doesn't meet users' needs. Verification alone isn't enough — validate too.
 
 <Exercise kind="discuss" title="Think about it" id="discuss-principle-7-absence-of-defects-fallacy">
 
@@ -581,10 +596,10 @@ It is a fallacy (i.e., a misconception) to expect that software verification wil
 - **Test Implementation** - Set up the test environment
 - **Test Execution** - Run and report on the tests
 - **Test Completion** - Finalise and hand over at the end
-- **Test Monitoring & Control** - Keep the project on track - runs throughout
-- These activities are often iterative or run in parallel - not a strict sequence.
+- **Test Monitoring & Control** - Keep the project on track — runs throughout
+- These activities are often iterative or run in parallel — not a strict sequence.
 
-### Test Activities - Key Tasks
+### Test Activities — Key Tasks
 
 <SyllabusRef ref="1.4.1" />
 
@@ -761,7 +776,7 @@ Traceability provides information to assess product quality, process capability,
 
 <SyllabusRef ref="1.4.5" />
 
-- Roles aren't job titles - different people may take them on at different times.
+- Roles aren't job titles — different people may take them on at different times.
 
 #### Test management can be done by a…
 
@@ -791,9 +806,9 @@ It is also possible for one person to take on the roles of testing and test mana
 <SyllabusRef ref="1.5.1" />
 
 - **Testing knowledge** - To increase effectiveness, e.g. by using test techniques
-- **Thoroughness & curiosity** - Carefulness, attention to detail, being methodical - to find hard-to-find defects
-- **Communication** - Active listening and teamwork - to report and discuss defects with all stakeholders
-- **Analytical & critical thinking** - Plus creativity - to increase effectiveness of testing
+- **Thoroughness & curiosity** - Carefulness, attention to detail, being methodical — to find hard-to-find defects
+- **Communication** - Active listening and teamwork — to report and discuss defects with all stakeholders
+- **Analytical & critical thinking** - Plus creativity — to increase effectiveness of testing
 - **Technical knowledge** - To increase efficiency, e.g. by using appropriate test tools
 - **Domain knowledge** - To understand and communicate with end users and business representatives
 
@@ -801,9 +816,9 @@ It is also possible for one person to take on the roles of testing and test mana
 
 <SyllabusRef ref="1.5.1" />
 
-<Compare middle="vs" caption="Different mindsets - both are needed, and the best teams combine them" columns={[
-  { title: 'Developer mindset', sub: 'build it', points: ['Focused on designing and building a solution', 'Asks: does it work as intended?', 'Close to the code - can be blind to their own mistakes'] },
-  { title: 'Tester mindset', sub: 'challenge it', points: ['Curious, sceptical, with an eye for detail', 'Asks: how could this fail?', 'Brings a different view - finds what the author missed'] },
+<Compare middle="vs" caption="Different mindsets — both are needed, and the best teams combine them" columns={[
+  { title: 'Developer mindset', sub: 'build it', points: ['Focused on designing and building a solution', 'Asks: does it work as intended?', 'Close to the code — can be blind to their own mistakes'] },
+  { title: 'Tester mindset', sub: 'challenge it', points: ['Curious, sceptical, with an eye for detail', 'Asks: how could this fail?', 'Brings a different view — finds what the author missed'] },
 ]} />
 
 <Resource kind="video" href="https://www.youtube.com/watch?v=baY3SaIhfl0" source="YouTube" title="Devs watching QA test the product" text="A short clip on how it feels to watch someone break your work" />
@@ -814,9 +829,9 @@ How does it feel to have your work "broken" by someone else? How might that affe
 
 <div slot="answer">
 
-It can feel like personal criticism - even when it's the product, not the person, being judged. That's why testers need good
+It can feel like personal criticism — even when it's the product, not the person, being judged. That's why testers need good
 communication skills: report defects and failures **factually and constructively**, focus on the product rather than the
-author, and remember everyone shares the same goal - a quality product.
+author, and remember everyone shares the same goal — a quality product.
 
 </div>
 </Exercise>
@@ -832,7 +847,7 @@ author, and remember everyone shares the same goal - a quality product.
 - **Confirmation bias** - makes conflicting information hard to accept
 - **"Testing is destructive"** - despite its big contribution to project success
 
-> **The response:** communicate information about defects and failures **constructively** - stick to the facts,
+> **The response:** communicate information about defects and failures **constructively**: stick to the facts,
 > focus on the product rather than the person, and keep the shared goal of quality in view.
 
 <SyllabusText>
@@ -894,8 +909,8 @@ Depending on the context, the whole team approach may not always be appropriate.
 
 <SyllabusRef ref="1.5.3" />
 
-- **Advantages** - Different cognitive biases from the author - so more effective at finding defects · Different backgrounds and perspectives spot different kinds of failures and defects · Can verify, challenge or disprove stakeholders' assumptions
-- **Drawbacks** - Isolation from developers - less collaboration, communication problems, an adversarial relationship · Developers may lose a sense of responsibility for quality · Seen as a bottleneck, or blamed for release delays
+- **Advantages** - Different cognitive biases from the author — so more effective at finding defects · Different backgrounds and perspectives spot different kinds of failures and defects · Can verify, challenge or disprove stakeholders' assumptions
+- **Drawbacks** - Isolation from developers — less collaboration, communication problems, an adversarial relationship · Developers may lose a sense of responsibility for quality · Seen as a bottleneck, or blamed for release delays
 - **Independence doesn't replace familiarity** - developers efficiently find many defects in their own code.
 
 <SyllabusText>

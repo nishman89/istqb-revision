@@ -15,7 +15,7 @@ const { set } = Astro.props;
     <p class="back no-print"><a href={url('past-papers')}>← Sample papers and practice</a></p>
   </PageHead>
   <div class="container">
-    <p class="card card--tint explain">{set.blurb} {set.questions.length} questions, pooled from all four ISTQB sample papers - answer them all,
+    <p class="card card--tint explain">{set.blurb} {set.questions.length} questions, pooled from all four ISTQB sample papers — answer them all,
       then submit to see your score and why each option is right or wrong.</p>
     <Quiz questions={set.questions} quizId={`practice-${set.slug}`} />
   </div>

@@ -35,7 +35,7 @@ import Waterfall from '../../components/diagrams/Waterfall.astro';
 
 <SdlcModels />
 
-- **An SDLC model** is an abstract, high-level representation of the software development process - how its phases and activities relate, logically and chronologically.
+- **An SDLC model** is an abstract, high-level representation of the software development process — how its phases and activities relate, logically and chronologically.
 
 <SyllabusText>
 
@@ -73,8 +73,10 @@ Some activities within software development processes can also be described by m
 
 <Waterfall />
 
-- **Pros** - Enforces discipline at each stage · Defined start and end · Progress is easy to identify · Requirements before code - less wasted time, better quality
-- **Cons** - Everything is delivered at the end - maybe years later · Customers don't always know what they want until they see it · Requirements change with business & technology · Time and cost are hard to estimate · What is requested can't always be built as wanted
+#### Pros and cons
+
+- **Pros** - Enforces discipline at each stage · Defined start and end · Progress is easy to identify · Requirements come before code, so less time is wasted and quality is better
+- **Cons** - Everything is delivered at the end, maybe years later · Customers don't always know what they want until they see it · Requirements change with business and technology · Time and cost are hard to estimate · What is requested can't always be built as wanted
 
 ### The V-Model
 
@@ -82,10 +84,13 @@ Some activities within software development processes can also be described by m
 
 <VModel />
 
-- **Pros** - Test plans developed earlier, so a higher chance of success · Defects found earlier · Works well on smaller projects
+#### Pros and cons
+
+- **Pros** - Test plans are developed earlier, so there is a higher chance of success · Defects are found earlier · Works well on smaller projects
 - **Cons** - Quite rigid in execution · No early prototype · Test documents must be updated along the way
 
-- **Four levels or five?** - The classic V shows four test levels · The syllabus defines five (section 2.2), splitting integration into component integration and system integration
+> **Four levels or five?** The classic V shows four test levels. The syllabus defines five (section 2.2), because it
+> splits integration testing into component integration and system integration.
 
 ### Unified Process
 
@@ -96,6 +101,13 @@ Some activities within software development processes can also be described by m
 - **Sequential phases** - Inception, elaboration, construction, transition
 - **Iterative and incremental** - Business value is delivered in time-boxed, cross-discipline iterations
 - **The balance of activities shifts** - The mix, from business modelling to deployment, changes within each phase
+
+<div class="callout callout--exam">
+
+**ℹ️ Exam note:** you won't be asked how the Unified Process works. Just remember that the syllabus uses it as its
+**example of an incremental model**, alongside waterfall and the V-model (sequential) and spiral and prototyping (iterative).
+
+</div>
 
 ### Agile Methodologies
 
@@ -116,14 +128,14 @@ Some activities within software development processes can also be described by m
 #### Pros and cons
 
 - **Pros** - Fast deployment · Small, frequent improvements following feedback · Team skills improve
-- **Cons** - Light documentation - formal records of change may not be created · Regression testing may get out of control
+- **Cons** - Light documentation, so formal records of change may not be created · Regression testing may get out of control
 
 ### Impact of the SDLC on Testing
 
 <SyllabusRef ref="2.1.1" />
 
 - **Testing must be adapted to the SDLC to succeed.**  The SDLC affects:
-- **Scope & timing** - of test activities - test levels and test types
+- **Scope & timing** - of test activities — test levels and test types
 - **Documentation** - Level of detail of test documentation
 - **Techniques & approach** - Choice of test techniques and test approach
 - **Automation** - Extent of test automation
@@ -139,7 +151,7 @@ Testing must be adapted to the SDLC to succeed. The choice of the SDLC impacts o
 
 <SyllabusRef ref="2.1.1" />
 
-- **Sequential** - Waterfall, V-model · Early phases: requirement reviews, test analysis and design · Code arrives late - dynamic testing comes late · Static testing can happen at any time
+- **Sequential** - Waterfall, V-model · Early phases: requirement reviews, test analysis and design · Code arrives late — dynamic testing comes late · Static testing can happen at any time
 - **Iterative & incremental** - Each iteration delivers an increment · Static and dynamic testing at all test levels, every iteration · Needs fast feedback · Needs extensive regression testing
 - **Change expected throughout** - Lightweight documentation · Extensive test automation for regression · Manual testing mostly experience-based (4.4)
 
@@ -209,7 +221,7 @@ TDD, ATDD and BDD are similar development approaches, where tests are defined as
 
 <SyllabusRef ref="2.1.4" />
 
-<Compare middle="+" caption="DevOps brings development (including testing) and operations together - a cultural shift that values both equally (CTFL 2.1.4)" columns={[
+<Compare middle="+" caption="DevOps brings development (including testing) and operations together — a cultural shift that values both equally (CTFL 2.1.4)" columns={[
   { title: 'Development', sub: 'including testing', points: ['Build and test new features', 'Fast feedback on every change'] },
   { title: 'Operations', sub: 'run the live system', points: ['Deploy and monitor', 'Keep the system stable'] },
 ]} />
@@ -241,7 +253,7 @@ DevOps is an organizational approach aiming to create synergy by getting develop
 
 <SyllabusRef ref="2.1.4" />
 
-- **Fast feedback** - on code quality - and whether changes break existing code
+- **Fast feedback** - on code quality — and whether changes break existing code
 - **Shift-left** - Developers submit quality code with component tests and static analysis
 - **Stable environments** - Automated CI/CD processes help establish them
 - **Non-functional focus** - More attention to performance, reliability, etc.
@@ -265,7 +277,7 @@ From a testing perspective, some of the benefits of DevOps are: fast feedback on
 
 <SyllabusText>
 
-DevOps is not without its risks and challenges, which include: the DevOps delivery pipeline must be defined and established; CI/CD tools must be introduced and maintained; test automation requires additional resources and may be difficult to establish and maintain. Although DevOps comes with a high level of automated testing, manual testing - especially from the user's perspective - will still be needed.
+DevOps is not without its risks and challenges, which include: the DevOps delivery pipeline must be defined and established; CI/CD tools must be introduced and maintained; test automation requires additional resources and may be difficult to establish and maintain. Although DevOps comes with a high level of automated testing, manual testing — especially from the user's perspective — will still be needed.
 
 </SyllabusText>
 
@@ -277,7 +289,7 @@ DevOps is not without its risks and challenges, which include: the DevOps delive
 
 - **Early testing** - Don't wait for code to be written or components to be integrated
 - **Later testing still matters** - Shift-left doesn't mean neglecting testing later on
-- **Invest now, save later** - More training, effort or cost early - less later
+- **Invest now, save later** - More training, effort or cost early — less later
 - **Stakeholder buy-in** - Stakeholders must be convinced of the approach
 
 <SyllabusText>
@@ -298,7 +310,7 @@ For the shift-left approach it is important that stakeholders are convinced and 
 - **Write test cases before code** - and run code in a test harness during implementation
 - **Use CI and CD** - Fast feedback; automated component tests go in with the code
 - **Static analysis first** - Before dynamic testing, or as part of an automated process
-- **Non-functional testing early** - Start at component level - don't wait for the full system and environment
+- **Non-functional testing early** - Start at component level — don't wait for the full system and environment
 
 ### Retrospectives
 
@@ -344,8 +356,8 @@ Typical benefits for testing include: increased test effectiveness / efficiency 
 
 <SyllabusRef ref="2.2" />
 
-- **Test levels** - Groups of test activities organised and managed together · An instance of the test process at a stage of development - from components to systems of systems · Sequential models: exit criteria of one level feed the next level's entry criteria · Iterative models: activities may span levels, and levels may overlap
-- **Test types** - Groups of test activities related to quality characteristics · Most test types can be performed at every test level · Levels and types are two different dimensions - a level can include many types
+- **Test levels** - Groups of test activities organised and managed together · An instance of the test process at a stage of development — from components to systems of systems · Sequential models: exit criteria of one level feed the next level's entry criteria · Iterative models: activities may span levels, and levels may overlap
+- **Test types** - Groups of test activities related to quality characteristics · Most test types can be performed at every test level · Levels and types are two different dimensions — a level can include many types
 
 <SyllabusText>
 
@@ -433,11 +445,11 @@ For an online shop, which **test level** is each test at?
 
 <div slot="answer">
 
-1. **Component** - one unit, in isolation
-2. **Component integration** - the interface between two components
-3. **System** - the whole system's behaviour
-4. **System integration** - the interface with an external system
-5. **Acceptance** - validation by the intended users
+1. **Component** — one unit, in isolation
+2. **Component integration** — the interface between two components
+3. **System** — the whole system's behaviour
+4. **System integration** — the interface with an external system
+5. **Acceptance** — validation by the intended users
 
 </div>
 </Exercise>
@@ -446,7 +458,7 @@ For an online shop, which **test level** is each test at?
 
 <SyllabusRef ref="2.2.1" />
 
-- Each test level is distinguished by these attributes - so test activities don't overlap:
+- Each test level is distinguished by these attributes — so test activities don't overlap:
 - Test object
 - Test objectives
 - Test basis
@@ -463,7 +475,7 @@ Test levels are distinguished by the following non-exhaustive list of attributes
 
 <SyllabusRef ref="2.2.2" />
 
-<Tiles cols={2} caption="The four test types - all can be used at every test level (CTFL 2.2.2)" tiles={[
+<Tiles cols={2} caption="The four test types — all can be used at every test level (CTFL 2.2.2)" tiles={[
   { title: 'Functional', sub: 'WHAT the system does' }, { title: 'Non-functional', sub: 'HOW WELL it behaves' },
   { title: 'White-box', sub: 'based on internal structure' }, { title: 'Black-box', sub: 'based on the specification' },
 ]} />
@@ -521,7 +533,7 @@ The ISO/IEC 25010 standard provides the following classification of the non-func
 <SyllabusRef ref="2.2.2" />
 
 - **Start early** - e.g. in reviews and component testing
-- **Built on functional tests** - Same test, plus a non-functional check - e.g. response time
+- **Built on functional tests** - Same test, plus a non-functional check — e.g. response time
 - **Late discovery is dangerous** - Late non-functional defects threaten the project
 - **Special environments** - e.g. a usability lab for usability testing
 
@@ -548,10 +560,10 @@ Is each test **functional** (what it does) or **non-functional** (how well it do
 
 | Functional | Non-functional |
 |---|---|
-| 1 - discount calculation | 2 - performance efficiency |
-| 3 - password reset | 4 - usability (accessibility) |
-| 5 - search | 6 - reliability (recoverability) |
-| 7 - order history | 8 - compatibility / portability |
+| 1 — discount calculation | 2 — performance efficiency |
+| 3 — password reset | 4 — usability (accessibility) |
+| 5 — search | 6 — reliability (recoverability) |
+| 7 — order history | 8 — compatibility / portability |
 
 </div>
 </Exercise>
@@ -561,7 +573,7 @@ Is each test **functional** (what it does) or **non-functional** (how well it do
 <SyllabusRef ref="2.2.2" />
 
 - **Black-box testing** - Specification-based · Derives tests from documentation external to the test object · Objective: check system behaviour against its specification
-- **White-box testing** - Structure-based · Derives tests from the implementation or internal structure - code, architecture, workflows, data flows · Objective: cover the underlying structure with tests to an acceptable level
+- **White-box testing** - Structure-based · Derives tests from the implementation or internal structure — code, architecture, workflows, data flows · Objective: cover the underlying structure with tests to an acceptable level
 
 ### Confirmation Testing
 
@@ -590,8 +602,8 @@ Confirmation testing confirms that an original defect has been successfully fixe
 <Ripple />
 
 - **Other components** - Changed component
-- **Regression testing** confirms a change - even a confirmed fix - hasn't caused adverse consequences.
-- **Start with impact analysis** - It shows which parts of the software could be affected - so you can optimise the extent of regression testing. Effects can spread to the same component, other components, connected systems and the environment.
+- **Regression testing** confirms a change — even a confirmed fix — hasn't caused adverse consequences.
+- **Start with impact analysis** - It shows which parts of the software could be affected — so you can optimise the extent of regression testing. Effects can spread to the same component, other components, connected systems and the environment.
 
 <SyllabusText>
 
@@ -610,10 +622,10 @@ A defect in the login page has just been fixed. Which kind of testing is each of
 
 <div slot="answer">
 
-1. **Confirmation** - was the defect fixed?
-2. **Regression** - did the change break anything else?
-3. **Confirmation** - the quickest form, when time is short
-4. **Regression** - unchanged areas that the fix could have affected
+1. **Confirmation** — was the defect fixed?
+2. **Regression** — did the change break anything else?
+3. **Confirmation** — the quickest form, when time is short
+4. **Regression** — unchanged areas that the fix could have affected
 
 </div>
 </Exercise>
@@ -624,7 +636,7 @@ A defect in the login page has just been fixed. Which kind of testing is each of
 
 - **Run many times** - and the suite grows with every iteration or release
 - **Strong candidate for automation** - Start automating early in the project
-- **Include in CI** - Automated regression tests belong in the pipeline - possibly at several levels
+- **Include in CI** - Automated regression tests belong in the pipeline — possibly at several levels
 - **At every test level** - Confirmation and/or regression testing wherever fixes or changes are made
 
 <SyllabusText>
@@ -646,13 +658,13 @@ Maintenance testing checks changes to a system that is **already in operation**.
 #### What triggers it?
 
 <WhenThen whenLabel="Trigger" thenLabel="What to test" rows={[
-  { when: 'Modification - planned enhancements, corrective changes, hot fixes', then: 'The change itself, plus regression testing of the unchanged parts' },
-  { when: 'Upgrade or migration - e.g. to a new platform or environment', then: 'The new environment and the changed software, plus data conversion' },
-  { when: 'Retirement - the application reaches end of life', then: 'Data archiving, and restore and retrieval after archiving' },
+  { when: 'Modification — planned enhancements, corrective changes, hot fixes', then: 'The change itself, plus regression testing of the unchanged parts' },
+  { when: 'Upgrade or migration — e.g. to a new platform or environment', then: 'The new environment and the changed software, plus data conversion' },
+  { when: 'Retirement — the application reaches end of life', then: 'Data archiving, and restore and retrieval after archiving' },
 ]} />
 
 - **Categories of maintenance** - Corrective, adaptive to environment changes, or improving performance / maintainability (ISO/IEC 14764)
-- **Planned or unplanned** - Planned releases and deployments - or unplanned hot fixes
+- **Planned or unplanned** - Planned releases and deployments — or unplanned hot fixes
 - **Impact analysis** - Done before a change, to help decide whether to make it
 - **Scope depends on** - The risk of the change, the size of the existing system and the size of the change
 
@@ -704,7 +716,7 @@ Retirement, such as when an application reaches the end of its life. When a syst
 
 <Exercise title="Which maintenance trigger?">
 
-Which trigger - **modification**, **upgrade / migration** or **retirement** - leads to each piece of maintenance testing?
+Which trigger (**modification**, **upgrade / migration** or **retirement**) leads to each piece of maintenance testing?
 
 1. An urgent hot fix for a security vulnerability in the live system
 2. Moving the application from on-premise servers to the cloud
@@ -714,11 +726,11 @@ Which trigger - **modification**, **upgrade / migration** or **retirement** - le
 
 <div slot="answer">
 
-1. **Modification** - an unplanned hot fix
-2. **Upgrade / migration** - a new environment
-3. **Upgrade / migration** - a change to the operational environment
-4. **Retirement** - test the data archiving, and restore and retrieval
-5. **Modification** - a planned enhancement
+1. **Modification** — an unplanned hot fix
+2. **Upgrade / migration** — a new environment
+3. **Upgrade / migration** — a change to the operational environment
+4. **Retirement** — test the data archiving, and restore and retrieval
+5. **Modification** — a planned enhancement
 
 </div>
 </Exercise>

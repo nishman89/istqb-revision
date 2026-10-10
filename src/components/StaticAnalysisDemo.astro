@@ -36,13 +36,13 @@ const issues = [
   { n: 2, line: 5, type: 'Bug', sev: 'Major', title: 'Possible division by zero',
     why: 'If the list is empty, items.size() is 0 and the method crashes. Line 3 only guards against null, not an empty list.' },
   { n: 3, line: 6, type: 'Code smell', sev: 'Major', title: 'Unreachable code',
-    why: 'This line can never run because the method has already returned on line 5 - a sign of a logic mistake.' },
+    why: 'This line can never run because the method has already returned on line 5 — a sign of a logic mistake.' },
 ];
 ---
 <figure class="sa" data-sa>
   <ol class="sa__flow" aria-label="How static analysis works">
     <li><span class="sa__step">1</span><strong>Source code</strong><span>The tool is given the code</span></li>
-    <li><span class="sa__step">2</span><strong>Static analysis tool</strong><span>Reads it and checks it against rules - <em>without running it</em></span></li>
+    <li><span class="sa__step">2</span><strong>Static analysis tool</strong><span>Reads it and checks it against rules — <em>without running it</em></span></li>
     <li><span class="sa__step">3</span><strong>Report</strong><span>Lists each issue, its line and severity</span></li>
   </ol>
 
@@ -54,7 +54,7 @@ const issues = [
 
     <div class="sa__try" data-sa-try>
       <p class="sa__try-title">Your turn first</p>
-      <p>This method compiles and looks fine at a glance. Read it carefully - <strong>can you spot the 3 problems</strong>
+      <p>This method compiles and looks fine at a glance. Read it carefully — <strong>can you spot the 3 problems</strong>
         a static analysis tool would flag?</p>
       <p class="sa__try-hint">Hint: think about naming, an empty list, and what happens after <code>return</code>.</p>
       <button type="button" class="btn" id="run-static-analysis" data-testid="run-static-analysis" data-sa-run>▶ Run static analysis</button>
@@ -77,7 +77,7 @@ const issues = [
     </div>
   </div>
   <p class="sa__again"><button type="button" class="sa__reset" id="reset-static-analysis" data-testid="reset-static-analysis" data-sa-reset>↺ Hide the results and try again</button></p>
-  <figcaption>The tool found a bug and two maintainability problems just by reading the code - no test cases, no test environment, nothing executed (CTFL 3.1)</figcaption>
+  <figcaption>The tool found a bug and two maintainability problems just by reading the code — no test cases, no test environment, nothing executed (CTFL 3.1)</figcaption>
 </figure>
 
 <script>

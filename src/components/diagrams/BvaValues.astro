@@ -6,7 +6,7 @@ const panels: { title: string; ox: number; vals: number[]; note: string }[] = [
   { title: '3-value BVA', ox: 425, vals: [7, 8, 9], note: 'boundary 8 + both neighbours 7 and 9' },
 ];
 ---
-<Figure caption="Coverage items around the boundary between two partitions - 2-value takes the boundary and its neighbour; 3-value adds the other neighbour (CTFL 4.2.2)">
+<Figure caption="Coverage items around the boundary between two partitions — 2-value takes the boundary and its neighbour; 3-value adds the other neighbour (CTFL 4.2.2)">
   <svg viewBox="0 0 820 230" role="img" aria-label="2-value and 3-value BVA">
     {panels.map(({ title, ox, vals, note }) => (
       <g>

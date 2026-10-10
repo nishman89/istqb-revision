@@ -234,6 +234,15 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
   .prose :global(details.chapter-section[open] > summary::after) { content: '−'; }
   .prose :global(details.chapter-section > summary h2) { margin: 0; font-size: 1.4rem; color: #fff; }
   .prose :global(details.chapter-section > summary:hover) { background: #3a3637; }
+  /* "In this section you'll learn to…" (learning objectives) */
+  .prose :global(.section-goals) { margin: 0.25rem 0 1.25rem; padding: 0.9rem 1.1rem; background: var(--surface); border: 2px solid var(--pink-tint); border-radius: 12px; }
+  .prose :global(.section-goals__title) { margin: 0 0 0.5rem; font: 700 0.8rem var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-dark); }
+  .prose :global(.section-goals__list) { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; background: none; box-shadow: none; }
+  .prose :global(.section-goals__list li) { display: grid; grid-template-columns: 2.4rem 1fr; gap: 0.6rem; align-items: start; margin: 0; }
+  .prose :global(.section-goals__k) { justify-self: start; padding: 0.05rem 0.45rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; color: #fff; background: var(--charcoal); cursor: help; }
+  .prose :global(.section-goals__k--k2) { background: var(--pink-dark); }
+  .prose :global(.section-goals__k--k3) { background: #185fa5; }
+  .prose :global(.section-goals__ref) { font-size: 0.8rem; color: var(--grey); font-weight: 600; white-space: nowrap; }
   .prose :global(.section-intro) { margin: 0.25rem 0 1.25rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--line); }
   .prose :global(.chapter-section__body) { padding: 0.5rem 0.25rem 1rem; }
 
@@ -271,6 +280,7 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
   .prose :global(.callout) { margin: 1rem 0; padding: 0.9rem 1.25rem; border-radius: 0 12px 12px 0; }
   .prose :global(.callout p) { margin: 0; }
   .prose :global(.callout--remember) { background: var(--pink-tint); border-left: 6px solid var(--pink); }
+  .prose :global(.callout--exam) { background: #e8f0fb; border-left: 6px solid #185fa5; }
   .prose :global(.callout--warn) { background: #fff4d6; border-left: 6px solid #b58a00; }
 
   /* Callouts written as Markdown blockquotes ("> **The response:** …") */

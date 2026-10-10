@@ -2,23 +2,23 @@
 /** Sequential, iterative and incremental SDLC models side by side. */
 import Figure from '../Figure.astro';
 ---
-<Figure caption="Three families of SDLC model - sequential, iterative and incremental (CTFL 2.1)">
+<Figure caption="Three families of SDLC model — sequential, iterative and incremental (CTFL 2.1)">
   <svg viewBox="0 0 820 240" role="img" aria-label="Sequential, iterative and incremental models">
     <defs><marker id="sm-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d42a57"/></marker></defs>
     <text class="t-dark" x="135" y="20" style="font-size:18px">Sequential</text>
     {[0, 1, 2, 3].map((i) => <rect class="b-dark" x={20 + i * 50} y={45 + i * 34} width="90" height="26" rx="6"/>)}
     {[0, 1, 2].map((i) => <path class="ln-pink" d={`M${112 + i * 50} ${58 + i * 34} h14 v18`} marker-end="url(#sm-a)"/>)}
-    <text class="t-sm" x="135" y="222">Waterfall, V-model - one pass</text>
+    <text class="t-sm" x="135" y="222">Waterfall, V-model — one pass</text>
 
     <text class="t-dark" x="410" y="20" style="font-size:18px">Iterative</text>
     <circle cx="410" cy="120" r="70" fill="none" class="ln-pink" stroke-width="10" stroke-dasharray="330 110"/>
     <path class="b-pink" d="M455 62 l22 -4 l-6 22 z"/>
     <text class="t-dark" x="410" y="112">Plan · build</text>
     <text class="t-dark" x="410" y="132">test · learn</text>
-    <text class="t-sm" x="410" y="222">Spiral, prototyping - repeat and refine</text>
+    <text class="t-sm" x="410" y="222">Spiral, prototyping — repeat and refine</text>
 
     <text class="t-dark" x="685" y="20" style="font-size:18px">Incremental</text>
     {[0, 1, 2, 3].map((i) => <rect class={i % 2 ? 'b-dark' : 'b-pink'} x={590 + i * 48} y={180 - (i + 1) * 30} width="44" height={(i + 1) * 30} rx="6"/>)}
-    <text class="t-sm" x="685" y="222">Unified Process - grow it piece by piece</text>
+    <text class="t-sm" x="685" y="222">Unified Process — grow it piece by piece</text>
   </svg>
 </Figure>

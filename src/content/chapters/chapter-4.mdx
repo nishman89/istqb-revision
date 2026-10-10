@@ -60,7 +60,7 @@ In this syllabus, test techniques are classified as black-box, white-box, and ex
 
 - **Black-box** - Specification-based · Based on the specified behaviour, without reference to internal structure · Test cases are independent of the implementation · Still useful if the code changes but the behaviour stays the same
 - **White-box** - Structure-based · Based on the test object's internal structure and processing · Can only be created after design or implementation
-- **Experience-based** - Knowledge and skill · Uses testers' knowledge and experience · Effectiveness depends heavily on the tester · Finds defects the others may miss - complementary
+- **Experience-based** - Knowledge and skill · Uses testers' knowledge and experience · Effectiveness depends heavily on the tester · Finds defects the others may miss — complementary
 
 ## 4.2 Black-box Test Techniques
 
@@ -72,8 +72,8 @@ In this syllabus, test techniques are classified as black-box, white-box, and ex
 - **Same treatment** - every value in a partition is processed the same way
 - **One test each** - one value per partition is enough
 
-<Partitions caption="Example: a greeting chosen by the hour of the day - two partitions, so two tests (CTFL 4.2.1)" rows={[
-  { label: 'Hour', segments: [{ text: '00:00 - 11:59  "Good morning"', pick: '09:00' }, { text: '12:00 - 23:59  "Good afternoon"', kind: 'valid', pick: '15:00' }] },
+<Partitions caption="Example: a greeting chosen by the hour of the day — two partitions, so two tests (CTFL 4.2.1)" rows={[
+  { label: 'Hour', segments: [{ text: '00:00 — 11:59  "Good morning"', pick: '09:00' }, { text: '12:00 — 23:59  "Good afternoon"', kind: 'valid', pick: '15:00' }] },
 ]} />
 
 <SyllabusText>
@@ -89,7 +89,7 @@ Equivalence Partitioning (EP) divides data into partitions (known as equivalence
 - **Any data element** - Inputs, outputs, configuration items, internal values, time-related values, interface parameters
 - **Many shapes** - Continuous or discrete, ordered or unordered, finite or infinite
 - **No overlaps, no empties** - Partitions must not overlap and must be non-empty
-- **Partition with care** - Simple in theory - often complicated in practice
+- **Partition with care** - Simple in theory — often complicated in practice
 
 <SyllabusText>
 
@@ -114,9 +114,9 @@ The Met Office categorises UV exposure like this:
 
 <div slot="answer">
 
-**1. Five partitions** - each category is its own partition.
+**1. Five partitions.** Each category is its own partition.
 
-**2. The answer is c) 1, 5, 7, 9, 11** - one value in each of Low, Moderate, High, Very high and Extreme.
+**2. The answer is c) 1, 5, 7, 9, 11:** one value in each of Low, Moderate, High, Very high and Extreme.
 
 | Option | Partitions covered | EP coverage |
 |---|---|---|
@@ -134,7 +134,7 @@ The Met Office categorises UV exposure like this:
 
 - **Valid partition** - Contains valid values · Values the test object should process · or values whose processing the specification defines
 - **Invalid partition** - Contains invalid values · Values that should be ignored or rejected · or values with no processing defined in the specification
-- **Definitions vary** between teams and organisations - agree them up front.
+- **Definitions vary** between teams and organisations — agree them up front.
 
 <SyllabusText>
 
@@ -147,7 +147,7 @@ A partition containing valid values is called a valid partition. A partition con
 <SyllabusRef ref="4.2.1" />
 
 - **COVERAGE ITEMS = THE PARTITIONS** - **EP coverage  =** partitions exercised by at least one test**÷** total partitions identified**× 100%**
-- **100% coverage** - Every identified partition - including invalid ones - is exercised at least once
+- **100% coverage** - Every identified partition — including invalid ones — is exercised at least once
 - What coverage does each answer to the UV question give?
 
 <SyllabusText>
@@ -169,13 +169,13 @@ Which is a correct set of equivalence partition values? *Tip: sketch the partiti
 
 <div slot="answer">
 
-**The answer is b) 00:01, 06:00, 12:00, 18:30, 23:59.** There are **five** partitions - it's easy to miss that two of them are overnight (00:00-05:59 and 19:00-23:59).
+**The answer is b) 00:01, 06:00, 12:00, 18:30, 23:59.** There are **five** partitions — it's easy to miss that two of them are overnight (00:00-05:59 and 19:00-23:59).
 
 <BoilerPartitions />
 
-- a) 05:59, 06:00, 08:00, 18:30 - only 4 of the 5 partitions
-- c) 00:01, 05:59, 18:30, 19:01, 23:59 - misses 06:00-07:59 and 08:00-17:59
-- d) 05:59, 12:00, 18:30, 23:59 - misses 06:00-07:59
+- a) 05:59, 06:00, 08:00, 18:30 — only 4 of the 5 partitions
+- c) 00:01, 05:59, 18:30, 19:01, 23:59 — misses 06:00-07:59 and 08:00-17:59
+- d) 05:59, 12:00, 18:30, 23:59 — misses 06:00-07:59
 
 </div>
 </Exercise>
@@ -215,7 +215,7 @@ An outdoor activity centre cannot run classes when it is too hot or too cold, or
 - **Temperature:** too cold (4 or less) · just right (5 to 29) · too hot (30 and above)
 - **Visibility:** POOR / VERY POOR · MODERATE / GOOD / VERY GOOD / EXCELLENT
 
-**2. Three test cases** - each one can cover a partition from both sets at once:
+**2. Three test cases.** Each one can cover a partition from both sets at once:
 
 | Test | Temperature | Visibility | Result |
 |---|---|---|---|
@@ -238,7 +238,7 @@ Applicants aged **18-65** are eligible. Membership is **Standard** or **Gold**.
 <div slot="answer">
 
 <Partitions caption="Each Choice coverage: three tests cover all five partitions" rows={[
-  { label: 'Age', segments: [{ text: '≤ 17 invalid', kind: 'invalid', pick: '10' }, { text: '18 - 65 valid', kind: 'valid', size: 2, pick: '40' }, { text: '≥ 66 invalid', kind: 'invalid', pick: '70' }] },
+  { label: 'Age', segments: [{ text: '≤ 17 invalid', kind: 'invalid', pick: '10' }, { text: '18 — 65 valid', kind: 'valid', size: 2, pick: '40' }, { text: '≥ 66 invalid', kind: 'invalid', pick: '70' }] },
   { label: 'Member', segments: [{ text: 'Standard' }, { text: 'Gold', kind: 'valid' }] },
 ]} />
 
@@ -304,7 +304,7 @@ What 2-value BVA coverage do they achieve, ignoring invalid partitions?
 
 <div slot="answer">
 
-**50%** - the tests exercise 5 of the 10 boundary values (or 5 / 12 = 42% if you count the invalid values -00:01 and 24:00).
+**50%.** The tests exercise 5 of the 10 boundary values (or 5 / 12 = 42% if you count the invalid values -00:01 and 24:00).
 
 Each partition has a lowest and highest value. In 2-value BVA you test each **boundary value** and its **closest neighbour** in the next partition. Neighbours are the next partition's boundaries, so each value only needs testing once. The tested values are in bold:
 
@@ -333,7 +333,7 @@ What are the 3-value BVA coverage items, and what percentage coverage do these t
 
 <div slot="answer">
 
-**50%** - 3-value BVA has **20** coverage items (each boundary plus **both** its neighbours), and the existing tests cover 10 of them.
+**50%.** 3-value BVA has **20** coverage items (each boundary plus **both** its neighbours), and the existing tests cover 10 of them.
 
 The new items are the neighbours *inside* each partition, for example 08:01 and 17:58 for the Off partition between 08:00 and 18:00. The full set (ignoring the invalid values -00:01 and 24:00):
 
@@ -363,7 +363,7 @@ A password must be **8 to 20 characters long** (inclusive).
 
 <div slot="answer">
 
-1. **≤7** (invalid), **8-20** (valid), **≥21** (invalid) - e.g. 5, 12, 25
+1. **≤7** (invalid), **8-20** (valid), **≥21** (invalid) — e.g. 5, 12, 25
 2. **2-value BVA:** 7, 8, 20, 21
 3. **3-value BVA:** 6, 7, 8, 9, 19, 20, 21, 22
 
@@ -376,8 +376,8 @@ A password must be **8 to 20 characters long** (inclusive).
 
 - **INTENDED** - if (x &lt;= 10)
 - **IMPLEMENTED (DEFECT)** - if (x == 10)
-- **2-Value Tests: x = 10, x = 11** - Both behave correctly - defect missed
-- **3-VALUE ADDS** - Behaves wrongly - defect found
+- **2-Value Tests: x = 10, x = 11** - Both behave correctly — defect missed
+- **3-VALUE ADDS** - Behaves wrongly — defect found
 <Exercise kind="discuss" title="Spot the defect">
 
 In the UV index example, what coding error would 3-value BVA catch but 2-value BVA miss?
@@ -400,17 +400,17 @@ The 2-value tests (7 and 8) both behave correctly, but 3-value BVA adds **9**, w
 
 <SyllabusRef ref="4.2.3" />
 
-- **Decision tables** record complex logic such as business rules - how combinations of conditions lead to different outcomes.
+- **Decision tables** record complex logic such as business rules — how combinations of conditions lead to different outcomes.
 
 |   |   | Rule 1 | Rule 2 | Rule 3 |
 |---|---|---|---|---|
 | Conditions | Condition A | T | T | F |
-|   | Condition B | T | F | - |
+|   | Condition B | T | F | — |
 | Actions | Action X | X |   |   |
 |   | Action Y |   | X | X |
 
 - Conditions, then the resulting actions
-- **Columns** - Each is a decision rule - a unique combination of conditions
+- **Columns** - Each is a decision rule — a unique combination of conditions
 - **Limited-entry** - Values are true / false
 - **Extended-entry** - Values can be ranges, partitions or discrete values
 
@@ -424,7 +424,7 @@ In limited-entry decision tables all the values of the conditions and actions (e
 
 </SyllabusText>
 
-### Example - Printer Troubleshooter
+### Example — Printer Troubleshooter
 
 <SyllabusRef ref="4.2.3" />
 
@@ -455,7 +455,7 @@ In limited-entry decision tables all the values of the conditions and actions (e
 
 <SyllabusRef ref="4.2.3" />
 
-- **Conditions** - True - the condition is satisfied · False - the condition is not satisfied · Irrelevant to the action outcome · Infeasible for this rule
+- **Conditions** - True — the condition is satisfied · False — the condition is not satisfied · Irrelevant to the action outcome · Infeasible for this rule
 - **Actions** - The action should occur · The action should not occur
 
 ### Decision Table Coverage
@@ -481,8 +481,8 @@ In decision table testing, the coverage items are the columns containing feasibl
 
 <SyllabusRef ref="4.2.3" />
 
-- **Strengths** - Systematically identifies every combination of conditions - including ones that might be overlooked · Finds gaps or contradictions in the requirements
-- **Limitations** - Rules grow exponentially with the number of conditions - can be time consuming · Reduce with a minimised table or a risk-based approach
+- **Strengths** - Systematically identifies every combination of conditions — including ones that might be overlooked · Finds gaps or contradictions in the requirements
+- **Limitations** - Rules grow exponentially with the number of conditions — can be time consuming · Reduce with a minimised table or a risk-based approach
 
 <SyllabusText>
 
@@ -520,10 +520,10 @@ Merging those gives a minimised table of **4 rules → 4 test cases**:
 
 - **TRANSITION LABEL SYNTAX** - **event[guard condition]/ action**
 - **States** - The possible states the system can be in
-- **Transitions** - Valid moves between states - assumed instantaneous
+- **Transitions** - Valid moves between states — assumed instantaneous
 - Triggers a transition
 - **Guard condition** - Optional extra condition on the event
-- **Action** - What the software does - optional
+- **Action** - What the software does — optional
 
 <SyllabusText>
 
@@ -531,7 +531,7 @@ A state transition diagram models the behavior of a system by showing its possib
 
 </SyllabusText>
 
-### Example - A Door
+### Example — A Door
 
 <SyllabusRef ref="4.2.4" />
 
@@ -540,7 +540,7 @@ A state transition diagram models the behavior of a system by showing its possib
 
 So a door has **two states**: OPEN and CLOSED, and two events that move between them: *close door* and *open door*.
 
-### Door Example - 3 States
+### Door Example — 3 States
 
 <SyllabusRef ref="4.2.4" />
 
@@ -555,7 +555,7 @@ So a door has **two states**: OPEN and CLOSED, and two events that move between 
 - **Equivalent model** - A state table holds the same information as the diagram
 - **Rows = states** - Columns = events (plus guard conditions)
 - **Cells = transitions** - Target state, plus any resulting action
-- **Invalid transitions shown** - Empty cells - the diagram doesn't show these
+- **Invalid transitions shown** - Empty cells — the diagram doesn't show these
 
 <SyllabusText>
 
@@ -563,7 +563,7 @@ A state table is a model equivalent to a state transition diagram. Its rows repr
 
 </SyllabusText>
 
-### State Table - Door Example
+### State Table — Door Example
 
 <SyllabusRef ref="4.2.4" />
 
@@ -574,7 +574,7 @@ A state table is a model equivalent to a state transition diagram. Its rows repr
 
 - Empty cells = invalid transitions
 
-### State Table - 3 States
+### State Table — 3 States
 
 <SyllabusRef ref="4.2.4" />
 
@@ -585,7 +585,7 @@ A state table is a model equivalent to a state transition diagram. Its rows repr
 | CLOSED LOCKED |   |   |   | CLOSED UNLOCKED |
 
 - **4 valid transitions** - the filled cells
-- **8 invalid transitions** - the empty cells - 12 in total
+- **8 invalid transitions** - the empty cells — 12 in total
 
 ### Test Cases from State Models
 
@@ -667,9 +667,9 @@ To reach 100% all transitions coverage you'd need to attempt every invalid trans
 
 <SyllabusRef ref="4.2.4" />
 
-- **All states** - Weakest - can be achieved without exercising every transition
+- **All states** - Weakest — can be achieved without exercising every transition
 - **Valid transitions** - Most widely used. 100% guarantees 100% all states
-- **All transitions** - Strongest. 100% guarantees both others - the minimum for mission and safety-critical software
+- **All transitions** - Strongest. 100% guarantees both others — the minimum for mission and safety-critical software
 - Stronger coverage
 
 <SyllabusText>
@@ -683,7 +683,7 @@ All states coverage is weaker than valid transitions coverage, because it can ty
 A TV has three states. **Off:** TV button → Standby (Remote does nothing). **Standby:** TV button → Off, Remote → On.
 **On:** TV button → Off, Remote → Standby.
 
-How many coverage items are there for **all states**, **valid transitions** and **all transitions** - and what tests cover them?
+How many coverage items are there for **all states**, **valid transitions** and **all transitions**, and what tests cover them?
 
 <div slot="answer">
 
@@ -721,7 +721,7 @@ Because of their popularity and simplicity, this section focuses on two code-rel
 
 - **COVERAGE ITEMS = EXECUTABLE STATEMENTS** - **Statement coverage  =** statements exercised**÷** executable statements**× 100%**
 - **The aim** - Design tests that exercise statements until coverage is acceptable
-- **At 100%** - Every executable statement runs at least once - so any statement with a defect is executed
+- **At 100%** - Every executable statement runs at least once — so any statement with a defect is executed
 
 <SyllabusText>
 
@@ -736,7 +736,7 @@ When 100% statement coverage is achieved, it ensures that all executable stateme
 <SyllabusRef ref="4.3.1" />
 
 - **Executing a statement** doesn't guarantee its defect is detected.
-- **Data-dependent defects** - e.g. division by zero only fails when the denominator is zero · The statement runs - but with the "wrong" data the defect stays hidden
+- **Data-dependent defects** - e.g. division by zero only fails when the denominator is zero · The statement runs — but with the "wrong" data the defect stays hidden
 - **Untested decision logic** - 100% statement coverage may not exercise every branch · More on this in branch testing (4.3.2)
 
 <SyllabusText>
@@ -750,7 +750,7 @@ However, exercising a statement with a test case will not detect defects in all 
 <SyllabusRef ref="4.3.2" />
 
 - **Branch** - A transfer of control between two nodes in the control flow graph
-- **Conditional or unconditional** - A decision outcome (conditional) - or straight-line code (unconditional)
+- **Conditional or unconditional** - A decision outcome (conditional) — or straight-line code (unconditional)
 - **Branch coverage** - Branches exercised ÷ total branches × 100%
 
 *In the control flow graphs on this page, pink arrows are conditional branches (decision outcomes) and grey ones unconditional.*
@@ -767,7 +767,7 @@ A branch is a transfer of control between two nodes in the control flow graph, w
 
 <CoverageNest />
 
-- **At 100%** - Every branch - conditional and unconditional - is exercised
+- **At 100%** - Every branch — conditional and unconditional — is exercised
 - **Conditional branches** - if/then outcomes, switch/case outcomes, loop exit or continue
 - **Subsumes statement coverage** - 100% branch → 100% statement (but not vice versa)
 - **Still has limits** - May miss defects that need a specific path
@@ -806,7 +806,7 @@ Adding test 2 (**A = 1, B = 3**) takes the false branch → **100% branch covera
 
 <ControlFlow />
 
-- Circles are nodes (chunks of code). Pink arrows are decision outcomes - make sure tests take every one.
+- Circles are nodes (chunks of code). Pink arrows are decision outcomes — make sure tests take every one.
 
 <Exercise source="workbook" title="Exercise 2: minimum tests for 100% coverage">
 
@@ -836,7 +836,7 @@ How many tests are needed for 100% statement coverage and for 100% branch covera
 <div slot="answer">
 
 - **Q1:** **1** test for statement coverage (e.g. P = 60, Q = 50), **2** for branch coverage (add P = 10, Q = 10)
-- **Q2:** **3** and **3** - X, Y and Z each need their own path
+- **Q2:** **3** and **3**, because X, Y and Z each need their own path
 
 </div>
 </Exercise>
@@ -845,10 +845,10 @@ How many tests are needed for 100% statement coverage and for 100% branch covera
 
 <SyllabusRef ref="4.3.3" />
 
-- **Strength** - The whole implementation is considered - finds defects even when specs are vague, outdated or incomplete
-- **Weakness** - Can miss defects of omission - requirements that were never implemented
+- **Strength** - The whole implementation is considered — finds defects even when specs are vague, outdated or incomplete
+- **Weakness** - Can miss defects of omission — requirements that were never implemented
 - **Works statically too** - Dry runs of code not yet ready to run, pseudocode, and top-down logic
-- **Objective measurement** - Real code coverage - which black-box testing alone can't give - guiding extra tests
+- **Objective measurement** - Real code coverage — which black-box testing alone can't give — guiding extra tests
 
 <SyllabusText>
 
@@ -868,9 +868,9 @@ Performing only black-box testing does not provide a measure of actual code cove
 
 - Anticipate errors, defects and failures using the tester's knowledge of:
 - **The past** - How the application has worked before
-- **Developers' habits** - The errors they tend to make - and the defects that follow
+- **Developers' habits** - The errors they tend to make — and the defects that follow
 - **Similar applications** - Failures that have happened elsewhere
-- **FAULT ATTACKS** - A methodical form of error guessing: build a list of possible errors, defects and failures (from experience, defect data or common knowledge) - then design tests to expose them.
+- **FAULT ATTACKS** - A methodical form of error guessing: build a list of possible errors, defects and failures (from experience, defect data or common knowledge) — then design tests to expose them.
 
 <SyllabusText>
 
@@ -952,10 +952,10 @@ Exploratory testing is useful when there are few or inadequate specifications or
 <SyllabusRef ref="4.4.3" />
 
 - **Design, implement and execute tests** to cover test conditions from a checklist.
-- **Good checklist items** - Often phrased as a question · Each can be checked separately and directly · Built from experience, user priorities, or how software fails · Functional or non-functional - e.g. Nielsen's 10 usability heuristics
+- **Good checklist items** - Often phrased as a question · Each can be checked separately and directly · Built from experience, user priorities, or how software fails · Functional or non-functional — e.g. Nielsen's 10 usability heuristics
 - **Leave out** - Items that can be checked automatically · Items better suited as entry / exit criteria · Items that are too general
 
-<Resource kind="pdf" href="https://media.nngroup.com/media/articles/attachments/Heuristic_Summary1_A4_compressed.pdf" source="Nielsen Norman Group" title="Example checklist: the 10 usability heuristics" text="A widely used usability checklist - the kind of list a tester can work through in checklist-based testing" />
+<Resource kind="pdf" href="https://media.nngroup.com/media/articles/attachments/Heuristic_Summary1_A4_compressed.pdf" source="Nielsen Norman Group" title="Example checklist: the 10 usability heuristics" text="A widely used usability checklist — the kind of list a tester can work through in checklist-based testing" />
 
 <SyllabusText>
 
@@ -971,7 +971,7 @@ Checklist items are often phrased in the form of a question. It should be possib
 
 - **Entries wear out** - Developers learn to avoid the same errors
 - **Add new entries** - for newly found high-severity defects
-- **Update regularly** - based on defect analysis - but don't let it get too long
+- **Update regularly** - based on defect analysis — but don't let it get too long
 - **Consistency** - Gives guidelines when there are no detailed test cases
 - **High-level trade-off** - More variability: potentially greater coverage, less repeatability
 
@@ -985,7 +985,7 @@ In the absence of detailed test cases, checklist-based testing can provide guide
 
 ## 4.5 Collaboration-based Test Approaches
 
-### User Stories - the 3 Cs
+### User Stories — the 3 Cs
 
 <SyllabusRef ref="4.5.1" />
 
@@ -995,13 +995,13 @@ In the absence of detailed test cases, checklist-based testing can provide guide
 
 > **The template:** As a **[role]**, I want **[goal]**, so that I can **[business value]**.
 
-- **Card** - The medium - e.g. an index card or an entry on an electronic board
-- **Conversation** - How the software will be used - documented or verbal
+- **Card** - The medium — e.g. an index card or an entry on an electronic board
+- **Conversation** - How the software will be used — documented or verbal
 - **Confirmation** - The acceptance criteria
 
 <SyllabusText>
 
-A user story represents a feature that will be valuable to either a user or purchaser of a system or software. User stories have three critical aspects (Jeffries 2000), called together the "3 C's": Card - the medium describing a user story (e.g., an index card, an entry in an electronic board); Conversation - explains how the software will be used (can be documented or verbal); Confirmation - the acceptance criteria.
+A user story represents a feature that will be valuable to either a user or purchaser of a system or software. User stories have three critical aspects (Jeffries 2000), called together the "3 C's": Card — the medium describing a user story (e.g., an index card, an entry in an electronic board); Conversation — explains how the software will be used (can be documented or verbal); Confirmation — the acceptance criteria.
 
 The most common format for a user story is "As a [role], I want [goal to be accomplished], so that I can [resulting business value for the role]", followed by the acceptance criteria.
 
@@ -1011,7 +1011,7 @@ The most common format for a user story is "As a [role], I want [goal to be acco
 
 <SyllabusRef ref="4.5.1" />
 
-<Tiles cols={3} caption="Three perspectives create a shared vision - through brainstorming and mind mapping (CTFL 4.5.1)" tiles={[
+<Tiles cols={3} caption="Three perspectives create a shared vision — through brainstorming and mind mapping (CTFL 4.5.1)" tiles={[
   { title: 'Business', sub: 'what is valuable' }, { title: 'Development', sub: 'what is feasible' }, { title: 'Testing', sub: 'how we will know it works' },
 ]} />
 
@@ -1024,7 +1024,7 @@ The most common format for a user story is "As a [role], I want [goal to be acco
 - Small
 - Testable
 
-> **If a stakeholder doesn't know how to test a story…** it may not be clear enough, may not reflect something valuable to them - or they may just need help testing.
+> **If a stakeholder doesn't know how to test a story…** it may not be clear enough, may not reflect something valuable to them — or they may just need help testing.
 
 <SyllabusText>
 
@@ -1047,7 +1047,7 @@ Which INVEST qualities does this story break, and how would you improve it?
 - **Value unclear** - "a user" is vague and there's no "so that…", so the benefit isn't stated
 - **Not Independent** - the parts depend on each other and can't be delivered separately
 
-**Better:** split it, for example *"As a finance manager, I want to export monthly sales as CSV, so that I can reconcile them with the finance system"* - with criteria such as "the export completes within 10 seconds for 12 months of data".
+**Better:** split it, for example *"As a finance manager, I want to export monthly sales as CSV, so that I can reconcile them with the finance system"*, with criteria such as "the export completes within 10 seconds for 12 months of data".
 
 </div>
 </Exercise>
@@ -1059,7 +1059,7 @@ Which INVEST qualities does this story break, and how would you improve it?
 - **The conditions a story must meet to be accepted** - in effect, test conditions. Usually a result of the Conversation.
 - **Scenario-oriented** - e.g. Given / When / Then (BDD) · Given the user is logged in · When they click "Add Item" · Then the "Create Item" form appears
 - **Rule-oriented** - e.g. a verification list or table · Bullet-point verification list · Tabulated input-output mapping
-- A custom format is fine - as long as the criteria are well-defined and unambiguous.
+- A custom format is fine — as long as the criteria are well-defined and unambiguous.
 
 <SyllabusText>
 
@@ -1081,7 +1081,7 @@ There are several ways to write acceptance criteria for a user story. The two mo
 
 <Exercise title="Write the acceptance criteria">
 
-Write two acceptance criteria - one positive, one negative - in **Given / When / Then** form for this story:
+Write two acceptance criteria — one positive, one negative — in **Given / When / Then** form for this story:
 
 > *As a registered customer, I want to reset my password, so that I can get back into my account if I forget it.*
 
@@ -1101,14 +1101,14 @@ Good criteria are clear, testable, and cover both what should and shouldn't happ
 
 <SyllabusRef ref="4.5.3" />
 
-<Flow caption="Acceptance test-driven development - tests come before the code (CTFL 4.5.3)" steps={[
+<Flow caption="Acceptance test-driven development — tests come before the code (CTFL 4.5.3)" steps={[
   { title: 'Specification workshop', sub: 'story and acceptance criteria' }, { title: 'Write test cases', sub: 'positive, negative, non-functional' },
   { title: 'Automate', sub: 'executable requirements' }, { title: 'Implement', sub: 'code until the tests pass' },
 ]} />
 
-- **A test-first approach:** test cases are created before the user story is implemented - by customers, developers and testers together.
+- **A test-first approach:** test cases are created before the user story is implemented — by customers, developers and testers together.
 - **Specification workshop** - Analyse and write the story and acceptance criteria; resolve gaps and ambiguities
-- **Create test cases** - By the team or the tester - examples of how the software works
+- **Create test cases** - By the team or the tester — examples of how the software works
 - **Implement** - Tests guide the team to build the story correctly
 - Tests can be executed manually or automated.
 
@@ -1124,8 +1124,8 @@ The first step is a specification workshop where the user story and (if not yet 
 
 <SyllabusRef ref="4.5.3" />
 
-- Examples and tests are the same thing - and any technique from 4.2-4.4 can help. Work in this order:
-- **1. Positive tests** - correct behaviour, no exceptions - the "happy path"
+- Examples and tests are the same thing — and any technique from 4.2-4.4 can help. Work in this order:
+- **1. Positive tests** - correct behaviour, no exceptions — the "happy path"
 - **2. Negative tests** - after the positives are done
 - **3. Non-functional** - e.g. performance efficiency, usability
 - **Write for stakeholders:** natural language with preconditions (if any), inputs and postconditions.
@@ -1157,7 +1157,7 @@ When captured in a format supported by a test automation framework, the develope
 
 <Exercise source="workbook" kind="example" title="Worked example: ATDD for a discount code">
 
-**US-88 Apply a discount code** - *As a shopper, I want to apply a discount code so that I pay less.*
+**US-88 Apply a discount code**: *As a shopper, I want to apply a discount code so that I pay less.*
 Acceptance criteria: valid code → 10% off · expired code → error.
 
 Write one **positive** and one **negative** test case in Given / When / Then form.

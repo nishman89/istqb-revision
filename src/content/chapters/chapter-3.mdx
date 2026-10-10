@@ -47,7 +47,7 @@ In contrast to dynamic testing, in static testing the software under test does n
 
 <SyllabusRef ref="3.1" />
 
-- **Work together** - Testers, business reps and developers - in example mapping, story writing and backlog refinement
+- **Work together** - Testers, business reps and developers — in example mapping, story writing and backlog refinement
 - **Meet the criteria** - e.g. the Definition of Ready
 - **Review user stories** - Complete, understandable, with testable acceptance criteria
 - **Ask the right questions** - Testers explore, challenge and help improve stories
@@ -63,7 +63,7 @@ For example, in agile software development, testers, business representatives an
 <SyllabusRef ref="3.1" />
 
 - **Finds problems early** - before dynamic testing
-- **Less effort** - No test cases needed - tools do the work (Ch. 6)
+- **Less effort** - No test cases needed — tools do the work (Ch. 6)
 - **Part of CI** - Often built into CI frameworks (2.1.4)
 - **Beyond code defects** - Also evaluates maintainability and security
 - **Everyday examples** - Spelling checkers and readability tools
@@ -100,7 +100,7 @@ Almost any work product can be examined using static testing, for example: requi
 
 <SyllabusRef ref="3.1.1" />
 
-Static testing comes in **two forms**. Both examine a work product **without running it** - the difference is
+Static testing comes in **two forms**. Both examine a work product **without running it**. The difference is
 *who* (or what) does the examining, and *what* they can examine.
 
 <Compare middle="vs" caption="The two forms of static testing (CTFL 3.1.1)" columns={[
@@ -119,7 +119,7 @@ Static testing comes in **two forms**. Both examine a work product **without run
 <div class="callout callout--warn">
 
 **⚠ Not suitable for static testing at all:** work products that are hard for **people** to interpret **and** that
-shouldn't be analysed by **tools** - e.g. third-party executable code, which you may not be allowed to analyse for
+shouldn't be analysed by **tools**, such as third-party executable code, which you may not be allowed to analyse for
 legal (licensing) reasons. This applies to static testing as a whole, not just to static analysis.
 
 </div>
@@ -134,14 +134,14 @@ Any work product that can be read and understood can be the subject of a review.
 
 <SyllabusRef ref="3.1" />
 
-**Static analysis** means a tool reads the code - or another work product with a formal structure - and checks it
+**Static analysis** means a tool reads the code — or another work product with a formal structure — and checks it
 against a set of rules, **without running it**. Here is what a tool like SonarQube reports for a short Java method:
 
 <StaticAnalysisDemo />
 
-- **Works on** - Source code (and models) - checked against rules: coding standards, likely bugs, security, complexity
-- **How it helps** - Finds defects before any test runs - cheap, fast, and catches things dynamic testing can miss
-- **When it's used** - From the first line of code - long before component or system testing
+- **Works on** - Source code (and models) — checked against rules: coding standards, likely bugs, security, complexity
+- **How it helps** - Finds defects before any test runs — cheap, fast, and catches things dynamic testing can miss
+- **When it's used** - From the first line of code — long before component or system testing
 
 ### When Static Analysis Runs
 
@@ -151,7 +151,7 @@ against a set of rules, **without running it**. Here is what a tool like SonarQu
 - **2. On commit / pull request** - Code is scanned before it is merged
 - **3. In the CI pipeline** - A quality gate can fail the build if rules are broken
 - **4. Before dynamic testing** - Testers receive code that is already cleaner
-- **Early and often:** static analysis runs from the first line of code - the earliest testing there is.
+- **Early and often:** static analysis runs from the first line of code — the earliest testing there is.
 - **Not just code:** similar tools check models, configuration files, and even spelling and readability in documents.
 
 ### Value of Static Testing
@@ -162,7 +162,7 @@ against a set of rules, **without running it**. Here is what a tool like SonarQu
 - **Finds what dynamic testing can't** - Unreachable code, poor design patterns, defects in non-executable work products
 - **Evaluates quality** - of work products
 - **Builds confidence** - in the work products
-- **Lower overall cost** - Reviews cost something - but less effort is spent fixing defects later
+- **Lower overall cost** - Reviews cost something — but less effort is spent fixing defects later
 
 <SyllabusText>
 
@@ -192,7 +192,7 @@ Stakeholders can verify that the documented requirements describe their actual n
 
 <SyllabusRef ref="3.1.3" />
 
-<Compare middle="vs" caption="Static and dynamic testing find different defects - they complement each other (CTFL 3.1.3)" columns={[
+<Compare middle="vs" caption="Static and dynamic testing find different defects — they complement each other (CTFL 3.1.3)" columns={[
   { title: 'Static testing', sub: 'no code is run', points: ['Finds defects directly', 'Works on any readable work product', 'e.g. unreachable code, spec gaps, standards'] },
   { title: 'Dynamic testing', sub: 'the software is run', points: ['Causes failures, then defects are found', 'Needs executable code', 'e.g. performance, wrong outputs'] },
 ]} />
@@ -201,7 +201,7 @@ Stakeholders can verify that the documented requirements describe their actual n
 |---|---|---|
 | Unique finds | Some defects can only be found statically | Some defects can only be found dynamically |
 | How defects are found | Finds defects directly | Causes failures; defects found through analysis |
-| Hard-to-reach code | More easily finds defects on rarely executed paths | - |
+| Hard-to-reach code | More easily finds defects on rarely executed paths | — |
 | Applies to | Non-executable work products too | Executable work products only |
 | Quality characteristics | Not dependent on execution (e.g. maintainability) | Dependent on execution (e.g. performance efficiency) |
 
@@ -215,10 +215,10 @@ You're reviewing this requirement before any code is written. List as many anoma
 
 <div slot="answer">
 
-- **Ambiguous / untestable:** "respond quickly" - how quickly? Under what load?
+- **Ambiguous / untestable:** "respond quickly" — how quickly? Under what load?
 - **Contradiction:** results sorted by **price** and also by **relevance**
 - **Contradiction:** accepts up to **50** characters but rejects over **40**
-- **Vague:** "an appropriate message" - what should it say?
+- **Vague:** "an appropriate message" — what should it say?
 - **Gaps:** what happens with an empty search? Is search case-sensitive? Can users filter by more than one category?
 - **Inconsistent wording:** "shall", "should" and "can" mix mandatory and optional requirements
 
@@ -256,7 +256,7 @@ Typical defects that are easier and/or cheaper to find through static testing in
 - **Changes land sooner** - Requirement changes are understood and implemented earlier
 - **Clear purpose** - The team understands what it is building
 - **Focus on value** - Features with most stakeholder value and most impact on risk
-- **Without it:** the product may miss the stakeholders' vision - costly rework, missed deadlines, blame games, even project failure.
+- **Without it:** the product may miss the stakeholders' vision — costly rework, missed deadlines, blame games, even project failure.
 
 <SyllabusText>
 
@@ -296,11 +296,11 @@ Put these review activities in the right order:
 
 <div slot="answer">
 
-1. **Planning** - scope, purpose, quality characteristics, exit criteria
-2. **Review initiation** - everyone has access, understands their role and is ready
-3. **Individual review** - each reviewer checks the work product and logs anomalies
-4. **Communication and analysis** - discuss the anomalies and decide what happens to each
-5. **Fixing and reporting** - defect reports, fixes, and acceptance once exit criteria are met
+1. **Planning** — scope, purpose, quality characteristics, exit criteria
+2. **Review initiation** — everyone has access, understands their role and is ready
+3. **Individual review** — each reviewer checks the work product and logs anomalies
+4. **Communication and analysis** — discuss the anomalies and decide what happens to each
+5. **Fixing and reporting** — defect reports, fixes, and acceptance once exit criteria are met
 
 </div>
 </Exercise>
@@ -314,7 +314,7 @@ Put these review activities in the right order:
 | Planning | Determine review scope and purpose | Work products to review, quality characteristics, focus areas, exit criteria, standards, effort, timeframes |
 | Review initiation | Ensure everyone and everything is ready | Every participant has access to the work product, understands their role, and has what they need |
 | Individual review | Assess the work product | Log of anomalies, recommendations and questions |
-| Communication & analysis | Analyse and discuss the anomalies | Decisions on status, ownership and action for each anomaly - maybe a follow-up review |
+| Communication & analysis | Analyse and discuss the anomalies | Decisions on status, ownership and action for each anomaly — maybe a follow-up review |
 | Fixing & reporting | Reach exit criteria; accept the work product | Defect reports for corrective action; report on review results |
 
 ### Roles in Reviews
@@ -328,10 +328,10 @@ Put these review activities in the right order:
 
 - **Manager** - Decides what is reviewed; provides resources such as staff and time
 - **Author** - Creates and fixes the work product under review
-- **Moderator (facilitator)** - Runs effective review meetings - mediation, time management, a safe environment
+- **Moderator (facilitator)** - Runs effective review meetings — mediation, time management, a safe environment
 - **Scribe (recorder)** - Collates anomalies; records decisions and new anomalies in the meeting
-- **Reviewer** - Performs reviews - a project member, subject matter expert or other stakeholder
-- **Review leader** - Overall responsibility - who is involved, when and where it happens
+- **Reviewer** - Performs reviews — a project member, subject matter expert or other stakeholder
+- **Review leader** - Overall responsibility — who is involved, when and where it happens
 
 <Exercise title="Who does what in a review?">
 
@@ -372,7 +372,7 @@ Watch out: the **review leader** organises the review; the **moderator** runs th
 
 #### Formality depends on…
 
-- The same work product can be reviewed more than once - e.g. informally first, formally later.
+- The same work product can be reviewed more than once — e.g. informally first, formally later.
 
 <SyllabusText>
 
@@ -422,7 +422,7 @@ informal review, walkthrough, technical review and inspection.
 
 <SyllabusRef ref="3.2.5" />
 
-- **Clear objectives** - and measurable exit criteria - never evaluating participants
+- **Clear objectives** - and measurable exit criteria — never evaluating participants
 - **Right review type** - for the objectives, work product, people and context
 - **Small chunks** - so reviewers keep their concentration
 - **Feedback** - to stakeholders and authors, so they can improve

@@ -4,7 +4,7 @@ import Figure from '../Figure.astro';
 const shades = [['#fbe3e9', '#f4b6c5', '#d42a57'], ['#f4b6c5', '#d42a57', '#b8234b'], ['#d42a57', '#b8234b', '#2d2a2b']];
 const labels = ['Low', 'Medium', 'High'];
 ---
-<Figure caption="Risk level combines likelihood and impact - the higher the level, the more important to treat (CTFL 5.2.1)">
+<Figure caption="Risk level combines likelihood and impact — the higher the level, the more important to treat (CTFL 5.2.1)">
   <svg viewBox="0 0 820 330" role="img" aria-label="Risk matrix">
     {[0, 1, 2].map((r) => [0, 1, 2].map((c) => (
       <rect x={250 + c * 110} y={10 + (2 - r) * 90} width="104" height="84" rx="8" fill={shades[r][c]}/>

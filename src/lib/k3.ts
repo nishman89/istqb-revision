@@ -12,7 +12,7 @@ export interface K3Topic {
 
 export const K3_TOPICS: K3Topic[] = [
   { lo: 'FL-4.2.1', title: 'Equivalence partitioning', notes: 'chapters/4/#equivalence-partitioning', method: [
-    'List every partition - valid and invalid - for each input or output.',
+    'List every partition — valid and invalid — for each input or output.',
     'Watch for "hidden" partitions, e.g. two overnight periods, or values outside the stated range.',
     'Coverage = partitions hit by at least one test ÷ all partitions. Check whether the question says "valid" only.',
   ] },
@@ -23,7 +23,7 @@ export const K3_TOPICS: K3Topic[] = [
   ] },
   { lo: 'FL-4.2.3', title: 'Decision table testing', notes: 'chapters/4/#decision-tables', method: [
     'Coverage items are the feasible columns (rules). Ignore infeasible ones.',
-    'For each test, find the one column it matches - "-" means the condition doesn\'t matter.',
+    'For each test, find the one column it matches — "-" means the condition doesn\'t matter.',
     'Coverage = distinct columns hit ÷ feasible columns. Two tests hitting the same column count once.',
   ] },
   { lo: 'FL-4.2.4', title: 'State transition testing', notes: 'chapters/4/#state-transition-diagrams', method: [
@@ -32,14 +32,14 @@ export const K3_TOPICS: K3Topic[] = [
     'Know the three criteria: all states < valid transitions < all transitions (valid + invalid).',
   ] },
   { lo: 'FL-4.5.3', title: 'ATDD test cases', notes: 'chapters/4/#atdd', method: [
-    'Map each option to an acceptance criterion - the right test checks exactly what the criterion says.',
+    'Map each option to an acceptance criterion — the right test checks exactly what the criterion says.',
     'Reject tests that go beyond the user story, or test something no criterion mentions.',
     'Positive tests first, then negative, then non-functional.',
   ] },
   { lo: 'FL-5.1.4', title: 'Test estimation', notes: 'chapters/5/#estimation-techniques', method: [
     'Three-point: E = (a + 4m + b) / 6, SD = (b − a) / 6. Multiply by the number of items if asked for several.',
     'Ratios: total the historical development and test effort first, then apply that ratio.',
-    'Extrapolation: apply the formula given in the question exactly - read the brackets carefully.',
+    'Extrapolation: apply the formula given in the question exactly — read the brackets carefully.',
   ] },
   { lo: 'FL-5.1.5', title: 'Test case prioritisation', notes: 'chapters/5/#test-case-prioritisation', method: [
     'Dependencies come first: a test can\'t run until everything it depends on has run.',
@@ -48,7 +48,7 @@ export const K3_TOPICS: K3Topic[] = [
   ] },
   { lo: 'FL-5.5.1', title: 'Defect reports', notes: 'chapters/5/#what-goes-in-a-defect-report', method: [
     'A good report lets someone reproduce the failure: steps, environment and versions, expected vs actual result.',
-    'Describe the failure, not your guess at the cause - and don\'t blame the test data unless it\'s clearly wrong.',
+    'Describe the failure, not your guess at the cause — and don\'t blame the test data unless it\'s clearly wrong.',
     'Look for the pattern across failing tests (e.g. "duplicates are dropped") rather than listing symptoms.',
   ] },
 ];

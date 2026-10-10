@@ -3,7 +3,7 @@
 import Figure from '../Figure.astro';
 const rings = [['Connected systems & environment', 150, 'b-light', 't-dark'], ['Other components', 108, 'b-soft', 't-dark'], ['Same component', 68, 'b-pink', 't'], ['Change', 32, 'b-dark', 't']] as const;
 ---
-<Figure caption="A change - even a confirmed fix - can have side effects well beyond the code that changed. Impact analysis shows how far to regression test (CTFL 2.2.3)">
+<Figure caption="A change — even a confirmed fix — can have side effects well beyond the code that changed. Impact analysis shows how far to regression test (CTFL 2.2.3)">
   <svg viewBox="0 0 820 320" role="img" aria-label="Ripple effect of a change">
     {rings.map(([, r, b]) => <circle cx="250" cy="160" r={r} class={b}/>)}
     {rings.map(([l, r, , t], i) => <text class={t} x="250" y={i === 3 ? 160 : 160 - r + 18} style="font-size:13px">{l}</text>)}

@@ -4,7 +4,7 @@ import Figure from '../Figure.astro';
 import Icon from '../Icon.astro';
 const items = [['Test basis', 'fileLines', 'b-dark'], ['Test conditions & cases', 'listCheck', 'b-pink'], ['Test results', 'clipboardCheck', 'b-pink'], ['Defects', 'bug', 'b-dark']] as const;
 ---
-<Figure caption="Traceability links each test basis item to its testware, results and defects - so you can measure coverage and see the impact of change (CTFL 1.4.4)">
+<Figure caption="Traceability links each test basis item to its testware, results and defects, so you can measure coverage and see the impact of change (CTFL 1.4.4)">
   <svg viewBox="0 0 820 170" role="img" aria-label="Traceability chain">
     <defs><marker id="tr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5c5c5c"/></marker></defs>
     {items.map(([t, ic, b], i) => (

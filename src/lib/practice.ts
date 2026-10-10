@@ -15,7 +15,7 @@ export interface PracticeSet {
 const K_INFO: Record<string, { name: string; blurb: string }> = {
   K1: { name: 'Remember', blurb: 'Recall terms and facts.' },
   K2: { name: 'Understand', blurb: 'Explain, compare and classify.' },
-  K3: { name: 'Apply', blurb: 'Use a technique on a scenario - the calculation questions.' },
+  K3: { name: 'Apply', blurb: 'Use a technique on a scenario — the calculation questions.' },
 };
 
 export async function getPracticeSets(): Promise<PracticeSet[]> {
@@ -26,7 +26,7 @@ export async function getPracticeSets(): Promise<PracticeSet[]> {
 
   const kSets = (['K1', 'K2', 'K3'] as const).map((k) => ({
     slug: k.toLowerCase(),
-    title: `${k} questions - ${K_INFO[k].name}`,
+    title: `${k} questions: ${K_INFO[k].name}`,
     blurb: K_INFO[k].blurb,
     questions: all.filter((q) => q.k === k).sort(byChapter),
   }));
