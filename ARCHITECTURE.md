@@ -262,6 +262,7 @@ All reading and writing of progress goes through this one module:
 ```ts
 loadProgress()                 // { version: 1, chaptersRead, quizzes, lastVisit? }
 saveLastVisit(visit)           // the topic being read, for "Continue where you left off"
+markSectionRead(chapter, '2.1') // sections opened; all opened = notes read (home: "3 of 5 sections read")
 markChapterRead(n)
 saveQuizAttempt(id, attempt)   // keeps attempts, best and last
 getQuiz(id)

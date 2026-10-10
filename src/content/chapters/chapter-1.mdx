@@ -222,6 +222,8 @@ splits into two kinds:
 
 <SyllabusRef ref="1.1.2" />
 
+Testing and debugging are often confused: testing shows that something is wrong, while debugging finds the cause and fixes it.
+
 <DebuggingFlow />
 
 <div class="callout callout--remember">
@@ -325,12 +327,16 @@ QA is a process-oriented, preventive approach that focuses on the implementation
 
 <SyllabusRef ref="1.2.2" />
 
+Testing roles go by many job titles; these are the ones Spartans most often take on at client sites. This is background only and isn't examined.
+
 - **Automation roles** - QA Engineer · Automation SDET · Java Automation Tester · Test Automation Engineer
 - **Manual testing roles** - QA Analyst · Test Analyst
 
 ### Errors, Defects and Failures
 
 <SyllabusRef ref="1.2.3" />
+
+Errors, defects and failures are three different things, and the exam expects you to know how one leads to the next.
 
 <DefectChain />
 
@@ -389,6 +395,8 @@ Classify each one as an **error**, a **defect** or a **failure**:
 ### Root Cause Analysis — 5 Whys
 
 <SyllabusRef ref="1.2.3" />
+
+Root cause analysis looks past the symptom to the real reason a problem happened, and the 5 Whys is a simple way to do it.
 
 <FiveWhys />
 
@@ -595,6 +603,8 @@ It is a fallacy (i.e., a misconception) to expect that software verification wil
 
 <SyllabusRef ref="1.4.1" />
 
+Testing is made up of groups of activities that together form the test process; they are tailored to each project and often overlap.
+
 <TestProcess />
 
 - **Test Planning** - Define test objectives and select an approach
@@ -724,6 +734,8 @@ The coverage criteria can function as key performance indicators to drive the ac
 
 <SyllabusRef ref="1.4.4" />
 
+Keeping traceability takes effort, so it helps to know what it gives you in return.
+
 - **Requirements coverage** - Test cases ↔ requirements shows requirements are covered
 - **Residual risk** - Test results ↔ risks shows how much risk remains
 - **Impact of change** - See what is affected when something changes
@@ -749,6 +761,8 @@ Traceability provides information to assess product quality, process capability,
 
 <SyllabusRef ref="1.4.4" />
 
+A traceability matrix is a simple table that shows which test cases cover which requirements.
+
 | Test case | Reqs tested | Req1 | Req2 | Req3 | Req4 | Req5 | Req6 | Req7 | Req8 | Req9 |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Test cases per req | 16 | 2 | 1 | 3 | 2 | 1 | 1 | 2 | 1 | 3 |
@@ -766,6 +780,8 @@ Traceability provides information to assess product quality, process capability,
 
 <SyllabusRef ref="1.4.3" />
 
+These core terms are used throughout the syllabus and come up in every chapter, so it's worth learning them early.
+
 - **Test object** - the work product being tested
 - **Test basis** - the information used to decide what to test (e.g. requirements)
 - **Test condition** - something testable, identified from the test basis
@@ -778,6 +794,8 @@ Traceability provides information to assess product quality, process capability,
 ### Roles in Testing
 
 <SyllabusRef ref="1.4.5" />
+
+The syllabus describes two main roles: one that manages the testing, and one that does the hands-on testing work.
 
 <Compare caption="The two principal testing roles (CTFL 1.4.5)" columns={[
   { title: 'Test management', points: ['Overall responsibility for the test process and team', 'Test planning', 'Monitoring and control', 'Test completion'] },
@@ -819,6 +837,8 @@ It is also possible for one person to take on the roles of testing and test mana
 
 <SyllabusRef ref="1.5.1" />
 
+As well as knowing test techniques, good testers need a mix of personal and technical skills.
+
 - **Testing knowledge** - To increase effectiveness, e.g. by using test techniques
 - **Thoroughness & curiosity** - Carefulness, attention to detail, being methodical — to find hard-to-find defects
 - **Communication** - Active listening and teamwork — to report and discuss defects with all stakeholders
@@ -829,6 +849,8 @@ It is also possible for one person to take on the roles of testing and test mana
 ### Developer vs Tester Mindset
 
 <SyllabusRef ref="1.5.1" />
+
+Developers and testers look at software from different angles, and both views are needed to build a quality product.
 
 <Compare middle="vs" caption="Different mindsets — both are needed, and the best teams combine them" columns={[
   { title: 'Developer mindset', sub: 'build it', points: ['Focused on designing and building a solution', 'Asks: does it work as intended?', 'Close to the code — can be blind to their own mistakes'] },
@@ -853,6 +875,8 @@ author, and remember everyone shares the same goal — a quality product.
 ### Communication Skills
 
 <SyllabusRef ref="1.5.1" />
+
+Testers often bring bad news, so how they communicate matters as much as what they find.
 
 #### The challenge
 
@@ -881,6 +905,8 @@ To try to improve this view, information about defects and failures should be co
 ### Whole Team Approach
 
 <SyllabusRef ref="1.5.2" />
+
+In the whole team approach, quality is everyone's responsibility, not just the testers'.
 
 <Hub center="Everyone owns quality" caption="The whole-team approach, from Extreme Programming (CTFL 1.5.2)" items={['Tester', 'Developer', 'Product owner', 'Architect', 'Business analyst', 'Ops']} />
 
@@ -914,6 +940,8 @@ Depending on the context, the whole team approach may not always be appropriate.
 
 <SyllabusRef ref="1.5.3" />
 
+Test independence is about how far the tester is from the person who created the work product: the further away, the more independent.
+
 <IndependenceStairs />
 
 - **More independence, different defects** - Independent testers don't share the author's assumptions and biases
@@ -922,6 +950,8 @@ Depending on the context, the whole team approach may not always be appropriate.
 ### Independence: Pros and Cons
 
 <SyllabusRef ref="1.5.3" />
+
+Independent testing brings real benefits, but it also has drawbacks that teams need to manage.
 
 - **Advantages** - Different cognitive biases from the author — so more effective at finding defects · Different backgrounds and perspectives spot different kinds of failures and defects · Can verify, challenge or disprove stakeholders' assumptions
 - **Drawbacks** - Isolation from developers — less collaboration, communication problems, an adversarial relationship · Developers may lose a sense of responsibility for quality · Seen as a bottleneck, or blamed for release delays

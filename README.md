@@ -409,8 +409,8 @@ Every important element has a stable hook:
 | **Header** (every page) | `site-header` · `home-logo` · `main-nav` · `nav-home` · `nav-introduction` · `nav-sample-papers` · `nav-exam-tips` · `nav-resources` · `nav-handouts` · `nav-istqb-glossary` · `nav-istqb-syllabus-pdf` · `nav-chapters` · `nav-chapter-1` … `nav-chapter-6` · `search-toggle` · `back-to-top` |
 | **Header on phones** | `mobile-menu` · `mobile-search-button` · the same nav hooks prefixed `mobile-` (e.g. `mobile-nav-home`) |
 | **Search** | input `#site-search-input` (`name="search"`) · `site-search-results` · each result `search-result` · on phones `site-search-mobile-input` |
-| **Home** | `chapter-card-1` … `chapter-card-6` · `read-notes-N` · `take-quiz-N` · `chapter-status-N` · `continue-reading` · `reset-progress` |
-| **Chapter page** | `chapter-contents` (side menu) · `contents-chapter-quiz` · `expand-all` · `collapse-all` · `chapter-notes` · sections `section-1-2` (section 1.2) · a section's intro `section-1-3-intro` · topics `topic-1-2-4` (4th topic in section 1.2) · `syllabus-text` (each "What the syllabus says" box) · `watch-out` · `finish` · `mark-read` · `take-chapter-quiz` |
+| **Home** | `overall-progress` ("x of 22 sections done") · `chapter-card-1` … `chapter-card-6` · `read-notes-N` · `take-quiz-N` · `chapter-status-N` · `continue-reading` · `reset-progress` |
+| **Chapter page** | `chapter-contents` (side menu) · `contents-chapter-quiz` · `expand-all` · `collapse-all` · `chapter-notes` · sections `section-1-2` (section 1.2) · a section's intro `section-1-3-intro` · topics `topic-1-2-4` (4th topic in section 1.2) · `syllabus-text` (each "What the syllabus says" box) · `watch-out` · `finish` · `finish-status` · `next-unfinished-section` · `take-chapter-quiz` · `chapter-progress` (the "x of y sections done" bar) · each section's button `section-done-1-2` (marks section 1.2 as done; click again to undo) |
 | **Exercises** | `exercise-<title>` and `exercise-<title>-answer`, e.g. `exercise-error-defect-or-failure` / `exercise-error-defect-or-failure-answer` · worked examples `exercise-example-<title>` · discussion questions `exercise-discuss-<topic>`, e.g. `exercise-discuss-principle-5-tests-wear-out` |
 | **Static analysis demo** (Ch. 3) | `run-static-analysis` · `static-analysis-report` · `reset-static-analysis` |
 | **Any quiz or paper** | `quiz` · `question-count` · `pass-mark` · `one-at-a-time-toggle` · `last-attempt` · `review-last-attempt` · `quiz-form` |
@@ -430,6 +430,7 @@ Answer options also have a `name` per question - `question-<paper>-<number>`, e.
 - **"Select TWO" questions** only count as answered once two options are ticked, and a third tick is blocked - a good
   thing to test.
 - **Submitting with unanswered questions** opens a browser `confirm()` dialog - your test must accept or dismiss it.
+- **Sections are only marked done by their button** (`section-done-x-y`), not by opening them. Marking every section of a chapter turns its chip into "Notes read".
 - **Progress is saved in `localStorage`** under the key `sparta-ctfl-progress`. Clear it (or click `reset-progress`)
   between tests so they start from a clean state.
 - **The correct answers are in the page** as `data-answer` on each `question-N` element - handy for writing a test
@@ -507,7 +508,7 @@ See [Implementation notes](#implementation-notes) for a suggested approach.
     - Java Test Automation Engineering
     - Manual Test
     - *(other course types as needed - keep the list in one place so it's easy to update)*
-- [ ] Progress (chapters read, quiz and paper scores) is saved to the account, not just the browser, so it follows
+- [ ] Progress (sections and chapters read, quiz and paper scores) is saved to the account, not just the browser, so it follows
       the trainee across devices.
 
 ### 2. ISTQB exam booking

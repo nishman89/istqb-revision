@@ -90,6 +90,10 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
         <ul>{data.objectives.map((o) => <li>{o}</li>)}</ul>
       </section>
 
+      <div class="chapter-progress no-print" id="chapter-progress" data-testid="chapter-progress" data-chapter-progress data-chapter={data.number} data-total={headings.filter((h) => h.depth === 2).length}>
+        <p class="chapter-progress__label"><strong data-progress-count>0</strong> of {headings.filter((h) => h.depth === 2).length} sections done</p>
+        <div class="bar" aria-hidden="true"><span data-progress-bar></span></div>
+      </div>
       <div class="section-controls no-print">
         <button type="button" class="link" id="expand-all" data-testid="expand-all" data-expand="open">Expand all sections</button>
         <button type="button" class="link" id="collapse-all" data-testid="collapse-all" data-expand="close">Collapse all</button>
@@ -100,11 +104,11 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
 
       <section class="card card--dark finish no-print" id="finish" data-testid="finish">
         <h2>Finished the notes? Test yourself.</h2>
+        <p class="finish__status" id="finish-status" data-testid="finish-status" data-finish-status></p>
         <p>The <strong>chapter quiz</strong> uses the questions from <strong>ISTQB Sample Paper {MAIN_SET}</strong> that cover
           Chapter {data.number}: {mainCount} question{mainCount === 1 ? '' : 's'}, the same number
           the real exam asks on this chapter. Every answer is explained when you submit.</p>
         <div class="finish__actions">
-          <button class="btn btn--ghost btn--light" type="button" id="mark-read" data-testid="mark-read" data-mark-read={data.number}>Mark notes as read</button>
           <a class="btn" href={url(`quiz/${data.number}/${MAIN_SET.toLowerCase()}`)} data-testid="take-chapter-quiz">Take the chapter quiz</a>
         </div>
         <div class="practice">
@@ -122,10 +126,10 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
 </BaseLayout>
 
 <script>
-  import { isChapterRead, markChapterRead, saveLastVisit } from '../../lib/progress';
+  import { isChapterRead, markChapterRead, unmarkChapterRead, getSectionsDone, setSectionDone, saveLastVisit } from '../../lib/progress';
 
   // ---- Highlight the topic being read in the contents menu, and remember it for "Continue where you left off"
-  const chapterNo = Number(document.querySelector<HTMLElement>('[data-mark-read]')?.dataset.markRead);
+  const chapterNo = Number(document.querySelector<HTMLElement>('[data-chapter-progress]')?.dataset.chapter);
   const tocLinks = new Map([...document.querySelectorAll<HTMLAnchorElement>('.toc__groups a')].map((a) => [a.hash.slice(1), a]));
   const spy = new IntersectionObserver((entries) => {
     for (const entry of entries) {
@@ -176,20 +180,54 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
     }),
   );
 
-  const button = document.querySelector<HTMLButtonElement>('[data-mark-read]');
-  if (button) {
-    const chapter = Number(button.dataset.markRead);
-    const showDone = () => { button.textContent = '✓ Marked as read'; button.disabled = true; };
-    if (isChapterRead(chapter)) showDone();
-    button.addEventListener('click', () => { markChapterRead(chapter); showDone(); });
-    // Mark the notes as read automatically once every section has been opened at least once.
-    const sectionsAll = [...document.querySelectorAll<HTMLDetailsElement>('details.chapter-section')];
-    const seen = new Set<number>();
-    sectionsAll.forEach((d, i) => d.addEventListener('toggle', () => {
-      if (!d.open) return;
-      seen.add(i);
-      if (seen.size === sectionsAll.length && !isChapterRead(chapter)) { markChapterRead(chapter); showDone(); }
+  // ---- Sections the learner marks as done: buttons, header ticks, contents ticks, progress bar, finish status
+  const progressEl = document.querySelector<HTMLElement>('[data-chapter-progress]');
+  if (progressEl) {
+    const chapter = Number(progressEl.dataset.chapter);
+    const total = Number(progressEl.dataset.total);
+    const sections = [...document.querySelectorAll<HTMLDetailsElement>('details.chapter-section')];
+    const numberOf = (d: Element) => d.querySelector('summary h2')?.textContent?.trim().split(/\s+/)[0] ?? '';
+
+    // Keep progress from before this feature: a chapter already marked as read counts as all sections done.
+    if (isChapterRead(chapter) && getSectionsDone(chapter).length === 0) sections.forEach((d) => setSectionDone(chapter, numberOf(d), true));
+
+    const tocGroups = new Map([...document.querySelectorAll<HTMLElement>('.toc__groups > li')].map((li) => [li.querySelector('summary')?.textContent?.trim().split(/\s+/)[0] ?? '', li]));
+    const status = document.querySelector<HTMLElement>('[data-finish-status]');
+
+    const render = () => {
+      const done = new Set(getSectionsDone(chapter));
+      sections.forEach((d) => {
+        const no = numberOf(d), isDone = done.has(no);
+        d.classList.toggle('is-done', isDone);
+        tocGroups.get(no)?.classList.toggle('is-done', isDone);
+        const btn = d.querySelector<HTMLButtonElement>('[data-section-done]');
+        if (btn) {
+          btn.textContent = isDone ? '✓ Done · Undo' : '✓ Mark section as done';
+          btn.setAttribute('aria-pressed', String(isDone));
+          btn.classList.toggle('is-done', isDone);
+        }
+      });
+      const count = sections.filter((d) => done.has(numberOf(d))).length;
+      progressEl.querySelector('[data-progress-count]')!.textContent = String(count);
+      progressEl.querySelector<HTMLElement>('[data-progress-bar]')!.style.width = `${(count / total) * 100}%`;
+      progressEl.classList.toggle('is-complete', count === total);
+      if (status) {
+        const next = sections.find((d) => !done.has(numberOf(d)));
+        status.innerHTML = next
+          ? `${count} of ${total} sections done. <a href="#${next.querySelector('h2')?.id}" data-testid="next-unfinished-section">Continue with ${next.querySelector('h2')?.textContent?.trim()} →</a>`
+          : '✓ All sections done. The notes for this chapter are complete.';
+      }
+    };
+
+    sections.forEach((d) => d.querySelector<HTMLButtonElement>('[data-section-done]')?.addEventListener('click', () => {
+      const no = numberOf(d);
+      const nowDone = !getSectionsDone(chapter).includes(no);
+      const all = setSectionDone(chapter, no, nowDone);
+      const complete = sections.every((s) => all.includes(numberOf(s)));
+      if (complete) markChapterRead(chapter); else unmarkChapterRead(chapter);
+      render();
     }));
+    render();
   }
 </script>
 
@@ -225,6 +263,23 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
   .objectives ul { margin: 0; padding-left: 1.25rem; }
 
   /* Notes generated from the slides */
+  .chapter-progress { margin: 0 0 0.75rem; }
+  .chapter-progress__label { margin: 0 0 0.35rem; font-size: 0.95rem; color: var(--grey); }
+  .chapter-progress__label strong { color: var(--charcoal); }
+  .chapter-progress .bar, .overall .bar { height: 0.55rem; border-radius: 999px; background: var(--line); overflow: hidden; }
+  .chapter-progress .bar span { display: block; height: 100%; width: 0; background: var(--pink); border-radius: 999px; transition: width 0.3s ease; }
+  .chapter-progress.is-complete .bar span { background: var(--success); }
+
+  /* "Mark section as done" button at the end of each section, and the ticks it adds */
+  .prose :global(.section-done) { display: flex; justify-content: flex-end; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed var(--line); }
+  .prose :global(.section-done__btn) { font: inherit; font-weight: 700; padding: 0.55rem 1.1rem; border-radius: 999px; border: 2px solid var(--success); background: var(--surface); color: #17663f; cursor: pointer; }
+  .prose :global(.section-done__btn:hover) { background: var(--success-tint); }
+  .prose :global(.section-done__btn.is-done) { background: var(--success-tint); border-color: transparent; }
+  .prose :global(details.chapter-section.is-done > summary h2::after) { content: '✓ Done'; margin-left: 0.75rem; padding: 0.1rem 0.55rem; border-radius: 999px; background: var(--success); color: #fff; font: 700 0.75rem var(--font-body); vertical-align: middle; }
+  .toc__groups > li.is-done > details > summary > span:last-child::after { content: '\00a0✓'; color: #17663f; font-weight: 700; }
+  .finish__status { margin: 0 0 0.75rem; color: #ddd; }
+  .finish__status :global(a) { color: var(--pink-soft); font-weight: 700; }
+
   .section-controls { display: flex; gap: 1rem; justify-content: flex-end; font-size: 0.9rem; }
   .link { background: none; border: 0; color: var(--pink-dark); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0; }
   .prose :global(details.chapter-section) { margin: 0 0 1rem; }

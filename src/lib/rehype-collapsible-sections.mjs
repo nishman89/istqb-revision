@@ -119,6 +119,11 @@ export default function collapsibleSections() {
       const sectionTitle = textOf(section.children[0]).trim();
       const sectionNo = sectionTitle.split(/\s+/)[0];
       body.children = promoteIntro(sectionTitle, decorateTopics(sectionNo, wrap(body.children, 'h3', 'chapter-topic')));
+      // the learner marks each section as done themselves (handled by the chapter page script)
+      body.children.push(el('div', { className: ['section-done', 'no-print'] }, [
+        el('button', { type: 'button', className: ['section-done__btn'], dataSectionDone: sectionNo, dataTestid: `section-done-${sectionNo.replace(/\./g, '-')}`, ariaPressed: 'false' },
+          [{ type: 'text', value: '✓ Mark section as done' }]),
+      ]));
     }
     addTestIds(tree);
   };

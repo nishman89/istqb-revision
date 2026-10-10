@@ -47,6 +47,8 @@ In contrast to dynamic testing, in static testing the software under test does n
 
 <SyllabusRef ref="3.1" />
 
+In Agile teams, static testing is part of everyday collaboration rather than a separate formal step.
+
 - **Work together** - Testers, business reps and developers — in example mapping, story writing and backlog refinement
 - **Meet the criteria** - e.g. the Definition of Ready
 - **Review user stories** - Complete, understandable, with testable acceptance criteria
@@ -61,6 +63,8 @@ For example, in agile software development, testers, business representatives an
 ### Why Static Analysis?
 
 <SyllabusRef ref="3.1" />
+
+Static analysis uses tools to check code and other structured work products without running them.
 
 - **Finds problems early** - before dynamic testing
 - **Less effort** - No test cases needed — tools do the work (Ch. 6)
@@ -180,6 +184,8 @@ Even though reviews can be costly to implement, the overall project costs are us
 
 <SyllabusRef ref="3.1.2" />
 
+Static testing lets stakeholders check work products early, while changes are still cheap.
+
 - **Stakeholders verify the requirements** - ensuring they describe their actual needs
 - **A shared understanding** - is created among the stakeholders involved
 - **Involve a wide variety of stakeholders** - in static testing
@@ -193,6 +199,8 @@ Stakeholders can verify that the documented requirements describe their actual n
 ### Static vs Dynamic Testing
 
 <SyllabusRef ref="3.1.3" />
+
+Static and dynamic testing both find defects, but in different ways, and each finds things the other misses.
 
 <Compare middle="vs" caption="Static and dynamic testing find different defects — they complement each other (CTFL 3.1.3)" columns={[
   { title: 'Static testing', sub: 'no code is run', points: ['Finds defects directly', 'Works on any readable work product', 'e.g. unreachable code, spec gaps, standards'] },
@@ -233,6 +241,8 @@ Finding these now, with static testing, is far cheaper than finding them after t
 
 <SyllabusRef ref="3.1.3" />
 
+Some kinds of defect are much easier and cheaper to find by examining work products than by running the software.
+
 - **Requirements** - Inconsistencies, ambiguities, omissions, duplications
 - **Design** - Inefficient DB structures, poor modularisation
 - **Coding** - Undefined/undeclared variables, unreachable code, complexity
@@ -271,6 +281,8 @@ Frequent stakeholder feedback throughout the SDLC can prevent misunderstandings 
 ### The Review Process
 
 <SyllabusRef ref="3.2.2" />
+
+The syllabus describes a generic review process with five activities, based on the ISO/IEC 20246 standard.
 
 <ReviewProcess />
 
@@ -311,6 +323,8 @@ Put these review activities in the right order:
 
 <SyllabusRef ref="3.2.2" />
 
+Each review activity has its own goal and produces its own outputs.
+
 | Activity | Goal | Deliverables |
 |---|---|---|
 | Planning | Determine review scope and purpose | Work products to review, quality characteristics, focus areas, exit criteria, standards, effort, timeframes |
@@ -322,6 +336,8 @@ Put these review activities in the right order:
 ### Roles in Reviews
 
 <SyllabusRef ref="3.2.3" />
+
+Every review involves a set of defined roles, and one person can hold more than one.
 
 <Tiles cols={3} caption="Roles in a review (CTFL 3.2.3)" tiles={[
   { title: 'Manager', sub: 'decides what is reviewed' }, { title: 'Author', sub: 'creates and fixes it' }, { title: 'Moderator', sub: 'runs the meetings' },
@@ -369,6 +385,8 @@ Watch out: the **review leader** organises the review; the **moderator** runs th
 ### Review Types
 
 <SyllabusRef ref="3.2.4" />
+
+Reviews range from quick, informal checks to highly formal inspections, and the right type depends on the situation.
 
 <ReviewFormality />
 
@@ -423,6 +441,8 @@ informal review, walkthrough, technical review and inspection.
 ### Success Factors for Reviews
 
 <SyllabusRef ref="3.2.5" />
+
+Whether a review succeeds depends on a few key factors.
 
 - **Clear objectives** - and measurable exit criteria — never evaluating participants
 - **Right review type** - for the objectives, work product, people and context

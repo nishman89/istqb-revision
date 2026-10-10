@@ -31,6 +31,8 @@ export interface LastVisit {
 export interface Progress {
   version: 1;
   chaptersRead: number[];
+  /** Sections the learner has marked as done, per chapter, e.g. { "2": ["2.1", "2.3"] }. */
+  sectionsDone?: Record<string, string[]>;
   quizzes: Record<string, QuizRecord>;
   /** The topic the learner was last reading, for "Continue where you left off". */
   lastVisit?: LastVisit;
@@ -59,6 +61,27 @@ function save(progress: Progress): void {
 export function markChapterRead(chapter: number): void {
   const p = loadProgress();
   if (!p.chaptersRead.includes(chapter)) p.chaptersRead.push(chapter);
+  save(p);
+}
+
+/** The sections of a chapter the learner has marked as done. */
+export function getSectionsDone(chapter: number): string[] {
+  return loadProgress().sectionsDone?.[chapter] ?? [];
+}
+
+/** Mark a section as done (or undo it). Returns the chapter's done sections afterwards. */
+export function setSectionDone(chapter: number, section: string, done: boolean): string[] {
+  const p = loadProgress();
+  const set = new Set(p.sectionsDone?.[chapter] ?? []);
+  if (done) set.add(section); else set.delete(section);
+  p.sectionsDone = { ...(p.sectionsDone ?? {}), [chapter]: [...set] };
+  save(p);
+  return [...set];
+}
+
+export function unmarkChapterRead(chapter: number): void {
+  const p = loadProgress();
+  p.chaptersRead = p.chaptersRead.filter((c) => c !== chapter);
   save(p);
 }
 

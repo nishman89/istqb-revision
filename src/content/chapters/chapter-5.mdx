@@ -55,6 +55,8 @@ A test plan describes the objectives, resources and processes for a test project
 
 <SyllabusRef ref="5.1.1" />
 
+A test plan describes the objectives, resources and processes for a test project, and it usually covers these areas.
+
 - **Context** - Scope, objectives, constraints, test basis
 - **Assumptions & constraints** - of the test project
 - **Stakeholders** - Roles, responsibilities, hiring and training needs
@@ -73,6 +75,8 @@ Typical content of a test plan includes: context of testing (e.g., scope, test o
 
 <SyllabusRef ref="5.1.2" />
 
+In iterative development, testers help plan both the overall release and each iteration within it.
+
 - **Release planning** - Looks ahead to the product release · Write testable user stories and acceptance criteria · Join project and quality risk analyses · Estimate test effort for user stories · Determine the test approach · Plan testing for the release
 - **Iteration planning** - Looks ahead to the end of one iteration · Detailed risk analysis of user stories · Check user stories are testable · Break stories into (testing) tasks · Estimate effort for all testing tasks · Refine functional and non-functional aspects
 
@@ -87,6 +91,8 @@ Iteration planning looks ahead to the end of a single iteration and is concerned
 ### Entry and Exit Criteria
 
 <SyllabusRef ref="5.1.3" />
+
+Entry and exit criteria set out when a test activity can start and when it is finished.
 
 <Flow caption="Entry criteria are the preconditions to start an activity; exit criteria say when it is done (CTFL 5.1.3)" steps={[
   { title: 'Entry criteria', sub: 'resources, testware, initial quality' }, { title: 'Test activity', sub: 'e.g. a test level' }, { title: 'Exit criteria', sub: 'coverage, defects, tests run' },
@@ -130,6 +136,8 @@ Sort these into **entry** criteria (can we start?) and **exit** criteria (are we
 
 <SyllabusRef ref="5.1.3" />
 
+Entry criteria check that everything needed is in place before an activity starts.
+
 - **Resources available** - People · Environments · Test data · Budget and time
 - **Testware available** - Test basis · Testable requirements · User stories · Test cases
 - **Initial quality** - of the test object · e.g. all smoke tests have passed
@@ -144,6 +152,8 @@ Typical entry criteria include: availability of resources (e.g., people, tools, 
 
 <SyllabusRef ref="5.1.3" />
 
+Exit criteria check that an activity has achieved enough before it is called done.
+
 - **Measures of thoroughness** - Achieved level of coverage · Number of unresolved defects · Defect density · Number of failed test cases
 - **Completion criteria** - Planned tests have been executed · Static testing has been performed · All defects found are reported · All regression tests are automated
 
@@ -156,6 +166,8 @@ Typical exit criteria include measures of thoroughness (e.g., achieved level of 
 ### Other Exit Criteria and Agile Terms
 
 <SyllabusRef ref="5.1.3" />
+
+Exit criteria aren't always about coverage, and Agile teams have their own names for both kinds of criteria.
 
 - **Out of time or budget?** - That can be a valid exit criterion — if stakeholders have reviewed and accepted the risk of going live without further testing.
 
@@ -176,6 +188,8 @@ In Agile software development, exit criteria are often called Definition of Done
 
 <SyllabusRef ref="5.1.4" />
 
+Test estimation predicts how much effort testing will take, and the syllabus covers four techniques.
+
 <Compare caption="Four estimation techniques (CTFL 5.1.4)" columns={[
   { title: 'Metrics-based', sub: 'uses data', points: ['Ratios from similar past projects', 'Extrapolation from early measurements'] },
   { title: 'Expert-based', sub: 'uses judgement', points: ['Wideband Delphi and Planning Poker', 'Three-point estimation'] },
@@ -192,6 +206,8 @@ Test effort estimation involves predicting the amount of test-related work neede
 ### Estimation Based on Ratios
 
 <SyllabusRef ref="5.1.4" />
+
+Ratio-based estimation uses figures from past projects, such as the ratio of development effort to test effort.
 
 - **Use historical data** - "Standard" ratios from the organisation's own similar projects are the best source
 
@@ -210,6 +226,8 @@ In this metrics-based technique, figures are collected from previous projects wi
 ### Extrapolation
 
 <SyllabusRef ref="5.1.4" />
+
+Extrapolation estimates the remaining test effort from measurements taken so far in the project, which is why it suits iterative development.
 
 - **Measure early** - Gather data in the current project
 - **Extrapolate** - Estimate the remaining effort, usually with a mathematical model
@@ -263,6 +281,8 @@ A **separate technique**, popular in Agile teams — a variant of Wideband Delph
 ### Three-Point Estimation
 
 <SyllabusRef ref="5.1.4" />
+
+Three-point estimation combines an optimistic, a most likely and a pessimistic estimate into one figure.
 
 <ThreePoint />
 
@@ -330,6 +350,8 @@ Requirements-based prioritization, where the order of test execution is based on
 
 <SyllabusRef ref="5.1.5" />
 
+Running the highest-priority tests first is the aim, but other factors can force a different order.
+
 - **Dependencies** - If a high-priority test depends on a low-priority one, the low-priority test runs first
 - **Resource availability** - Tools, environments or people may only be available in a specific time window
 
@@ -355,6 +377,8 @@ Run high-priority tests as early as possible, but **TC3 must run before TC1**. O
 
 <SyllabusRef ref="5.1.6" />
 
+The test pyramid shows how many tests to have at each level: many small, fast tests at the bottom and few large, slow ones at the top.
+
 <TestPyramid />
 
 - **Top layers** - Complex, end-to-end, slower — just a few needed
@@ -370,6 +394,8 @@ The test pyramid is a model showing that different tests may have different gran
 ### Pyramid Variations
 
 <SyllabusRef ref="5.1.6" />
+
+The test pyramid comes in different versions, but they all follow the same idea.
 
 - **Cohn's original model (2009)** - UI tests · Service tests · Unit tests
 - **Another popular model** - End-to-end tests · Integration (component integration) tests · Unit (component) tests
@@ -483,6 +509,8 @@ The test approach, in which test activities are selected, prioritized, and manag
 ### What is a Risk?
 
 <SyllabusRef ref="5.2.1" />
+
+A risk is something that might happen and would have a negative effect; its level depends on how likely it is and how bad it would be.
 
 <RiskMatrix />
 
@@ -649,6 +677,8 @@ Product risk analysis may influence the thoroughness and scope of testing. Its r
 
 <SyllabusRef ref="5.2.4" />
 
+Once product risks have been analysed, the team decides how to respond to each one.
+
 <Tiles cols={4} caption="Responses to a product risk (CTFL 5.2.4)" tiles={[
   { title: 'Mitigate', sub: 'test it' }, { title: 'Accept', sub: 'live with it' }, { title: 'Transfer', sub: 'e.g. insurance' }, { title: 'Contingency', sub: 'plan B' },
 ]} />
@@ -675,6 +705,8 @@ With respect to product risk control, once a risk has been analyzed, several res
 
 <SyllabusRef ref="5.2.4" />
 
+Testing is one of the main ways to reduce product risk, and these choices make it more effective.
+
 - **The right testers** - with the experience and skills for that risk type
 - **Right independence** - an appropriate level of test independence
 - Reviews & static analysis
@@ -687,6 +719,8 @@ With respect to product risk control, once a risk has been analyzed, several res
 ### Monitor, Control, Complete
 
 <SyllabusRef ref="5.3" />
+
+Three activities keep testing on track: monitoring, control and completion.
 
 <Cycle center="Compare with the plan" caption="Monitoring gathers metrics, control acts on them, and the plan is updated — completion wraps up each stage (CTFL 5.3)" steps={[
   { title: 'Test plan', tone: 'purple' }, { title: 'Monitor', sub: 'gather metrics, report', tone: 'blue' }, { title: 'Control', sub: 'directives, corrective action', tone: 'pink' },
@@ -762,6 +796,8 @@ Common test metrics include: project progress metrics (e.g., task completion, re
 
 <SyllabusRef ref="5.3.2" />
 
+Test reports keep stakeholders informed, and there are two main kinds.
+
 - **Test progress report** - During testing · Supports ongoing test control · Enough information to change the schedule, resources or plan when needed · Regular — e.g. daily or weekly
 - **Test completion report** - After a stage of testing · Summarises a test level, cycle or iteration · Informs subsequent testing · Ideally when exit criteria are met
 
@@ -774,6 +810,8 @@ Test reporting summarizes and communicates test information during and after tes
 ### Report Contents
 
 <SyllabusRef ref="5.3.2" />
+
+Each kind of report contains different information.
 
 - **Progress report** - Test period · Progress and notable deviations (ahead / behind) · Impediments and workarounds · Test metrics · New and changed risks · Testing planned for next period
 - **Completion report** - Test summary · Quality evaluation against the test plan · Deviations from the plan · Impediments and workarounds · Unmitigated risks, unfixed defects · Lessons learned
@@ -789,6 +827,8 @@ A test completion report is prepared during test completion, when a project, tes
 ### Know Your Audience
 
 <SyllabusRef ref="5.3.2" />
+
+The right report, and the right way to share it, depends on who it's for.
 
 <Compare caption="Choose the report — and the way you share it — for the audience (CTFL 5.3.2)" columns={[
   { title: 'Test progress report', sub: 'during testing', points: ['For people within the team', 'Frequent', 'Informal — e.g. a dashboard or chat'] },
@@ -806,6 +846,8 @@ Different audiences require different information in the reports, and influence 
 ### Communicating Test Status
 
 <SyllabusRef ref="5.3.3" />
+
+Test status can be shared in several ways, from a quick conversation to a formal report.
 
 - Verbal
 - **Dashboards** - CI/CD dashboards, task boards, burn-down charts
@@ -898,6 +940,8 @@ At a minimum, the defect management process includes a workflow for handling ind
 
 <SyllabusRef beyond />
 
+Defect priority says how urgently a defect should be fixed.
+
 - **Priority** - "the level of (business) importance assigned to an item" (ISTQB glossary).
 - **P1 — Urgent** - Must be fixed immediately, in the next build
 - **P2 — High** - Fix in an upcoming build — must be in the release
@@ -914,6 +958,8 @@ ISTQB glossary — Priority: the level of (business) importance assigned to an i
 
 <SyllabusRef beyond />
 
+Severity and priority are often confused: severity is about impact, priority is about urgency, and the two don't always match.
+
 - **High priority · Low severity** - Low impact but very visible or unfriendly — e.g. someone else's logo, a missing minor feature
 - **High priority · High severity** - Fix now — e.g. data loss, missing key feature, security violation
 - **Low priority · Low severity** - Cosmetic errors, spelling mistakes
@@ -923,11 +969,15 @@ ISTQB glossary — Priority: the level of (business) importance assigned to an i
 
 <SyllabusRef beyond />
 
+Every reported defect moves through a series of statuses, from being reported to being closed.
+
 <DefectLifecycle />
 
 ### Why Write Defect Reports?
 
 <SyllabusRef ref="5.5" />
+
+A defect report records a problem so that it can be understood, fixed and tracked.
 
 - **Enough to fix it** - Give those resolving the defect enough information to resolve it
 - **Track quality** - A way of tracking the quality of the work product
@@ -936,6 +986,8 @@ ISTQB glossary — Priority: the level of (business) importance assigned to an i
 ### What Goes in a Defect Report
 
 <SyllabusRef ref="5.5" />
+
+A good defect report gives the reader everything they need to understand and reproduce the problem.
 
 - **Identify it** - Unique identifier · Title — a short summary · Date, organisation, author and role · Test object and test environment · Context — test case, activity, SDLC phase, technique or data used
 - **Describe it** - Steps to reproduce, plus logs, dumps, screenshots or recordings · Expected vs actual results · Severity and priority · Status (open, deferred, duplicate…) · References — e.g. to the test case
@@ -949,6 +1001,8 @@ A defect report logged during dynamic testing typically includes: unique identif
 ### Defect Report Template
 
 <SyllabusRef ref="5.5" />
+
+This template shows the fields a typical defect report includes.
 
 | Field | What it holds |
 |---|---|
@@ -986,6 +1040,8 @@ A discount code that expired on 31-08-2026 is still accepted at checkout. Fill i
 
 <SyllabusRef ref="1.4.4" />
 
+Linking defects to test cases and requirements shows the impact of every defect and every change.
+
 <Flow caption="Two-way links between requirements, test cases and defects" steps={[
   { title: 'Requirements' }, { title: 'Test cases' }, { title: 'Defects' },
 ]} />
@@ -1006,6 +1062,8 @@ A discount code that expired on 31-08-2026 is still accepted at checkout. Fill i
 - **Bidirectional** - Both directions · Every requirement has related tests · Analyses the impact of changes and defects
 
 ### Traceability Matrix
+
+A traceability matrix shows which test cases cover which requirements, so gaps in coverage are easy to spot.
 
 | Test case | Reqs tested | Req1 | Req2 | Req3 | Req4 | Req5 | Req6 | Req7 | Req8 | Req9 |
 |---|---|---|---|---|---|---|---|---|---|---|

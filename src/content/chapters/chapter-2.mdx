@@ -33,9 +33,11 @@ import Waterfall from '../../components/diagrams/Waterfall.astro';
 
 <SyllabusRef ref="2.1" />
 
+A software development lifecycle (SDLC) model describes how a project's activities are organised, and the model chosen affects how testing is done.
+
 <SdlcModels />
 
-- **An SDLC model** is an abstract, high-level representation of the software development process — how its phases and activities relate, logically and chronologically.
+- **An SDLC model** is an abstract, high-level representation of the software development process: how its phases and activities relate, logically and chronologically.
 
 <SyllabusText>
 
@@ -71,6 +73,8 @@ Some activities within software development processes can also be described by m
 
 <SyllabusRef ref="2.1" />
 
+The waterfall model is the classic sequential SDLC: each phase finishes before the next starts, so testing comes near the end.
+
 <Waterfall />
 
 #### Pros and cons
@@ -81,6 +85,8 @@ Some activities within software development processes can also be described by m
 ### The V-Model
 
 <SyllabusRef ref="2.1" />
+
+The V-model is a sequential SDLC that pairs every development stage with a matching test level, so tests can be planned early.
 
 <VModel />
 
@@ -95,6 +101,8 @@ Some activities within software development processes can also be described by m
 ### Unified Process
 
 <SyllabusRef ref="2.1" />
+
+The Unified Process builds and delivers the system in a series of iterations, and it's the syllabus's example of an incremental model.
 
 <UnifiedProcess />
 
@@ -112,6 +120,8 @@ Some activities within software development processes can also be described by m
 ### Agile Methodologies
 
 <SyllabusRef ref="2.1" />
+
+Agile methodologies deliver software in short, repeated cycles with frequent feedback, rather than in one big release.
 
 <Cycle center="Sprint 2-4 weeks" caption="A Scrum sprint: the team plans from the product backlog and delivers a working increment every sprint (CTFL 2.1)" steps={[
   { title: 'Requirements', tone: 'pink' }, { title: 'Analysis', tone: 'purple' }, { title: 'Design', tone: 'blue' }, { title: 'Implementation', tone: 'green' },
@@ -151,6 +161,8 @@ Testing must be adapted to the SDLC to succeed. The choice of the SDLC impacts o
 
 <SyllabusRef ref="2.1.1" />
 
+The SDLC a project uses changes when, and how, each kind of testing happens.
+
 - **Sequential** - Waterfall, V-model · Early phases: requirement reviews, test analysis and design · Code arrives late — dynamic testing comes late · Static testing can happen at any time
 - **Iterative & incremental** - Each iteration delivers an increment · Static and dynamic testing at all test levels, every iteration · Needs fast feedback · Needs extensive regression testing
 - **Change expected throughout** - Lightweight documentation · Extensive test automation for regression · Manual testing mostly experience-based (4.4)
@@ -168,6 +180,8 @@ Agile: Agile software development assumes that change may occur throughout the p
 ### SDLC and Good Testing Practices
 
 <SyllabusRef ref="2.1.2" />
+
+Whatever SDLC a project follows, a few good testing practices always apply.
 
 - Whatever the SDLC model:
 - **Every development activity has a test activity** - So all development is subject to quality control
@@ -193,6 +207,8 @@ Testers are involved in reviewing work products as soon as drafts of this docume
 
 <SyllabusRef ref="2.1.3" />
 
+In test-first development, the tests are written before the code they check, and they guide how that code is written.
+
 - **TDD, ATDD and BDD** - tests are defined first, as a way of directing development
 - **Early testing** - Tests are defined before the code is written
 - **Shift-left** - Testing moves earlier in the SDLC
@@ -209,6 +225,8 @@ TDD, ATDD and BDD are similar development approaches, where tests are defined as
 
 <SyllabusRef ref="2.1.3" />
 
+The syllabus names three test-first approaches, which differ in what the tests are based on.
+
 <Cycle center="TDD" caption="Test-driven development: write a failing test, write just enough code to pass it, then tidy the code (CTFL 2.1.3)" steps={[
   { title: 'Red', sub: 'write a failing test', tone: 'red' }, { title: 'Green', sub: 'write code to pass', tone: 'green' }, { title: 'Refactor', sub: 'tidy the code', tone: 'yellow' },
 ]} />
@@ -220,6 +238,8 @@ TDD, ATDD and BDD are similar development approaches, where tests are defined as
 ### DevOps and Testing
 
 <SyllabusRef ref="2.1.4" />
+
+DevOps brings development and operations together so that software can be built, tested and released quickly and reliably.
 
 <Compare middle="+" caption="DevOps brings development (including testing) and operations together — a cultural shift that values both equally (CTFL 2.1.4)" columns={[
   { title: 'Development', sub: 'including testing', points: ['Build and test new features', 'Fast feedback on every change'] },
@@ -245,6 +265,8 @@ DevOps is an organizational approach aiming to create synergy by getting develop
 
 <SyllabusRef ref="2.1.4" />
 
+In DevOps, code moves through an automated delivery pipeline, with tests run at each stage on the way to production.
+
 <DevOpsPipeline />
 
 <Resource href="https://www.digitalocean.com/community/tutorials/an-introduction-to-continuous-integration-delivery-and-deployment" title="An introduction to continuous integration, delivery and deployment" text="How CI, continuous delivery and continuous deployment fit together in a pipeline" />
@@ -252,6 +274,8 @@ DevOps is an organizational approach aiming to create synergy by getting develop
 ### DevOps Benefits for Testing
 
 <SyllabusRef ref="2.1.4" />
+
+DevOps changes how testing is done, and much of that change helps testers.
 
 - **Fast feedback** - on code quality — and whether changes break existing code
 - **Shift-left** - Developers submit quality code with component tests and static analysis
@@ -270,6 +294,8 @@ From a testing perspective, some of the benefits of DevOps are: fast feedback on
 
 <SyllabusRef ref="2.1.4" />
 
+DevOps also brings challenges that teams need to plan for.
+
 - **The pipeline** - The delivery pipeline must be defined and established
 - **CI/CD tools** - must be introduced and maintained
 - **Test automation needs extra resources** - and may be difficult to establish and maintain
@@ -284,6 +310,8 @@ DevOps is not without its risks and challenges, which include: the DevOps delive
 ### Shift-Left Approach
 
 <SyllabusRef ref="2.1.5" />
+
+Shift-left means moving testing earlier in the lifecycle, so defects are found when they are cheapest to fix.
 
 <ShiftLeft />
 
@@ -306,6 +334,8 @@ For the shift-left approach it is important that stakeholders are convinced and 
 
 <SyllabusRef ref="2.1.5" />
 
+These are practical ways to move testing to the left.
+
 - **Review specs as a tester** - Often finds ambiguities, incompleteness and inconsistencies
 - **Write test cases before code** - and run code in a test harness during implementation
 - **Use CI and CD** - Fast feedback; automated component tests go in with the code
@@ -315,6 +345,8 @@ For the shift-left approach it is important that stakeholders are convinced and 
 ### Retrospectives
 
 <SyllabusRef ref="2.1.6" />
+
+A retrospective is a regular meeting where the team looks back at what happened and agrees how to improve.
 
 <Cycle center="Retrospective" caption="A retrospective: held at the end of an iteration or project, at a release milestone, or as needed (CTFL 2.1.6)" steps={[
   { title: 'What was successful?', sub: 'keep doing it', tone: 'green' }, { title: "What wasn't?", sub: 'what to improve', tone: 'red' }, { title: 'How do we move forward?', sub: 'agree actions', tone: 'blue' },
@@ -337,6 +369,8 @@ The results should be recorded and are normally part of the test completion repo
 ### Benefits of Retrospectives
 
 <SyllabusRef ref="2.1.6" />
+
+Run well, retrospectives improve both the testing and the way the team works together.
 
 - **Test effectiveness & efficiency** - by implementing process improvement suggestions
 - **Better testware** - by jointly reviewing the test process
@@ -373,6 +407,8 @@ Test types are groups of test activities related to specific quality characteris
 
 <SyllabusRef ref="2.2.1" />
 
+Test levels are groups of test activities that focus on different stages of development, from single components up to whole systems.
+
 <TestPyramid />
 
 Using an online shop as the example:
@@ -389,6 +425,8 @@ Using an online shop as the example:
 
 <SyllabusRef ref="2.2.1" />
 
+Component testing is the first test level: it checks individual components on their own.
+
 - **Focus** - Testing components in isolation
 - **Often needs specific support** - Unit test frameworks and test harnesses
 - **Normally done by developers** - in their development environment
@@ -398,6 +436,8 @@ Using an online shop as the example:
 
 <SyllabusRef ref="2.2.1" />
 
+Component integration testing checks that components work together correctly once they're combined.
+
 - Interfaces and interactions between components
 - Also known as unit integration testing
 - **Heavily dependent on the integration strategy** - Bottom-up, top-down or big-bang
@@ -406,6 +446,8 @@ Using an online shop as the example:
 ### System Testing
 
 <SyllabusRef ref="2.2.1" />
+
+System testing checks the behaviour and capabilities of the whole system, end to end.
 
 - **Focus** - Overall behaviour and capabilities of the entire system or product
 - **Functional testing** - of end-to-end tasks
@@ -418,6 +460,8 @@ Using an online shop as the example:
 
 <SyllabusRef ref="2.2.1" />
 
+System integration testing checks how the system works with other systems and external services.
+
 - **Focus** - Interfaces with other systems and external services
 - **Needs suitable test environments** - preferably similar to the operational environment
 - **Real connections** - Systems simulated in system testing are now integrated for real
@@ -426,6 +470,8 @@ Using an online shop as the example:
 ### Acceptance Testing
 
 <SyllabusRef ref="2.2.1" />
+
+Acceptance testing checks whether the system meets the users' business needs and is ready to be deployed.
 
 - **Focus** - Validation, and demonstrating readiness for deployment
 - **Does it fulfil the user's business need?** - Ideally performed by the intended users
@@ -477,6 +523,8 @@ Test levels are distinguished by the following non-exhaustive list of attributes
 
 <SyllabusRef ref="2.2.2" />
 
+Test types group testing by what it checks, and unlike test levels, any test type can be used at any level.
+
 <Tiles cols={2} caption="The four test types — all can be used at every test level (CTFL 2.2.2)" tiles={[
   { title: 'Functional', sub: 'WHAT the system does' }, { title: 'Non-functional', sub: 'HOW WELL it behaves' },
   { title: 'White-box', sub: 'based on internal structure' }, { title: 'Black-box', sub: 'based on the specification' },
@@ -496,6 +544,8 @@ All four test types can be applied to all test levels, although the focus will b
 
 <SyllabusRef ref="2.2.2" />
 
+Functional testing checks what the system does; non-functional testing checks how well it does it.
+
 - **Functional testing** - WHAT the test object should do · Evaluates the functions a component or system should perform · Checks functional completeness, correctness and appropriateness
 - **Non-functional testing** - HOW WELL the system behaves · Evaluates attributes other than functional characteristics · Checks the non-functional software quality characteristics
 
@@ -510,6 +560,8 @@ Non-functional testing evaluates attributes other than functional characteristic
 ### Quality Characteristics
 
 <SyllabusRef ref="2.2.2" />
+
+Non-functional testing checks the quality characteristics defined in the ISO/IEC 25010 standard.
 
 - Performance efficiency
 - Compatibility
@@ -533,6 +585,8 @@ The ISO/IEC 25010 standard provides the following classification of the non-func
 ### Non-Functional Testing in Practice
 
 <SyllabusRef ref="2.2.2" />
+
+Non-functional testing is often left until late, but it works best when it starts early.
 
 - **Start early** - e.g. in reviews and component testing
 - **Built on functional tests** - Same test, plus a non-functional check — e.g. response time
@@ -574,6 +628,8 @@ Is each test **functional** (what it does) or **non-functional** (how well it do
 
 <SyllabusRef ref="2.2.2" />
 
+Black-box and white-box testing differ in where the tests come from: the specification, or the internal structure.
+
 - **Black-box testing** - Specification-based · Derives tests from documentation external to the test object · Objective: check system behaviour against its specification
 - **White-box testing** - Structure-based · Derives tests from the implementation or internal structure — code, architecture, workflows, data flows · Objective: cover the underlying structure with tests to an acceptable level
 
@@ -600,6 +656,8 @@ Confirmation testing confirms that an original defect has been successfully fixe
 ### Regression Testing
 
 <SyllabusRef ref="2.2.3" />
+
+Regression testing checks that a change, even a correct fix, hasn't broken something that used to work.
 
 <Ripple />
 
@@ -635,6 +693,8 @@ A defect in the login page has just been fixed. Which kind of testing is each of
 ### Automating Regression Tests
 
 <SyllabusRef ref="2.2.3" />
+
+Regression tests are run again and again, which makes them ideal for automation.
 
 - **Run many times** - and the suite grows with every iteration or release
 - **Strong candidate for automation** - Start automating early in the project
@@ -694,6 +754,8 @@ Testing the changes to a system in production includes both evaluating the succe
 ### Triggers for Maintenance
 
 <SyllabusRef ref="2.3" />
+
+Maintenance testing is triggered by changes to a system that is already live, and there are three kinds of trigger.
 
 <Tiles cols={3} caption="What triggers maintenance testing (CTFL 2.3)" tiles={[
   { title: 'Modifications', sub: 'enhancements, fixes, hot fixes' }, { title: 'Upgrades & migrations', sub: 'new platforms, data conversion' },
