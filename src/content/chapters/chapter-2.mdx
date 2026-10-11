@@ -420,8 +420,9 @@ to whole systems. Using an online shop as the example:
 | System integration | Does it work with the third-party payment system? |
 | Acceptance | Does it meet the shop's business needs? |
 
-Each level is described below in the same way: what it tests, who usually does it (where the syllabus says), what it
-needs, and an example from the shop.
+> **🛒 Running example: an online shop.** Every test level below uses the same e-commerce website, so you can see
+> how the same product is tested differently at each level. Each level is described in the same way: what it tests,
+> who usually does it (where the syllabus says), what it needs, and an example from the shop.
 
 ### Component Testing
 
@@ -499,11 +500,32 @@ The syllabus names six main forms. Each asks a slightly different question:
 - **Alpha testing** - Potential users or independent testers try it at the developer's site
 - **Beta testing** - Potential or existing users try it at their own locations
 
+### What Distinguishes Each Level?
+
+<SyllabusRef ref="2.2.1" />
+
+Each test level is distinguished by five attributes, so the levels complement each other rather than overlap:
+
+- **Test object** - What is being tested
+- **Test objective** - What the testing aims to achieve
+- **Test basis** - What the tests are derived from
+- **Typical defects and failures** - What it tends to find
+- **Approach and responsibilities** - How it's done, and by whom
+
+**Some attributes can look the same at two levels**: system testing and acceptance testing both test the whole shop,
+for example. It's the **combination** of attributes that sets each level apart.
+
+<SyllabusText>
+
+Test levels are distinguished by the following non-exhaustive list of attributes, to avoid overlapping of test activities: test object; test objectives; test basis; defects and failures; approach and responsibilities.
+
+</SyllabusText>
+
 ### Practise: Test Levels
 
 <SyllabusRef ref="2.2.1" />
 
-Now try placing some tests at the right level. They all use the same online shop as the rest of this section.
+Now try two exercises on the test levels. They both use the same online shop as the rest of this section.
 
 <Exercise title="Which test level?">
 
@@ -526,15 +548,14 @@ For an online shop, which **test level** is each test at?
 </div>
 </Exercise>
 
-### What Distinguishes Each Level?
+<Exercise title="What distinguishes each level?">
 
-<SyllabusRef ref="2.2.1" />
+For each of the five test levels, what would be the typical **test object**, **objective**, **test basis**,
+**defects** and **approach** for the online shop?
 
-Each test level is distinguished by five attributes, so the levels complement each other rather than overlap.
-**Some attributes can look the same at two levels**: system testing and acceptance testing both test the whole
-shop, for example. It's the **combination** of attributes that sets each level apart.
+<div slot="answer">
 
-*Illustrative examples for the online shop (the syllabus names the attributes, not these examples):*
+*Illustrative examples (the syllabus names the attributes, not these examples):*
 
 | Level | Test object | Objective | Test basis | Typical defects | Approach |
 |---|---|---|---|---|---|
@@ -544,11 +565,8 @@ shop, for example. It's the **combination** of attributes that sets each level a
 | **System integration** | The shop and the payment provider | Check the interfaces with external systems | Interface agreements and external APIs | Lost or mismatched payment messages | A production-like test environment |
 | **Acceptance** | The whole shop, in real use | Show it meets business needs and is ready to deploy | User needs, business processes and contracts | Missing or unusable business features | Ideally the intended users |
 
-<SyllabusText>
-
-Test levels are distinguished by the following non-exhaustive list of attributes, to avoid overlapping of test activities: test object; test objectives; test basis; defects and failures; approach and responsibilities.
-
-</SyllabusText>
+</div>
+</Exercise>
 
 ### The Four Test Types
 
