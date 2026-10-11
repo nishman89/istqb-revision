@@ -161,11 +161,14 @@ Testing must be adapted to the SDLC to succeed. The choice of the SDLC impacts o
 
 <SyllabusRef ref="2.1.1" />
 
-The SDLC a project uses changes when, and how, each kind of testing happens.
+The SDLC a project uses changes when, and how, each kind of testing happens:
 
-- **Sequential** - Waterfall, V-model · Early phases: requirement reviews, test analysis and design · Code arrives late — dynamic testing comes late · Static testing can happen at any time
-- **Iterative & incremental** - Each iteration delivers an increment · Static and dynamic testing at all test levels, every iteration · Needs fast feedback · Needs extensive regression testing
-- **Change expected throughout** - Lightweight documentation · Extensive test automation for regression · Manual testing mostly experience-based (4.4)
+| | **Sequential** (e.g. waterfall, V-model) | **Iterative and incremental** | **Agile** |
+|---|---|---|---|
+| **How it works** | Each phase finishes before the next starts | Each iteration delivers a working increment | Change is expected throughout the project |
+| **Early on, testers…** | Take part in requirement reviews, test analysis and test design | Test in every iteration, from the start | Test in every iteration, from the start |
+| **Dynamic testing** | Comes late, because the code arrives late | In every iteration, at all test levels | In every iteration; regression testing is heavily automated |
+| **What it favours** | Static testing early, while the code is still being written | Fast feedback and extensive regression testing | Lightweight documentation, extensive test automation, and mostly experience-based manual testing (4.4) |
 
 <SyllabusText>
 
@@ -207,13 +210,12 @@ Testers are involved in reviewing work products as soon as drafts of this docume
 
 <SyllabusRef ref="2.1.3" />
 
-In test-first development, the tests are written before the code they check, and they guide how that code is written.
+In test-first development, the tests are written before the code they check, and they guide how that code is
+written. The syllabus names three approaches, **TDD**, **ATDD** and **BDD**, covered in the next topic.
 
-- **TDD, ATDD and BDD** - tests are defined first, as a way of directing development
-- **Early testing** - Tests are defined before the code is written
-- **Shift-left** - Testing moves earlier in the SDLC
-- **Iterative** - Supports an iterative development model
-- **Lasting value** - Tests persist as automated tests for future refactoring
+- **Early testing and shift-left** - Because the tests come first, problems are prevented or found before the code even exists
+- **Fits iterative development** - Tests are written and run iteration by iteration
+- **Lasting value** - The tests stay on as automated tests, protecting the code during later changes and refactoring
 
 <SyllabusText>
 
@@ -439,9 +441,19 @@ Component testing is the first test level: it checks individual components on th
 Component integration testing checks that components work together correctly once they're combined.
 
 - **What it tests** - The interfaces and interactions between components
-- **What it depends on** - The integration strategy: bottom-up, top-down or big-bang
+- **What it depends on** - The integration strategy: bottom-up, top-down or big-bang (explained below)
 - **Also known as** - Unit integration testing
 - **Online shop example** - The basket, catalogue and checkout modules working together
+
+#### Integration strategies
+
+The syllabus only names the three strategies; this short explanation is background:
+
+- **Bottom-up** - Start with the lowest-level components and integrate upwards, using test **drivers** to call components that aren't ready yet
+- **Top-down** - Start with the top-level components and integrate downwards, using **stubs** in place of missing lower-level parts
+- **Big-bang** - Integrate everything at once and test it all together · Quick to set up, but when something fails it's hard to find which component caused it
+
+<Resource href="https://katalon.com/resources-center/blog/integration-testing" title="Integration testing: approaches explained" text="Big-bang, bottom-up, top-down and hybrid integration, with their pros and cons" />
 
 ### System Testing
 
@@ -518,12 +530,19 @@ For an online shop, which **test level** is each test at?
 
 <SyllabusRef ref="2.2.1" />
 
-- Each test level is distinguished by these attributes — so test activities don't overlap:
-- Test object
-- Test objectives
-- Test basis
-- Typical defects & failures
-- Approach & responsibilities
+Each test level is distinguished by five attributes, so the levels complement each other rather than overlap.
+**Some attributes can look the same at two levels**: system testing and acceptance testing both test the whole
+shop, for example. It's the **combination** of attributes that sets each level apart.
+
+*Illustrative examples for the online shop (the syllabus names the attributes, not these examples):*
+
+| Level | Test object | Objective | Test basis | Typical defects | Approach |
+|---|---|---|---|---|---|
+| **Component** | The basket total calculation | Find defects in one component | Component design and code | Wrong calculations, logic errors | Developers, mostly automated |
+| **Component integration** | The basket and checkout modules together | Find defects in the interfaces between components | Interface specifications and architecture | Wrong data passed between modules | Depends on the integration strategy |
+| **System** | The whole shop | Check end-to-end behaviour against the specification | System requirements and use cases | End-to-end failures, slow pages | Often an independent test team |
+| **System integration** | The shop and the payment provider | Check the interfaces with external systems | Interface agreements and external APIs | Lost or mismatched payment messages | A production-like test environment |
+| **Acceptance** | The whole shop, in real use | Show it meets business needs and is ready to deploy | User needs, business processes and contracts | Missing or unusable business features | Ideally the intended users |
 
 <SyllabusText>
 
@@ -579,39 +598,35 @@ Non-functional testing evaluates attributes other than functional characteristic
 
 <SyllabusRef ref="2.2.2" />
 
-Non-functional testing checks the quality characteristics defined in the ISO/IEC 25010 standard.
+Non-functional testing checks the quality characteristics defined in the ISO/IEC 25010 standard. Using the online
+shop as the example:
 
-- Performance efficiency
-- Compatibility
-- Usability
-- Reliability
-- Security
-- Maintainability
-- Portability
-- Safety
+| Characteristic | What it checks | Example |
+|---|---|---|
+| **Performance efficiency** | How fast it is, and how well it uses resources | The checkout loads within 2 seconds with 1,000 shoppers online |
+| **Compatibility** | Whether it works alongside other systems and environments | It works on Chrome, Safari and Firefox, and exchanges data with the payment provider |
+| **Usability** | How easy it is to use, for everyone | A new customer can buy something without help; it works with a screen reader |
+| **Reliability** | Whether it keeps working, and recovers from problems | No orders are lost if the server restarts |
+| **Security** | Whether data and access are protected | One customer can never see another's card details |
+| **Maintainability** | How easy it is to change | Developers can add a new payment method without breaking the checkout |
+| **Portability** | How easily it moves to other environments | It runs on a new cloud host without changes |
+| **Safety** | Whether it avoids causing harm | A shop isn't safety-critical, so from another domain: a medical pump never delivers the wrong dose |
 
-*Safety was added in the 2023 edition of ISO/IEC 25010, so it appears on the Chapter 2 handout alongside the seven characteristics in the syllabus.*
+*Safety was added in the 2023 edition of ISO/IEC 25010, so it appears on the Chapter 2 handout alongside the seven
+characteristics in the syllabus. Beyond the syllabus: the 2023 edition also renamed usability to **interaction
+capability** and portability to **flexibility**. The exam uses the syllabus names above.*
+
+#### Good practice for non-functional testing
+
+- **Start early, at every level** - e.g. in reviews and component testing · Non-functional defects found late can seriously threaten a project
+- **Build on functional tests** - Many non-functional tests reuse a functional test and add a check, e.g. that it responds within 2 seconds
+- **Use the right environment** - Some need a specific setup, e.g. a usability lab for usability testing
 
 <Resource href="https://www.perforce.com/blog/qac/what-is-iso-25010" title="What is ISO 25010?" text="A plain-English guide to the software quality characteristics" />
 
 <SyllabusText>
 
 The ISO/IEC 25010 standard provides the following classification of the non-functional software quality characteristics: performance efficiency, compatibility, usability, reliability, security, maintainability, portability.
-
-</SyllabusText>
-
-### Non-Functional Testing in Practice
-
-<SyllabusRef ref="2.2.2" />
-
-Non-functional testing is often left until late, but it works best when it starts early.
-
-- **Start early** - e.g. in reviews and component testing
-- **Built on functional tests** - Same test, plus a non-functional check — e.g. response time
-- **Late discovery is dangerous** - Late non-functional defects threaten the project
-- **Special environments** - e.g. a usability lab for usability testing
-
-<SyllabusText>
 
 It is sometimes appropriate for non-functional testing to start early in the lifecycle (e.g., as part of reviews and component testing or system testing). Many non-functional tests are derived from functional tests as they use the same functional tests, but check that while performing the function, a non-functional constraint is satisfied (e.g., checking that a function performs within a specified time, or a function can be ported to a new platform). The late discovery of non-functional defects can pose a serious threat to the success of a project. Non-functional testing sometimes needs a very specific test environment, such as a usability lab for usability testing.
 
@@ -716,12 +731,12 @@ A defect in the login page has just been fixed. Which kind of testing is each of
 
 <SyllabusRef ref="2.2.3" />
 
-Regression tests are run again and again, which makes them ideal for automation.
+Regression test suites are run many times, and they grow with every iteration or release. That makes regression
+testing a **strong candidate for automation**, ideally starting early in the project.
 
-- **Run many times** - and the suite grows with every iteration or release
-- **Strong candidate for automation** - Start automating early in the project
-- **Include in CI** - Automated regression tests belong in the pipeline — possibly at several levels
-- **At every test level** - Confirmation and/or regression testing wherever fixes or changes are made
+Where continuous integration is used, as in DevOps, automated regression tests should be **part of the pipeline**,
+possibly at several test levels. And wherever defects are fixed or changes are made, at any test level,
+confirmation and regression testing are needed there too.
 
 <SyllabusText>
 
