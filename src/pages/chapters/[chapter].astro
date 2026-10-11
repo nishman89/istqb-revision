@@ -388,7 +388,6 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
   .prose :global(.card-item__title) { font: 700 1.05rem/1.3 var(--font-head); color: var(--charcoal); }
   .prose :global(.card-item__body) { font-size: 0.95rem; color: var(--grey); line-height: 1.5; }
   .prose :global(li)::marker { color: var(--pink); }
-  .prose :global(table) { background: var(--surface); display: block; overflow-x: auto; }
 
   .finish p { color: #ddd; }
   .finish__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
@@ -411,7 +410,6 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
     .section-controls { justify-content: flex-start; }
     .prose :global(details.chapter-section > summary) { padding: 0.75rem 1rem; }
     .prose :global(details.chapter-section > summary h2) { font-size: 1.15rem; }
-    .prose :global(.table-wrap), .prose :global(table) { display: block; overflow-x: auto; }
     .pager { flex-direction: column; }
     .prose :global(ul.cards > .card-item) { flex-basis: 100%; }
     .prose :global(ul.deflist > .card-item) { grid-template-columns: 1fr; gap: 0.15rem; }

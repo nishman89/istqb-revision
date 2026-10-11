@@ -110,6 +110,20 @@ function addTestIds(tree) {
   });
 }
 
+/** Wrap every table in <div class="table-wrap"> so it can fill the width and still scroll on phones. */
+function wrapTables(node, parent) {
+  if (!node.children) return;
+  node.children = node.children.map((child) => {
+    if (child.type === 'element' && child.tagName === 'table' && !(node.properties?.className ?? []).includes('table-wrap')) {
+      const firstRow = (child.children.find((c) => c.tagName === 'thead' || c.tagName === 'tbody')?.children ?? []).find((c) => c.tagName === 'tr');
+      const cols = (firstRow?.children ?? []).filter((c) => c.tagName === 'th' || c.tagName === 'td').length;
+      return el('div', { className: ['table-wrap', ...(cols >= 5 ? ['table-wrap--wide'] : [])] }, [child]);
+    }
+    wrapTables(child, node);
+    return child;
+  });
+}
+
 export default function collapsibleSections() {
   return (tree) => {
     tree.children = wrap(tree.children, 'h2', 'chapter-section');
@@ -126,5 +140,6 @@ export default function collapsibleSections() {
       ]));
     }
     addTestIds(tree);
+    wrapTables(tree);
   };
 }

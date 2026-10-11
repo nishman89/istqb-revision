@@ -92,10 +92,21 @@ h3 { font-size: 1.35rem; }
 .pill--dark { background: var(--charcoal); color: #fff; }
 .pill--success { background: var(--success-tint); color: var(--success); }
 
-table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
-th, td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-thead th, tr:first-child th { background: var(--pink); color: #fff; }
-.table-wrap { overflow-x: auto; margin: 1rem 0; border-radius: 10px; background: var(--surface); }
+/* Tables: one style everywhere. Wrap them in .table-wrap so they fill the width and scroll on small screens. */
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; line-height: 1.45; }
+th, td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th + th, td + td, th + td, td + th { border-left: 1px solid var(--line); }
+thead th, tr:first-child th { background: var(--pink); color: #fff; font-weight: 700; }
+thead th + th { border-left-color: rgb(255 255 255 / 0.25); }
+tbody tr:nth-child(even) > * { background: rgb(0 0 0 / 0.022); }
+tbody tr:last-child > * { border-bottom: 0; }
+.table-wrap { overflow-x: auto; margin: 1rem 0; border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
+.table-wrap > table { margin: 0; }
+@media (max-width: 40rem) {
+  table { font-size: 0.9rem; }
+  th, td { padding: 0.55rem 0.7rem; }
+  .table-wrap--wide > table { min-width: 36rem; }
+}
 
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;

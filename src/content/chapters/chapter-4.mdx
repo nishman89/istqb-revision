@@ -411,8 +411,6 @@ Conditions are usually true or false (a **limited-entry** table), but they can a
 
 A support team diagnoses printer problems from three symptoms the customer describes. The table tells the adviser what to check:
 
-<div class="table-wrap">
-
 |   | Conditions / actions | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 |---|---|---|---|---|---|---|---|---|---|
 | Conditions | Printer does not print | T | T | T | T | F | F | F | F |
@@ -423,8 +421,6 @@ A support team diagnoses printer problems from three symptoms the customer descr
 |   | Ensure printer software is installed | X |   | X |   | X |   | X |   |
 |   | Check / replace ink | X | X |   |   | X | X |   |   |
 |   | Check for paper jam |   | X |   | X |   |   |   |   |
-
-</div>
 
 <SyllabusText>
 
@@ -518,16 +514,12 @@ The same model can be written as a **state table**: one row per state, one colum
 transitions; **empty cells are invalid transitions**, which the diagram doesn't show. For example, you can't *pause*
 from the main menu:
 
-<div class="table-wrap">
-
 | State / event | Start | Pause | Resume | Quit | Loses a life | Menu |
 |---|---|---|---|---|---|---|
 | **Main menu** | Game running | | | | | |
 | **Game running** | | Game paused | | | Game over [lives = 1] | |
 | **Game paused** | | | Game running | Main menu | | |
 | **Game over** | | | | | | Main menu |
-
-</div>
 
 That gives **6 valid** transitions and **18 invalid** ones: 24 in total (4 states × 6 events). A **test case** is a
 sequence of events, so one test case usually covers several transitions.
