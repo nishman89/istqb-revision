@@ -718,13 +718,16 @@ Traceability means keeping links between the test basis (such as requirements) a
   { title: 'Test results', sub: 'pass / fail' }, { title: 'Defects', sub: 'what went wrong' },
 ]} />
 
-- Test basis
-- Testware
-- Test results
-- Defects
-- **Enables monitoring & control** - Maintain links across the whole test process
-- **Supports coverage evaluation** - Easier when the test basis has measurable coverage criteria
-- **Coverage criteria as KPIs** - Show how far the test objectives have been achieved
+Keeping these links in place across the whole test process pays off in several ways:
+
+- **Monitoring and control** - See at any moment which requirements have been tested, and how they are doing
+- **Coverage evaluation** - Measure how much of the test basis the tests cover, which is easiest when it has measurable coverage criteria
+- **Progress against objectives** - Coverage criteria can act as key performance indicators, showing how far the test objectives have been achieved
+
+> **Example: a defect is found.** Traceability links the failed test case back, through its test condition, to the
+> requirement it covers. Now you can judge the defect's **impact**: if it affects a critical requirement, such as
+> taking payments, it needs fixing now; if it affects a minor one, such as a typo on a help page, it can go on the
+> backlog. The same links show which other tests to re-run once it is fixed.
 
 <SyllabusText>
 
