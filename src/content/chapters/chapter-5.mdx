@@ -12,6 +12,11 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import Resource from '../../components/Resource.astro';
+import TraceTypes from '../../components/TraceTypes.astro';
+import TraceFlow from '../../components/TraceFlow.astro';
+import SeverityGrid from '../../components/SeverityGrid.astro';
+import SideBySide from '../../components/SideBySide.astro';
 import MiniPyramids from '../../components/MiniPyramids.astro';
 import LinkCards from '../../components/LinkCards.astro';
 import IconCards from '../../components/IconCards.astro';
@@ -674,21 +679,17 @@ Product risk analysis may influence the thoroughness and scope of testing. Its r
 
 <SyllabusRef ref="5.2.4" />
 
-Once product risks have been analysed, the team decides how to respond to each one.
+Once product risks have been analysed, the team decides how to respond to each one. **Risk control** has two parts:
 
-<Tiles cols={4} caption="Responses to a product risk (CTFL 5.2.4)" tiles={[
-  { title: 'Mitigate', sub: 'test it' }, { title: 'Accept', sub: 'live with it' }, { title: 'Transfer', sub: 'e.g. insurance' }, { title: 'Contingency', sub: 'plan B' },
-]} />
+- **Risk mitigation** - Carry out the actions agreed in risk assessment, to reduce the risk level
+- **Risk monitoring** - Check the mitigation is working, improve the risk assessment and spot new risks
 
-- **Risk mitigation** - Implement the actions proposed in risk assessment · Reduce the risk level
-- **Risk monitoring** - Check mitigation actions are working · Improve risk assessment · Spot emerging risks
+#### The four ways to respond to a product risk
 
-#### Response options
-
-- Mitigation by testing
-- Acceptance
-- Transfer (e.g. insurance)
-- Contingency plan
+- **Mitigate** - Reduce the risk's likelihood or impact, **mainly by testing** · Example: extra performance tests on the checkout
+- **Accept** - Decide to live with the risk · Example: a minor layout glitch on an old browser
+- **Transfer** - Pass the risk to someone else · Example: insurance, or a supplier contract
+- **Contingency plan** - Prepare a plan B in case the risk happens · Example: a ready-to-go rollback if a release fails
 
 <SyllabusText>
 
@@ -827,12 +828,12 @@ A test completion report is prepared during test completion, when a project, tes
 
 The right report, and the right way to share it, depends on who it's for.
 
-<Compare caption="Choose the report — and the way you share it — for the audience (CTFL 5.3.2)" columns={[
-  { title: 'Test progress report', sub: 'during testing', points: ['For people within the team', 'Frequent', 'Informal — e.g. a dashboard or chat'] },
-  { title: 'Test completion report', sub: 'at the end', points: ['For a completed project or stage', 'Follows a set template', 'Formal'] },
-]} />
+<SideBySide
+  left={{ title: 'Test progress report', question: 'How is testing going?', points: ['Written during testing, often', 'For people within the team', 'Informal: e.g. a dashboard or a chat message'] }}
+  right={{ title: 'Test completion report', question: 'How did testing go?', points: ['Written once, at the end of a project or stage', 'For stakeholders', 'Formal: follows a set template'] }}
+/>
 
-> **ISO/IEC/IEEE 29119-3** has templates and examples for test progress and test completion reports.
+<Resource kind="standard" href="https://www.iso.org/standard/79429.html" title="ISO/IEC/IEEE 29119-3: Test documentation" text="The international standard with templates for test progress and test completion reports. Note: this is a paid standard; the page describes it, but the full document must be bought." />
 
 <SyllabusText>
 
@@ -883,11 +884,18 @@ In testing, configuration management (CM) provides a discipline for identifying,
 
 <SyllabusRef ref="5.4" />
 
-Configuration management (CM) keeps track of every item testing relies on, so any result can be reproduced later. It ensures that:
+Configuration management (CM) keeps track of every item testing relies on, so any result can be reproduced later.
+It ensures that:
 
-- **Every item is controlled** - Uniquely identified, version controlled, tracked for changes, related to other items — so traceability is kept
-- **Unambiguous references** - All documentation and software items are referenced clearly in test documentation
-- **Automated in DevOps** - CI / CD pipelines normally include automated CM
+- **Every item is uniquely identified** - Each configuration item, including the test items, has its own ID
+- **Every item is version controlled** - You always know exactly which version was tested
+- **Changes are tracked** - Items are linked to each other, so traceability is kept
+- **References are unambiguous** - Test documentation names exactly which documents and software versions it refers to
+
+> **Example: a test fails.** CM tells you exactly which build, test script and test environment versions were used,
+> so the failure can be reproduced and the fix confirmed against the right version.
+
+In DevOps, configuration management is normally **automated** as part of the CI/CD pipeline.
 
 <SyllabusText>
 
@@ -903,14 +911,15 @@ Continuous integration, continuous delivery, continuous deployment and the assoc
 
 <SyllabusRef ref="5.5" />
 
+**Finding defects is a major test objective**, so an established defect management process is essential:
+
 <Flow caption="The defect management process (CTFL 5.5)" steps={[
-  { title: 'Log', sub: 'the anomaly' }, { title: 'Analyse & classify', sub: 'real defect? severity?' }, { title: 'Decide', sub: 'fix, defer or reject' }, { title: 'Close', sub: 'after confirmation' },
+  { title: 'Log', sub: 'the reported anomaly' }, { title: 'Analyse & classify' }, { title: 'Decide a response', sub: 'fix it, or keep it as it is' }, { title: 'Close', sub: 'the defect report' },
 ]} />
 
-Finding defects is a major test objective, so an established **defect management process** is essential:
-
-> **Not every anomaly is a defect.** It could be a false positive or a change request. The process applies to **all
-> stakeholders**, and static analysis findings are handled the same way.
+- **Not always a defect** - An anomaly could be a false positive or a change request
+- **Everyone follows it** - The process applies to all stakeholders
+- **Static testing too** - Handle static analysis findings the same way
 
 <SyllabusText>
 
@@ -954,10 +963,7 @@ ISTQB glossary — Priority: the level of (business) importance assigned to an i
 
 Severity and priority are often confused: severity is about impact, priority is about urgency, and the two don't always match.
 
-- **High priority · Low severity** - Low impact but very visible or unfriendly — e.g. someone else's logo, a missing minor feature
-- **High priority · High severity** - Fix now — e.g. data loss, missing key feature, security violation
-- **Low priority · Low severity** - Cosmetic errors, spelling mistakes
-- **Low priority · High severity** - Big impact on minor or unreleased areas — users can still work
+<SeverityGrid />
 
 ### Defect Lifecycle
 
@@ -981,34 +987,33 @@ A defect report records a problem so that it can be understood, fixed and tracke
 
 <SyllabusRef ref="5.5" />
 
-A good defect report gives the reader everything they need to understand and reproduce the problem.
+A good defect report gives the reader everything they need to understand and reproduce the problem. A typical
+defect report includes these fields:
 
-- **Identify it** - Unique identifier · Title — a short summary · Date, organisation, author and role · Test object and test environment · Context — test case, activity, SDLC phase, technique or data used
-- **Describe it** - Steps to reproduce, plus logs, dumps, screenshots or recordings · Expected vs actual results · Severity and priority · Status (open, deferred, duplicate…) · References — e.g. to the test case
+| Field | What it holds |
+|---|---|
+| **Unique ID** | So the defect can be referenced and tracked |
+| **Title** | A short, clear summary |
+| **Date, organisation and author** | When it was raised, by which team, and by whom (with their role) |
+| **Assigned to** | Who will investigate and fix it |
+| **Test object, version and environment** | Exactly what was tested, which version, and where |
+| **Context** | The test case, activity, SDLC phase, technique and test data involved |
+| **Description** | Enough detail to reproduce it: steps, plus logs, screenshots or recordings |
+| **Expected result** / **Actual result** | What should have happened, and what did |
+| **Severity** | How big the impact is |
+| **Priority** | How urgently it should be fixed |
+| **Status** | e.g. open, deferred, duplicate, fixed, closed |
+| **References** | e.g. the test case that failed, and other areas that might be affected |
+
+> **Include the right amount of detail.** Too little, and the defect can't be reproduced or fixed; too much, and the
+> important facts get lost. Always state **which version of the software was tested** and in **which test
+> environment**, because a defect may only appear in one build or one setup.
 
 <SyllabusText>
 
 A defect report logged during dynamic testing typically includes: unique identifier; title with a short summary of the anomaly being reported; date when the anomaly was observed, issuing organization, and author, including their role; identification of the test object and test environment; context of the defect (e.g., test case being run, test activity being performed, SDLC phase, and other relevant information such as the test technique, checklist or test data being used); description of the failure to enable reproduction and resolution including the steps that detected the anomaly, and any relevant test logs, database dumps, screenshots, or recordings; expected results and actual results; severity of the defect (degree of impact) on the interests of stakeholders or requirements; priority to fix; status of the defect (e.g., open, deferred, duplicate, waiting to be fixed, awaiting confirmation testing, re-opened, closed, rejected); references (e.g., to the test case).
 
 </SyllabusText>
-
-### Defect Report Template
-
-<SyllabusRef ref="5.5" />
-
-This template shows the fields a typical defect report includes.
-
-| Field | What it holds |
-|---|---|
-| **Unique ID** | So the defect can be referenced and tracked |
-| **Tester's name** / **Assigned to** | Who found it, and who will fix it |
-| **Summary** | A short, clear title |
-| **Expected result** / **Actual result** | What should have happened, and what did |
-| **Severity** | How big the impact is |
-| **Priority** | How urgently it should be fixed |
-| **Status** | e.g. open, deferred, fixed, closed |
-| **Description** | Enough detail to reproduce it — steps, environment, test data |
-| **Further comments** | References, and other areas that might be affected |
 
 <Exercise source="workbook" kind="example" title="Worked example: a defect report">
 
@@ -1036,9 +1041,7 @@ A discount code that expired on 31-08-2026 is still accepted at checkout. Fill i
 
 Linking defects to test cases and requirements shows the impact of every defect and every change.
 
-<Flow caption="Two-way links between requirements, test cases and defects" steps={[
-  { title: 'Requirements' }, { title: 'Test cases' }, { title: 'Defects' },
-]} />
+<TraceFlow />
 
 <WhenThen whenLabel="When…" thenLabel="…traceability lets you" rows={[
   { when: 'A requirement changes', then: 'See which tests and defects are affected (impact analysis)' },
@@ -1050,10 +1053,11 @@ Linking defects to test cases and requirements shows the impact of every defect 
 
 <SyllabusRef beyond />
 
-- A traceability matrix maps requirements to test cases and discovered defects.
-- **Forward** - Requirements → test cases · Every requirement is tested thoroughly
-- **Backward** - Test cases → requirements · Controls scope creep — no unnecessary features
-- **Bidirectional** - Both directions · Every requirement has related tests · Analyses the impact of changes and defects
+A traceability matrix maps requirements to test cases and the defects found. It can be read in three ways:
+
+<TraceTypes />
+
+You'll see a real example in the next topic, [Traceability Matrix](#traceability-matrix).
 
 ### Traceability Matrix
 
@@ -1070,4 +1074,16 @@ A traceability matrix shows which test cases cover which requirements, so gaps i
 | 1.1.6 | 2 |   |   | X | X |   |   |   |   |   |
 | 1.1.7 | 1 |   |   | X |   |   |   |   |   |   |
 
-- **Req2 de-scoped?** Test 1.1.2 only covers Req2, so it can be removed.
+
+<Exercise title="What if Req2 is de-scoped?">
+
+The project decides to drop **Req2**. Using the matrix above, what would happen to the test cases?
+
+<div slot="answer">
+
+**Test case 1.1.2 can be removed too.** Reading down the Req2 column, only 1.1.2 tests it; reading across row 1.1.2,
+it covers nothing else. So once Req2 is gone, that test no longer checks anything that's needed. This is
+traceability supporting **impact analysis**: you can see exactly which tests a change affects, rather than guessing.
+
+</div>
+</Exercise>

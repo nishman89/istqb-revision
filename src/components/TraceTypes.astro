@@ -1,0 +1,31 @@
+---
+/** Forward, backward and bidirectional traceability, each with a direction strip and the question it answers. */
+const types = [
+  { title: 'Forward', dir: '→', question: 'Is every requirement tested?', text: 'Makes sure every requirement is tested thoroughly.' },
+  { title: 'Backward', dir: '←', question: 'Is every test needed?', text: 'Controls scope creep: no tests or features without a requirement.' },
+  { title: 'Bidirectional', dir: '⇄', question: 'What does this change or defect affect?', text: 'Every requirement has tests, and you can analyse the impact of changes and defects.' },
+];
+---
+<div class="tt">
+  {types.map((t, i) => (
+    <section class:list={['tt__card', i % 2 ? 'tt__card--dark' : 'tt__card--pink']}>
+      <p class="tt__strip" aria-label={`Requirements ${t.dir} test cases`}><span>Requirements</span><b aria-hidden="true">{t.dir}</b><span>Test cases</span></p>
+      <h4>{t.title}</h4>
+      <p class="tt__q">“{t.question}”</p>
+      <p class="tt__text">{t.text}</p>
+    </section>
+  ))}
+</div>
+
+<style>
+  .tt { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+  .tt__card { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.9rem 1rem; background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); border-top: 5px solid var(--pink); }
+  .tt__card--dark { border-top-color: var(--charcoal); }
+  .tt__card p { margin: 0; }
+  .tt__strip { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 0.4rem; padding: 0.45rem 0.5rem; border-radius: 10px; background: var(--bg); font-size: 0.78rem; font-weight: 700; text-align: center; }
+  .tt__strip b { font-size: 1.25rem; color: var(--pink-dark); }
+  .tt .tt__card h4 { margin: 0.25rem 0 0; font: 700 1.1rem var(--font-head); color: var(--charcoal); text-transform: none; letter-spacing: 0; }
+  .tt__q { font-weight: 700; }
+  .tt__text { font-size: 0.93rem; color: var(--grey); }
+  @media (max-width: 40rem) { .tt { grid-template-columns: 1fr; } }
+</style>

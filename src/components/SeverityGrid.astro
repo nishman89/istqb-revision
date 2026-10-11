@@ -1,0 +1,45 @@
+---
+/** Severity vs priority as a 2 × 2 grid (priority up, severity across), as on the Chapter 5 slide. Stacks on phones. */
+const cells = [
+  { p: 'High', s: 'Low', cls: 'sg--pink', text: 'Low impact but very visible or unfriendly: e.g. someone else\'s logo, a missing minor feature' },
+  { p: 'High', s: 'High', cls: 'sg--dark', text: 'Fix now: e.g. data loss, a missing key feature, a security violation' },
+  { p: 'Low', s: 'Low', cls: 'sg--grey', text: 'Cosmetic errors, spelling mistakes' },
+  { p: 'Low', s: 'High', cls: 'sg--soft', text: 'Big impact on minor or unreleased areas: users can still work' },
+];
+---
+<div class="sg" role="group" aria-label="Severity versus priority">
+  <span class="sg__y" aria-hidden="true">PRIORITY →</span>
+  <div class="sg__grid">
+    {cells.map((c) => (
+      <div class:list={['sg__cell', c.cls]}>
+        <p class="sg__tag">Priority: {c.p} · Severity: {c.s}</p>
+        <p class="sg__title">{c.p} priority · {c.s} severity</p>
+        <p class="sg__text">{c.text}</p>
+      </div>
+    ))}
+  </div>
+  <span class="sg__x" aria-hidden="true">SEVERITY →</span>
+</div>
+
+<style>
+  .sg { display: grid; grid-template-columns: auto 1fr; grid-template-rows: 1fr auto; gap: 0.5rem; margin: 1rem 0; }
+  .sg__y { grid-row: 1; writing-mode: vertical-rl; transform: rotate(180deg); align-self: center; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; color: var(--grey); }
+  .sg__x { grid-column: 2; text-align: center; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; color: var(--grey); }
+  .sg__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .sg__cell { padding: 1rem 1.1rem; border-radius: 14px; min-height: 8rem; }
+  .sg__cell p { margin: 0; }
+  .sg__tag { display: none; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.85; margin-bottom: 0.3rem !important; }
+  .sg__title { font: 700 1.05rem var(--font-head); margin-bottom: 0.3rem !important; }
+  .sg__text { font-size: 0.95rem; }
+  .sg--pink { background: var(--pink); color: #fff; }
+  .sg--dark { background: var(--charcoal); color: #fff; }
+  .sg--grey { background: #e4e6e6; color: var(--charcoal); }
+  .sg--soft { background: #f4b6c5; color: var(--charcoal); }
+  @media (max-width: 40rem) {
+    .sg { grid-template-columns: 1fr; }
+    .sg__y, .sg__x { display: none; }
+    .sg__grid { grid-template-columns: 1fr; }
+    .sg__cell { min-height: 0; }
+    .sg__tag { display: block; }
+  }
+</style>
