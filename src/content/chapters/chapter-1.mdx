@@ -12,6 +12,7 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import PrincipleCards from '../../components/PrincipleCards.astro';
 import SideBySide from '../../components/SideBySide.astro';
 import IconCards from '../../components/IconCards.astro';
 import Resource from '../../components/Resource.astro';
@@ -428,11 +429,16 @@ The earlier we do this in the development process, the better.
 
 <SyllabusRef ref="1.3" />
 
-<Tiles caption="The seven testing principles (CTFL 1.3)" tiles={[
-  { label: '1', title: 'Testing shows the presence of defects', sub: 'not their absence' }, { label: '2', title: 'Exhaustive testing is impossible', sub: 'use techniques and risk' },
-  { label: '3', title: 'Early testing saves time and money' }, { label: '4', title: 'Defects cluster together', sub: 'the Pareto principle' },
-  { label: '5', title: 'Tests wear out', sub: 'the pesticide paradox' }, { label: '6', title: 'Testing is context dependent' },
-  { label: '7', title: 'Absence-of-defects fallacy', sub: 'verify AND validate' },
+Tap a principle to read about it:
+
+<PrincipleCards items={[
+  { heading: "Principle 1: Testing shows the presence, not the absence, of defects", title: 'Testing shows the presence of defects', sub: 'not their absence' },
+  { heading: "Principle 2: Exhaustive testing is impossible", title: 'Exhaustive testing is impossible', sub: 'so use techniques and risk to focus' },
+  { heading: "Principle 3: Early testing saves time and money", title: 'Early testing saves time and money', sub: 'the earlier, the cheaper' },
+  { heading: "Principle 4: Defects cluster together", title: 'Defects cluster together', sub: 'the Pareto principle' },
+  { heading: "Principle 5: Tests wear out", title: 'Tests wear out', sub: 'the pesticide paradox' },
+  { heading: "Principle 6: Testing is context dependent", title: 'Testing is context dependent', sub: 'no single approach fits all' },
+  { heading: "Principle 7: Absence-of-defects fallacy", title: 'Absence-of-defects fallacy', sub: 'verify AND validate' },
 ]} />
 
 
