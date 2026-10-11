@@ -96,7 +96,7 @@ const withKeyword = qs.filter((q) => keywords.some(({ word }) => new RegExp(`\\b
       </div>
       <div class="grid k3">
         {K3_TOPICS.map((t, i) => (
-          <article class="card k3__card">
+          <article class="card k3__card" id={`k3-${i + 1}`}>
             <span class="k3__num">{i + 1}</span>
             <span class="pill">{t.lo}</span>
             <h3>{t.title}</h3>

@@ -330,6 +330,10 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
   .prose :global(.label-syntax) { margin: 0.5rem 0 1rem; }
   .prose :global(.label-syntax code) { font-size: 1.05rem; padding: 0.35rem 0.75rem; border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); color: var(--pink-dark); }
 
+  /* "Examined at K3" link to the exam method */
+  .prose :global(.k3-link) { display: inline-block; margin: 0 0 0.75rem; padding: 0.35rem 0.85rem; border-radius: 999px; background: #e8f0fb; color: #174a7a; font-size: 0.9rem; }
+  .prose :global(.k3-link a) { color: #174a7a; font-weight: 700; }
+
   /* Warning callout: <div class="callout callout--warn"> … </div> */
   .prose :global(.callout) { margin: 1rem 0; padding: 0.9rem 1.25rem; border-radius: 0 12px 12px 0; }
   .prose :global(.callout p) { margin: 0; }
