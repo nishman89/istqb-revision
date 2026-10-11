@@ -11,7 +11,7 @@ const rows = columns.map((c) => c.points.flatMap((p) => wrap(p, Math.floor((w - 
 const height = 110 + Math.max(...rows.map((r) => r.length)) * 22;
 ---
 <Figure caption={caption}>
-  <svg viewBox={`0 0 820 ${height}`} role="img" aria-label={columns.map((c) => c.title).join(' compared with ')}>
+  <svg class="dg-svg" viewBox={`0 0 820 ${height}`} role="img" aria-label={columns.map((c) => c.title).join(' compared with ')}>
     {columns.map((c, i) => {
       const x = 10 + i * (w + gap);
       return (
@@ -32,4 +32,15 @@ const height = 110 + Math.max(...rows.map((r) => r.length)) * 22;
     })}
     {middle && <text class="t-lbl" x="410" y={height / 2} style="font-size:16px">{middle}</text>}
   </svg>
+  <div class="dg-phone dg-compare">
+    {columns.map((c, i) => (
+      <>
+        {i > 0 && <span class="dg-vs">{middle ?? 'vs'}</span>}
+        <section class:list={['dg-card', i % 2 ? 'dg-card--dark' : 'dg-card--pink']}>
+          <p class="dg-card__head"><strong>{c.title}</strong>{c.sub && <span>{c.sub}</span>}</p>
+          <ul>{c.points.map((pt) => <li>{pt}</li>)}</ul>
+        </section>
+      </>
+    ))}
+  </div>
 </Figure>

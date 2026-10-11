@@ -12,7 +12,7 @@ const pos = items.map((_, i) => {
 });
 ---
 <Figure caption={caption}>
-  <svg viewBox="0 0 820 350" role="img" aria-label={`${center}: ${items.join(', ')}`}>
+  <svg class="dg-svg" viewBox="0 0 820 350" role="img" aria-label={`${center}: ${items.join(', ')}`}>
     {pos.map(({ x, y }) => <line class="ln-dash" x1={cx} y1={cy} x2={x} y2={y}/>)}
     <ellipse cx={cx} cy={cy} rx="105" ry="48" class="b-deep"/>
     {wrap(center, 18).map((l, j, all) => <text class="t" x={cx} y={cy + (j - (all.length - 1) / 2) * 18} style="font-size:16px">{l}</text>)}
@@ -27,4 +27,8 @@ const pos = items.map((_, i) => {
       );
     })}
   </svg>
+  <div class="dg-phone dg-hub">
+    <p class="dg-center">{center}</p>
+    <ul>{items.map((it) => <li>{it}</li>)}</ul>
+  </div>
 </Figure>

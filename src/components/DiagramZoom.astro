@@ -1,0 +1,53 @@
+---
+/**
+ * "Tap to enlarge" for the one-off diagrams: opens the diagram full screen at a readable size, where it can be
+ * dragged, pinch-zoomed or viewed in landscape. Reusable diagram types have their own phone layout instead.
+ */
+---
+<dialog class="zoom" id="diagram-viewer" data-testid="diagram-viewer" aria-label="Enlarged diagram">
+  <div class="zoom__bar">
+    <span class="zoom__hint">Drag to move · pinch to zoom · turn your phone for more room</span>
+    <button type="button" class="zoom__close" data-zoom-close data-testid="diagram-viewer-close" aria-label="Close">✕</button>
+  </div>
+  <div class="zoom__stage" data-zoom-stage></div>
+  <p class="zoom__cap" data-zoom-cap></p>
+</dialog>
+
+<script>
+  const viewer = document.querySelector<HTMLDialogElement>('#diagram-viewer');
+  const stage = viewer?.querySelector<HTMLElement>('[data-zoom-stage]');
+  const cap = viewer?.querySelector<HTMLElement>('[data-zoom-cap]');
+  if (viewer && stage && cap) {
+    const open = (fig: HTMLElement) => {
+      const svg = fig.querySelector('svg');
+      if (!svg) return;
+      // keep the diagram's colours: they are styled by the .diagram class, so the copy needs a .diagram wrapper too
+      const holder = document.createElement('div');
+      holder.className = 'diagram zoom__diagram';
+      holder.append(svg.cloneNode(true));
+      stage.replaceChildren(holder);
+      cap.textContent = fig.querySelector('figcaption')?.textContent ?? '';
+      viewer.showModal();
+    };
+    const close = () => { viewer.close(); stage.replaceChildren(); };
+    viewer.querySelector('[data-zoom-close]')?.addEventListener('click', close);
+    viewer.addEventListener('click', (e) => { if (e.target === viewer) close(); });
+    viewer.addEventListener('close', () => stage.replaceChildren());
+
+    const touch = matchMedia('(pointer: coarse)').matches;
+    // One-off diagrams only: not the reusable types (they stack on phones) and not the ones that already scroll.
+    document.querySelectorAll<HTMLElement>('figure.diagram').forEach((fig, i) => {
+      const svg = fig.querySelector('svg');
+      if (!svg || svg.classList.contains('dg-svg') || fig.classList.contains('diagram--scroll')) return;
+      fig.classList.add('is-zoomable');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'diagram__zoom';
+      btn.dataset.testid = `enlarge-diagram-${i + 1}`;
+      btn.innerHTML = `<span aria-hidden="true">🔍</span> ${touch ? 'Tap' : 'Click'} to enlarge`;
+      btn.addEventListener('click', () => open(fig));
+      svg.addEventListener('click', () => open(fig));
+      fig.prepend(btn);
+    });
+  }
+</script>

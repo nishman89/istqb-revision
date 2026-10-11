@@ -12,7 +12,7 @@ const size = w < 130 ? 13 : 15;            // smaller text when there are many s
 const perChar = size * 0.62;
 ---
 <Figure caption={caption}>
-  <svg viewBox={`0 0 820 ${loop ? 210 : 160}`} role="img" aria-label={steps.map((s) => s.title).join(', then ')}>
+  <svg class="dg-svg" viewBox={`0 0 820 ${loop ? 210 : 160}`} role="img" aria-label={steps.map((s) => s.title).join(', then ')}>
     <defs><marker id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5c5c5c"/></marker></defs>
     {steps.map((s, i) => {
       const x = 10 + i * (w + gap), cx = x + w / 2;
@@ -36,4 +36,10 @@ const perChar = size * 0.62;
       </g>
     )}
   </svg>
+  <ol class="dg-phone dg-flow">
+    {steps.map((s, i) => (
+      <li class:list={['dg-box', i % 2 ? 'dg-box--dark' : 'dg-box--pink']}><strong>{s.title}</strong>{s.sub && <span>{s.sub}</span>}</li>
+    ))}
+    {loop && <li class="dg-loop">↻ {loop}</li>}
+  </ol>
 </Figure>

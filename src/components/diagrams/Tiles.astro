@@ -10,7 +10,7 @@ const gap = 16, w = (800 - gap * (cols - 1)) / cols, h = 120;
 const rowsN = Math.ceil(tiles.length / cols);
 ---
 <Figure caption={caption}>
-  <svg viewBox={`0 0 820 ${rowsN * (h + gap) + 10}`} role="img" aria-label={tiles.map((t) => t.title).join('; ')}>
+  <svg class="dg-svg" viewBox={`0 0 820 ${rowsN * (h + gap) + 10}`} role="img" aria-label={tiles.map((t) => t.title).join('; ')}>
     {tiles.map((t, i) => {
       const r = Math.floor(i / cols), inRow = r === rowsN - 1 ? tiles.length - r * cols : cols;
       const off = ((cols - inRow) * (w + gap)) / 2;
@@ -28,4 +28,9 @@ const rowsN = Math.ceil(tiles.length / cols);
       );
     })}
   </svg>
+  <ul class="dg-phone dg-tiles">
+    {tiles.map((t, i) => (
+      <li class:list={['dg-box', i % 2 ? 'dg-box--dark' : 'dg-box--pink']}>{t.label && <span class="dg-label">{t.label}</span>}<strong>{t.title}</strong>{t.sub && <span>{t.sub}</span>}</li>
+    ))}
+  </ul>
 </Figure>

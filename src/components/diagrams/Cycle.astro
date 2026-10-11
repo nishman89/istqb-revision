@@ -20,7 +20,7 @@ const arc = (i: number) => {
 };
 ---
 <Figure caption={caption}>
-  <svg viewBox="0 0 820 370" role="img" aria-label={steps.map((s) => s.title).join(', then ') + ', and repeat'}>
+  <svg class="dg-svg" viewBox="0 0 820 370" role="img" aria-label={steps.map((s) => s.title).join(', then ') + ', and repeat'}>
     <defs><marker id={id} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d42a57"/></marker></defs>
     {steps.map((_, i) => <path class="ln-pink" d={arc(i)} marker-end={`url(#${id})`}/>)}
     {center && (
@@ -42,4 +42,13 @@ const arc = (i: number) => {
       );
     })}
   </svg>
+  <div class="dg-phone dg-cycle">
+    {center && <p class="dg-center">{center}</p>}
+    <ol class="dg-flow">
+      {steps.map((s, i) => (
+        <li class:list={['dg-box', s.tone ? `dg-box--${s.tone}` : i % 2 ? 'dg-box--dark' : 'dg-box--pink']}><strong>{s.title}</strong>{s.sub && <span>{s.sub}</span>}</li>
+      ))}
+      <li class="dg-loop">↻ back to “{steps[0].title}”</li>
+    </ol>
+  </div>
 </Figure>
