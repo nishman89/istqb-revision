@@ -33,9 +33,20 @@ import TvStates from '../../components/diagrams/TvStates.astro';
 A **test technique** is a systematic way of deciding **what to test** and **how to test it**. Instead of picking tests
 at random, a technique helps you find a small but sufficient set of test cases that is likely to find defects.
 
-- **Test analysis** - Techniques help decide *what* to test: the test conditions
-- **Test design** - Techniques help decide *how* to test: the test cases
-- **Building blocks** - Each technique defines its test conditions, coverage items and test data
+Techniques are used in two of the test process activities from Chapter 1:
+
+- **Test analysis (what to test)** - Identify the **test conditions**
+- **Test design (how to test)** - Identify the **coverage items**, then design **test cases** and choose **test data** to cover them
+
+> **Example: an age field accepts 18 to 65.**
+>
+> **Test condition:** the age field is validated correctly.
+>
+> **Coverage items:** the valid and invalid groups of ages, and their boundaries.
+>
+> **Test cases:** enter 17, 18, 65 and 66, and check which are accepted.
+
+You'll see exactly how each technique finds its coverage items in 4.2 onwards.
 
 <SyllabusText>
 

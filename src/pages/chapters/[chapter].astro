@@ -344,6 +344,7 @@ const allCount = (await Promise.all(['A', 'B', 'C', 'D'].map((s) => getQuestions
   /* Callouts written as Markdown blockquotes ("> **The response:** …") */
   .prose :global(blockquote) { margin: 1rem 0; padding: 0.9rem 1.25rem; background: var(--success-tint); border-left: 6px solid var(--success); border-radius: 0 12px 12px 0; }
   .prose :global(blockquote p) { margin: 0; }
+  .prose :global(blockquote p + p) { margin-top: 0.4rem; }
 
 
   /* Component lists keep their own styling (not the generic white list box) */
