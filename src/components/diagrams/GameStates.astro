@@ -7,18 +7,18 @@ import Figure from '../Figure.astro';
 // unique per copy, so the diagram can appear more than once on a page
 const id = `gs-${Math.random().toString(36).slice(2, 8)}`;
 const states = [
-  { cx: 110, cy: 200, lines: ['Main', 'menu'] },
-  { cx: 340, cy: 110, lines: ['Game', 'running'] },
-  { cx: 570, cy: 200, lines: ['Game', 'paused'] },
-  { cx: 340, cy: 330, lines: ['Game', 'over'] },
+  { cx: 110, cy: 200, lines: ['MAIN', 'MENU'] },
+  { cx: 340, cy: 110, lines: ['RUNNING'] },
+  { cx: 570, cy: 200, lines: ['PAUSED'] },
+  { cx: 340, cy: 330, lines: ['GAME', 'OVER'] },
 ];
 const labels: { x: number; y: number; lines: string[]; anchor?: string }[] = [
-  { x: 176, y: 80, lines: ['Player clicks', '"Start"'] },
-  { x: 504, y: 80, lines: ['Player clicks', '"Pause"'] },
-  { x: 478, y: 236, lines: ['Player clicks', '"Resume"'] },
-  { x: 328, y: 204, lines: ['Player loses a life', '[lives = 1]'], anchor: 'end' },
-  { x: 214, y: 352, lines: ['Player clicks', '"Menu"'] },
-  { x: 340, y: 440, lines: ['Player clicks "Quit"'] },
+  { x: 180, y: 96, lines: ['start'] },
+  { x: 500, y: 96, lines: ['pause'] },
+  { x: 474, y: 236, lines: ['resume'] },
+  { x: 328, y: 218, lines: ['lose life [lives = 1]'], anchor: 'end' },
+  { x: 200, y: 352, lines: ['menu'] },
+  { x: 340, y: 440, lines: ['quit'] },
 ];
 ---
 <Figure scroll caption="A video game modelled with four states and six valid transitions (CTFL 4.2.4)">
@@ -39,11 +39,11 @@ const labels: { x: number; y: number; lines: string[]; anchor?: string }[] = [
     {states.map((s) => (
       <g>
         <circle cx={s.cx} cy={s.cy} r="52" fill="#ffffff" stroke="#2d2a2b" stroke-width="1.8"/>
-        {s.lines.map((l, i) => <text x={s.cx} y={s.cy - 9 + i * 19} text-anchor="middle" dominant-baseline="central" style="font-size:15px;font-weight:700;fill:#2d2a2b">{l}</text>)}
+        {s.lines.map((l, i) => <text x={s.cx} y={s.cy - (s.lines.length - 1) * 9.5 + i * 19} text-anchor="middle" dominant-baseline="central" style="font-size:15px;font-weight:700;fill:#2d2a2b">{l}</text>)}
       </g>
     ))}
     {labels.map((l) => l.lines.map((line, i) => (
-      <text x={l.x} y={l.y + i * 17} text-anchor={l.anchor ?? 'middle'} dominant-baseline="central" style="font-size:13.5px;font-weight:600;fill:#4a4a4a">{line}</text>
+      <text x={l.x} y={l.y + i * 17} text-anchor={l.anchor ?? 'middle'} dominant-baseline="central" style="font-size:14.5px;font-weight:600;fill:#4a4a4a">{line}</text>
     )))}
   </svg>
 </Figure>

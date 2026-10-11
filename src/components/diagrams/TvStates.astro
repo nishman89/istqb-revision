@@ -6,19 +6,19 @@
 import Figure from '../Figure.astro';
 const id = `tv-${Math.random().toString(36).slice(2, 8)}`;
 const states = [
-  { cx: 120, cy: 170, label: 'Off' },
-  { cx: 340, cy: 170, label: 'Standby' },
-  { cx: 560, cy: 170, label: 'On' },
+  { cx: 120, cy: 170, label: 'OFF' },
+  { cx: 340, cy: 170, label: 'STANDBY' },
+  { cx: 560, cy: 170, label: 'ON' },
 ];
 const labels = [
-  { x: 230, y: 112, text: 'TV button' },
-  { x: 230, y: 234, text: 'TV button' },
-  { x: 450, y: 112, text: 'Remote' },
-  { x: 450, y: 234, text: 'Remote' },
-  { x: 340, y: 326, text: 'TV button' },
+  { x: 230, y: 112, text: 'power' },
+  { x: 230, y: 234, text: 'power' },
+  { x: 450, y: 112, text: 'remote' },
+  { x: 450, y: 234, text: 'remote' },
+  { x: 340, y: 326, text: 'power' },
 ];
 ---
-<Figure scroll caption="A TV with three states and five valid transitions. The remote does nothing when the TV is off">
+<Figure scroll caption="A TV with three states and five valid transitions. The events are pressing the power button and pressing the remote; the remote does nothing when the TV is off">
   <svg viewBox="0 70 680 285" role="img" aria-label="State transition diagram: off, standby and on">
     <defs>
       <marker id={id} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -39,7 +39,7 @@ const labels = [
       </g>
     ))}
     {labels.map((l) => (
-      <text x={l.x} y={l.y} text-anchor="middle" dominant-baseline="central" style="font-size:13.5px;font-weight:600;fill:#4a4a4a">{l.text}</text>
+      <text x={l.x} y={l.y} text-anchor="middle" dominant-baseline="central" style="font-size:14.5px;font-weight:600;fill:#4a4a4a">{l.text}</text>
     ))}
   </svg>
 </Figure>
