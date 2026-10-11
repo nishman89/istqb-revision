@@ -102,10 +102,37 @@ tbody tr:nth-child(even) > * { background: rgb(0 0 0 / 0.022); }
 tbody tr:last-child > * { border-bottom: 0; }
 .table-wrap { overflow-x: auto; margin: 1rem 0; border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
 .table-wrap > table { margin: 0; }
+.table-block { margin: 1rem 0; }
+.table-block > .table-wrap { margin: 0; }
+.table-hint { display: none; margin: 0 0 0.35rem; font-size: 0.8rem; font-weight: 700; color: var(--grey); }
 @media (max-width: 40rem) {
-  table { font-size: 0.9rem; }
-  th, td { padding: 0.55rem 0.7rem; }
-  .table-wrap--wide > table { min-width: 36rem; }
+  /* 1. everything: tighter, so 3-column tables fit */
+  table { font-size: 0.85rem; }
+  th, td { padding: 0.45rem 0.55rem; overflow-wrap: break-word; hyphens: manual; }
+
+  /* 2. text tables: each row becomes a card, with the column headings as labels */
+  .table-wrap--stack { overflow: visible; background: none; box-shadow: none; }
+  .table-wrap--stack table, .table-wrap--stack tbody, .table-wrap--stack tr, .table-wrap--stack td { display: block; width: 100%; }
+  .table-wrap--stack thead { display: none; }
+  .table-wrap--stack tr { margin: 0 0 0.6rem; background: var(--surface); border-radius: 12px; box-shadow: var(--shadow); border-left: 5px solid var(--pink); overflow: hidden; }
+  .table-wrap--stack tr:nth-child(even) { border-left-color: var(--charcoal); }
+  .table-wrap--stack tbody tr:nth-child(even) > * { background: none; }
+  .table-wrap--stack td { border: 0; border-bottom: 1px solid var(--line); padding: 0.5rem 0.85rem; font-size: 0.92rem; }
+  .table-wrap--stack td:last-child { border-bottom: 0; }
+  .table-wrap--stack td::before { content: attr(data-label); display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--pink-dark); }
+  .table-wrap--stack td:first-child { background: var(--bg); font-weight: 700; }
+  .table-wrap--stack td[data-label=""]::before { content: none; }
+
+  /* 3. grids: keep the grid, freeze the first column, show the swipe hint */
+  .table-hint { display: block; }
+  .table-wrap--grid th, .table-wrap--grid td { white-space: nowrap; }
+  .table-wrap--grid th:first-child, .table-wrap--grid td:first-child { position: sticky; left: 0; z-index: 1; box-shadow: 2px 0 0 var(--line); }
+  .table-wrap--grid td:first-child { background: var(--surface); }
+  .table-wrap--grid tbody tr:nth-child(even) > td:first-child { background: #f6f6f6; }
+  .table-wrap--grid thead th:first-child, .table-wrap--grid tr:first-child th:first-child { background: var(--pink); }
+
+  /* 4. code: wrap long lines rather than scroll */
+  .prose pre, .prose pre code, .exercise pre, .exercise pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
 }
 
 .visually-hidden {

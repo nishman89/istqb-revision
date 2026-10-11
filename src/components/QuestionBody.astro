@@ -1,4 +1,5 @@
 ---
+import { tableMode } from '../lib/rehype-collapsible-sections.mjs';
 import type { Question } from '../content.config';
 import { url } from '../lib/site';
 
@@ -16,14 +17,20 @@ const { blocks, label } = Astro.props;
           <li><span class="marker">{i.marker}</span><span>{i.text}{i.sub && <ul class="sub">{i.sub.map((s) => <li>{s}</li>)}</ul>}</span></li>
         ))}</ul>
       );
-      case 'table': return (
-        <div class="table-wrap">
-          <table>
-            <thead><tr>{b.rows[0].map((c) => <th scope="col">{c}</th>)}</tr></thead>
-            <tbody>{b.rows.slice(1).map((r) => <tr>{r.map((c) => <td>{c}</td>)}</tr>)}</tbody>
-          </table>
-        </div>
-      );
+      case 'table': {
+        const mode = tableMode(b.rows);
+        return (
+          <div class="table-block">
+            {mode === 'grid' && <p class="table-hint" aria-hidden="true">↔ Swipe to see the whole table</p>}
+            <div class:list={['table-wrap', mode && `table-wrap--${mode}`]}>
+              <table>
+                <thead><tr>{b.rows[0].map((c) => <th scope="col">{c}</th>)}</tr></thead>
+                <tbody>{b.rows.slice(1).map((r) => <tr>{r.map((c, i) => <td data-label={b.rows[0][i]}>{c}</td>)}</tr>)}</tbody>
+              </table>
+            </div>
+          </div>
+        );
+      }
       case 'box': return <div class="box">{b.lines.map((l) => <span>{l}</span>)}</div>;
       case 'img': return <img class="figure" src={url(`exam-figures/${b.src}`)} alt={`Figure for ${label}`} loading="lazy" />;
     }

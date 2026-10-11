@@ -289,6 +289,19 @@ examId(set)                    // "exam-c" - full past papers
   from the Sparta slide template. Headings use Zilla Slab (a free slab font close to Sparta's Bw Glenn Slab) and the
   body uses Source Sans 3, both from Google Fonts.
 
+### Tables on phones
+
+Every table is wrapped in `.table-wrap` and given a phone mode by `tableMode()` in `rehype-collapsible-sections.mjs`
+(also used by `QuestionBody.astro` for exam questions):
+
+- **stack** (4+ columns of mostly text): each row becomes a card, with column headings as labels (`data-label`)
+- **grid** (4+ columns of short cells, e.g. decision tables, state tables, traceability matrices): stays a grid,
+  with the first column frozen and a "Swipe to see the whole table" hint
+- **plain**: tighter spacing so it fits
+
+`TableFit.astro` is a safety net: on phones, any non-grid table still wider than the screen when it opens switches
+to the card layout. Desktop is unaffected.
+
 ### Test hooks (`data-testid`, `id`, `name`)
 
 The site doubles as practice material for automated testing, so interactive and checkable elements carry stable

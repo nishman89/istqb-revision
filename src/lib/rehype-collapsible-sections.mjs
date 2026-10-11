@@ -111,13 +111,36 @@ function addTestIds(tree) {
 }
 
 /** Wrap every table in <div class="table-wrap"> so it can fill the width and still scroll on phones. */
+/** How a table should behave on phones: "stack" (text: rows become cards), "grid" (short cells: swipe) or "" (fits). */
+export function tableMode(rows) {
+  const cols = rows[0]?.length ?? 0;
+  const cells = rows.slice(1).flat().filter((c) => c.trim());
+  const avg = cells.length ? cells.reduce((a, c) => a + c.trim().length, 0) / cells.length : 0;
+  if (cols >= 4 && avg > 15) return 'stack';
+  if (cols >= 4) return 'grid';
+  return '';
+}
+
+/** Wrap every table in <div class="table-wrap"> (fills the width, scrolls on phones) and set its phone mode. */
 function wrapTables(node, parent) {
   if (!node.children) return;
   node.children = node.children.map((child) => {
     if (child.type === 'element' && child.tagName === 'table' && !(node.properties?.className ?? []).includes('table-wrap')) {
-      const firstRow = (child.children.find((c) => c.tagName === 'thead' || c.tagName === 'tbody')?.children ?? []).find((c) => c.tagName === 'tr');
-      const cols = (firstRow?.children ?? []).filter((c) => c.tagName === 'th' || c.tagName === 'td').length;
-      return el('div', { className: ['table-wrap', ...(cols >= 5 ? ['table-wrap--wide'] : [])] }, [child]);
+      const trs = [];
+      const walk = (n) => { if (n.tagName === 'tr') trs.push(n); else (n.children ?? []).forEach(walk); };
+      walk(child);
+      const cellsOf = (tr) => (tr.children ?? []).filter((c) => c.tagName === 'th' || c.tagName === 'td');
+      const rows = trs.map((tr) => cellsOf(tr).map((c) => textOf(c)));
+      const mode = tableMode(rows);
+      if (mode === 'stack') {
+        // each cell remembers its column heading, shown as a label when the row becomes a card
+        const heads = rows[0] ?? [];
+        trs.slice(1).forEach((tr) => cellsOf(tr).forEach((c, i) => { c.properties = { ...c.properties, dataLabel: heads[i] ?? '' }; }));
+      }
+      const wrap = el('div', { className: ['table-wrap', ...(mode ? [`table-wrap--${mode}`] : [])] }, [child]);
+      return mode === 'grid'
+        ? el('div', { className: ['table-block'] }, [el('p', { className: ['table-hint'], ariaHidden: 'true' }, [{ type: 'text', value: '↔ Swipe to see the whole table' }]), wrap])
+        : wrap;
     }
     wrapTables(child, node);
     return child;

@@ -1,0 +1,23 @@
+---
+/**
+ * Safety net for phones: any table (other than a deliberate swipe grid) that would still be wider than
+ * the screen switches to the card layout, with each cell labelled by its column heading.
+ * Tables inside collapsed sections are checked when they open, since they can't be measured while hidden.
+ */
+---
+<script>
+  const phone = matchMedia('(max-width: 40rem)');
+  const fit = (root: ParentNode = document) => {
+    if (!phone.matches) return;
+    root.querySelectorAll<HTMLElement>('.table-wrap:not(.table-wrap--grid):not(.table-wrap--stack)').forEach((w) => {
+      if (!w.clientWidth || w.scrollWidth <= w.clientWidth + 2) return;
+      const table = w.querySelector('table');
+      const heads = [...(table?.rows[0]?.cells ?? [])].map((c) => c.textContent?.trim() ?? '');
+      [...(table?.rows ?? [])].slice(1).forEach((tr) => [...tr.cells].forEach((c, i) => { if (!c.dataset.label) c.dataset.label = heads[i] ?? ''; }));
+      w.classList.add('table-wrap--stack');
+    });
+  };
+  fit();
+  document.addEventListener('toggle', (e) => { const d = e.target as HTMLDetailsElement; if (d.open) requestAnimationFrame(() => fit(d)); }, true);
+  phone.addEventListener('change', () => fit());
+</script>
