@@ -1,0 +1,40 @@
+---
+/**
+ * Groups of cards that each link to a topic further down the page (like a mini menu).
+ *   <LinkCards groups={[{ title, sub, items: [{ heading: 'Exact topic heading', title, text }] }]} />
+ */
+import GithubSlugger from 'github-slugger';
+interface Item { heading: string; title: string; text: string; }
+interface Group { title: string; sub?: string; items: Item[]; }
+interface Props { groups: Group[]; }
+const slugger = new GithubSlugger();
+const groups = Astro.props.groups.map((g) => ({ ...g, items: g.items.map((it) => ({ ...it, href: `#${slugger.slug(it.heading)}` })) }));
+---
+<div class="link-groups">
+  {groups.map((g, gi) => (
+    <section class:list={['link-group', gi % 2 ? 'link-group--dark' : 'link-group--pink']}>
+      <p class="link-group__head"><strong>{g.title}</strong>{g.sub && <span>{g.sub}</span>}</p>
+      <ul>
+        {g.items.map((it) => (
+          <li><a href={it.href} data-testid={`link-card-${it.href.slice(1)}`}><span class="link-card__title">{it.title}</span><span class="link-card__text">{it.text}</span><span class="link-card__go" aria-hidden="true">→</span></a></li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</div>
+
+<style>
+  .link-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .link-group { border-radius: 14px; overflow: hidden; background: var(--surface); box-shadow: var(--shadow); }
+  .link-group__head { margin: 0; display: grid; gap: 0.1rem; padding: 0.7rem 1rem; color: #fff; text-align: center; background: var(--pink); }
+  .link-group--dark .link-group__head { background: var(--charcoal); }
+  .link-group__head span { font-size: 0.88rem; opacity: 0.92; }
+  .link-group ul { list-style: none; margin: 0; padding: 0.4rem; display: grid; gap: 0.3rem; background: none; box-shadow: none; }
+  .link-group li { margin: 0; }
+  .link-group a { display: grid; grid-template-columns: 1fr auto; gap: 0.1rem 0.75rem; padding: 0.65rem 0.75rem; border-radius: 10px; color: var(--charcoal); text-decoration: none; }
+  .link-group a:hover { background: var(--pink-tint); }
+  .link-card__title { font-weight: 700; }
+  .link-card__text { grid-column: 1; font-size: 0.92rem; color: var(--grey); }
+  .link-card__go { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--pink-dark); font-weight: 700; }
+  @media (max-width: 40rem) { .link-groups { grid-template-columns: 1fr; } }
+</style>

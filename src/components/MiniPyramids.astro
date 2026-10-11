@@ -1,0 +1,32 @@
+---
+/**
+ * Pyramid variations side by side: the same shape with different layer names.
+ * Matching layers share a colour, so equivalent layers line up visually.
+ */
+interface Model { title: string; layers: string[]; }   // top layer first
+interface Props { models: Model[]; }
+const { models } = Astro.props;
+const tones = ['pyr--top', 'pyr--mid', 'pyr--base'];
+---
+<div class="pyramids">
+  {models.map((m) => (
+    <figure class="pyramid">
+      <figcaption>{m.title}</figcaption>
+      <ol>
+        {m.layers.map((l, i) => <li class={tones[i]} style={`--w: ${48 + i * 26}%`}>{l}</li>)}
+      </ol>
+    </figure>
+  ))}
+</div>
+
+<style>
+  .pyramids { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .pyramid { margin: 0; padding: 1rem; background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); }
+  .pyramid figcaption { margin: 0 0 0.75rem; text-align: center; font: 700 1.02rem var(--font-head); color: var(--charcoal); }
+  .pyramid ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; justify-items: center; background: none; box-shadow: none; }
+  .pyramid li { margin: 0; width: var(--w); padding: 0.55rem 0.5rem; border-radius: 10px; text-align: center; font-weight: 700; font-size: 0.95rem; color: #fff; }
+  .pyr--top { background: var(--pink); }
+  .pyr--mid { background: var(--charcoal); }
+  .pyr--base { background: #8a1d3a; }
+  @media (max-width: 40rem) { .pyramids { grid-template-columns: 1fr; } }
+</style>

@@ -12,6 +12,8 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import MiniPyramids from '../../components/MiniPyramids.astro';
+import LinkCards from '../../components/LinkCards.astro';
 import IconCards from '../../components/IconCards.astro';
 import WhenThen from '../../components/WhenThen.astro';
 import Cycle from '../../components/diagrams/Cycle.astro';
@@ -188,14 +190,21 @@ In Agile software development, exit criteria are often called Definition of Done
 
 <SyllabusRef ref="5.1.4" />
 
-Test estimation predicts how much effort testing will take, and the syllabus covers four techniques.
+Test estimation predicts how much effort testing will take. The syllabus covers four techniques in two groups: choose
+one to read about it.
 
-<Compare caption="Four estimation techniques (CTFL 5.1.4)" columns={[
-  { title: 'Metrics-based', sub: 'uses data', points: ['Ratios from similar past projects', 'Extrapolation from early measurements'] },
-  { title: 'Expert-based', sub: 'uses judgement', points: ['Wideband Delphi and Planning Poker', 'Three-point estimation'] },
+<LinkCards groups={[
+  { title: 'Metrics-based', sub: 'uses data', items: [
+    { heading: 'Estimation Based on Ratios', title: 'Ratios', text: 'Use the development-to-test effort ratio from similar past projects' },
+    { heading: 'Extrapolation', title: 'Extrapolation', text: 'Use measurements from earlier in this project to predict the rest' },
+  ] },
+  { title: 'Expert-based', sub: 'uses judgement', items: [
+    { heading: 'Wideband Delphi', title: 'Wideband Delphi', text: 'Experts estimate alone, discuss, and repeat until they agree (Planning Poker is a variant)' },
+    { heading: 'Three-Point Estimation', title: 'Three-point estimation', text: 'Combine optimistic, most likely and pessimistic estimates' },
+  ] },
 ]} />
 
-- **Estimates rest on assumptions** and always carry error. Small tasks estimate better — so break big tasks down.
+- **Estimates rest on assumptions** - They always carry some error, and small tasks estimate better than big ones, so break big tasks down
 
 <SyllabusText>
 
@@ -208,8 +217,7 @@ Test effort estimation involves predicting the amount of test-related work neede
 <SyllabusRef ref="5.1.4" />
 
 Ratio-based estimation uses figures from past projects, such as the ratio of development effort to test effort.
-
-- **Use historical data** - "Standard" ratios from the organisation's own similar projects are the best source
+The best source is the organisation's own similar projects, which give it "standard" ratios to work from.
 
 #### Worked example
 
@@ -227,16 +235,16 @@ In this metrics-based technique, figures are collected from previous projects wi
 
 <SyllabusRef ref="5.1.4" />
 
-Extrapolation estimates the remaining test effort from measurements taken so far in the project, which is why it suits iterative development.
-
-- **Measure early** - Gather data in the current project
-- **Extrapolate** - Estimate the remaining effort, usually with a mathematical model
-- **Best for iterative SDLCs** - e.g. use the average effort of the last few iterations
+Extrapolation estimates the remaining test effort from measurements taken so far in the project, which is why it
+suits iterative development. For example, the effort for the next iteration can be estimated as the average of the
+last three:
 
 <Flow caption="Extrapolation: the average of the last three iterations becomes the estimate for the next one (CTFL 5.1.4)" steps={[
-  { title: 'Iteration 1', sub: 'measured' }, { title: 'Iteration 2', sub: 'measured' }, { title: 'Iteration 3', sub: 'measured' },
-  { title: 'Average', sub: 'of iterations 1-3' }, { title: 'Iteration 4', sub: 'the estimate' },
+  { title: 'Iteration 1', sub: '10 days' }, { title: 'Iteration 2', sub: '12 days' }, { title: 'Iteration 3', sub: '11 days' },
+  { title: 'Average', sub: '(10 + 12 + 11) ÷ 3 = 11' }, { title: 'Iteration 4', sub: 'estimate: 11 days' },
 ]} />
+
+Because it uses measurements from the current project, extrapolation gets more accurate as the project goes on.
 
 <SyllabusText>
 
@@ -286,8 +294,8 @@ Three-point estimation combines an optimistic, a most likely and a pessimistic e
 
 <ThreePoint />
 
-- **ESTIMATE** - E = (a + 4m + b) / 6
-- **MEASUREMENT ERROR** - SD = (b — a) / 6
+- **Estimate (E)** - E = (a + 4m + b) / 6
+- **Standard deviation (SD)** - SD = (b − a) / 6 · how much the estimate could be out by
 <Exercise title="Three-point estimate">
 
 The experts' estimates are: optimistic **a = 6**, most likely **m = 9**, pessimistic **b = 18** person-hours.
@@ -377,13 +385,10 @@ Run high-priority tests as early as possible, but **TC3 must run before TC1**. O
 
 <SyllabusRef ref="5.1.6" />
 
-The test pyramid shows how many tests to have at each level: many small, fast tests at the bottom and few large, slow ones at the top.
+The test pyramid shows how many tests to have at each level: many small, fast tests at the bottom and few large, slow
+ones at the top. It's used to guide test automation and how test effort is allocated across the levels.
 
 <TestPyramid />
-
-- **Top layers** - Complex, end-to-end, slower — just a few needed
-- **Bottom layers** - Small, isolated, fast — many needed
-- **Guides automation** - and how test effort is allocated
 
 <SyllabusText>
 
@@ -395,36 +400,32 @@ The test pyramid is a model showing that different tests may have different gran
 
 <SyllabusRef ref="5.1.6" />
 
-The test pyramid comes in different versions, but they all follow the same idea.
+The test pyramid comes in different versions. They use different names for the layers, but the idea is the same:
 
-- **Cohn's original model (2009)** - UI tests · Service tests · Unit tests
-- **Another popular model** - End-to-end tests · Integration (component integration) tests · Unit (component) tests
+<MiniPyramids models={[
+  { title: "Cohn's original model (2009)", layers: ['UI tests', 'Service tests', 'Unit tests'] },
+  { title: 'Another popular model', layers: ['End-to-end tests', 'Integration tests', 'Unit tests'] },
+]} />
+
+Matching colours show the equivalent layers. Whatever the names, there are many small, fast tests at the bottom and
+few large, slow ones at the top.
 
 ### Testing Quadrants
 
 <SyllabusRef ref="5.1.7" />
 
-- **Marick's testing quadrants** group test levels with the right test types, activities, techniques and work products in Agile.
-- **Nothing missed** - Make sure all appropriate test types and levels are in the SDLC
-- **Right fit** - Some test types suit certain test levels more than others
-- **Shared language** - Describe test types to developers, testers and business reps
+**Marick's testing quadrants** group test levels with the right test types, activities, techniques and work products
+in Agile software development.
+
+<Quadrants />
+
+They help make sure all the appropriate test types and levels are included, show that some test types fit certain
+test levels better than others, and give developers, testers and business representatives a shared way to describe
+them.
 
 <SyllabusText>
 
 The testing quadrants, defined by Brian Marick (Marick 2003, Crispin 2008), group the test levels with the appropriate test types, activities, test techniques and work products in the Agile software development. The model supports test management in visualizing these to ensure that all appropriate test types and test levels are included in the SDLC and in understanding that some test types are more relevant to certain test levels than others. This model also provides a way to differentiate and describe the types of tests to all stakeholders, including developers, testers, and business representatives.
-
-</SyllabusText>
-
-### The Four Quadrants
-
-<SyllabusRef ref="5.1.7" />
-
-The testing quadrants group test **levels** with the right test **types**, activities, techniques and work products.
-They help make sure **all the important test types are covered**, and help explain testing to non-technical stakeholders.
-
-<Quadrants />
-
-<SyllabusText>
 
 Quadrant Q1 (technology facing, support the team) contains component and component integration tests. These tests should be automated and included in the CI process.
 
