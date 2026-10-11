@@ -12,6 +12,7 @@ objectives:
 ---
 import SyllabusRef from '../../components/SyllabusRef.astro';
 import SyllabusText from '../../components/SyllabusText.astro';
+import VsPair from '../../components/VsPair.astro';
 import Exercise from '../../components/Exercise.astro';
 import Resource from '../../components/Resource.astro';
 import Compare from '../../components/diagrams/Compare.astro';
@@ -23,7 +24,6 @@ import SdlcModels from '../../components/diagrams/SdlcModels.astro';
 import ShiftLeft from '../../components/diagrams/ShiftLeft.astro';
 import Tiles from '../../components/diagrams/Tiles.astro';
 import DevOpsPipeline from '../../components/diagrams/DevOpsPipeline.astro';
-import TestPyramid from '../../components/diagrams/TestPyramid.astro';
 import VModel from '../../components/diagrams/VModel.astro';
 import Waterfall from '../../components/diagrams/Waterfall.astro';
 
@@ -407,11 +407,8 @@ Test types are groups of test activities related to specific quality characteris
 
 <SyllabusRef ref="2.2.1" />
 
-Test levels are groups of test activities that focus on different stages of development, from single components up to whole systems.
-
-<TestPyramid />
-
-Using an online shop as the example:
+Test levels are groups of test activities that focus on different stages of development, from single components up
+to whole systems. Using an online shop as the example:
 
 | Test level | Example question it answers |
 |---|---|
@@ -421,16 +418,19 @@ Using an online shop as the example:
 | System integration | Does it work with the third-party payment system? |
 | Acceptance | Does it meet the shop's business needs? |
 
+Each level is described below in the same way: what it tests, who usually does it (where the syllabus says), what it
+needs, and an example from the shop.
+
 ### Component Testing
 
 <SyllabusRef ref="2.2.1" />
 
 Component testing is the first test level: it checks individual components on their own.
 
-- **Focus** - Testing components in isolation
-- **Often needs specific support** - Unit test frameworks and test harnesses
-- **Normally done by developers** - in their development environment
-- **E-commerce example** - Individual methods for calculating the total and adding shipping in the shopping basket
+- **What it tests** - Each component in isolation from the rest of the system
+- **Who usually does it** - Developers, in their development environment
+- **What it needs** - Specific support, such as unit test frameworks and test harnesses
+- **Online shop example** - The methods that calculate the basket total and add shipping
 
 ### Component Integration Testing
 
@@ -438,10 +438,10 @@ Component testing is the first test level: it checks individual components on th
 
 Component integration testing checks that components work together correctly once they're combined.
 
-- **Focus** - The interfaces and interactions between components
+- **What it tests** - The interfaces and interactions between components
+- **What it depends on** - The integration strategy: bottom-up, top-down or big-bang
 - **Also known as** - Unit integration testing
-- **Heavily dependent on the integration strategy** - Bottom-up, top-down or big-bang
-- **E-commerce example** - Integration of the shopping basket, catalogue and checkout modules
+- **Online shop example** - The basket, catalogue and checkout modules working together
 
 ### System Testing
 
@@ -449,12 +449,11 @@ Component integration testing checks that components work together correctly onc
 
 System testing checks the behaviour and capabilities of the whole system, end to end.
 
-- **Focus** - Overall behaviour and capabilities of the entire system or product
-- **Functional testing** - of end-to-end tasks
-- **Non-functional testing** - of quality characteristics, e.g. usability
-- **Representative test environment** - for some tests; sub-systems may need simulating
-- **Often an independent test team** - related to the system specifications
-- **E-commerce example** - Does the entire store work?
+- **What it tests** - The overall behaviour and capabilities of the entire system or product
+- **Who usually does it** - Often an independent test team, working from the system specifications
+- **What it needs** - A representative test environment for some tests, such as usability · Sub-systems can be simulated
+- **Covers both** - Functional testing of end-to-end tasks, and non-functional testing of quality characteristics
+- **Online shop example** - A full purchase, end to end
 
 ### System Integration Testing
 
@@ -462,10 +461,10 @@ System testing checks the behaviour and capabilities of the whole system, end to
 
 System integration testing checks how the system works with other systems and external services.
 
-- **Focus** - Interfaces with other systems and external services
-- **Needs suitable test environments** - preferably similar to the operational environment
-- **Real connections** - Systems simulated in system testing are now integrated for real
-- **E-commerce example** - Does it integrate with the third-party payment system?
+- **What it tests** - The interfaces between the system and other systems or external services
+- **What it needs** - Test environments as similar as possible to the operational environment
+- **Real connections** - Systems that were simulated during system testing are now connected for real
+- **Online shop example** - Orders sent to the third-party payment provider, and the confirmations coming back
 
 ### Acceptance Testing
 
@@ -473,10 +472,26 @@ System integration testing checks how the system works with other systems and ex
 
 Acceptance testing checks whether the system meets the users' business needs and is ready to be deployed.
 
-- **Focus** - Validation, and demonstrating readiness for deployment
-- **Does it fulfil the user's business need?** - Ideally performed by the intended users
-- **Forms of acceptance testing** - User acceptance testing (UAT) · Operational acceptance testing · Contractual and regulatory acceptance testing · Alpha and beta testing
-- **E-commerce example** - Does it satisfy the users' needs?
+- **What it tests** - Validation: does the system fulfil the users' business needs, and is it ready to be deployed?
+- **Who usually does it** - Ideally, the intended users
+- **Online shop example** - The shop's owners confirm it meets their business needs before launch
+
+#### Forms of acceptance testing
+
+The syllabus names six main forms. Each asks a slightly different question:
+
+- **User acceptance testing (UAT)** - Will the intended users accept it for their real, everyday work?
+- **Operational acceptance testing** - Can it be run and supported: installed, backed up, restored and maintained?
+- **Contractual acceptance testing** - Does it meet the acceptance criteria agreed in a contract?
+- **Regulatory acceptance testing** - Does it comply with the relevant laws, regulations or standards?
+- **Alpha testing** - Potential users or independent testers try it at the developer's site
+- **Beta testing** - Potential or existing users try it at their own locations
+
+### Practise: Test Levels
+
+<SyllabusRef ref="2.2.1" />
+
+Now try placing some tests at the right level. They all use the same online shop as the rest of this section.
 
 <Exercise title="Which test level?">
 
@@ -520,14 +535,20 @@ Test levels are distinguished by the following non-exhaustive list of attributes
 
 <SyllabusRef ref="2.2.2" />
 
-Test types group testing by what it checks, and unlike test levels, any test type can be used at any level.
+Test types group testing by what it checks, and unlike test levels, any test type can be used at any level. They
+come in two pairs:
 
-<Tiles cols={2} caption="The four test types — all can be used at every test level (CTFL 2.2.2)" tiles={[
-  { title: 'Functional', sub: 'WHAT the system does' }, { title: 'Non-functional', sub: 'HOW WELL it behaves' },
-  { title: 'White-box', sub: 'based on internal structure' }, { title: 'Black-box', sub: 'based on the specification' },
-]} />
+<VsPair
+  left={{ title: 'Functional', meaning: 'Tests <strong>what</strong> the system does: its functions and features.', example: 'Does the discount code reduce the basket total?' }}
+  right={{ title: 'Non-functional', meaning: 'Tests <strong>how well</strong> it behaves: quality characteristics such as performance, usability and security.', example: 'Does the checkout page load within 2 seconds?' }}
+/>
 
-- **All four apply at every test level** - the focus differs by level, and any test technique can derive their test cases.
+<VsPair
+  left={{ title: 'Black-box', meaning: 'Tests are based on the <strong>specification</strong>, without looking inside the code.', example: 'Test every rule in the requirements.' }}
+  right={{ title: 'White-box', meaning: "Tests are based on the system's <strong>internal structure</strong>, such as its code or architecture.", example: 'Run every branch of the discount calculation.' }}
+/>
+
+- **All four apply at every test level** - the focus differs by level, and any test technique can be used to derive their test cases.
 
 <SyllabusText>
 
@@ -658,9 +679,13 @@ Regression testing checks that a change, even a correct fix, hasn't broken somet
 
 <Ripple />
 
-- **Other components** - Changed component
-- **Regression testing** confirms a change — even a confirmed fix — hasn't caused adverse consequences.
-- **Start with impact analysis** - It shows which parts of the software could be affected — so you can optimise the extent of regression testing. Effects can spread to the same component, other components, connected systems and the environment.
+That's why regression testing starts with **impact analysis**: it shows which parts of the software could be affected
+by a change, so you know how much needs re-testing.
+
+After a defect is fixed, two kinds of testing are needed:
+
+- **Confirmation testing** - *Is the original defect fixed?* · Re-run the tests that failed, or simply check the failure no longer happens
+- **Regression testing** - *Did the change break anything else?* · Regression test suites run many times, so they are a strong candidate for automation
 
 <SyllabusText>
 
