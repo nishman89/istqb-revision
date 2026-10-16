@@ -176,7 +176,7 @@ GitHub Actions rebuilds and publishes the site in a couple of minutes (see [Publ
 | `npm` or `node` "is not recognised" | Node.js isn't installed or the terminal was open before you installed it - close and reopen VS Code |
 | `npm install` fails | Check you're in the project folder (the one containing `package.json`), then try again |
 | Port 4321 is already in use | Another copy is running - stop it, or use the other address `npm run dev` prints |
-| The build shows an error about a question or chapter | Read the message - it names the file and field that's wrong (see [Editing the content](#editing-the-content)) |
+| The build shows an error about a question or chapter | Read the message - it names the file and field that's wrong (see [Editing the content](#updating-the-content)) |
 
 > Opening `index.html` by double-clicking it **won't work** - the site has to be built and served, which is what
 > `npm run dev` does for you.
@@ -212,76 +212,113 @@ automatically. If you name the repository `<username>.github.io`, change `BASE_P
 
 ---
 
-## Editing the content
+## Updating the content
 
-You don't need to touch any code to change the notes or questions.
+You don't need to know how to code to update the site. Almost everything you'll want to change is plain text in a
+handful of files. Pick the route that suits the size of the change:
 
-### Chapter notes – `src/content/chapters/chapter-1.mdx` … `chapter-6.mdx`
+| Change | Best route |
+|---|---|
+| Fix a typo, reword a sentence, correct an answer | **[Edit on the GitHub website](#quick-edits-on-the-github-website)**: no installs, about two minutes |
+| Add a topic, exercise, diagram or question | **[Edit on your computer](#bigger-changes-on-your-computer)** so you can preview it first |
 
-Each chapter is a Markdown file. The top section (between the `---` lines) holds the chapter's title, course time,
-summary and learning objectives. Below it:
+### Quick edits on the GitHub website
+
+1. Go to the repository on github.com and open the file (see [Where everything lives](#where-everything-lives)),
+   e.g. `src/content/chapters/chapter-2.mdx`.
+2. Click the **pencil icon** (Edit this file).
+3. Use **Ctrl+F / Cmd+F** to find the text you want, and change it.
+4. Click **Commit changes…**, write a short message (e.g. `content(ch2): fix typo in regression testing`) and commit.
+5. Open the **Actions** tab. When the "Deploy to GitHub Pages" run shows a **green tick** (1-2 minutes), the change
+   is live. A **red cross** means something in the file is broken; click it to see the error, then fix and commit again.
+
+### Bigger changes on your computer
+
+Follow [Opening the website](#opening-the-website) once to set things up, then:
+
+1. Run `npm run dev` and open http://localhost:4321. Every save updates the page instantly.
+2. Make your changes, and check them in the browser, including at phone width (browser dev tools → device toolbar).
+3. Run `npm run build`. If it finishes without errors, everything is valid.
+4. Commit and push (see [Publishing](#publishing-on-github-pages)), then check the Actions tab for the green tick.
+
+### Where everything lives
+
+| What | File |
+|---|---|
+| Chapter notes | `src/content/chapters/chapter-1.mdx` … `chapter-6.mdx` |
+| Exam questions (Sample Papers A-D) | `src/data/exams/exam-a.json` … `exam-d.json` |
+| "Watch out for…" exam traps | `src/data/traps.ts` |
+| The 8 K3 skills and their methods (Exam Tips) | `src/lib/k3.ts` |
+| Handout PDFs | the files in `public/handouts/`, listed in `src/data/handouts.ts` |
+| Introduction page | `src/pages/introduction.astro` |
+| Exam Tips page | `src/pages/exam-tips/index.astro` |
+| Menu links (Resources, glossary, syllabus) | `src/components/Header.astro` |
+| Pass mark, questions per chapter | `src/lib/site.ts` |
+| Colours and fonts | `src/styles/global.css` (variables at the top) |
+
+Some things update **automatically** and never need editing: the search index, the "In this chapter" menu, the
+Exam Tips statistics, the practice sets by chapter and K-level, and most test hooks.
+
+### Chapter notes
+
+Each chapter is one `.mdx` file: Markdown with a few extra building blocks. The top section (between the `---`
+lines) holds the chapter's title, course time, summary and learning objectives. Below it:
 
 ```mdx
-## 4.2 Black-box Test Techniques          ← a section (appears in the "In this chapter" menu)
+## 4.2 Black-box Test Techniques          ← a section: a dark collapsible bar
 
-### Equivalence Partitioning              ← a topic
+### Equivalence Partitioning              ← a topic inside it
 
-<SyllabusRef ref="4.2.1" />               ← the syllabus section badge
+<SyllabusRef ref="4.2.1" />               ← the syllabus badge
 
-- **Divide the data** - into equivalence partitions
-- **One test each** - one value per partition is enough
+One plain sentence saying what the topic is about.   ← every topic starts with one
+
+- **Valid partitions** - Values the software should accept
+- **Invalid partitions** - Values it should reject
 
 <SyllabusText>
 
-The official syllabus wording goes here. It appears in the
-collapsible "What the syllabus says" box.
+The official syllabus wording. It appears in the collapsible "What the syllabus says" box.
 
 </SyllabusText>
 ```
 
-Use `<SyllabusRef beyond />` for topics that go beyond the syllabus.
+- **Not examined?** Use `<SyllabusRef beyond />` instead: it shows a "Beyond the syllabus" badge.
+- **Section introduction:** if a section's **first topic has the same title as the section** (e.g. section
+  "2.3 Maintenance Testing" and topic "Maintenance Testing"), it's shown as soon as the section opens, with no
+  extra heading to click.
+- **"Mark section as done" buttons** and the progress bars are added automatically for every `##` section.
 
-### Quiz questions – `src/data/exams/exam-a.json` … `exam-d.json`
+#### How lists are displayed
 
-One file per ISTQB sample exam, each holding 40 questions. A question looks like this:
+You write ordinary bullet lists. The site picks the layout from what's in them:
 
-```jsonc
-{
-  "id": "c-21",
-  "exam": "C",
-  "n": 21,                        // question number in the ISTQB paper
-  "chapter": 4,                   // which chapter's quiz it appears in
-  "lo": "FL-4.2.2",               // learning objective
-  "ref": "4.2.2",                 // syllabus section shown on the badge
-  "k": "K3",                      // knowledge level
-  "select": 1,                    // 1 = "Select ONE", 2 = "Select TWO"
-  "blocks": [                     // the question text, in order
-    { "t": "p", "text": "A developer was asked to implement the following business rule:" },
-    { "t": "box", "lines": ["INPUT: value (integer number)", "..."] }
-  ],
-  "options": [{ "key": "a", "text": "100, 150, 200, 201" }, ...],
-  "answer": ["b"],
-  "explanation": {
-    "intro": "General explanation (optional)",
-    "options": { "a": "Is not correct. ...", "b": "Is correct. ...", ... }
-  }
-}
+| You write | You get |
+|---|---|
+| `- **Title** - description` on each item | **Cards** with a title and description |
+| `- **Title** - first point · second point` | A card with two lines (`·` starts a new line) |
+| Exactly two items titled **Pros** / **Cons** (or Benefits/Risks, Advantages/Drawbacks, Strengths/Limitations) | **Green and pink cards side by side** |
+| Seven or more titled items | A **two-column list** |
+| Short items with no title, e.g. `- Unit tests` | **Tags** |
+| Full sentences with no title | Normal **paragraphs** |
+
+Keep every item complete: a title on its own, with no description, looks broken.
+
+#### Highlighted boxes
+
+```mdx
+> **Example: a defect is found.** A green box, for worked examples and key points.
+
+<div class="callout callout--remember">
+
+**❗ Remember:** a pink box, for the facts trainees most often mix up.
+
+</div>
 ```
 
-Block types for the question text:
+Other box styles: `callout--warn` (amber, ⚠ warnings) and `callout--exam` (blue, ℹ️ exam notes).
 
-- `p`: a paragraph
-- `list`: a numbered or lettered list
-- `table`: a table (the first row is the header)
-- `box`: a bordered block of lines, such as a user story or a test log
-- `formula`: a centred formula
-- `img`: a diagram from `public/exam-figures/`
-
-**Safety net:** `npm run build` refuses to build if a question is broken. For example, it fails if the answer isn't
-one of the options, if a "Select TWO" question doesn't have two answers, or if an exam doesn't have 40
-questions. Run `npm run check` after editing.
-
-### Adding an exercise to the notes
+#### Exercises
 
 ```mdx
 import Exercise from '../../components/Exercise.astro';
@@ -292,29 +329,27 @@ Which set of input data exercises all the partitions?
 
 <div slot="answer">
 
-**b)** - one value in each partition.
+**b)** One value in each partition.
 
 </div>
 </Exercise>
 ```
 
-Use `kind="discuss"` for an open question with a suggested answer, and `kind="example"` for a worked example (shown with a "Show the worked solution" panel). Leave a blank line after the opening tag and
-around the answer so the Markdown inside is formatted.
+- `kind="discuss"` for an open question with a suggested answer; `kind="example"` for a worked example.
+- `source="workbook"` adds a "Practice workbook" tag.
+- Put exercises **after** the teaching, usually in a "Practise: …" topic, so the answer isn't visible above them.
+- Leave a blank line after the opening tag and around the answer, so the Markdown inside is formatted.
 
-### Other things you might change
+#### Tables
 
-| To change… | Edit… |
-|---|---|
-| Colours and fonts | `src/styles/global.css` (the variables at the top) |
-| Pass mark, questions per chapter, main quiz set | `src/lib/site.ts` |
-| The Introduction page | `src/pages/introduction.astro` |
-| Header, footer, logo | `src/components/Header.astro`, `Footer.astro`, `public/sparta-logo*.png` |
-| A diagram | `src/components/diagrams/` (one file per diagram) |
+Ordinary Markdown tables. They're styled automatically and made phone-friendly: text tables with 4+ columns turn
+into cards on phones, and grids (like decision tables) get a frozen first column and a swipe hint. Keep tables
+**tall rather than wide** where you can: one row per item reads best on a phone.
 
-### Adding a diagram to the notes
+#### Diagrams and other building blocks
 
-Most diagrams use three reusable building blocks, so you can add a new one with just a few lines of MDX and no drawing.
-Import the one you need at the top of the chapter file, then place it under any topic:
+Most diagrams use reusable building blocks, so you can add one with a few lines and no drawing. On phones they
+automatically switch to a stacked layout. Import the one you need at the top of the chapter file:
 
 ```mdx
 import Flow from '../../components/diagrams/Flow.astro';
@@ -348,10 +383,81 @@ import Hub from '../../components/diagrams/Hub.astro';
 ]} />
 ```
 
-The more detailed diagrams (V-model, state diagram, defect lifecycle and so on) each have their own file in
-`src/components/diagrams/` and are used like `<VModel />`. Text inside the building blocks wraps automatically.
+Other building blocks used in the notes (see `src/components/`, each file explains its options at the top):
 
----
+| Component | Use it for |
+|---|---|
+| `IconCards` | Cards with an icon, title and points |
+| `WhenThen` | "When this happens → do this" rows |
+| `VsPair`, `SideBySide` | Two ideas compared, with meanings and examples |
+| `LinkCards` | Cards that link to topics further down the page |
+| `AtAGlance` | The "What it is / Use it when / Why it helps" box for a technique |
+| `Resource` | A link to an outside video, article, PDF, standard or documentation |
+
+One-off diagrams live in `src/components/diagrams/`. On phones they get a "Tap to enlarge" button automatically.
+
+### Exam questions
+
+The questions are in `src/data/exams/exam-a.json` … `exam-d.json`, one file per ISTQB sample paper, each with
+exactly 40 questions. **Keep the ISTQB wording exactly as published.** A question looks like this:
+
+```jsonc
+{
+  "id": "c-21",
+  "exam": "C",
+  "n": 21,                        // question number in the ISTQB paper
+  "chapter": 4,                   // which chapter's quiz it appears in
+  "lo": "FL-4.2.2",               // learning objective
+  "ref": "4.2.2",                 // syllabus section shown on the badge
+  "k": "K3",                      // knowledge level
+  "select": 1,                    // 1 = "Select ONE", 2 = "Select TWO"
+  "blocks": [                     // the question text, in order
+    { "t": "p", "text": "A developer was asked to implement the following business rule:" },
+    { "t": "box", "lines": ["INPUT: value (integer number)", "..."] }
+  ],
+  "options": [{ "key": "a", "text": "100, 150, 200, 201" }, ...],
+  "answer": ["b"],
+  "explanation": {
+    "intro": "General explanation (optional)",
+    "options": { "a": "Is not correct. ...", "b": "Is correct. ...", ... }
+  }
+}
+```
+
+Block types for the question text: `p` (paragraph), `list` (numbered or lettered list; an item can have a `sub`
+list), `table` (first row is the header), `box` (a bordered block of lines, e.g. a defect report), `formula`
+(centred), and `img` (a diagram from `public/exam-figures/`).
+
+**Safety net:** the build refuses to publish a broken question, e.g. if the answer isn't one of the options, a
+"Select TWO" question doesn't have two answers, or a paper doesn't have 40 questions. Each question automatically
+appears in its chapter quiz, the practice sets and the search.
+
+### Other content
+
+- **Exam traps ("Watch out for…")**: add `{ trap: 'The wrong idea', truth: 'What is actually true.' }` to the
+  chapter's list in `src/data/traps.ts`.
+- **K3 skills on Exam Tips**: edit the steps in `src/lib/k3.ts`. Each entry's `notes` link points to its topic.
+- **Handouts**: put the PDF in `public/handouts/`, then add or update its line in `src/data/handouts.ts`.
+- **Menu links**: the Resources menu (glossary, syllabus) is the `external` list near the top of
+  `src/components/Header.astro`.
+
+### Writing style
+
+The notes follow a few rules, so they read consistently:
+
+- **Start every topic with one plain sentence** saying what it's about.
+- **Use cards only where they help** (separate items, comparisons, steps). If it's one explanation, write sentences.
+- **Avoid spaced dashes** ( - ) in sentences: reword with a colon, comma or full stop instead.
+- **Use the syllabus's terms** (e.g. "testing quadrants", "usability"), and mark anything not examined as
+  *Beyond the syllabus*.
+- **Give examples**, ideally using the online shop that runs through the notes.
+
+### Before you publish: a quick checklist
+
+- [ ] It reads clearly at phone width, with nothing cut off
+- [ ] `npm run build` finishes without errors (or, on the website, the Actions run shows a green tick)
+- [ ] New topics start with a sentence, and exercises come after the teaching
+- [ ] Exam question wording is unchanged from the ISTQB paper
 
 ## How it's built
 
